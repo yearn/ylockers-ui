@@ -10,7 +10,9 @@ const config: Config = {
     colors: {
       'dark-black': '#000107',
       'dark-blue': '#000A3D',
-      'text-primary': '#FFFFFF',
+      'white': '#FFFFFF',
+      'blue': '#001170',
+      'darker-blue': '#000B49',
       'light-blue': '#00A3FF',
       'lighter-blue': '#4DBFFF',
       'disabled-bg': '#DFDFDF',
