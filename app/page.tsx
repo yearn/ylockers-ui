@@ -6,8 +6,12 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
-      <Image className="absolute top-o left-[24vw] w-[76vw]" src="/prisma.svg" width={200} height={200} alt="" />
-      <Header />
+      <Image className="absolute top-o left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
+      <Header items={[
+        { text: 'Earn', link: '/' },
+        { text: 'About', link: '/about' },
+        { text: 'Expired farms', link: '/expired-farms' },
+      ]} selected="Earn"/>
       <section className="w-[1200px] mt-[27vh]">
         <div className="w-full">
           <h1 className="text-6xl font-bold">Put your<br />yPRISMA to work</h1>
