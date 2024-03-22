@@ -13,6 +13,7 @@ const config: Config = {
       'white': '#FFFFFF',
       'blue': '#001170',
       'darker-blue': '#000B49',
+      'soft-blue': '#555D8D',
       'light-blue': '#00A3FF',
       'lighter-blue': '#4DBFFF',
       'disabled-bg': '#DFDFDF',
