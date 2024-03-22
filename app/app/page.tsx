@@ -17,8 +17,47 @@ export default function Home() {
       ]} launchText="Connect Wallet"/>
       <section className="mt-[5vh] z-10">
         <div className="w-full h-[624px] flex justify-center">
-          <div className="w-[408px] bg-blue">
-           
+          <div className="w-[408px] bg-blue flex flex-col p-10 rounded-bl-lg rounded-tl-lg">
+            <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
+            <span className="text-light-blue text-6xl font-mono font-bold">137.91%</span>
+            <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
+              <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
+              <div className="flex justify-between">
+                <span className="font-thin opacity-70	">Your APR</span>
+                <span className="font-bold">137.91%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-thin opacity-70	">Available to stake, yPRISMA</span>
+                <span className="font-bold">0,000000</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-thin opacity-70	">Staked, yPRISMA</span>
+                <span className="font-bold">0,000000</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-thin opacity-70	">Earned, yvmkUSD-A</span>
+                <span className="font-bold">0,000000</span>
+              </div>
+            </div>
+            <div className="flex flex-col space-y-2 pt-2">
+              <span className="font-semibold pb-4 text-lg">YEARN TOTAL GOVERNANCE POSITION</span>
+              <div className="flex justify-between">
+                <span className="font-thin opacity-70	">Price</span>
+                <span className="font-bold">420.69</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-thin opacity-70	">Prisma Ratio</span>
+                <span className="font-bold">69.420</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-thin opacity-70	">TVL</span>
+                <span className="font-bold">42 m</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-thin opacity-70	">vePRISMA</span>
+                <span className="font-bold">100%</span>
+              </div>
+            </div>
           </div>
           <div className="w-[792px] bg-darker-blue">
             <Suspense fallback={<div>Loading...</div>}>
