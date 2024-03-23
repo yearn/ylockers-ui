@@ -75,16 +75,48 @@ function TabContent() {
   const tab = searchParams.get('tab');
 
   return (
-    <Header
-      items={[
-        { text: 'Get yPRISMA', link: '/app?tab=get' },
-        { text: 'Stake', link: '/app?tab=stake' },
-        { text: 'Unstake', link: '/app?tab=unstake' },
-        { text: 'Claim Rewards', link: '/app?tab=claim' },
-      ]}
-      launchApp={false}
-      selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
-      className="pl-4"
-    />
+    <div className="flex flex-col">
+      <Header
+        items={[
+          { text: 'Get yPRISMA', link: '/app?tab=get' },
+          { text: 'Stake', link: '/app?tab=stake' },
+          { text: 'Unstake', link: '/app?tab=unstake' },
+          { text: 'Claim Rewards', link: '/app?tab=claim' },
+        ]}
+        launchApp={false}
+        selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
+        className="pl-4"
+      />
+      <div className="px-6">
+        {tab === 'get' && (
+          <div className="flex flex-col">
+            <span className="font-semibold pb-4 text-lg">1. ZAP</span>
+            <span className="font-thin pb-1">Zap PRISMA to yPRISMA</span>
+            <div className="flex">
+              <input type="number" className="w-full p-2 bg-input-bg rounded-lg w-[356px] mr-2" placeholder="100" />
+              <Button>Zap</Button>
+            </div>
+            <span className="font-thin opacity-70 text-xs pl-3 pt-1">You have 0,00 PRISMA</span>
+            <span className="font-semibold pt-8 pb-4 text-lg">2. CLAIM</span>
+            <span className="font-thin opacity-70">You can farm PRISMA in different gauges, bla bla bla</span>
+            <span className="pt-4">
+              <Button>Claim</Button>
+            </span>
+          </div>
+        )}
+        {tab === 'stake' && (
+          <>
+          </>
+        )}
+        {tab === 'unstake' && (
+          <>
+          </>
+        )}
+        {tab === 'claim' && (
+          <>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
