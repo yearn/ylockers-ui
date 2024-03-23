@@ -116,7 +116,7 @@ function TabContent() {
             <span className="font-thin opacity-70 text-xs pl-3 pt-1">You have 0,00 PRISMA</span>
             <span className="font-semibold pt-16 pb-4 text-lg">CHARGE YOUR YIELD</span>
             <span className="font-thin opacity-70 w-[50%]">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
-            <Image className="pt-8" src="/charge.svg" width={370} height={136} />
+            <Image alt="charge multiplier" className="pt-8" src="/charge.svg" width={370} height={136} />
           </div>
         )}
         {tab === 'unstake' && (
