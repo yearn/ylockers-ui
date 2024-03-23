@@ -14,7 +14,7 @@ export default function Home() {
         <Header items={[
           { text: 'Earn', link: '/' },
           { text: 'About', link: '/about' },
-          { text: 'Expired farms', link: '/expired-farms' },
+          { text: 'Expired farms', link: '/' },
         ]} launchText="Connect Wallet"/>
         <section className="mt-[5vh] ">
           <div className="flex justify-center ">
@@ -95,7 +95,7 @@ function TabContent() {
             <span className="font-semibold pb-4 text-lg">1. ZAP</span>
             <span className="font-thin pb-1">Zap PRISMA to yPRISMA</span>
             <div className="flex">
-              <input type="number" className="w-full p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
+              <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
               <Button>Zap</Button>
             </div>
             <span className="font-thin opacity-70 text-xs pl-3 pt-1">You have 0,00 PRISMA</span>
@@ -120,12 +120,29 @@ function TabContent() {
           </div>
         )}
         {tab === 'unstake' && (
-          <>
-          </>
+          <div className="flex flex-col">
+            <span className="font-thin pb-1">You have 420,00 yPRISMA</span>
+            <div className="flex">
+              <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
+              <Button>Unstake</Button>
+            </div>
+            <span className="font-semibold pt-16 pb-4 text-lg">DESCRIPTION</span>
+            <span className="font-thin opacity-70 w-[50%]">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+          </div>
         )}
         {tab === 'claim' && (
-          <>
-          </>
+          <div className="flex flex-col">
+            <span className="font-thin pb-1">You Earned 420.00  yvmkUSD-A</span>
+            <div className="flex">
+              <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
+            </div>
+            <div className="flex w-80 justify-between space-x-4 pt-8">
+              <Button smol>Claim All</Button>
+              <Button smol>Claim All and Exit</Button>
+            </div>
+            <span className="font-semibold pt-16 pb-4 text-lg">DESCRIPTION</span>
+            <span className="font-thin opacity-70 w-[50%]">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+          </div>
         )}
       </div>
     </div>
