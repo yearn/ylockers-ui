@@ -2,7 +2,7 @@
 
 ## Live URL
 
-- yPRISMA: ylockers-ui.vercel.app
+- yPRISMA: https://ylockers-ui.vercel.app
 
 ## About
 
