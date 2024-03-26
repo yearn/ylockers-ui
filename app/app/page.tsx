@@ -75,9 +75,9 @@ export default function Home() {
 function Input({ title, button, subtitle }) {
   return (
     <div className="flex flex-col">
-      <span className="font-thin pb-1 text-lg">{title}</span>
+      <span className="font-thin pb-1 text-md">{title}</span>
       <div className="flex">
-        <input type="number" className="p-2 bg-input-bg rounded-lg mr-2" placeholder="100" />
+        <input type="number" className="p-2 bg-input-bg rounded-lg mr-2 w-full" placeholder="100" />
         <Button>{button}</Button>
       </div>
       <span className="font-thin opacity-70 text-xs pl-3 pt-1">{subtitle}</span>
@@ -114,49 +114,44 @@ function TabContent() {
             <div className="flex flex-col space-y-6 w-1/2 p-6 pt-0 mt-6">
               <span className="font-semibold">AUTO COMPOUND YOUR yPRISMA</span>
               <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
-              <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
+              <Input title="Deposit" button="Approve" subtitle="You have 0,00 PRISMA" />
             </div>
           </div>
         )}
         {tab === 'unstake' && (
-          <div className="flex flex-col">
-            <span className="font-thin pb-1">You have 420,00 yPRISMA</span>
-            <div className="flex">
-              <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
-              <Button>Unstake</Button>
-            </div>
-            <span className="font-semibold pt-16 pb-4 text-lg">DESCRIPTION</span>
-            <span className="font-thin opacity-70 w-[50%]">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+          <div className="flex">
+          <div className="flex flex-col space-y-6 border-r-2 border-input-bg w-1/2 p-6 pt-0 mt-6 h-[500px]">
+            <span className="font-semibold">UNSTAKE yPRISMA - STOP EARN STABLES</span>
+            <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+            <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
+            <Input title="Unstake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
           </div>
+          <div className="flex flex-col space-y-6 w-1/2 p-6 pt-0 mt-6">
+            <span className="font-semibold">WITHDRAW FORM VAULT</span>
+            <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+            <Input title="Withdraw" button="Approve" subtitle="You have 0,00 PRISMA" />
+          </div>
+        </div>
         )}
         {tab === 'claim' && (
-          <div className="flex flex-col">
-            <span className="font-thin pb-1">You Earned 420.00  yvmkUSD-A</span>
-            <div className="flex">
-              <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
+          <div className="flex">
+            <div className="flex flex-col space-y-6 p-6 pt-0 mt-6 w-2/3">
+              <span className="font-semibold">Pick your rewards</span>
+              <Input title="Available Rewards" button="Claim" subtitle="" />
             </div>
-            <div className="flex w-80 justify-between space-x-4 pt-8">
-              <Button smol>Claim All</Button>
-              <Button smol>Claim All and Exit</Button>
-            </div>
-            <span className="font-semibold pt-16 pb-4 text-lg">DESCRIPTION</span>
-            <span className="font-thin opacity-70 w-[50%]">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
           </div>
         )}
         {tab === 'get' && (
-          <div className="flex flex-col">
-            <span className="font-semibold pb-4 text-lg">1. ZAP</span>
-            <span className="font-thin pb-1">Zap PRISMA to yPRISMA</span>
-            <div className="flex">
-              <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
-              <Button>Zap</Button>
+          <div className="flex">
+            <div className="flex flex-col space-y-6 p-6 pt-0 mt-6 w-2/3">
+              <span className="font-semibold">1. ZAP</span>
+              <Input title="Zap PRISMA to yPRISMA" button="Zap" subtitle="You have 0,00 PRISMA" />
+              <span className="font-semibold">2. CLAIM</span>
+              <span className="font-thin opacity-70">You can farm PRISMA in different gauges, bla bla bla</span>
+              <span>
+                <Button>Claim</Button>
+              </span>
             </div>
-            <span className="font-thin opacity-70 text-xs pl-3 pt-1">You have 0,00 PRISMA</span>
-            <span className="font-semibold pt-8 pb-4 text-lg">2. CLAIM</span>
-            <span className="font-thin opacity-70">You can farm PRISMA in different gauges, bla bla bla</span>
-            <span className="pt-4">
-              <Button>Claim</Button>
-            </span>
           </div>
         )}
       </div>
