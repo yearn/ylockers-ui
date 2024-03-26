@@ -23,3 +23,7 @@ npm run dev
 ## Deployment
 
 Push to `main` branch to deploy a new version of the live URL. Pull requests have independent preview links created when open.
+
+## Support
+
+- Reach https://discord.gg/yearn at #support channel if you have any issues using the live URL.
