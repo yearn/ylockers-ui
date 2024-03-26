@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Button from "../components/Button";
-import Header from "../components/Header";
+import Header, { headerItems } from "../components/Header";
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -11,11 +11,7 @@ export default function Home() {
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <Image className="absolute top-o left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
       <div className="w-[1200px] z-10">
-        <Header items={[
-          { text: 'Earn', link: '/' },
-          { text: 'About', link: '/about' },
-          { text: 'Expired farms', link: '/expired' },
-        ]} launchText="Connect Wallet"/>
+        <Header items={headerItems} launchText="Connect Wallet"/>
         <section className="mt-[5vh] ">
           <div className="flex justify-center ">
             <div className="bg-blue flex flex-col p-10 rounded-bl-lg rounded-tl-lg">
@@ -37,6 +33,10 @@ export default function Home() {
                 </div>
                 <div className="flex justify-between">
                   <span className="font-thin opacity-70	">Earned, yvmkUSD-A</span>
+                  <span className="font-bold">0,000000</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-thin opacity-70	">Deposited into Vault</span>
                   <span className="font-bold">0,000000</span>
                 </div>
               </div>
@@ -80,10 +80,10 @@ function TabContent() {
     <div className="flex flex-col">
       <Header
         items={[
-          { text: 'Get yPRISMA', link: '/app?tab=get' },
           { text: 'Stake', link: '/app?tab=stake' },
           { text: 'Unstake', link: '/app?tab=unstake' },
           { text: 'Claim Rewards', link: '/app?tab=claim' },
+          { text: 'Get yPRISMA', link: '/app?tab=get' },
         ]}
         launchApp={false}
         selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}

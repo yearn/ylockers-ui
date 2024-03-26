@@ -20,10 +20,16 @@ const Header = ({ items, selected="Earn", launchApp=true, launchText='Launch App
         </Link>
       ))}
     </div>
-    {launchApp && <Link href="/app?tab=get">
+    {launchApp && <Link href="/app?tab=stake">
       <Button style="transparent">{launchText}</Button>
     </Link>}
   </header>
 )
+
+export const headerItems = [
+  { text: 'Earn', link: '/' },
+  { text: 'About', link: '/about' },
+  { text: 'Expired farms', link: '/expired' },
+]
 
 export default Header

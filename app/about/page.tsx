@@ -1,17 +1,13 @@
 import Image from "next/image";
 import Button from "../components/Button";
-import Header from "../components/Header";
+import Header, { headerItems } from "../components/Header";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <Image className="absolute top-o left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
-      <Header items={[
-        { text: 'Earn', link: '/' },
-        { text: 'About', link: '/about' },
-        { text: 'Expired farms', link: '/expired' },
-      ]} selected="About"/>
+      <Header items={headerItems} selected="About"/>
       <section className="w-[1200px]">
         <div className="w-full">
           <div className="relative mx-auto mb-0 flex w-full flex-col bg-neutral-0">
