@@ -11,6 +11,7 @@ const config: Config = {
       'dark-black': '#000107',
       'dark-blue': '#000A3D',
       'white': '#FFFFFF',
+      'offwhite': '#F4F4F4',
       'blue': '#001170',
       'darker-blue': '#000B49',
       'soft-blue': '#555D8D',

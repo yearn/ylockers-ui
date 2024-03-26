@@ -72,6 +72,19 @@ export default function Home() {
   );
 }
 
+function Input({ title, button, subtitle }) {
+  return (
+    <div className="flex flex-col">
+      <span className="font-thin pb-1 text-lg">{title}</span>
+      <div className="flex">
+        <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
+        <Button>{button}</Button>
+      </div>
+      <span className="font-thin opacity-70 text-xs pl-3 pt-1">{subtitle}</span>
+    </div>
+  )
+}
+
 function TabContent() {
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
@@ -89,34 +102,13 @@ function TabContent() {
         selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
         className="pl-4"
       />
-      <div className="px-6">
-        {tab === 'get' && (
-          <div className="flex flex-col">
-            <span className="font-semibold pb-4 text-lg">1. ZAP</span>
-            <span className="font-thin pb-1">Zap PRISMA to yPRISMA</span>
-            <div className="flex">
-              <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
-              <Button>Zap</Button>
-            </div>
-            <span className="font-thin opacity-70 text-xs pl-3 pt-1">You have 0,00 PRISMA</span>
-            <span className="font-semibold pt-8 pb-4 text-lg">2. CLAIM</span>
-            <span className="font-thin opacity-70">You can farm PRISMA in different gauges, bla bla bla</span>
-            <span className="pt-4">
-              <Button>Claim</Button>
-            </span>
-          </div>
-        )}
+      <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (
-          <div className="flex flex-col">
-            <span className="font-thin pb-1">Stake yPRISMA</span>
-            <div className="flex">
-              <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
-              <Button>Stake</Button>
-            </div>
-            <span className="font-thin opacity-70 text-xs pl-3 pt-1">You have 0,00 PRISMA</span>
-            <span className="font-semibold pt-16 pb-4 text-lg">CHARGE YOUR YIELD</span>
-            <span className="font-thin opacity-70 w-[50%]">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
-            <Image alt="charge multiplier" className="pt-8" src="/charge.svg" width={370} height={136} />
+          <div className="flex flex-col space-y-6 border-r-2 border-input-bg w-1/2 p-6">
+            <span className="font-semibold text-lg">STAKE yPRISMA - EARN STABLES</span>
+            <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+            <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
+            <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
           </div>
         )}
         {tab === 'unstake' && (
@@ -142,6 +134,22 @@ function TabContent() {
             </div>
             <span className="font-semibold pt-16 pb-4 text-lg">DESCRIPTION</span>
             <span className="font-thin opacity-70 w-[50%]">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+          </div>
+        )}
+        {tab === 'get' && (
+          <div className="flex flex-col">
+            <span className="font-semibold pb-4 text-lg">1. ZAP</span>
+            <span className="font-thin pb-1">Zap PRISMA to yPRISMA</span>
+            <div className="flex">
+              <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
+              <Button>Zap</Button>
+            </div>
+            <span className="font-thin opacity-70 text-xs pl-3 pt-1">You have 0,00 PRISMA</span>
+            <span className="font-semibold pt-8 pb-4 text-lg">2. CLAIM</span>
+            <span className="font-thin opacity-70">You can farm PRISMA in different gauges, bla bla bla</span>
+            <span className="pt-4">
+              <Button>Claim</Button>
+            </span>
           </div>
         )}
       </div>
