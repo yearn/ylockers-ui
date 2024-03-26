@@ -10,7 +10,7 @@ export default function Home() {
       <Header items={[
         { text: 'Earn', link: '/' },
         { text: 'About', link: '/about' },
-        { text: 'Expired farms', link: '/' },
+        { text: 'Expired farms', link: '/expired' },
       ]} selected="Earn"/>
       <section className="w-[1200px] mt-[27vh]">
         <div className="w-full">
