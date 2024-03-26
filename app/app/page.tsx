@@ -77,7 +77,7 @@ function Input({ title, button, subtitle }) {
     <div className="flex flex-col">
       <span className="font-thin pb-1 text-lg">{title}</span>
       <div className="flex">
-        <input type="number" className="p-2 bg-input-bg rounded-lg w-80 mr-2" placeholder="100" />
+        <input type="number" className="p-2 bg-input-bg rounded-lg mr-2" placeholder="100" />
         <Button>{button}</Button>
       </div>
       <span className="font-thin opacity-70 text-xs pl-3 pt-1">{subtitle}</span>
@@ -104,11 +104,18 @@ function TabContent() {
       />
       <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (
-          <div className="flex flex-col space-y-6 border-r-2 border-input-bg w-1/2 p-6">
-            <span className="font-semibold text-lg">STAKE yPRISMA - EARN STABLES</span>
-            <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
-            <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
-            <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
+          <div className="flex">
+            <div className="flex flex-col space-y-6 border-r-2 border-input-bg w-1/2 p-6 pt-0 mt-6 h-[500px]">
+              <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>
+              <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+              <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
+              <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
+            </div>
+            <div className="flex flex-col space-y-6 w-1/2 p-6 pt-0 mt-6">
+              <span className="font-semibold">AUTO COMPOUND YOUR yPRISMA</span>
+              <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+              <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
+            </div>
           </div>
         )}
         {tab === 'unstake' && (
