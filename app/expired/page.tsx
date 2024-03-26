@@ -1,25 +1,21 @@
 import Image from "next/image";
 import Button from "../components/Button";
-import Header from "../components/Header";
+import Header, { headerItems } from "../components/Header";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <Image className="absolute top-o left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
-      <Header items={[
-        { text: 'Earn', link: '/' },
-        { text: 'About', link: '/about' },
-        { text: 'Expired farms', link: '/expired' },
-      ]} selected="Expired farms"/>
-      <section className="w-[1200px]">
+      <Header items={headerItems} selected="Expired farms"/>
+      <section className="xl:w-[1200px] px-8 xl:p-0">
         <div className="w-full">
           <div className="relative mx-auto mb-0 flex w-full flex-col bg-neutral-0">
             <div className="relative mx-auto mt-6 pb-40">
               <section className="grid-cols-12 gap-0 md:grid md:pt-12">
                 <div className="col-span-12 md:col-span-8 md:mb-0 md:pr-20">
                   <div className="mb-10 flex flex-col justify-center">
-                    <h1 className="mt-6 block font-black md:text-5xl">
+                    <h1 className="mt-6 block font-black text-5xl">
                         Expired Farms 
                     </h1>
                   </div>

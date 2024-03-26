@@ -12,10 +12,10 @@ type HeaderProps = {
 }
 
 const Header = ({ items, selected="Earn", launchApp=true, launchText='Launch App', className='' }: HeaderProps) => (
-  <header className={`flex justify-between items-center z-10 ${
-    launchApp ? 'w-[1200px] h-[72px] my-2' : 'my-[16px]'
+  <header className={`flex flex-wrap justify-between items-center z-10  space-y-2 ${
+    launchApp ? 'xl:w-[1200px] w-full px-4 xl:p-0 h-[72px]' : 'my-[16px]'
   } ${className}`}>
-    <div className="space-x-4">
+    <div className="space-x-4 py-4">
       {items.map((item:Item) => (
         <Link
           href={item.link}
