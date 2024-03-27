@@ -13,7 +13,7 @@ type HeaderProps = {
 
 const Header = ({ items, selected="Earn", launchApp=true, launchText='Launch App', className='' }: HeaderProps) => (
   <header className={`flex flex-wrap justify-between items-center z-10  space-y-2 ${
-    launchApp ? 'xl:w-[1200px] w-full px-4 xl:p-0 h-[72px]' : 'my-[16px]'
+    launchApp ? 'xl:w-[1200px] w-full px-4 xl:p-0 h-[72px]' : ''
   } ${className}`}>
     <div className="space-x-4 py-4">
       {items.map((item:Item) => (
@@ -25,7 +25,7 @@ const Header = ({ items, selected="Earn", launchApp=true, launchText='Launch App
               ? 'border-b-2 font-bold'
               : (launchApp
                 ? 'font-thin'
-                : '')} ${
+                : ' px-2')} ${
               (!launchApp && !(selected === item.text))
                 ? 'text-soft-blue'
                 : ''

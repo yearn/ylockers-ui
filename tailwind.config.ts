@@ -14,6 +14,7 @@ const config: Config = {
       'offwhite': '#F4F4F4',
       'blue': '#001170',
       'darker-blue': '#000B49',
+      'darker-blue-bg': '#1021835e',
       'soft-blue': '#555D8D',
       'input-bg': '#111B53',
       'light-blue': '#00A3FF',

@@ -39,7 +39,7 @@ export default function Home() {
                   </div>
                 </div>
               </section>
-              <div className="col-span-3 mt-6 items-center rounded-lg bg-darker-blue">
+              <div className="col-span-3 mt-6 items-center rounded-lg bg-darker-blue-bg">
                 <div className="mb-4 border-b p-4 md:p-6"><b className="text-2xl">
                   yPrisma deployment addresses
                 </b></div>
