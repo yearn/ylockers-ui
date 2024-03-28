@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from 'next/font/local'
 import "./globals.css";
+import '@rainbow-me/rainbowkit/styles.css';
+
 import Provider from './contexts/Provider';
 
 const sans = localFont({

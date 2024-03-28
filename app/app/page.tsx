@@ -5,14 +5,26 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Header, { headerItems } from "../components/Header";
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, use, useEffect } from 'react';
+import {   useConnectModal,
+  useAccountModal,
+  useChainModal, } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi'
+
+
 
 export default function Home() {
+  const { openConnectModal  } = useConnectModal();
+  const { openAccountModal } = useAccountModal();
+  const { openChainModal } = useChainModal();
+
+  const account = useAccount()
+
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <Image className="absolute top-o left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
       <div className="w-[1200px] z-10">
-        <Header items={headerItems} launchText="Connect Wallet"/>
+        <Header items={headerItems} launchText={account.address ? `${account.address.substring(0, 6)}...${account.address.substring(38)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-[5vh] ">
           <div className="flex justify-center ">
             <div className="bg-blue flex flex-col p-10 rounded-bl-lg rounded-tl-lg">
