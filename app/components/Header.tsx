@@ -8,10 +8,11 @@ type HeaderProps = {
   selected?: string,
   launchApp?: boolean,
   launchText?: string,
-  className?: string
+  className?: string,
+  onClickLaunch?: () => void
 }
 
-const Header = ({ items, selected="Earn", launchApp=true, launchText='Launch App', className='' }: HeaderProps) => (
+const Header = ({ items, selected="Earn", launchApp=true, launchText='Launch App', className='', onClickLaunch }: HeaderProps) => (
   <header className={`flex flex-wrap justify-between items-center z-10  space-y-2 ${
     launchApp ? 'xl:w-[1200px] w-full px-4 xl:p-0 h-[72px]' : ''
   } ${className}`}>
@@ -34,9 +35,11 @@ const Header = ({ items, selected="Earn", launchApp=true, launchText='Launch App
         </Link>
       ))}
     </div>
-    {launchApp && <Link href="/app?tab=stake">
+    {(launchApp && !onClickLaunch) ? <Link href="/app?tab=stake">
       <Button style="transparent">{launchText}</Button>
-    </Link>}
+    </Link> : onClickLaunch && <span>
+      <Button onClick={onClickLaunch} style="transparent">{launchText}</Button>
+    </span>}
   </header>
 )
 

@@ -89,6 +89,7 @@ function TabContent() {
         launchApp={false}
         selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
         className="pl-4"
+        onClickLaunch={() => {}}
       />
       <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (

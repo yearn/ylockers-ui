@@ -1,6 +1,35 @@
 import type { Metadata } from "next";
 import localFont from 'next/font/local'
 import "./globals.css";
+import '@rainbow-me/rainbowkit/styles.css';
+
+import {
+  getDefaultConfig,
+  RainbowKitProvider,
+} from '@rainbow-me/rainbowkit';
+import { WagmiProvider } from 'wagmi';
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+} from 'wagmi/chains';
+import {
+  QueryClientProvider,
+  QueryClient,
+} from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
+
+const config = getDefaultConfig({
+  appName: 'yPrisma',
+  projectId: '84801a4fb569adb34f184f543b6d1762',
+  chains: [mainnet, polygon, optimism, arbitrum, base],
+  ssr: true, // If your dApp uses server side rendering (SSR)
+});
+
 
 const sans = localFont({
   variable: '--font-aeonik-sans',
@@ -39,7 +68,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
-      <body>{children}</body>
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider>
+              <body>{children}</body>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
     </html>
   );
 }
