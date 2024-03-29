@@ -42,9 +42,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+      <body>
         <Provider>
-          <body>{children}</body>
+          {children}
         </Provider>
+      </body>
     </html>
   );
 }
