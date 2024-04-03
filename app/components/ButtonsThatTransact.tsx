@@ -4,6 +4,8 @@ import YearnBoostedStakerABI from '../abis/YearnBoostedStaker.json';
 import ERC20ABI from '../abis/ERC20.json';
 import ethers from 'ethers';
 
+// todo: update to latest wagmi way to do this
+
 // Approval function
 const ApproveYPRISMA = () => {
   const { data, write } = useContractWrite({
