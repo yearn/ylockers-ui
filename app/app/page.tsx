@@ -73,7 +73,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-between">
                   <span className="font-thin opacity-70	">Min/Max APR </span>
-                  <span className="font-bold">10% —> 75%</span>
+                  <span className="font-bold">10% {'—>'} 75%</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-thin opacity-70	">Average Boost Multiplier</span>
