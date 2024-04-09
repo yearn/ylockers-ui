@@ -23,6 +23,8 @@ const config: Config = {
       'disabled-text': '#9D9D9D',
       'charge-red': '#FF0F00',
       'charge-yellow': '#DBFF00',
+      'tab-inactive': 'rgba(255,255,255,0.2)',
+      'tab-inactive-inner': 'rgba(255,255,255,0.3)'
     },
     extend: {
       boxShadow: {

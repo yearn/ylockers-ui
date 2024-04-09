@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Header, { headerItems } from "../components/Header";
@@ -27,13 +28,21 @@ export default function Home() {
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} launchText={account.address ? `${account.address.substring(0, 6)}...${account.address.substring(38)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-[5vh] mx-4 lg:mx-0">
+          <div className="flex justify-center mb-8 space-x-8">
+            <Link href="/app?tab=stake"><div className={`bg-light-blue rounded-full w-[328px] px-2 py-2`}>
+              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full bg-lighter-blue p-1 px-4`}>137.91%</div></div>
+            </div></Link>
+            <Link href="/app?tab=deposit"><div className={`bg-tab-inactive rounded-full w-[328px] px-2 py-2`}>
+              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full bg-tab-inactive-inner p-1 px-4`}>137.91%</div></div>
+            </div></Link>
+          </div>
           <div className="flex flex-col lg:flex-row justify-center ">
-
             <div className="flex-1 bg-darker-blue lg:rounded-bl-lg lg:rounded-tl-lg">
               <Suspense fallback={<div>Loading...</div>}>
                 <TabContent />
               </Suspense>
             </div>
+
             <div className="lg:w-[408px] bg-blue flex flex-col p-10 lg:rounded-br-lg lg:rounded-tr-lg">
               <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
               <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">137.91%</span>
