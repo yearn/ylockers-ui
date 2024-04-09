@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <div className="w-full shadow-lg z-10"></div>
-      <Image className="absolute top-o left-[24%] w-[76%] opacity-20" src="/prisma.svg" width={200} height={200} alt="" />
+      <Image className="absolute left-[24%] w-[76%] opacity-20" src="/prisma.svg" width={200} height={200} alt="" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} launchText={account.address ? `${account.address.substring(0, 6)}...${account.address.substring(38)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-[5vh] mx-4 lg:mx-0">
@@ -93,6 +93,9 @@ function TabContent() {
 
   return (
     <div className="flex flex-col">
+      {tab === 'stake' && (
+        <h1 className="text-5xl p-8 font-[700]">Stake yPrisma </h1>
+      )}
       <Header
         items={[
           { text: 'Stake', link: '/app?tab=stake' },
@@ -102,40 +105,30 @@ function TabContent() {
         ]}
         launchApp={false}
         selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
-        className="pl-4"
+        className="pl-8"
         onClickLaunch={() => {}}
       />
       <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (
-          <div className="flex">
-            {/* <div className="flex flex-col space-y-6 border-r-2 border-input-bg w-1/2 p-6 pt-0 mt-6 h-[500px]"> */}
-            <div className="flex flex-col space-y-6 p-6 pt-0 mt-6 w-2/3">
+          <div className="flex flex-row space-y-6 border-r-2 border-input-bg w-full pt-0  h-[500px]"> 
+            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
+              <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
+            </div>
+            <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>
               <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
               <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
-              <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
             </div>
-            {/* <div className="flex flex-col space-y-6 w-1/2 p-6 pt-0 mt-6">
-              <span className="font-semibold">AUTO COMPOUND YOUR yPRISMA</span>
-              <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
-              <Input title="Deposit" button="Approve" subtitle="You have 0,00 PRISMA" />
-            </div> */}
           </div>
         )}
         {tab === 'unstake' && (
           <div className="flex">
-          {/* <div className="flex flex-col space-y-6 border-r-2 border-input-bg w-1/2 p-6 pt-0 mt-6 h-[500px]"> */}
           <div className="flex flex-col space-y-6 p-6 pt-0 mt-6 w-2/3">
             <span className="font-semibold">UNSTAKE yPRISMA - STOP EARN STABLES</span>
             <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
             <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
             <Input title="Unstake yPRISMA" button="Unstake" subtitle="You have 0,00 PRISMA" />
           </div>
-          {/* <div className="flex flex-col space-y-6 w-1/2 p-6 pt-0 mt-6">
-            <span className="font-semibold">WITHDRAW FORM VAULT</span>
-            <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
-            <Input title="Withdraw" button="Approve" subtitle="You have 0,00 PRISMA" />
-          </div> */}
         </div>
         )}
         {tab === 'claim' && (

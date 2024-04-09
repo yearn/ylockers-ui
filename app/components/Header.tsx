@@ -24,12 +24,12 @@ const Header = ({ items, selected="", launchApp=true, launchText='Launch App', c
         <Link
           href={item.link}
           key={item.text}
-          className={`mx-2 py-2 hover:border-b-2 ${launchApp ? '' : 'py-[18px]'} ${
+          className={` py-2 hover:border-b-2 ${launchApp ? 'px-2' : 'py-[18px]'} ${
             selected === item.text
-              ? 'border-b-2 font-bold px-2'
+              ? 'border-b-2 font-bold'
               : (launchApp
                 ? 'font-thin'
-                : 'px-2')} ${
+                : '')} ${
               (!launchApp && !(selected === item.text))
                 ? 'text-soft-blue'
                 : ''

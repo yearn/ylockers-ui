@@ -7,9 +7,9 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <div className="w-full shadow-lg z-10"></div>
-      <Image className="absolute top-o left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
+      <Image className="absolute left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
       <Header items={headerItems} selected="Expired farms"/>
-      <section className="xl:w-[1200px] px-8 xl:p-0">
+      <section className="xl:w-[1200px] px-8 xl:p-0 z-10">
         <div className="w-full">
           <div className="relative mx-auto mb-0 flex w-full flex-col bg-neutral-0">
             <div className="relative mx-auto mt-6 pb-40">
