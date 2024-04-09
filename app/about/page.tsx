@@ -6,6 +6,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
+      <div className="w-full shadow-lg z-10"></div>
       <Image className="absolute top-o left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
       <Header items={headerItems} selected="About"/>
       <section className="xl:w-[1200px] px-8 xl:p-0">

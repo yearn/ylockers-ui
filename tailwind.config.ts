@@ -25,6 +25,9 @@ const config: Config = {
       'charge-yellow': '#DBFF00',
     },
     extend: {
+      boxShadow: {
+        'lg': '0 -40px 80px 80px rgba(0,0,0,0.9)',
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

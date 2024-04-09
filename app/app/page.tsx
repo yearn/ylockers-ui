@@ -22,12 +22,19 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
-      <Image className="absolute top-o left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
+      <div className="w-full shadow-lg z-10"></div>
+      <Image className="absolute top-o left-[24%] w-[76%] opacity-20" src="/prisma.svg" width={200} height={200} alt="" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} launchText={account.address ? `${account.address.substring(0, 6)}...${account.address.substring(38)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-[5vh] mx-4 lg:mx-0">
           <div className="flex flex-col lg:flex-row justify-center ">
-            <div className="bg-blue flex flex-col p-10 lg:rounded-bl-lg lg:rounded-tl-lg">
+
+            <div className="flex-1 bg-darker-blue lg:rounded-bl-lg lg:rounded-tl-lg">
+              <Suspense fallback={<div>Loading...</div>}>
+                <TabContent />
+              </Suspense>
+            </div>
+            <div className="bg-blue flex flex-col p-10 lg:rounded-br-lg lg:rounded-tr-lg">
               <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
               <span className="text-light-blue text-6xl font-mono font-bold">137.91%</span>
               <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
@@ -72,11 +79,6 @@ export default function Home() {
                   <span className="font-bold">100%</span>
                 </div>
               </div>
-            </div>
-            <div className="flex-1 bg-darker-blue lg:rounded-br-lg lg:rounded-tr-lg">
-              <Suspense fallback={<div>Loading...</div>}>
-                <TabContent />
-              </Suspense>
             </div>
           </div>
         </section>
