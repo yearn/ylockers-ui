@@ -34,49 +34,45 @@ export default function Home() {
                 <TabContent />
               </Suspense>
             </div>
-            <div className="bg-blue flex flex-col p-10 lg:rounded-br-lg lg:rounded-tr-lg">
+            <div className="lg:w-[408px] bg-blue flex flex-col p-10 lg:rounded-br-lg lg:rounded-tr-lg">
               <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
-              <span className="text-light-blue text-6xl font-mono font-bold">137.91%</span>
+              <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">137.91%</span>
               <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                 <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
                 <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Your APR</span>
+                  <span className="font-thin opacity-70	">Staked Amount</span>
+                  <span className="font-bold">0,000000</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-thin opacity-70	">APR</span>
                   <span className="font-bold">137.91%</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Available to stake, yPRISMA</span>
-                  <span className="font-bold">0,000000</span>
+                  <span className="font-thin opacity-70	">Boost Multiplier</span>
+                  <span className="font-bold">2x</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Staked, yPRISMA</span>
-                  <span className="font-bold">0,000000</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Earned, yvmkUSD-A</span>
-                  <span className="font-bold">0,000000</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Deposited into Vault</span>
+                  <span className="font-thin opacity-70	">Claimable Rewards</span>
                   <span className="font-bold">0,000000</span>
                 </div>
               </div>
               <div className="flex flex-col space-y-2 pt-2">
-                <span className="font-semibold pb-4 text-lg">YEARN TOTAL GOVERNANCE POSITION</span>
+                <span className="font-semibold pb-4 text-lg">YEARN BOOSTED STAKER</span>
                 <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Price</span>
-                  <span className="font-bold">420.69</span>
+                  <span className="font-thin opacity-70	">Total Staked</span>
+                  <span className="font-bold">420884.69</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Prisma Ratio</span>
-                  <span className="font-bold">69.420</span>
+                  <span className="font-thin opacity-70	">Min/Max APR </span>
+                  <span className="font-bold">10% —> 75%</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">TVL</span>
-                  <span className="font-bold">42 m</span>
+                  <span className="font-thin opacity-70	">Average Boost Multiplier</span>
+                  <span className="font-bold">1.7x</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">vePRISMA</span>
-                  <span className="font-bold">100%</span>
+                  <span className="font-thin opacity-70	">Total Rewards Last Week</span>
+                  <span className="font-bold">$100k</span>
                 </div>
               </div>
             </div>
@@ -93,9 +89,13 @@ function TabContent() {
 
   return (
     <div className="flex flex-col">
-      {tab === 'stake' && (
-        <h1 className="text-5xl p-8 font-[700]">Stake yPrisma </h1>
-      )}
+      <h1 className="text-5xl p-8 font-[700]">
+        {tab === 'stake' && "Stake yPrisma"}
+        {tab === 'unstake' && "Unstake yPrisma"}
+        {tab === 'claim' && "Claim Rewards"}
+        {tab === 'get' && "Get yPrisma"}
+        
+      </h1>
       <Header
         items={[
           { text: 'Stake', link: '/app?tab=stake' },
@@ -110,7 +110,7 @@ function TabContent() {
       />
       <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (
-          <div className="flex flex-row space-y-6 border-r-2 border-input-bg w-full pt-0  h-[500px]"> 
+          <div className="flex flex-row space-y-6 w-full pt-0"> 
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
               <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
             </div>
@@ -122,26 +122,36 @@ function TabContent() {
           </div>
         )}
         {tab === 'unstake' && (
-          <div className="flex">
-          <div className="flex flex-col space-y-6 p-6 pt-0 mt-6 w-2/3">
-            <span className="font-semibold">UNSTAKE yPRISMA - STOP EARN STABLES</span>
-            <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
-            <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
-            <Input title="Unstake yPRISMA" button="Unstake" subtitle="You have 0,00 PRISMA" />
+          <div className="flex flex-row space-y-6 w-full pt-0"> 
+            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
+              <Input title="Unstake yPRISMA" button="Unstake" subtitle="You have 0,00 PRISMA" />
+            </div>
+            <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
+              <span className="font-semibold">UNSTAKE yPRISMA</span>
+              <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+              <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
+            </div>
           </div>
-        </div>
         )}
         {tab === 'claim' && (
-          <div className="flex">
-            <div className="flex flex-col space-y-6 p-6 pt-0 mt-6 w-2/3">
-              <span className="font-semibold">Pick your rewards</span>
-              <Input title="Available Rewards" button="Claim" subtitle="" />
+          <div className="flex flex-row space-y-6 w-full pt-0"> 
+            <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-1/2">
+            <span className="font-semibold">YOUR REWARD</span>
+            <span className="font-semibold text-5xl">$420.00</span>
+            <span className="font-thin opacity-70">419.00 yvmkUSD-A</span>
+            <div>
+              <Button>Claim All</Button>
+            </div>
+            </div>
+            <div className="flex flex-col space-y-4 w-1/2 p-8 pt-0 mt-6">
+              <span className="font-semibold">DESCRIPTION</span>
+              <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
             </div>
           </div>
         )}
         {tab === 'get' && (
           <div className="flex">
-            <div className="flex flex-col space-y-6 p-6 pt-0 mt-6 w-2/3">
+            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
               <span className="font-semibold">1. ZAP</span>
               <Input title="Zap PRISMA to yPRISMA" button="Zap" subtitle="You have 0,00 PRISMA" />
               <span className="font-semibold">2. CLAIM</span>
@@ -153,6 +163,18 @@ function TabContent() {
           </div>
         )}
       </div>
+      {tab === 'stake' && (
+        <span className="font-thin opacity-60 p-8 mt-[62px]">0x3A25A0a0c83c535f33ac74263e8D99CbF431E2C3</span>
+      )}
+      {tab === 'unstake' && (
+        <span className="font-thin opacity-60 p-8 mt-[62px]">0x3A25A0a0c83c535f33ac74263e8D99CbF431E2C3</span>
+      )}
+      {tab === 'claim' && (
+        <span className="font-thin opacity-60 p-8 mt-[145px]">0x3A25A0a0c83c535f33ac74263e8D99CbF431E2C3</span>
+      )}
+      {tab === 'get' && (
+        <span className="font-thin opacity-60 p-8 mt-[33px]">0x3A25A0a0c83c535f33ac74263e8D99CbF431E2C3</span>
+      )}
     </div>
   );
 }
