@@ -211,18 +211,6 @@ function TabContent(props: { leftActive: any; }) {
           </div>
         )}
       </div>
-      {tab === 'stake' && (
-        <span className="font-thin opacity-60 p-8 mt-[62px]">0x3A25A0a0c83c535f33ac74263e8D99CbF431E2C3</span>
-      )}
-      {tab === 'unstake' && (
-        <span className="font-thin opacity-60 p-8 mt-[62px]">0x3A25A0a0c83c535f33ac74263e8D99CbF431E2C3</span>
-      )}
-      {tab === 'claim' && (
-        <span className="font-thin opacity-60 p-8 mt-[145px]">0x3A25A0a0c83c535f33ac74263e8D99CbF431E2C3</span>
-      )}
-      {tab === 'get' && (
-        <span className="font-thin opacity-60 p-8 mt-[33px]">0x3A25A0a0c83c535f33ac74263e8D99CbF431E2C3</span>
-      )}
     </div>
   );
 }
