@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from 'next/font/local'
 import "./globals.css";
 import '@rainbow-me/rainbowkit/styles.css';
+import { Suspense } from 'react'
 
 import Provider from './contexts/Provider';
 
@@ -44,7 +45,9 @@ export default function RootLayout({
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <Provider>
-          {children}
+          <Suspense fallback={<div>Loading...</div>}>
+            {children}
+          </Suspense>
         </Provider>
       </body>
     </html>
