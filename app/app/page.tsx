@@ -98,7 +98,7 @@ export default function Home() {
   );
 }
 
-function TabContent(props) {
+function TabContent(props: { leftActive: any; }) {
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
 
