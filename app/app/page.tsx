@@ -18,8 +18,14 @@ export default function Home() {
   const { openConnectModal  } = useConnectModal();
   const { openAccountModal } = useAccountModal();
   const { openChainModal } = useChainModal();
+  
+  const searchParams = useSearchParams();
+  const tab = searchParams.get('tab');
 
   const account = useAccount()
+
+  const leftActive = (tab === "stake" || tab === "unstake" || tab === "claim" || tab === "get")
+  const rightActive = !leftActive
 
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
@@ -29,17 +35,17 @@ export default function Home() {
         <Header items={headerItems} launchText={account.address ? `${account.address.substring(0, 6)}...${account.address.substring(38)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-[5vh] mx-4 lg:mx-0">
           <div className="flex justify-center mb-8 space-x-8">
-            <Link href="/app?tab=stake"><div className={`bg-light-blue rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full bg-lighter-blue p-1 px-4`}>137.91%</div></div>
+            <Link href="/app?tab=stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
+              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>137.91%</div></div>
             </div></Link>
-            <Link href="/app?tab=deposit"><div className={`bg-tab-inactive rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full bg-tab-inactive-inner p-1 px-4`}>137.91%</div></div>
+            <Link href="/app?tab=deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
+              <div className="flex justify-between items-center text-lg pl-4">EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>137.91%</div></div>
             </div></Link>
           </div>
           <div className="flex flex-col lg:flex-row justify-center ">
             <div className="flex-1 bg-darker-blue lg:rounded-bl-lg lg:rounded-tl-lg">
               <Suspense fallback={<div>Loading...</div>}>
-                <TabContent />
+                <TabContent leftActive={leftActive} />
               </Suspense>
             </div>
 
@@ -92,7 +98,7 @@ export default function Home() {
   );
 }
 
-function TabContent() {
+function TabContent(props) {
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
 
@@ -103,20 +109,35 @@ function TabContent() {
         {tab === 'unstake' && "Unstake yPrisma"}
         {tab === 'claim' && "Claim Rewards"}
         {tab === 'get' && "Get yPrisma"}
+        {tab === 'deposit' && "Deposit yPrisma"}
+        {tab === 'withdraw' && "Withdraw yPrisma"}
         
       </h1>
-      <Header
-        items={[
-          { text: 'Stake', link: '/app?tab=stake' },
-          { text: 'Unstake', link: '/app?tab=unstake' },
-          { text: 'Claim Rewards', link: '/app?tab=claim' },
-          { text: 'Get yPRISMA', link: '/app?tab=get' },
-        ]}
-        launchApp={false}
-        selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
-        className="pl-8"
-        onClickLaunch={() => {}}
-      />
+      {props.leftActive ? (
+        <Header
+          items={[
+            { text: 'Stake', link: '/app?tab=stake' },
+            { text: 'Unstake', link: '/app?tab=unstake' },
+            { text: 'Claim Rewards', link: '/app?tab=claim' },
+            { text: 'Get yPRISMA', link: '/app?tab=get' },
+          ]}
+          launchApp={false}
+          selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
+          className="pl-8"
+          onClickLaunch={() => {}}
+        />
+      ) : (
+        <Header
+          items={[
+            { text: 'Deposit', link: '/app?tab=deposit' },
+            { text: 'Withdraw', link: '/app?tab=withdraw' },
+          ]}
+          launchApp={false}
+          selected={tab === 'deposit' ? 'Deposit' : tab === 'withdraw' ? 'Withdraw' : ''}
+          className="pl-8"
+          onClickLaunch={() => {}}
+        />
+      )}
       <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
@@ -168,6 +189,24 @@ function TabContent() {
               <span>
                 <Button>Claim</Button>
               </span>
+            </div>
+          </div>
+        )}
+        {tab === 'deposit' && (
+          <div className="flex">
+            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
+              <Input title="Deposit" button="Deposit" subtitle="You have 0,00 yPRISMA" />
+              <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
+              <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
+            </div>
+          </div>
+        )}
+        {tab === 'withdraw' && (
+          <div className="flex">
+            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
+              <Input title="Withdraw" button="Withdraw" subtitle="You have 0,00 yv-yPRISMA" />
+              <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
+              <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
             </div>
           </div>
         )}
