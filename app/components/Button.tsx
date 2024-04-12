@@ -1,6 +1,6 @@
 'use client'
 
-import React, { forwardRef, ButtonHTMLAttributes, useCallback } from 'react'
+import React, { forwardRef, ButtonHTMLAttributes } from 'react'
 
 type ButtonStyle = 'default' | 'transparent'
 
