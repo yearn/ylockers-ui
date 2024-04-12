@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/Button";
-import Input from "../components/Input";
+import InputBox from "../components/InputBox";
 import Header, { headerItems } from "../components/Header";
 import { useSearchParams } from 'next/navigation';
 import { Suspense, use, useEffect } from 'react';
@@ -169,7 +169,7 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'stake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
-              <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 yPRISMA" />
+              <InputBox title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>
@@ -181,7 +181,7 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'unstake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
-              <Input title="Unstake yPRISMA" button="Unstake" subtitle="You have 0,00 yPRISMA" />
+              <InputBox title="Unstake yPRISMA" button="Unstake" subtitle="You have 0,00 PRISMA" />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">UNSTAKE yPRISMA</span>
@@ -209,12 +209,12 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'get' && (
           <div className="flex">
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <span className="font-semibold">MINT</span>
+            <span className="font-semibold">MINT</span>
               <div className="flex flex-col">
                 <span className="font-thin opacity-70">Mint yPRISMA 1:1 using PRISMA</span>
                 <span className="font-thin opacity-70">Consult yPRISMA peg at <Link className="underline" target="_blank" href="https://www.prisma.lol/">prisma.lol</Link></span>
               </div>
-              <Input title="Mint yPRISMA from PRISMA" button="Mint" subtitle="You have 0,00 PRISMA" />
+              <InputBox title="Zap PRISMA to yPRISMA" button="Zap" subtitle="You have 0,00 PRISMA" />
               <span className="font-semibold">CLAIM</span>
               <span className="font-thin opacity-70">idk really what this claim is for if not rewards, is this the claim prisma rewards as yprisma??</span>
               <span>
@@ -226,7 +226,7 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'deposit' && (
           <div className="flex">
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <Input title="Deposit" button="Deposit" subtitle="You have 0,00 yPRISMA" />
+              <InputBox title="Deposit" button="Deposit" subtitle="You have 0,00 yPRISMA" />
               <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
               <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
             </div>
@@ -235,7 +235,7 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'withdraw' && (
           <div className="flex">
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <Input title="Withdraw" button="Withdraw" subtitle="You have 0,00 yv-yPRISMA" />
+              <InputBox title="Withdraw" button="Withdraw" subtitle="You have 0,00 yv-yPRISMA" />
               <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
               <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
             </div>

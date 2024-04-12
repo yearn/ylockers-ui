@@ -3,8 +3,7 @@
 import Button from './Button';
 import Image from "next/image";
 
-
-interface InputProps {
+interface Props {
   title: string;
   button?: string;
   subtitle: string;
@@ -14,7 +13,7 @@ interface InputProps {
   icon?: string;
 }
 
-export default function Input({ title, button, subtitle, noButton=false, value='', onChange=()=>{}, icon }: InputProps) {
+export default function InputBox({ title, button, subtitle, noButton=false, value='', onChange=()=>{}, icon }: Props) {
  return (
    <div className="flex flex-col">
      <span className="font-thin pb-1 text-md">{title}</span>

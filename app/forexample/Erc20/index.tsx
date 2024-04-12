@@ -1,7 +1,7 @@
 'use client'
 
 import { z } from 'zod'
-import { useConfig } from 'wagmi'
+import { useAccount, useConfig } from 'wagmi'
 import { erc20Abi, zeroAddress } from 'viem'
 import { zhexstring } from '@/lib/types'
 import Tokens from '@/app/components/Tokens'
