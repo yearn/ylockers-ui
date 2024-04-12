@@ -3,7 +3,7 @@ export function fPercent (amount: number, fixed?: number) {
   return `${(amount * 100).toFixed(fixed || 2)}%`
 }
 
-export function fEvmAddress(address: string) {
+export function fAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
 

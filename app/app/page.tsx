@@ -12,7 +12,7 @@ import {   useConnectModal,
   useChainModal, } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
 import { useState } from 'react';
-import { fEvmAddress } from "@/lib/format";
+import { fAddress } from "@/lib/format";
 
 
 
@@ -34,7 +34,7 @@ export default function Home() {
       <div className="w-full shadow-lg z-10"></div>
       <Image className="absolute left-[24%] w-[76%] opacity-20" src="/prisma.svg" width={200} height={200} alt="" />
       <div className="max-w-[1200px] w-full z-10">
-        <Header items={headerItems} launchText={account.address ? `${fEvmAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
+        <Header items={headerItems} launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-[5vh] mx-4 lg:mx-0">
           <div className="flex justify-center mb-8 space-x-8">
             <Link href="/app?tab=stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
@@ -304,7 +304,7 @@ const TableComponent = () => {
   return (
     <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
       <div className="p-8 w-1/2">
-        <Input
+        <InputBox
           // type="text"
           subtitle=""
           title="Search"

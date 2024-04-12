@@ -5,7 +5,7 @@ import { useAccount, useConfig } from 'wagmi'
 import { erc20Abi, zeroAddress } from 'viem'
 import { zhexstring } from '@/lib/types'
 import Tokens from '@/app/components/Tokens'
-import { fEvmAddress } from '@/lib/format'
+import { fAddress } from '@/lib/format'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { readContractQueryOptions, readContractsQueryOptions } from 'wagmi/query'
 import React from 'react'
@@ -49,7 +49,7 @@ export default function Erc20({ address, className }: { address: zhexstring, cla
   const { data: tokenInfo } = useTokenInfo(address)
 
   return <div className={className}>
-    <p>{fEvmAddress(address)}</p>
+    <p>{fAddress(address)}</p>
     <p>info ({tokenInfo?.symbol}) {tokenInfo?.name}</p>
     <p>supply <Tokens amount={tokenInfo?.totalSupply ?? 0n} decimals={tokenInfo?.decimals ?? 18} humanize={true} /></p>
     <p>burned <Tokens amount={burned ?? 0n} decimals={tokenInfo?.decimals ?? 18} humanize={true} /></p>

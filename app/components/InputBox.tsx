@@ -2,6 +2,7 @@
 
 import Button from './Button';
 import Image from "next/image";
+import Input from './Input';
 
 interface Props {
   title: string;
@@ -18,7 +19,7 @@ export default function InputBox({ title, button, subtitle, noButton=false, valu
    <div className="flex flex-col">
      <span className="font-thin pb-1 text-md">{title}</span>
      <div className="flex">
-       <input type="number" className="p-2 bg-input-bg rounded-lg mr-2 w-full" placeholder="100" value={value} onChange={onChange}/>
+       <Input type="number" className="p-2 bg-input-bg rounded-lg mr-2 w-full" placeholder="100" onChange={onChange} />
        {icon && <Image src="/search.svg" alt="search"/>}
        {!noButton && <Button>{button}</Button>}
      </div>

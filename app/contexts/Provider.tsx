@@ -7,15 +7,13 @@ import {
 import { WagmiProvider } from 'wagmi';
 import {
   mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
+  localhost
 } from 'wagmi/chains';
 import {
   QueryClientProvider,
   QueryClient,
 } from "@tanstack/react-query";
+import env from '@/lib/env';
 
 const queryClient = new QueryClient();
 
@@ -23,7 +21,7 @@ const queryClient = new QueryClient();
 const config = getDefaultConfig({
   appName: 'yPrisma',
   projectId: '84801a4fb569adb34f184f543b6d1762',
-  chains: [mainnet, polygon, optimism, arbitrum, base],
+  chains: env.DEV ? [localhost] : [mainnet],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
