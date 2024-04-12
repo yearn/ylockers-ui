@@ -34,7 +34,7 @@ export default function Home() {
                   </div>
                 </div>
               </section>
-              <div className="col-span-3 mt-6 items-center rounded-lg bg-darker-blue">
+              <div className="flex flex-col col-span-3 mt-6 rounded-lg bg-darker-blue">
                 <div className="mb-4 border-b p-4 md:p-6"><b className="text-2xl">
                   Expired Farms
                 </b></div>
