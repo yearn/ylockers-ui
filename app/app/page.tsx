@@ -13,6 +13,7 @@ import {   useConnectModal,
 import { useAccount } from 'wagmi'
 import { useState } from 'react';
 import { fAddress } from "@/lib/format";
+import { zeroAddress } from "viem";
 
 
 

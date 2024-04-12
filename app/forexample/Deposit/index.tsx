@@ -12,11 +12,11 @@ import env from '@/lib/env'
 import { fAddress } from '@/lib/format'
 
 const tokenInfoSchema = z.object({
-  symbol: z.string(),
-  name: z.string(),
-  decimals: z.number(),
-  balance: z.bigint(),
-  allowance: z.bigint()
+  symbol: z.string().default(''),
+  name: z.string().default(''),
+  decimals: z.number().default(0),
+  balance: z.bigint().default(0n),
+  allowance: z.bigint().default(0n)
 })
 
 function useTokenInfo(address: `0x${string}`) {
@@ -34,6 +34,11 @@ function useTokenInfo(address: `0x${string}`) {
     ]})
   )
 
+  if (multicall.error) {
+    console.warn(multicall.error)
+    return { ...multicall, data: tokenInfoSchema.parse({})}
+  }
+
   return { ...multicall, data: tokenInfoSchema.parse({
     symbol: multicall.data?.[0]?.result,
     name: multicall.data?.[1]?.result,
@@ -49,8 +54,10 @@ export default function Deposit() {
   const { data: bal } = useBalance({ address: account.address })
   const { data: tokenInfo } = useTokenInfo(env.YPRISMA)
 
+  if (!account.address) return <div>{'🤘 Connect your wallet'}</div>
+
   return <div className="p-4 border flex flex-col gap-4 border-purple-600">
-    <div>{`🤘 Deposit for (${account.chainId}) ${fAddress(account.address!)}`}</div>
+    <div>{`🤘 Deposit for (${account.chainId}) ${fAddress(account.address)}`}</div>
     <div className="flex items-center gap-2">
       <Input type="number" value={0.00} />
       <Button>{'Deposit'}</Button>
