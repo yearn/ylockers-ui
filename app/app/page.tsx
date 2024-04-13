@@ -11,6 +11,7 @@ import {   useConnectModal,
   useAccountModal,
   useChainModal, } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
+import { useState } from 'react';
 
 
 
@@ -92,6 +93,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          <TableComponent />
         </section>
       </div>
     </main>
@@ -214,3 +216,127 @@ function TabContent(props: { leftActive: any; }) {
     </div>
   );
 }
+
+const TableComponent = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [tableData, setTableData] = useState([
+    {
+      token: 'LP Yearn PRISMA Vault',
+      estApr: '98.30%',
+      histApr: '81.24%',
+      available: '0.00',
+      holdings: '7311.4762',
+      deposits: '1.224M',
+    },
+    {
+      token: 'LP Yearn PRISMA Vault',
+      estApr: '99.30%',
+      histApr: '80.24%',
+      available: '4.00',
+      holdings: '731.4762',
+      deposits: '11.24M',
+    },
+    {
+      token: 'LP Yearn PRISMA Vault',
+      estApr: '97.30%',
+      histApr: '82.24%',
+      available: '1.00',
+      holdings: '73.4762',
+      deposits: '1.214M',
+    },
+  ]);
+
+  const [sortColumn, setSortColumn] = useState('estApr');
+  const [sortDirection, setSortDirection] = useState('desc');
+
+  const handleSort = (column: any) => {
+    if (column === sortColumn) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedData = [...tableData].sort((a, b) => {
+    if (sortColumn) {
+      const valueA = a[sortColumn as keyof typeof a];
+      const valueB = b[sortColumn as keyof typeof b];
+      if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
+      if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const filteredData = sortedData.filter((item) =>
+    item.token.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="w-full rounded-lg mt-8 overflow-hidden bg-darker-blue text-white mb-8">
+      <div className="p-4">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full px-4 py-2 rounded-lg bg-darker-blue focus:outline-none"
+        />
+      </div>
+      <table className="w-full text-left">
+        <thead>
+          <tr className="">
+            <th
+              className="px-4 py-2 cursor-pointer"
+              onClick={() => handleSort('token')}
+            >
+              Token {sortColumn === 'token' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th
+              className="px-4 py-2 cursor-pointer"
+              onClick={() => handleSort('estApr')}
+            >
+              Est. APR {sortColumn === 'estApr' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th
+              className="px-4 py-2 cursor-pointer"
+              onClick={() => handleSort('histApr')}
+            >
+              Hist. APR {sortColumn === 'histApr' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th
+              className="px-4 py-2 cursor-pointer"
+              onClick={() => handleSort('available')}
+            >
+              Available {sortColumn === 'available' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th
+              className="px-4 py-2 cursor-pointer"
+              onClick={() => handleSort('holdings')}
+            >
+              Holdings {sortColumn === 'holdings' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+            <th
+              className="px-4 py-2 cursor-pointer"
+              onClick={() => handleSort('deposits')}
+            >
+              Deposits {sortColumn === 'deposits' && (sortDirection === 'asc' ? '▲' : '▼')}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredData.map((item, index) => (
+            <tr key={index} className="hover:bg-blue">
+              <td className="px-4 py-2">{item.token}</td>
+              <td className="px-4 py-2">{item.estApr}</td>
+              <td className="px-4 py-2">{item.histApr}</td>
+              <td className="px-4 py-2">{item.available}</td>
+              <td className="px-4 py-2">{item.holdings}</td>
+              <td className="px-4 py-2">{item.deposits}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
