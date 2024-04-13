@@ -23,4 +23,3 @@ export function fNumber(amount: number, options?: { fixed?: number, prefix?: str
   if (options?.prefix) return `${options.prefix} ${result}`
   return result
 }
-
