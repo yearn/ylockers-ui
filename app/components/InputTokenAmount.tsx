@@ -6,8 +6,8 @@ import Button from './Button'
 type Props = {
   decimals: number
 	amount: bigint
-  minAmount?: bigint
-	maxAmount?: bigint
+  min?: bigint
+	max?: bigint
 	placeholder?: string
 	disabled?: boolean
 	onChange?: (amount: bigint) => void
@@ -17,8 +17,8 @@ type Props = {
 export function InputTokenAmount({
   decimals,
 	amount,
-  minAmount,
-	maxAmount,
+  min,
+	max,
 	placeholder,
 	disabled,
 	onChange,
@@ -27,15 +27,15 @@ export function InputTokenAmount({
 
   const inputClassName = useMemo(() => {
     return `font-mono
-    ${maxAmount && !disabled ? 'pr-16' : ''}
+    ${max && !disabled ? 'pr-16' : ''}
     ${disabled ? 'disabled-text' : ''}`
-  }, [maxAmount, disabled])
+  }, [max, disabled])
 
   const maxButtonClassName = useMemo(() => {
     return `absolute right-2 h-6 px-2 
     flex items-center text-xs
-    ${!!onMaxClick && !!maxAmount && !disabled && maxAmount !== 0n ? '' : 'hidden pointer-events-none'}`
-  }, [onMaxClick, maxAmount, disabled])
+    ${!!onMaxClick && !!max && !disabled && max !== 0n ? '' : 'hidden pointer-events-none'}`
+  }, [onMaxClick, max, disabled])
 
   const humanize = useCallback((amount: bigint) => {
     return Number(formatUnits(amount, decimals))
@@ -51,8 +51,8 @@ export function InputTokenAmount({
       autoComplete="off"
       value={humanize(amount)}
       onChange={onChange ? (e): void => onChange(dehumanize(e.target.value)) : undefined}
-      min={minAmount ? humanize(minAmount) : 0}
-      max={maxAmount ? humanize(maxAmount) : undefined}
+      min={min ? humanize(min) : 0}
+      max={max ? humanize(max) : 0}
       step={1}
       placeholder={disabled ? '' : placeholder ?? '0'}
       disabled={disabled}

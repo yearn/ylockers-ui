@@ -6,6 +6,11 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    'bg-light-blue/60', 'border-light-blue',
+    'bg-charge-red/60', 'border-charge-red',
+    'bg-dark-black/60', 'border-transparent'
+  ],
   theme: {
     extend: {
       colors: {

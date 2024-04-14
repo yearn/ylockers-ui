@@ -1,13 +1,14 @@
 import { z } from 'zod'
-import React, { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
-import { useAccount, useConfig, useSimulateContract, useWriteContract } from 'wagmi'
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useAccount, useConfig, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import env from '@/lib/env'
 import { erc20Abi, zeroAddress } from 'viem'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { readContractsQueryOptions } from 'wagmi/query'
 import { zhexstringSchema } from '@/lib/types'
+import abis from '@/app/abis'
 
-const tokenSchema = z.object({
+const TokenSchema = z.object({
   address: zhexstringSchema.default(zeroAddress),
   symbol: z.string().default(''),
   name: z.string().default(''),
@@ -25,18 +26,17 @@ function useToken(address: `0x${string}`) {
       { address, abi: erc20Abi, functionName: 'name' },
       { address, abi: erc20Abi, functionName: 'decimals' },
       { address, abi: erc20Abi, functionName: 'balanceOf', args: [account.address!] },
-      { address, abi: erc20Abi, functionName: 'allowance', args: [account.address!, env.YPRISMA_BOOSTED_STAKER]},
-      { address: env.PRISMA, abi: erc20Abi, functionName: 'balanceOf', args: [account.address!] },
-      { address: env.YPRISMA_BOOSTED_STAKER, abi: erc20Abi, functionName: 'balanceOf', args: [account.address!] }
+      { address, abi: erc20Abi, functionName: 'allowance', args: [account.address!, env.YPRISMA_BOOSTED_STAKER]}
     ]})
   )
 
   if (multicall.error) {
     console.warn(multicall.error)
-    return { address, ...multicall, data: tokenSchema.parse({})}
+    return { ...multicall, data: TokenSchema.parse({}) }
   }
 
-  return { address, ...multicall, data: tokenSchema.parse({
+  return { ...multicall, data: TokenSchema.parse({
+    address,
     symbol: multicall.data?.[0]?.result,
     name: multicall.data?.[1]?.result,
     decimals: multicall.data?.[2]?.result,
@@ -46,7 +46,7 @@ function useToken(address: `0x${string}`) {
 }
 
 export const steps = [
-  'Input', 'Approve', 'Confirm', 'Done'
+  'Input', 'Approve', 'Execute', 'Done'
 ] as const
 
 export const StepSchema = z.enum(steps)
@@ -70,7 +70,12 @@ const contractStatuses = [
 ] as const
 export const ContractStatusSchema = z.enum(contractStatuses)
 
-const ContractInterfaceSchema = z.object({
+const contractReceiptStatuses = [
+  'error', 'pending', 'success'
+] as const
+export const ContractReceiptStatusSchema = z.enum(contractReceiptStatuses)
+
+const ContractClientSchema = z.object({
   status: ContractStatusSchema.default('idle'),
   write: z.function().default(() => {}),
   disabled: z.boolean().default(true),
@@ -86,6 +91,13 @@ const ContractInterfaceSchema = z.object({
     isSuccess: z.boolean().default(false),
     isError: z.boolean().default(false),
     error: z.string().nullish(),
+  }).default({}),
+  receipt: z.object({
+    status: ContractReceiptStatusSchema.default('pending'),
+    isPending: z.boolean().default(true),
+    isSuccess: z.boolean().default(false),
+    isError: z.boolean().default(false),
+    error: z.string().nullish(),
   }).default({})
 })
 
@@ -93,10 +105,14 @@ const ContextSchema = z.object({
   step: StepSchema.default(StepSchema.Enum.Input),
   setStep: setStepSchema.default(() => {}),
   stepForward: z.function().default(() => {}),
-  token: tokenSchema.default(tokenSchema.parse({})),
+  firstStep: z.boolean().default(true),
+  lastStep: z.boolean().default(false),
+  token: TokenSchema.default(TokenSchema.parse({})),
   amount: z.bigint().default(0n),
   setAmount: setAmountSchema.default(() => {}),
-  approve: ContractInterfaceSchema.default({}),
+  approve: ContractClientSchema.default({}),
+  execute: ContractClientSchema.default({}),
+  reset: z.function().default(() => {})
 })
 
 type Context = z.infer<typeof ContextSchema>
@@ -105,26 +121,69 @@ export const context = createContext<Context>(ContextSchema.parse({
   setStep: () => {},
   stepForward: () => {},
   setAmount: () => {},
-  approve: { write: () => {} }
+  approve: { write: () => {} },
+  execute: { write: () => {} },
+  reset: () => {}
 }))
 
 export const useProvider = () => useContext(context)
 
 export default function Provider({children}: {children: ReactNode}) {
 	const [step, setStep] = useState<Step>(StepSchema.Enum.Input)
-  const { data: token } = useToken(env.YPRISMA)
+  const firstStep = useMemo(() => steps.indexOf(step) === 0, [step])
+  const lastStep = useMemo(() => steps.indexOf(step) === steps.length - 1, [step])
+  const { data: token, isSuccess: isTokenSuccess, refetch: refetchToken } = useToken(env.YPRISMA)
   const [amount, setAmount] = useState(0n)
 
   const stepForward = useCallback(() => {
     setStep(step => {
       const current = steps.indexOf(step)
       const next = (current + 1) % steps.length
+      if (steps[next] === 'Approve' && token.allowance >= amount) {
+        return steps[next + 1]
+      }
       return steps[next]
     })
-  }, [setStep])
+  }, [setStep, token, amount])
+
+  const simulateExecute = useSimulateContract({
+    address: env.YPRISMA_BOOSTED_STAKER,
+    abi: abis.YearnBoostedStaker,
+    functionName: 'deposit',
+    args: [amount],
+    query: { enabled: amount > 0n && token.allowance >= amount }
+  })
+
+  const _execute = useWriteContract()
+  const _executeReceipt = useWaitForTransactionReceipt({ hash: _execute.data })
+  const execute = useMemo(() => ({
+    write: () => _execute.writeContract(simulateExecute.data!.request),
+    disabled: !Boolean(simulateExecute.data?.request),
+    status: _execute.status,
+    isIdle: _execute.isIdle,
+    isPending: _execute.isPending,
+    isSuccess: _execute.isSuccess,
+    isError: _execute.isError,
+    error: _execute.error?.toString(),
+    simulation: {
+      status: simulateExecute.status,
+      disabled: !(amount > 0n && token.allowance >= amount),
+      isPending: simulateExecute.isPending,
+      isSuccess: simulateExecute.isSuccess,
+      isError: simulateExecute.isError,
+      error: simulateExecute.error?.toString()
+    },
+    receipt: {
+      status: _executeReceipt.status,
+      isPending: _executeReceipt.isPending,
+      isSuccess: _executeReceipt.isSuccess,
+      isError: _executeReceipt.isError,
+      error: _executeReceipt.error?.toString()
+    }
+  }), [_execute, _executeReceipt, simulateExecute, amount])
 
   const simulateApprove = useSimulateContract({
-    address: token.address,
+    address: isTokenSuccess ? token.address : zeroAddress,
     abi: erc20Abi,
     functionName: 'approve',
     args: [env.YPRISMA_BOOSTED_STAKER, amount],
@@ -132,6 +191,7 @@ export default function Provider({children}: {children: ReactNode}) {
   })
 
   const _approve = useWriteContract()
+  const _approveReceipt = useWaitForTransactionReceipt({ hash: _approve.data })
   const approve = useMemo(() => ({
     write: () => _approve.writeContract(simulateApprove.data!.request),
     disabled: !Boolean(simulateApprove.data?.request),
@@ -148,17 +208,40 @@ export default function Provider({children}: {children: ReactNode}) {
       isSuccess: simulateApprove.isSuccess,
       isError: simulateApprove.isError,
       error: simulateApprove.error?.toString()
+    },
+    receipt: {
+      status: _approveReceipt.status,
+      isPending: _approveReceipt.isPending,
+      isSuccess: _approveReceipt.isSuccess,
+      isError: _approveReceipt.isError,
+      error: _approveReceipt.error?.toString()
     }
-  }), [amount, _approve, simulateApprove])
+  }), [_approve, _approveReceipt, simulateApprove, amount])
+
+  useEffect(() => {
+    if(_approveReceipt.isSuccess || _executeReceipt.isSuccess) refetchToken()
+  }, [_approveReceipt, _executeReceipt])
+
+  const reset = useCallback(() => {
+    setStep(steps[0])
+    setAmount(0n)
+    _approve.reset()
+    _execute.reset()
+    refetchToken()
+  }, [setStep, setAmount, _approve, _execute, refetchToken])
 
   return <context.Provider value={{ 
     step, 
     setStep, 
     stepForward,
+    firstStep,
+    lastStep,
     token,
     amount,
     setAmount,
-    approve
+    approve,
+    execute,
+    reset
     }}>
 		{children}
 	</context.Provider>

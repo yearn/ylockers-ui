@@ -1,3 +1,4 @@
+import { formatUnits } from "viem"
 
 export function fPercent (amount: number, fixed?: number) {
   return `${(amount * 100).toFixed(fixed || 2)}%`
@@ -9,6 +10,14 @@ export function fAddress(address: `0x${string}`) {
 
 export function fUSD(amount: number, options?: { fixed?: number }) {
   return fNumber(amount, { ...options, prefix: 'USD' })
+}
+
+export function fTokens(amount: bigint, decimals: number, options?: { accuracy?: number, padStart?: number }) {
+  const { accuracy, padStart } = options || {}
+  const units = formatUnits(amount, decimals)
+  const separator = Intl.NumberFormat().format(1.1).charAt(1)
+  const [ whole, fraction ] = units.split(separator)
+  return `${whole.padStart(padStart || 0, '0')}.${(fraction || '0'.repeat(accuracy || 2)).slice(0, accuracy || 2)}`
 }
 
 export function fNumber(amount: number, options?: { fixed?: number, prefix?: string }) {
