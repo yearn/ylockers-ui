@@ -147,11 +147,11 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'stake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
-              <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
+              <Input title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 yPRISMA" />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>
-              <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+              <span className="font-thin opacity-70">Stake yPRISMA and earn mkUSD using the new Yearn Boosted Staker formula: your reward boost grows as the weeks passes after your deposit</span>
               <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
             </div>
           </div>
@@ -159,11 +159,11 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'unstake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
-              <Input title="Unstake yPRISMA" button="Unstake" subtitle="You have 0,00 PRISMA" />
+              <Input title="Unstake yPRISMA" button="Unstake" subtitle="You have 0,00 yPRISMA" />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">UNSTAKE yPRISMA</span>
-              <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+              <span className="font-thin opacity-70">Unstake yPRISMA and stop receiving mkUSD boosted rewards. Remaining staked funds continue with their current boost.</span>
               <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
             </div>
           </div>
@@ -180,17 +180,21 @@ function TabContent(props: { leftActive: any; }) {
             </div>
             <div className="flex flex-col space-y-4 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">DESCRIPTION</span>
-              <span className="font-thin opacity-70">Draper please write copy here. Draper please write copy here. Draper please write copy here. Draper please write copy here. </span>
+              <span className="font-thin opacity-70">Claim your boosted staking rewards as mkUSD. Claiming does not alter boost.</span>
             </div>
           </div>
         )}
         {tab === 'get' && (
           <div className="flex">
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <span className="font-semibold">1. ZAP</span>
-              <Input title="Zap PRISMA to yPRISMA" button="Zap" subtitle="You have 0,00 PRISMA" />
-              <span className="font-semibold">2. CLAIM</span>
-              <span className="font-thin opacity-70">You can farm PRISMA in different gauges, bla bla bla</span>
+              <span className="font-semibold">MINT</span>
+              <div className="flex flex-col">
+                <span className="font-thin opacity-70">Mint yPRISMA 1:1 using PRISMA</span>
+                <span className="font-thin opacity-70">Consult yPRISMA peg at <Link className="underline" target="_blank" href="https://www.prisma.lol/">prisma.lol</Link></span>
+              </div>
+              <Input title="Mint yPRISMA from PRISMA" button="Mint" subtitle="You have 0,00 PRISMA" />
+              <span className="font-semibold">CLAIM</span>
+              <span className="font-thin opacity-70">idk really what this claim is for if not rewards, is this the claim prisma rewards as yprisma??</span>
               <span>
                 <Button>Claim</Button>
               </span>
@@ -280,6 +284,7 @@ const TableComponent = () => {
       <div className="p-4">
         <Input
           // type="text"
+          subtitle=""
           title="Search"
           value={searchTerm}
           onChange={(e:any) => setSearchTerm(e.target.value)}

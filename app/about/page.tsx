@@ -29,12 +29,12 @@ export default function Home() {
                   <div className="mb-8 border-white-200 py-2 text-white-700 md:border-l-4 border-blue md:pl-6">
                     <div>
                       <h3 className="text-xl font-bold">
-                        Why would I claim my PRISMA as yPRISMA?
+                        What is yPRISMA?
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
-                        <p>Good question anon. The Prisma airdrop comes as a locked position that cannot be transferred until the lock (of up to 1 year) expires.</p>
-                        <p>{`By claiming your airdrop using this page, you'll lock your full Prisma airdrop to Yearn in exchange for yPrisma which is (and will always be) transferrable and liquid.`}</p>
-                        <p>yPrisma holders also receieve their share of Prisma protocol rewards. Noice.</p>
+                        <p>
+                          yPRISMA is Yearn's latest liquid locker, built for Prisma Finance's governance token. It represents 1 vePRISMA max-locked to Yearn. It is not redeemable for the underlying locked PRISMA. It has no transfer restrictions and can always be swapped in DEX pools.
+                        </p>
                       </div>
                     </div>
                   </div>

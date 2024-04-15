@@ -4,7 +4,7 @@ import Button from './Button';
 
 interface InputProps {
   title: string;
-  button: string;
+  button?: string;
   subtitle: string;
   value?: string;
   onChange?: (e:any) => void;
