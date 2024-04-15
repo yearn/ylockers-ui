@@ -93,6 +93,9 @@ export default function Home() {
               </div>
             </div>
           </div>
+          <h1 className="text-4xl p-8 mt-4 font-[700] w-full flex justify-center">
+            Prisma Vaults
+          </h1>
           <TableComponent />
         </section>
       </div>
@@ -273,14 +276,15 @@ const TableComponent = () => {
   );
 
   return (
-    <div className="w-full rounded-lg mt-8 overflow-hidden bg-darker-blue text-white mb-8">
+    <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
       <div className="p-4">
-        <input
-          type="text"
-          placeholder="Search..."
+        <Input
+          // type="text"
+          title="Search"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg bg-darker-blue focus:outline-none"
+          onChange={(e:any) => setSearchTerm(e.target.value)}
+          // className="w-1/2 px-4 py-2 rounded-lg bg-darker-blue focus:outline-none"
+          noButton
         />
       </div>
       <table className="w-full text-left">
