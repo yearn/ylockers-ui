@@ -281,71 +281,72 @@ const TableComponent = () => {
 
   return (
     <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
-      <div className="p-4">
+      <div className="p-8 w-1/2">
         <Input
           // type="text"
           subtitle=""
           title="Search"
           value={searchTerm}
           onChange={(e:any) => setSearchTerm(e.target.value)}
-          // className="w-1/2 px-4 py-2 rounded-lg bg-darker-blue focus:outline-none"
           noButton
         />
       </div>
-      <table className="w-full text-left">
-        <thead>
-          <tr className="">
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort('token')}
-            >
-              Token {sortColumn === 'token' && (sortDirection === 'asc' ? '▲' : '▼')}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort('estApr')}
-            >
-              Est. APR {sortColumn === 'estApr' && (sortDirection === 'asc' ? '▲' : '▼')}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort('histApr')}
-            >
-              Hist. APR {sortColumn === 'histApr' && (sortDirection === 'asc' ? '▲' : '▼')}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort('available')}
-            >
-              Available {sortColumn === 'available' && (sortDirection === 'asc' ? '▲' : '▼')}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort('holdings')}
-            >
-              Holdings {sortColumn === 'holdings' && (sortDirection === 'asc' ? '▲' : '▼')}
-            </th>
-            <th
-              className="px-4 py-2 cursor-pointer"
-              onClick={() => handleSort('deposits')}
-            >
-              Deposits {sortColumn === 'deposits' && (sortDirection === 'asc' ? '▲' : '▼')}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((item, index) => (
-            <tr key={index} className="hover:bg-blue">
-              <td className="px-4 py-2">{item.token}</td>
-              <td className="px-4 py-2">{item.estApr}</td>
-              <td className="px-4 py-2">{item.histApr}</td>
-              <td className="px-4 py-2">{item.available}</td>
-              <td className="px-4 py-2">{item.holdings}</td>
-              <td className="px-4 py-2">{item.deposits}</td>
+      <div className="pb-8">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="">
+              <th
+                className="text-xs font-thin py-2 hover:underline cursor-pointer pl-8"
+                onClick={() => handleSort('token')}
+              >
+                Token {sortColumn === 'token' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th
+                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                onClick={() => handleSort('estApr')}
+              >
+                Est. APR {sortColumn === 'estApr' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th
+                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                onClick={() => handleSort('histApr')}
+              >
+                Hist. APR {sortColumn === 'histApr' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th
+                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                onClick={() => handleSort('available')}
+              >
+                Available {sortColumn === 'available' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th
+                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                onClick={() => handleSort('holdings')}
+              >
+                Holdings {sortColumn === 'holdings' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th
+                className="text-xs font-thin hover:underline py-2 cursor-pointer pr-8"
+                onClick={() => handleSort('deposits')}
+              >
+                Deposits {sortColumn === 'deposits' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredData.map((item, index) => (
+              <tr key={index} className="hover:bg-blue">
+                <td className="text-lg py-4 cursor-pointer pl-8">{item.token}</td>
+                <td className="text-lg font-mono py-4 cursor-pointer">{item.estApr}</td>
+                <td className="text-lg font-mono py-4 cursor-pointer">{item.histApr}</td>
+                <td className="text-lg font-mono py-4 cursor-pointer">{item.available}</td>
+                <td className="text-lg font-mono py-4 cursor-pointer">{item.holdings}</td>
+                <td className="text-lg font-mono py-4 cursor-pointer pr-8">{item.deposits}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
