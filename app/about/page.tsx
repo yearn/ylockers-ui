@@ -33,7 +33,7 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          yPRISMA is Yearn's latest liquid locker, built for Prisma Finance's governance token. It represents 1 vePRISMA max-locked to Yearn. It is not redeemable for the underlying locked PRISMA. It has no transfer restrictions and can always be swapped in DEX pools.
+                          {`yPRISMA is Yearn's latest liquid locker, built for Prisma Finance's governance token. It represents 1 vePRISMA max-locked to Yearn. It is not redeemable for the underlying locked PRISMA. It has no transfer restrictions and can always be swapped in DEX pools.`}
                         </p>
                       </div>
                     </div>
