@@ -20,8 +20,9 @@ export default function Indeterminate({
       key={run ? 'run' : 'idle'}
       animate={{ width: `${run ? sweep.to : sweep.from}%` }}
       transition={{
-        duration: 30,
-        ease: 'easeOut'
+        duration: 60,
+        ease: 'easeOut',
+        delay: 2,
       }}
       style={{ width: `${sweep.from}%` }}
       className={`absolute z-0 inset-0

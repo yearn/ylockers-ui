@@ -78,6 +78,7 @@ export const ContractReceiptStatusSchema = z.enum(contractReceiptStatuses)
 const ContractClientSchema = z.object({
   status: ContractStatusSchema.default('idle'),
   write: z.function().default(() => {}),
+  hash: zhexstringSchema.optional(),
   disabled: z.boolean().default(true),
   isIdle: z.boolean().default(true),
   isPending: z.boolean().default(false),
@@ -146,42 +147,6 @@ export default function Provider({children}: {children: ReactNode}) {
     })
   }, [setStep, token, amount])
 
-  const simulateExecute = useSimulateContract({
-    address: env.YPRISMA_BOOSTED_STAKER,
-    abi: abis.YearnBoostedStaker,
-    functionName: 'deposit',
-    args: [amount],
-    query: { enabled: amount > 0n && token.allowance >= amount }
-  })
-
-  const _execute = useWriteContract()
-  const _executeReceipt = useWaitForTransactionReceipt({ hash: _execute.data })
-  const execute = useMemo(() => ({
-    write: () => _execute.writeContract(simulateExecute.data!.request),
-    disabled: !Boolean(simulateExecute.data?.request),
-    status: _execute.status,
-    isIdle: _execute.isIdle,
-    isPending: _execute.isPending,
-    isSuccess: _execute.isSuccess,
-    isError: _execute.isError,
-    error: _execute.error?.toString(),
-    simulation: {
-      status: simulateExecute.status,
-      disabled: !(amount > 0n && token.allowance >= amount),
-      isPending: simulateExecute.isPending,
-      isSuccess: simulateExecute.isSuccess,
-      isError: simulateExecute.isError,
-      error: simulateExecute.error?.toString()
-    },
-    receipt: {
-      status: _executeReceipt.status,
-      isPending: _executeReceipt.isPending,
-      isSuccess: _executeReceipt.isSuccess,
-      isError: _executeReceipt.isError,
-      error: _executeReceipt.error?.toString()
-    }
-  }), [_execute, _executeReceipt, simulateExecute, amount])
-
   const simulateApprove = useSimulateContract({
     address: isTokenSuccess ? token.address : zeroAddress,
     abi: erc20Abi,
@@ -194,6 +159,7 @@ export default function Provider({children}: {children: ReactNode}) {
   const _approveReceipt = useWaitForTransactionReceipt({ hash: _approve.data })
   const approve = useMemo(() => ({
     write: () => _approve.writeContract(simulateApprove.data!.request),
+    hash: _approve.data,
     disabled: !Boolean(simulateApprove.data?.request),
     status: _approve.status,
     isIdle: _approve.isIdle,
@@ -217,6 +183,43 @@ export default function Provider({children}: {children: ReactNode}) {
       error: _approveReceipt.error?.toString()
     }
   }), [_approve, _approveReceipt, simulateApprove, amount])
+
+  const simulateExecute = useSimulateContract({
+    address: env.YPRISMA_BOOSTED_STAKER,
+    abi: abis.YearnBoostedStaker,
+    functionName: 'deposit',
+    args: [amount],
+    query: { enabled: amount > 0n && token.allowance >= amount }
+  })
+
+  const _execute = useWriteContract()
+  const _executeReceipt = useWaitForTransactionReceipt({ hash: _execute.data })
+  const execute = useMemo(() => ({
+    write: () => _execute.writeContract(simulateExecute.data!.request),
+    hash: _execute.data,
+    disabled: !Boolean(simulateExecute.data?.request),
+    status: _execute.status,
+    isIdle: _execute.isIdle,
+    isPending: _execute.isPending,
+    isSuccess: _execute.isSuccess,
+    isError: _execute.isError,
+    error: _execute.error?.toString(),
+    simulation: {
+      status: simulateExecute.status,
+      disabled: !(amount > 0n && token.allowance >= amount),
+      isPending: simulateExecute.isPending,
+      isSuccess: simulateExecute.isSuccess,
+      isError: simulateExecute.isError,
+      error: simulateExecute.error?.toString()
+    },
+    receipt: {
+      status: _executeReceipt.status,
+      isPending: _executeReceipt.isPending,
+      isSuccess: _executeReceipt.isSuccess,
+      isError: _executeReceipt.isError,
+      error: _executeReceipt.error?.toString()
+    }
+  }), [_execute, _executeReceipt, simulateExecute, amount])
 
   useEffect(() => {
     if(_approveReceipt.isSuccess || _executeReceipt.isSuccess) refetchToken()
