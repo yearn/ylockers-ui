@@ -291,7 +291,7 @@ const TableComponent = () => {
           noButton
         />
       </div>
-      <div className="pb-8">
+      <div className="pb-4">
         <table className="w-full text-left">
           <thead>
             <tr className="">
