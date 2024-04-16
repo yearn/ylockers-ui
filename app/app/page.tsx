@@ -51,46 +51,67 @@ export default function Home() {
             </div>
 
             <div className="lg:w-[408px] bg-blue flex flex-col p-10 lg:rounded-br-lg lg:rounded-tr-lg">
-              <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
-              <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">137.91%</span>
-              <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
-                <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Staked Amount</span>
-                  <span className="font-bold">0,000000</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">APR</span>
-                  <span className="font-bold">137.91%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Boost Multiplier</span>
-                  <span className="font-bold">2x</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Claimable Rewards</span>
-                  <span className="font-bold">0,000000</span>
-                </div>
-              </div>
-              <div className="flex flex-col space-y-2 pt-2">
-                <span className="font-semibold pb-4 text-lg">YEARN BOOSTED STAKER</span>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Total Staked</span>
-                  <span className="font-bold">420884.69</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Min/Max APR </span>
-                  <span className="font-bold">10% {'—>'} 75%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Average Boost Multiplier</span>
-                  <span className="font-bold">1.7x</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-thin opacity-70	">Total Rewards Last Week</span>
-                  <span className="font-bold">$100k</span>
-                </div>
-              </div>
+              {leftActive ? (
+                <>
+                  <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
+                  <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">137.91%</span>
+                  <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
+                    <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">Staked Amount</span>
+                      <span className="font-bold">0,000000</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">APR</span>
+                      <span className="font-bold">137.91%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">Boost Multiplier</span>
+                      <span className="font-bold">2x</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">Claimable Rewards</span>
+                      <span className="font-bold">0,000000</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col space-y-2 pt-2">
+                    <span className="font-semibold pb-4 text-lg">YEARN BOOSTED STAKER</span>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">Total Staked</span>
+                      <span className="font-bold">420884.69</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">Min/Max APR </span>
+                      <span className="font-bold">10% {'—>'} 75%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">Average Boost Multiplier</span>
+                      <span className="font-bold">1.7x</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">Total Rewards Last Week</span>
+                      <span className="font-bold">$100k</span>
+                    </div>
+                  </div>
+                </>
+              ) :(
+                <>
+                  <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
+                  <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">137.91%</span>
+                  <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
+                    <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">Deposited Amount, yPRISMA</span>
+                      <span className="font-bold">413123.1233</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">Earned</span>
+                      <span className="font-bold">$234.23</span>
+                    </div>
+                  </div>
+                </>
+              )}
+              
             </div>
           </div>
           <h1 className="text-4xl p-8 mt-4 font-[700] w-full flex justify-center">
