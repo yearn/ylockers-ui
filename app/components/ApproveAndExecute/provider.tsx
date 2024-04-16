@@ -1,12 +1,12 @@
-import { z } from 'zod'
+import { set, z } from 'zod'
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { useAccount, useConfig, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { UseSimulateContractParameters, useAccount, useConfig, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import env from '@/lib/env'
 import { erc20Abi, zeroAddress } from 'viem'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { readContractsQueryOptions } from 'wagmi/query'
 import { zhexstringSchema } from '@/lib/types'
-import abis from '@/app/abis'
+import { Task } from '.'
 
 const TokenSchema = z.object({
   address: zhexstringSchema.default(zeroAddress),
@@ -113,6 +113,7 @@ const ContextSchema = z.object({
   setAmount: setAmountSchema.default(() => {}),
   approve: ContractClientSchema.default({}),
   execute: ContractClientSchema.default({}),
+  verb: z.string().default(''),
   reset: z.function().default(() => {})
 })
 
@@ -129,11 +130,11 @@ export const context = createContext<Context>(ContextSchema.parse({
 
 export const useProvider = () => useContext(context)
 
-export default function Provider({children}: {children: ReactNode}) {
+export default function Provider({ task, children }: { task: Task, children: ReactNode }) {
 	const [step, setStep] = useState<Step>(StepSchema.Enum.Input)
   const firstStep = useMemo(() => steps.indexOf(step) === 0, [step])
   const lastStep = useMemo(() => steps.indexOf(step) === steps.length - 1, [step])
-  const { data: token, isSuccess: isTokenSuccess, refetch: refetchToken } = useToken(env.YPRISMA)
+  const { data: token, isSuccess: isTokenSuccess, refetch: refetchToken } = useToken(task.asset)
   const [amount, setAmount] = useState(0n)
 
   const stepForward = useCallback(() => {
@@ -151,7 +152,7 @@ export default function Provider({children}: {children: ReactNode}) {
     address: isTokenSuccess ? token.address : zeroAddress,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [env.YPRISMA_BOOSTED_STAKER, amount],
+    args: [task.parameters.address!, amount],
     query: { enabled: amount > 0n }
   })
 
@@ -184,13 +185,15 @@ export default function Provider({children}: {children: ReactNode}) {
     }
   }), [_approve, _approveReceipt, simulateApprove, amount])
 
-  const simulateExecute = useSimulateContract({
-    address: env.YPRISMA_BOOSTED_STAKER,
-    abi: abis.YearnBoostedStaker,
-    functionName: 'deposit',
-    args: [amount],
-    query: { enabled: amount > 0n && token.allowance >= amount }
-  })
+  const executeContractParameters = useMemo<UseSimulateContractParameters>(() => 
+    ({
+      ...task.parameters, 
+      args: [amount],
+      query: { enabled: amount > 0n && token.allowance >= amount }
+    }), 
+  [amount, task, token])
+  
+  const simulateExecute = useSimulateContract(executeContractParameters)
 
   const _execute = useWriteContract()
   const _executeReceipt = useWaitForTransactionReceipt({ hash: _execute.data })
@@ -219,11 +222,11 @@ export default function Provider({children}: {children: ReactNode}) {
       isError: _executeReceipt.isError,
       error: _executeReceipt.error?.toString()
     }
-  }), [_execute, _executeReceipt, simulateExecute, amount])
+  }), [_execute, _executeReceipt, simulateExecute, amount, token])
 
   useEffect(() => {
     if(_approveReceipt.isSuccess || _executeReceipt.isSuccess) refetchToken()
-  }, [_approveReceipt, _executeReceipt])
+  }, [_approveReceipt, _executeReceipt, refetchToken])
 
   const reset = useCallback(() => {
     setStep(steps[0])
@@ -244,6 +247,7 @@ export default function Provider({children}: {children: ReactNode}) {
     setAmount,
     approve,
     execute,
+    verb: task.verb,
     reset
     }}>
 		{children}

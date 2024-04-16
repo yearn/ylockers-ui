@@ -8,6 +8,7 @@ import Approve from './Approve'
 import Execute from './Execute'
 import Done from './Done'
 import { springs } from '@/lib/motion'
+import { UseSimulateContractParameters } from 'wagmi'
 
 const steps: {
   [key in Step]: JSX.Element
@@ -46,6 +47,12 @@ function Provided() {
   </div>
 }
 
-export default function Stake() {
-  return <Provider><Provided /></Provider>
+export type Task = {
+  asset: `0x${string}`,
+  parameters: UseSimulateContractParameters,
+  verb: string
+}
+
+export default function ApproveAndExecute({ task }: { task: Task }) {
+  return <Provider task={task}><Provided /></Provider>
 }

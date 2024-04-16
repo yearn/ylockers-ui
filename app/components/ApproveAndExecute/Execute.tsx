@@ -6,31 +6,31 @@ import { useEffect, useMemo } from 'react'
 import { fTokens } from '@/lib/format'
 
 export default function Approve() {
-  const { stepForward, token, amount, approve } = useProvider()
+  const { stepForward, token, amount, execute, verb } = useProvider()
 
   useEffect(() => {
-    if (approve.isError) console.error(approve.error)
-    if (approve.simulation.isError) console.error(approve.simulation.error)
-  }, [approve])
+    if (execute.isError) console.error(execute.error)
+    if (execute.simulation.isError) console.error(execute.simulation.error)
+  }, [execute])
 
   const isError = useMemo(() => 
-    approve.simulation.isError 
-    || approve.isError 
-    || approve.receipt.isError, [approve])
+    execute.simulation.isError 
+    || execute.isError 
+    || execute.receipt.isError, [execute])
 
   const isPending = useMemo(() => 
-    !isError && (approve.simulation.isPending 
-    || approve.isPending 
-    || approve.receipt.isPending
-  ), [approve, isError])
+    !isError && (execute.simulation.isPending 
+    || execute.isPending 
+    || execute.receipt.isPending
+  ), [execute, isError])
 
   const isConfirming = useMemo(() =>
-    approve.isSuccess && approve.receipt.isPending, 
-  [approve])
+    execute.isSuccess && execute.receipt.isPending, 
+  [execute])
 
   const isRunning = useMemo(() => 
-    !isError && (approve.isPending || isConfirming), 
-  [isError, isConfirming, approve])
+    !isError && (execute.isPending || isConfirming), 
+  [isError, isConfirming, execute])
 
   const color = useMemo(() => {
     if (isPending) return 'light-blue'
@@ -39,24 +39,24 @@ export default function Approve() {
   }, [isPending, isError])
 
   const message = useMemo(() => {
-    return `Approve ${formatUnits(amount, token.decimals)} ${token.symbol}`
+    return `Stake ${formatUnits(amount, token.decimals)} ${token.symbol}`
   }, [amount, token])
 
   useEffect(() => {
-    if (approve.isSuccess && approve.receipt.isSuccess) {
+    if (execute.isSuccess && execute.receipt.isSuccess) {
       stepForward()
     }
-  }, [approve, stepForward])
+  }, [execute, stepForward])
 
   const submessage = useMemo(() => {
-    if (approve.isError) {
-      if (approve.error?.includes('User denied transaction signature')) {
+    if (execute.isError) {
+      if (execute.error?.includes('User denied transaction signature')) {
         return <div className="text-charge-red">Approval denied</div>
       }
       return <div className="text-charge-red">Approval fail! Please contact support</div>
-    } else if (approve.simulation.isError) {
+    } else if (execute.simulation.isError) {
       return <div className="text-charge-red">Simulation fail! Please contact support</div>
-    } else if (approve.receipt.isError) {
+    } else if (execute.receipt.isError) {
       return <div className="text-charge-red">Transaction fail! Please contact support</div>
     } else if (isConfirming) {
       return <div className="text-light-blue">Confirming...</div>
@@ -64,7 +64,7 @@ export default function Approve() {
     return <div className="flex items-center text-xs">
       {`You have ${fTokens(token.balance, token.decimals)} ${token.symbol}`}
     </div>
-  }, [approve, token])
+  }, [execute, token, isConfirming])
 
   return <div className="w-full flex flex-col gap-2">
     <div className="w-full flex items-center gap-2">
@@ -75,7 +75,7 @@ export default function Approve() {
         pulse={isPending}>
         {message}
       </Indeterminate>
-      <Button onClick={approve.write} disabled={approve.disabled}>Approve</Button>
+      <Button onClick={execute.write} disabled={execute.disabled} className="capitalize">{verb}</Button>
     </div>
     <div className="flex items-center gap-1 text-xs">
       {submessage}
