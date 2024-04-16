@@ -1,20 +1,22 @@
-import React, { forwardRef, ButtonHTMLAttributes, useCallback } from 'react'
+'use client'
 
-type ButtonStyle = 'default' | 'transparent'
+import React, { forwardRef, ButtonHTMLAttributes } from 'react'
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   className?: string
-  style?: ButtonStyle
+  style?: 'default' | 'transparent'
   onClick?: () => void
-  smol?: boolean
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, style, onClick, children, smol=false, ...props }, ref) => {
+const Button = forwardRef<HTMLButtonElement, Props>(({ className, style, onClick, children, ...props }, ref) => {
   return <button onClick={onClick} ref={ref} {...props} className={`
-    ${smol ? 'w-full' : 'px-12'} py-2 font-bold rounded-lg
+    px-12 py-2 font-bold rounded-lg
+
     ${style === 'transparent' 
       ? 'border-2 border-light-blue hover:border-lighter-blue' 
       : 'bg-light-blue hover:bg-lighter-blue'}
+
+    disabled:bg-disabled-bg disabled:text-disabled-text
     ${className}`}>
     {children}
   </button>

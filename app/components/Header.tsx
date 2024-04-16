@@ -1,5 +1,8 @@
+'use client'
+
 import Button from "./Button";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 type Item = { text: string, link: string }
 type Items = Array<Item>
@@ -8,19 +11,20 @@ type HeaderProps = {
   selected?: string,
   launchApp?: boolean,
   launchText?: string,
-  className?: string
+  className?: string,
+  onClickLaunch?: () => void,
 }
 
-const Header = ({ items, selected="Earn", launchApp=true, launchText='Launch App', className='' }: HeaderProps) => (
-  <header className={`flex justify-between items-center z-10 ${
-    launchApp ? 'w-[1200px] h-[72px] my-2' : 'my-[16px]'
+const Header = ({ items, selected="", launchApp=true, launchText='Launch App', className="", onClickLaunch }: HeaderProps) => (
+  <header className={`flex flex-wrap justify-between items-center z-10  space-y-2 ${
+    launchApp ? 'xl:w-[1200px] w-full px-4 xl:p-0 h-[72px]' : ''
   } ${className}`}>
-    <div className="space-x-4">
+    <div className="space-x-4 py-4">
       {items.map((item:Item) => (
         <Link
           href={item.link}
           key={item.text}
-          className={`mx-2 py-2 hover:border-b-2 ${launchApp ? '' : 'py-[18px]'} ${
+          className={` py-2 hover:border-b-2 ${launchApp ? 'px-2' : 'py-[18px]'} ${
             selected === item.text
               ? 'border-b-2 font-bold'
               : (launchApp
@@ -34,9 +38,11 @@ const Header = ({ items, selected="Earn", launchApp=true, launchText='Launch App
         </Link>
       ))}
     </div>
-    {launchApp && <Link href="/app?tab=stake">
+    {(launchApp && !onClickLaunch) ? <Link href="/app?tab=stake">
       <Button style="transparent">{launchText}</Button>
-    </Link>}
+    </Link> : (launchApp && onClickLaunch) && <div>
+      <Button onClick={onClickLaunch} style="transparent">{launchText}</Button>
+    </div>}
   </header>
 )
 

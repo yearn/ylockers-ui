@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import localFont from 'next/font/local'
 import "./globals.css";
+import '@rainbow-me/rainbowkit/styles.css';
+import { Suspense } from 'react'
+
+import Provider from './contexts/Provider';
 
 const sans = localFont({
   variable: '--font-aeonik-sans',
@@ -39,7 +43,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Provider>
+          <Suspense fallback={<div>Loading...</div>}>
+            {children}
+          </Suspense>
+        </Provider>
+      </body>
     </html>
   );
 }

@@ -6,24 +6,35 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    'bg-light-blue/60', 'border-light-blue',
+    'bg-charge-red/60', 'border-charge-red',
+    'bg-dark-black/60', 'border-transparent'
+  ],
   theme: {
-    colors: {
-      'dark-black': '#000107',
-      'dark-blue': '#000A3D',
-      'white': '#FFFFFF',
-      'offwhite': '#F4F4F4',
-      'blue': '#001170',
-      'darker-blue': '#000B49',
-      'soft-blue': '#555D8D',
-      'input-bg': '#111B53',
-      'light-blue': '#00A3FF',
-      'lighter-blue': '#4DBFFF',
-      'disabled-bg': '#DFDFDF',
-      'disabled-text': '#9D9D9D',
-      'charge-red': '#FF0F00',
-      'charge-yellow': '#DBFF00',
-    },
     extend: {
+      colors: {
+        'dark-black': '#000107',
+        'dark-blue': '#000A3D',
+        'white': '#FFFFFF',
+        'offwhite': '#F4F4F4',
+        'blue': '#001170',
+        'darker-blue': '#000B49',
+        'darker-blue-bg': '#1021835e',
+        'soft-blue': '#555D8D',
+        'input-bg': '#111B53',
+        'light-blue': '#00A3FF',
+        'lighter-blue': '#4DBFFF',
+        'disabled-bg': '#DFDFDF',
+        'disabled-text': '#9D9D9D',
+        'charge-red': '#FF0F00',
+        'charge-yellow': '#DBFF00',
+        'tab-inactive': 'rgba(255,255,255,0.2)',
+        'tab-inactive-inner': 'rgba(255,255,255,0.3)'
+      },
+      boxShadow: {
+        'lg': '0 -40px 80px 80px rgba(0,0,0,0.9)',
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

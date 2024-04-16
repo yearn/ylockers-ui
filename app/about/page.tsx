@@ -6,16 +6,17 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
-      <Image className="absolute top-o left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
+      <div className="w-full shadow-lg z-10"></div>
+      <Image className="absolute left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
       <Header items={headerItems} selected="About"/>
-      <section className="w-[1200px]">
+      <section className="xl:w-[1200px] px-8 xl:p-0 z-10">
         <div className="w-full">
           <div className="relative mx-auto mb-0 flex w-full flex-col bg-neutral-0">
             <div className="relative mx-auto mt-6 pb-40">
               <section className="grid-cols-12 gap-0 md:grid md:pt-12">
                 <div className="col-span-12 md:col-span-8 md:mb-0 md:pr-20">
                   <div className="mb-10 flex flex-col justify-center">
-                    <h1 className="mt-6 block font-black md:text-5xl">
+                    <h1 className="mt-6 block font-black text-5xl">
                         Prisma 
                       {" has been unleashed "}
                       <br/>
@@ -28,18 +29,18 @@ export default function Home() {
                   <div className="mb-8 border-white-200 py-2 text-white-700 md:border-l-4 border-blue md:pl-6">
                     <div>
                       <h3 className="text-xl font-bold">
-                        Why would I claim my PRISMA as yPRISMA?
+                        What is yPRISMA?
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
-                        <p>Good question anon. The Prisma airdrop comes as a locked position that cannot be transferred until the lock (of up to 1 year) expires.</p>
-                        <p>{`By claiming your airdrop using this page, you'll lock your full Prisma airdrop to Yearn in exchange for yPrisma which is (and will always be) transferrable and liquid.`}</p>
-                        <p>yPrisma holders also receieve their share of Prisma protocol rewards. Noice.</p>
+                        <p>
+                          {`yPRISMA is Yearn's latest liquid locker, built for Prisma Finance's governance token. It represents 1 vePRISMA max-locked to Yearn. It is not redeemable for the underlying locked PRISMA. It has no transfer restrictions and can always be swapped in DEX pools.`}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
               </section>
-              <div className="col-span-3 mt-6 items-center rounded-lg bg-darker-blue">
+              <div className="flex flex-col col-span-3 mt-6 rounded-lg bg-darker-blue">
                 <div className="mb-4 border-b p-4 md:p-6"><b className="text-2xl">
                   yPrisma deployment addresses
                 </b></div>
