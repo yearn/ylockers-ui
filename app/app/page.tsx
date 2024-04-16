@@ -14,6 +14,9 @@ import { useAccount } from 'wagmi'
 import { useState } from 'react';
 import { fAddress } from "@/lib/format";
 import { zeroAddress } from "viem";
+import ApproveAndExecute from "../components/ApproveAndExecute";
+import env from "@/lib/env";
+import abis from "../abis";
 
 
 
@@ -170,7 +173,16 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'stake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
-              <InputBox title="Stake yPRISMA" button="Stake" subtitle="You have 0,00 PRISMA" />
+              <ApproveAndExecute task={{
+                title: 'Stake yPRISMA',
+                verb: 'stake',
+                asset: env.YPRISMA,
+                parameters: {
+                  address: env.YPRISMA_BOOSTED_STAKER,
+                  abi: abis.YearnBoostedStaker,
+                  functionName: 'deposit'
+                }
+              }} />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>

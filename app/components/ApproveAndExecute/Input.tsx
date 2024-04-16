@@ -21,7 +21,7 @@ export default function Input() {
         onMaxClick={() => setAmount(token.balance)} />
       <Button onClick={onClick} disabled={amount === 0n}>Stake</Button>
     </div>
-    <div className="flex items-center text-xs">
+    <div className="pl-3 font-thin text-xs opacity-70">
       {`You have ${fTokens(token.balance, token.decimals)} ${token.symbol}`}
     </div>
   </div>

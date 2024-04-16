@@ -6,10 +6,10 @@ import abis from '../abis'
 export default function ForExample() {
   return <div className="w-full min-h-screen px-96 flex flex-col items-center justify-center gap-12">
     <div className="p-24 w-full flex flex-col gap-4">
-      <div className="text-2xl">{`🥩 Stake`}</div>
       <ApproveAndExecute task={{
-        asset: env.YPRISMA,
+        title: '🥩🥩🥩 Stake 🥩🥩🥩',
         verb: 'stake',
+        asset: env.YPRISMA,
         parameters: {
           address: env.YPRISMA_BOOSTED_STAKER,
           abi: abis.YearnBoostedStaker,

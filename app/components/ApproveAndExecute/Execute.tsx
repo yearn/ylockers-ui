@@ -77,7 +77,7 @@ export default function Approve() {
       </Indeterminate>
       <Button onClick={execute.write} disabled={execute.disabled} className="capitalize">{verb}</Button>
     </div>
-    <div className="flex items-center gap-1 text-xs">
+    <div className="pl-3 font-thin text-xs opacity-70">
       {submessage}
     </div>
   </div>

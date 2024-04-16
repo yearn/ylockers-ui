@@ -29,7 +29,9 @@ export default function Indeterminate({
       bg-${color ? color : 'dark-black'}/60
       ${run ? 'rounded-l-lg' : 'rounded-lg'}
       ${run ? 'animate-pulse' : ''}`} />
-    <div className="absolute z-10 inset-0 px-4 flex items-center gap-2">
+    <div className={`absolute z-10 inset-0 
+      px-4 flex items-center gap-2
+      text-sm truncate`}>
       {children}
     </div>
     <div className={`absolute z-20 inset-0 rounded-lg 

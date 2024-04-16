@@ -106,6 +106,7 @@ const ContextSchema = z.object({
   step: StepSchema.default(StepSchema.Enum.Input),
   setStep: setStepSchema.default(() => {}),
   stepForward: z.function().default(() => {}),
+  veryFirstStep: z.boolean().default(true),
   firstStep: z.boolean().default(true),
   lastStep: z.boolean().default(false),
   token: TokenSchema.default(TokenSchema.parse({})),
@@ -113,6 +114,7 @@ const ContextSchema = z.object({
   setAmount: setAmountSchema.default(() => {}),
   approve: ContractClientSchema.default({}),
   execute: ContractClientSchema.default({}),
+  title: z.string().default(''),
   verb: z.string().default(''),
   reset: z.function().default(() => {})
 })
@@ -132,6 +134,7 @@ export const useProvider = () => useContext(context)
 
 export default function Provider({ task, children }: { task: Task, children: ReactNode }) {
 	const [step, setStep] = useState<Step>(StepSchema.Enum.Input)
+  const [veryFirstStep, setVeryFirstStep] = useState(true)
   const firstStep = useMemo(() => steps.indexOf(step) === 0, [step])
   const lastStep = useMemo(() => steps.indexOf(step) === steps.length - 1, [step])
   const { data: token, isSuccess: isTokenSuccess, refetch: refetchToken } = useToken(task.asset)
@@ -146,7 +149,8 @@ export default function Provider({ task, children }: { task: Task, children: Rea
       }
       return steps[next]
     })
-  }, [setStep, token, amount])
+    setVeryFirstStep(false)
+  }, [setStep, token, amount, setVeryFirstStep])
 
   const simulateApprove = useSimulateContract({
     address: isTokenSuccess ? token.address : zeroAddress,
@@ -240,6 +244,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     step, 
     setStep, 
     stepForward,
+    veryFirstStep,
     firstStep,
     lastStep,
     token,
@@ -247,6 +252,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     setAmount,
     approve,
     execute,
+    title: task.title,
     verb: task.verb,
     reset
     }}>

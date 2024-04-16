@@ -6,6 +6,7 @@ import { TfiReceipt } from 'react-icons/tfi'
 import { useConfig } from 'wagmi'
 import nlp from 'compromise'
 import { useMemo } from 'react'
+import { zeroHash } from 'viem'
 
 export default function Action() {
   const config = useConfig()
@@ -22,12 +23,12 @@ export default function Action() {
       <div>{`You ${pastTense} ${fTokens(amount, token.decimals)} ${token.symbol}`}!</div>
       <Button onClick={reset}>OK</Button>
     </div>
-    <div className="flex items-center text-xs">
+    <div className="pl-3 font-thin text-xs">
       <A href={`${config.getClient().chain.blockExplorers?.default.url}/tx/${execute.hash!}`} 
         target='_blank' rel="noreferrer">
         <div className="flex items-center gap-2">
           <TfiReceipt />
-          <div>{fAddress(execute.hash!)}</div>
+          <div>{fAddress((execute.hash ?? zeroHash))}</div>
         </div>
       </A>
     </div>

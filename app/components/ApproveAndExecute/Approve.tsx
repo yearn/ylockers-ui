@@ -77,7 +77,7 @@ export default function Approve() {
       </Indeterminate>
       <Button onClick={approve.write} disabled={approve.disabled}>Approve</Button>
     </div>
-    <div className="flex items-center gap-1 text-xs">
+    <div className="pl-3 font-thin text-xs opacity-70">
       {submessage}
     </div>
   </div>
