@@ -219,13 +219,12 @@ function TabContent(props: { leftActive: any; }) {
             </div>
             <div className="flex flex-col space-y-4 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">DESCRIPTION</span>
-              <span className="font-thin opacity-70">
+              <p className="font-thin opacity-70">
                 {`Claim your mkUSD rewards. We've already deposited your mkUSD into our auto-compounding mkUSD vault (`}<Link className="underline" href="https://etherscan.io/token/0x04aebe2e4301cdf5e9c57b01ebdfe4ac4b48dd13">yvmkUSD-A</Link>{`).`}
-              </span>
-              <br /><br />
-              <span className="font-thin opacity-70">
+              </p>
+              <p className="font-thin opacity-70">
                 {`That means your yield has been earning you additional yield from the moment we received it! Once claimed, your mkUSD vault holdings will appear below.`}
-              </span>
+              </p>
             </div>
           </div>
         )}
@@ -234,13 +233,12 @@ function TabContent(props: { leftActive: any; }) {
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
               <InputBox title="Mint yPRISMA from PRISMA" button="Mint" subtitle="You have 0,00 PRISMA" />
               <div className="flex flex-col">
-                <span className="font-thin opacity-70">
+                <p className="font-thin opacity-70">
                 {`Convert your PRISMA to yPRISMA. To ensure you receive the maximum amount of yPRISMA, the zapper will either mint new yPRISMA or swap via the Curve pool.`}
-                </span>
-                <span className="font-thin opacity-70">
-                <br /><br />
+                </p>
+                <p className="font-thin opacity-70">
                 <b>⚠️ Important: </b>{`yLocker tokens (such as yPRISMA) can never be redeemed for the underlying locked tokens (PRISMA). However, because they are liquid, they can be traded on decentralized exchanges, and bought and sold at the current market rate.`}
-                </span>
+                </p>
               </div>
             </div>
           </div>
