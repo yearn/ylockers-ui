@@ -6,17 +6,18 @@ import Button from "../components/Button";
 import InputBox from "../components/InputBox";
 import Header, { headerItems } from "../components/Header";
 import { useSearchParams } from 'next/navigation';
-import { Suspense, use, useEffect } from 'react';
+import { Suspense, useCallback, useEffect } from 'react';
 import {   useConnectModal,
   useAccountModal,
   useChainModal, } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
 import { useState } from 'react';
-import { fAddress } from "@/lib/format";
-import { zeroAddress } from "viem";
+import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import ApproveAndExecute from "../components/ApproveAndExecute";
-import env from "@/lib/env";
 import abis from "../abis";
+import useData from "@/hooks/useData";
+import Tokens from "../components/Tokens";
+import Flipper from "../components/Flipper";
 
 
 
@@ -24,6 +25,7 @@ export default function Home() {
   const { openConnectModal  } = useConnectModal();
   const { openAccountModal } = useAccountModal();
   const { openChainModal } = useChainModal();
+  const { data } = useData()
   
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
@@ -59,16 +61,18 @@ export default function Home() {
               {leftActive ? (
                 <>
                   <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
-                  <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">137.91%</span>
+                  <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">{fPercent(data.staker.averageApr)}</span>
                   <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Staked Amount</span>
-                      <span className="font-bold">0,000000</span>
+                      <span className="font-bold">
+                        <Flipper>{fTokens(data.staker.balance, data.staker.decimals)}</Flipper>
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">APR</span>
-                      <span className="font-bold">137.91%</span>
+                      <span className="font-bold">{fPercent(data.staker.accountApr)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Boost Multiplier</span>
@@ -76,7 +80,9 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Claimable Rewards</span>
-                      <span className="font-bold">0,000000</span>
+                      <span className="font-bold">
+                        <Tokens amount={data.rewards.claimable} decimals={data.rewards.decimals} />
+                      </span>
                     </div>
                   </div>
                   <div className="flex flex-col space-y-2 pt-2">
@@ -132,6 +138,7 @@ export default function Home() {
 function TabContent(props: { leftActive: any; }) {
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
+  const { data } = useData();
 
   return (
     <div className="flex flex-col">
@@ -176,9 +183,9 @@ function TabContent(props: { leftActive: any; }) {
               <ApproveAndExecute task={{
                 title: 'Stake yPRISMA',
                 verb: 'stake',
-                asset: env.YPRISMA,
+                asset: data.locker.address,
                 parameters: {
-                  address: env.YPRISMA_BOOSTED_STAKER,
+                  address: data.staker.address,
                   abi: abis.YearnBoostedStaker,
                   functionName: 'deposit'
                 }
@@ -207,8 +214,8 @@ function TabContent(props: { leftActive: any; }) {
           <div className="flex flex-row space-y-6 w-full pt-0"> 
             <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-1/2">
             <span className="font-semibold">YOUR REWARD</span>
-            <span className="font-semibold text-5xl">$420.00</span>
-            <span className="font-thin opacity-70">419.00 yvmkUSD-A</span>
+            <span className="font-semibold text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
+            <span className="font-thin opacity-70">{fTokens(data.rewards.claimable, data.rewards.decimals)} yvmkUSD-A</span>
             <div>
               <Button>Claim All</Button>
             </div>
