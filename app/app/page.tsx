@@ -232,7 +232,6 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'get' && (
           <div className="flex">
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-            <span className="font-semibold">MINT</span>
               <InputBox title="Mint yPRISMA from PRISMA" button="Mint" subtitle="You have 0,00 PRISMA" />
               <div className="flex flex-col">
                 <span className="font-thin opacity-70">
