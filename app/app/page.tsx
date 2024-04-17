@@ -232,7 +232,7 @@ function TabContent(props: { leftActive: any; }) {
           <div className="flex">
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
               <InputBox title="Mint yPRISMA from PRISMA" button="Mint" subtitle="You have 0,00 PRISMA" />
-              <div className="flex flex-col">
+              <div className="flex flex-col space-y-4">
                 <p className="font-thin opacity-70">
                 {`Convert your PRISMA to yPRISMA. To ensure you receive the maximum amount of yPRISMA, the zapper will either mint new yPRISMA or swap via the Curve pool.`}
                 </p>
