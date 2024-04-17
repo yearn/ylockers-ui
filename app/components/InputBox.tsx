@@ -12,14 +12,16 @@ interface Props {
   onChange?: (e:any) => void;
   noButton?: boolean;
   icon?: string;
+  inputType?: string;
+  placeholder?: string;
 }
 
-export default function InputBox({ title, button, subtitle, noButton=false, value='', onChange=()=>{}, icon }: Props) {
+export default function InputBox({ title, button, subtitle, noButton=false, value='', onChange=()=>{}, icon, inputType="number",placeholder="100" }: Props) {
  return (
    <div className="flex flex-col">
      <span className="font-thin pb-1 text-md">{title}</span>
      <div className="flex">
-       <Input type="number" className="p-2 bg-input-bg rounded-lg mr-2 w-full" placeholder="100" onChange={onChange} />
+       <Input type={inputType} className="p-2 bg-input-bg rounded-lg mr-2 w-full" placeholder={placeholder} onChange={onChange} />
        {icon && <Image src="/search.svg" alt="search"/>}
        {!noButton && <Button>{button}</Button>}
      </div>

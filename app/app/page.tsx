@@ -271,35 +271,25 @@ function TabContent(props: { leftActive: any; }) {
 
 const TableComponent = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [tableData, setTableData] = useState([
-    {
-      token: 'LP Yearn PRISMA Vault',
-      estApr: '98.30%',
-      histApr: '81.24%',
-      available: '0.00',
-      holdings: '7311.4762',
-      deposits: '1.224M',
-    },
-    {
-      token: 'LP Yearn PRISMA Vault',
-      estApr: '99.30%',
-      histApr: '80.24%',
-      available: '4.00',
-      holdings: '731.4762',
-      deposits: '11.24M',
-    },
-    {
-      token: 'LP Yearn PRISMA Vault',
-      estApr: '97.30%',
-      histApr: '82.24%',
-      available: '1.00',
-      holdings: '73.4762',
-      deposits: '1.214M',
-    },
-  ]);
-
+  
   const [sortColumn, setSortColumn] = useState('estApr');
   const [sortDirection, setSortDirection] = useState('desc');
+
+  const [vaultData, setVaultData] = useState([]);
+
+  useEffect(() => {
+    const fetchVaultData = async () => {
+      try {
+        const response = await fetch('https://ydaemon.yearn.finance/1/vaults/all');
+        const data = await response.json();
+        setVaultData(data);
+      } catch (error) {
+        console.error('Error fetching vault data:', error);
+      }
+    };
+  
+    fetchVaultData();
+  }, []);
 
   const handleSort = (column: any) => {
     if (column === sortColumn) {
@@ -310,20 +300,29 @@ const TableComponent = () => {
     }
   };
 
-  const sortedData = [...tableData].sort((a, b) => {
-    if (sortColumn) {
-      const valueA = a[sortColumn as keyof typeof a];
-      const valueB = b[sortColumn as keyof typeof b];
-      if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
-      if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+  const filteredVaultData = vaultData.filter((vault:any) =>
+    vault.strategies.some((strategy:any) => strategy.name.toLowerCase().includes('prisma'))
+  );
+
+  const sortedData = [...filteredVaultData].sort((a: any, b: any) => {
+    if (sortColumn === 'token') {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (nameA < nameB) return sortDirection === 'asc' ? -1 : 1;
+      if (nameA > nameB) return sortDirection === 'asc' ? 1 : -1;
+    } else if (sortColumn === 'estApr') {
+      const aprA = a.apr.forwardAPR.netAPR;
+      const aprB = b.apr.forwardAPR.netAPR;
+      if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
+      if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
     }
     return 0;
   });
 
-  const filteredData = sortedData.filter((item) =>
-    item.token.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = sortedData.filter((vault:any) =>
+    vault.token.display_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  
   return (
     <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
       <div className="p-8 w-1/2">
@@ -334,6 +333,8 @@ const TableComponent = () => {
           value={searchTerm}
           onChange={(e:any) => setSearchTerm(e.target.value)}
           noButton
+          inputType="text"
+          placeholder="vault or strategy name..."
         />
       </div>
       <div className="pb-4">
@@ -379,10 +380,10 @@ const TableComponent = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item, index) => (
+            {filteredData.map((item:any, index) => (
               <tr key={index} className="hover:bg-blue">
-                <td className="text-lg py-4 cursor-pointer pl-8">{item.token}</td>
-                <td className="text-lg font-mono py-4 cursor-pointer">{item.estApr}</td>
+                <td className="text-lg py-4 cursor-pointer pl-8">{item.name}</td>
+                <td className="text-lg font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
                 <td className="text-lg font-mono py-4 cursor-pointer">{item.histApr}</td>
                 <td className="text-lg font-mono py-4 cursor-pointer">{item.available}</td>
                 <td className="text-lg font-mono py-4 cursor-pointer">{item.holdings}</td>
