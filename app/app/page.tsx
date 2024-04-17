@@ -186,7 +186,9 @@ function TabContent(props: { leftActive: any; }) {
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>
-              <span className="font-thin opacity-70">Stake yPRISMA and earn mkUSD using the new Yearn Boosted Staker formula: your reward boost grows as the weeks passes after your deposit</span>
+              <span className="font-thin opacity-70">
+                {`Stake your yPRISMA and start earning a share of Yearn's vePRISMA stablecoin revenue today. You'll reach max boost and hit the maximum staking APR after just 4 weeks.`}
+              </span>
               <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
             </div>
           </div>
@@ -198,7 +200,9 @@ function TabContent(props: { leftActive: any; }) {
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">UNSTAKE yPRISMA</span>
-              <span className="font-thin opacity-70">Unstake yPRISMA and stop receiving mkUSD boosted rewards. Remaining staked funds continue with their current boost.</span>
+              <span className="font-thin opacity-70">
+                {`Unstake your yPRISMA. You're free to unstake at any time with no lock-ups or penalties. Please note that unstaked yPRISMA doesn’t earn any yield.`}
+              </span>
               <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
             </div>
           </div>
@@ -215,7 +219,9 @@ function TabContent(props: { leftActive: any; }) {
             </div>
             <div className="flex flex-col space-y-4 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">DESCRIPTION</span>
-              <span className="font-thin opacity-70">Claim your boosted staking rewards as mkUSD. Claiming does not alter boost.</span>
+              <span className="font-thin opacity-70">
+                {`Claim your mkUSD rewards. We've already deposited your mkUSD into our auto-compounding mkUSD vault (`}<Link className="underline" href="https://etherscan.io/token/0x04aebe2e4301cdf5e9c57b01ebdfe4ac4b48dd13">yvmkUSD-A</Link>{`). That means your yield has been earning you additional yield from the moment we received it! Once claimed, your mkUSD vault holdings will appear below.`}
+              </span>
             </div>
           </div>
         )}
@@ -224,12 +230,14 @@ function TabContent(props: { leftActive: any; }) {
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
             <span className="font-semibold">MINT</span>
               <div className="flex flex-col">
-                <span className="font-thin opacity-70">Mint yPRISMA 1:1 using PRISMA</span>
-                <span className="font-thin opacity-70">Consult yPRISMA peg at <Link className="underline" target="_blank" href="https://www.prisma.lol/">prisma.lol</Link></span>
+                <span className="font-thin opacity-70">
+                {`Convert your PRISMA to yPRISMA. To ensure you receive the maximum amount of yPRISMA, the zapper will either mint new yPRISMA or swap via the Curve pool.`}
+                </span>
+                <span className="font-thin opacity-70">
+                <b>⚠️ Important: </b>{`yLocker tokens (such as yPRISMA) can never be redeemed for the underlying locked tokens (PRISMA). However, because they are liquid, they can be traded on decentralized exchanges, and bought and sold at the current market rate.`}
+                </span>
               </div>
-              <InputBox title="Zap PRISMA to yPRISMA" button="Zap" subtitle="You have 0,00 PRISMA" />
-              <span className="font-semibold">CLAIM</span>
-              <span className="font-thin opacity-70">idk really what this claim is for if not rewards, is this the claim prisma rewards as yprisma??</span>
+              <InputBox title="Mint yPRISMA from PRISMA" button="Mint" subtitle="You have 0,00 PRISMA" />
               <span>
                 <Button>Claim</Button>
               </span>
@@ -240,8 +248,9 @@ function TabContent(props: { leftActive: any; }) {
           <div className="flex">
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
               <InputBox title="Deposit" button="Deposit" subtitle="You have 0,00 yPRISMA" />
-              <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
-              <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
+              <span className="font-thin opacity-70">
+                {`Deposit your yPRISMA into Yearn's auto-compounding vault and earn start earning the maximum APY immediately. The vault will handle staking, claiming and swapping rewards, and reinvesting your yPRISMA for you.`}
+              </span>
             </div>
           </div>
         )}
@@ -249,8 +258,9 @@ function TabContent(props: { leftActive: any; }) {
           <div className="flex">
             <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
               <InputBox title="Withdraw" button="Withdraw" subtitle="You have 0,00 yv-yPRISMA" />
-              <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
-              <span className="font-thin opacity-70">Deposit into Yearn Auto-compound Vault, to let us use the rewards to maximize your yield a</span>
+              <span className="font-thin opacity-70">
+                {`Withdraw your yPRISMA from Yearn's auto-compounding vault. Please note that this will unstake your yPRISMA (and unstaked yPRISMA doesn’t earn any yield).`}
+              </span>
             </div>
           </div>
         )}
