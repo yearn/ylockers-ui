@@ -51,7 +51,7 @@ export default function Erc20({ address, className }: { address: zhexstring, cla
   return <div className={className}>
     <p>{fAddress(address)}</p>
     <p>info ({tokenInfo?.symbol}) {tokenInfo?.name}</p>
-    <p>supply <Tokens amount={tokenInfo?.totalSupply ?? 0n} decimals={tokenInfo?.decimals ?? 18} humanize={true} /></p>
-    <p>burned <Tokens amount={burned ?? 0n} decimals={tokenInfo?.decimals ?? 18} humanize={true} /></p>
+    <p>supply <Tokens amount={tokenInfo?.totalSupply ?? 0n} decimals={tokenInfo?.decimals ?? 18} /></p>
+    <p>burned <Tokens amount={burned ?? 0n} decimals={tokenInfo?.decimals ?? 18} /></p>
   </div>
 }
