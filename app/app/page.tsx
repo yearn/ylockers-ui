@@ -129,10 +129,12 @@ export default function Home() {
               
             </div>
           </div>
-          <h1 className="text-4xl p-8 mt-4 font-[700] w-full flex justify-center">
-            Prisma Vaults
-          </h1>
-          <TableComponent />
+          {account.address && <>
+            <h1 className="text-4xl p-8 mt-4 font-[700] w-full flex justify-center">
+              Prisma Vaults
+            </h1>
+            <TableComponent address={account.address}/>
+          </>}
         </section>
       </div>
     </main>
@@ -279,7 +281,7 @@ function TabContent(props: { leftActive: any; }) {
   );
 }
 
-const TableComponent = () => {
+const TableComponent = (props: any) => {
   const [searchTerm, setSearchTerm] = useState('');
   
   const [sortColumn, setSortColumn] = useState('estApr');
@@ -325,6 +327,11 @@ const TableComponent = () => {
       const aprB = b.apr.forwardAPR.netAPR;
       if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
       if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
+    } else if (sortColumn === 'histApr') {
+      const aprA = a.apr.netAPR;
+      const aprB = b.apr.netAPR;
+      if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
+      if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
     }
     return 0;
   });
@@ -339,13 +346,13 @@ const TableComponent = () => {
         address: vault.address,
         abi: erc20ABI,
         functionName: 'balanceOf',
-        args: [vault.address],
+        args: [props.address],
       },
       {
         address: vault.token.address,
         abi: erc20ABI,
         functionName: 'balanceOf',
-        args: [vault.address],
+        args: [props.address],
       },
     ]),
   });
@@ -407,56 +414,40 @@ const TableComponent = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item:any, index) => (
+            {filteredData.map((item:any, index) => console.log(contractReads.data) || (
               <tr key={index} className="hover:bg-blue">
-                <td className="text-lg py-4 cursor-pointer pl-8">{item.name}</td>
-                <td className="text-lg font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
-                <td className="text-lg font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
-                <td className="text-lg font-mono py-4 cursor-pointer">
-                  {contractReads.data?.[index * 2 + 1] ? (
+                <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2 font-bold"><Image src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
+                <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
+                <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
+                <td className="text-md font-mono py-4 cursor-pointer">
+                  {contractReads.data?.[index * 2] ? (
                     <>
-                      {formatUnits(contractReads.data[index * 2 + 1], item.token.decimals)}
-                      <br />
-                      <span className="text-sm opacity-70">
-                        ${(Number(formatUnits(contractReads.data[index * 2 + 1], item.token.decimals)) * item.tvl.price).toFixed(2)}
-                      </span>
-                    </>
-                  ) : (
-                    '-'
-                  )} 
-                </td>
-                <td className="text-lg font-mono py-4 cursor-pointer">
-                  {contractReads.data?.[index * 2 + 1]?.status === 'success' && typeof contractReads.data[index * 2 + 1].result === 'bigint' ? (
-                    <>
-                      {formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)}
-                      <br />
-                      <span className="text-sm opacity-70">
-                        ${(Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)) * item.tvl.price).toFixed(2)}
-                      </span>
+                      {Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <p className="text-xs opacity-40">
+                        ${(Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)) * item.tvl.price).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                      </p>
                     </>
                   ) : (
                     '-'
                   )}
                 </td>
-                <td className="text-lg font-mono py-4 cursor-pointer">
-                  {contractReads.data?.[index * 2]?.status === 'success' && typeof contractReads.data[index * 2].result === 'bigint' ? (
+                <td className="text-md font-mono py-4 cursor-pointer">
+                  {contractReads.data?.[index * 2] ? (
                     <>
-                      {formatUnits(contractReads.data[index * 2].result, item.decimals)}
-                      <br />
-                      <span className="text-sm opacity-70">
-                        ${(Number(formatUnits(contractReads.data[index * 2].result, item.decimals)) * item.tvl.price).toFixed(2)}
-                      </span>
+                      {Number(formatUnits(contractReads.data[index * 2].result, item.decimals)).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <p className="text-xs opacity-40">
+                        ${(Number(formatUnits(contractReads.data[index * 2].result, item.decimals)) * item.tvl.price).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                      </p>
                     </>
                   ) : (
                     '-'
                   )}
                 </td>
-                <td className="text-lg font-mono py-4 cursor-pointer pr-8">
+                <td className="text-md font-mono py-4 cursor-pointer pr-8">
                   {item.tvl.totalAssets ? (
                     <>
-                      {formatUnits(BigInt(item.tvl.totalAssets), item.decimals)}
-                      <br />
-                      <span className="text-sm opacity-70">${item.tvl.tvl.toFixed(2)}</span>
+                      {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
                     </>
                   ) : (
                     '-'
