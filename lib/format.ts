@@ -9,7 +9,7 @@ export function fAddress(address: `0x${string}`) {
 }
 
 export function fUSD(amount: number, options?: { fixed?: number }) {
-  return fNumber(amount, { ...options, prefix: 'USD' })
+  return fNumber(amount, { ...options, prefix: '$' })
 }
 
 export function fTokens(amount: bigint, decimals: number, options?: { accuracy?: number, padStart?: number }) {

@@ -1,49 +1,10 @@
-import { set, z } from 'zod'
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { UseSimulateContractParameters, useAccount, useConfig, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import env from '@/lib/env'
+import { z } from 'zod'
+import React, { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
+import { UseSimulateContractParameters, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { erc20Abi, zeroAddress } from 'viem'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { readContractsQueryOptions } from 'wagmi/query'
 import { zhexstringSchema } from '@/lib/types'
 import { Task } from '.'
-
-const TokenSchema = z.object({
-  address: zhexstringSchema.default(zeroAddress),
-  symbol: z.string().default(''),
-  name: z.string().default(''),
-  decimals: z.number().default(0),
-  balance: z.bigint().default(0n),
-  allowance: z.bigint().default(0n)
-})
-
-function useToken(address: `0x${string}`) {
-  const account = useAccount()
-
-  const multicall = useSuspenseQuery(
-    readContractsQueryOptions(useConfig(), { contracts: [
-      { address, abi: erc20Abi, functionName: 'symbol' },
-      { address, abi: erc20Abi, functionName: 'name' },
-      { address, abi: erc20Abi, functionName: 'decimals' },
-      { address, abi: erc20Abi, functionName: 'balanceOf', args: [account.address!] },
-      { address, abi: erc20Abi, functionName: 'allowance', args: [account.address!, env.YPRISMA_BOOSTED_STAKER]}
-    ]})
-  )
-
-  if (multicall.error) {
-    console.warn(multicall.error)
-    return { ...multicall, data: TokenSchema.parse({}) }
-  }
-
-  return { ...multicall, data: TokenSchema.parse({
-    address,
-    symbol: multicall.data?.[0]?.result,
-    name: multicall.data?.[1]?.result,
-    decimals: multicall.data?.[2]?.result,
-    balance: multicall.data?.[3]?.result,
-    allowance: multicall.data?.[4]?.result
-  })}
-}
+import useData, { TokenSchema } from '@/hooks/useData'
 
 export const steps = [
   'Input', 'Approve', 'Execute', 'Done'
@@ -137,8 +98,14 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   const [veryFirstStep, setVeryFirstStep] = useState(true)
   const firstStep = useMemo(() => steps.indexOf(step) === 0, [step])
   const lastStep = useMemo(() => steps.indexOf(step) === steps.length - 1, [step])
-  const { data: token, isSuccess: isTokenSuccess, refetch: refetchToken } = useToken(task.asset)
+  const { data, refetch, isSuccess } = useData()
   const [amount, setAmount] = useState(0n)
+
+  const token = useMemo(() => {
+    if (task.asset === data.asset.address) return data.asset
+    if (task.asset === data.locker.address) return data.locker
+    return TokenSchema.parse({})
+  }, [task, data])
 
   const stepForward = useCallback(() => {
     setStep(step => {
@@ -153,7 +120,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   }, [setStep, token, amount, setVeryFirstStep])
 
   const simulateApprove = useSimulateContract({
-    address: isTokenSuccess ? token.address : zeroAddress,
+    address: isSuccess ? token.address : zeroAddress,
     abi: erc20Abi,
     functionName: 'approve',
     args: [task.parameters.address!, amount],
@@ -228,17 +195,13 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     }
   }), [_execute, _executeReceipt, simulateExecute, amount, token])
 
-  useEffect(() => {
-    if(_approveReceipt.isSuccess || _executeReceipt.isSuccess) refetchToken()
-  }, [_approveReceipt, _executeReceipt, refetchToken])
-
   const reset = useCallback(() => {
     setStep(steps[0])
     setAmount(0n)
     _approve.reset()
     _execute.reset()
-    refetchToken()
-  }, [setStep, setAmount, _approve, _execute, refetchToken])
+    refetch()
+  }, [setStep, setAmount, _approve, _execute, refetch])
 
   return <context.Provider value={{ 
     step, 

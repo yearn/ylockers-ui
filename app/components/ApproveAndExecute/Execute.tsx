@@ -4,8 +4,10 @@ import { useProvider } from './provider'
 import { formatUnits } from 'viem'
 import { useEffect, useMemo } from 'react'
 import { fTokens } from '@/lib/format'
+import useData from '@/hooks/useData'
 
 export default function Approve() {
+  const { refetch } = useData()
   const { stepForward, token, amount, execute, verb } = useProvider()
 
   useEffect(() => {
@@ -44,9 +46,10 @@ export default function Approve() {
 
   useEffect(() => {
     if (execute.isSuccess && execute.receipt.isSuccess) {
+      refetch()
       stepForward()
     }
-  }, [execute, stepForward])
+  }, [execute, refetch, stepForward])
 
   const submessage = useMemo(() => {
     if (execute.isError) {
