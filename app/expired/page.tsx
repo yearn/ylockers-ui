@@ -25,7 +25,7 @@ export default function Home() {
                       <h3 className="text-xl font-bold">
                         What is an expired farm?
                       </h3>
-                      <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
+                      <div className="mt-2 flex flex-col space-y-2 text-white font-thin w-2/3">
                         <p>These farms were used in previous versions of yPRISMA while the final contracts were not done, if you have funds deposited in them we recommend migrating away!</p>
                       </div>
                     </div>
