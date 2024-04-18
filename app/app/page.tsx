@@ -67,7 +67,10 @@ export default function Home() {
                   <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
                   <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">{fPercent(data.staker.averageApr)}</span>
                   <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
-                    <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
+                    <div className="flex justify-between items-center pb-4">
+                      <span className="font-semibold text-lg">YOUR POSITION</span>
+                      <span className="font-bold px-2 py-1 bg-disabled-bg rounded-lg text-boost-blue">2x BOOST</span>
+                    </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Staked Amount</span>
                       <span className="font-bold">
@@ -78,10 +81,10 @@ export default function Home() {
                       <span className="font-thin opacity-70	">APR</span>
                       <span className="font-bold">{fPercent(data.staker.accountApr)}</span>
                     </div>
-                    <div className="flex justify-between">
+                    {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Boost Multiplier</span>
                       <span className="font-bold">2x</span>
-                    </div>
+                    </div> */}
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Claimable Rewards</span>
                       <span className="font-bold">
@@ -99,10 +102,10 @@ export default function Home() {
                       <span className="font-thin opacity-70	">Min/Max APR </span>
                       <span className="font-bold">10% {'—>'} 75%</span>
                     </div>
-                    <div className="flex justify-between">
+                    {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Average Boost Multiplier</span>
                       <span className="font-bold">1.7x</span>
-                    </div>
+                    </div> */}
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Total Rewards Last Week</span>
                       <span className="font-bold">$100k</span>
@@ -129,12 +132,9 @@ export default function Home() {
               
             </div>
           </div>
-          {account.address && <>
-            <h1 className="text-4xl p-8 mt-4 font-[700] w-full flex justify-center">
-              Prisma Vaults
-            </h1>
+          <div className="mt-8">
             <TableComponent address={account.address}/>
-          </>}
+          </div>
         </section>
       </div>
     </main>
@@ -341,7 +341,7 @@ const TableComponent = (props: any) => {
   );
 
   const contractReads = useContractReads({
-    contracts: filteredVaultData.flatMap((vault: any) => [
+    contracts: props.address ? filteredVaultData.flatMap((vault: any) => [
       {
         address: vault.address,
         abi: erc20Abi,
@@ -354,22 +354,27 @@ const TableComponent = (props: any) => {
         functionName: 'balanceOf',
         args: [props.address],
       },
-    ]),
+    ]) : [],
   });
   
   return (
     <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
-      <div className="p-8 w-1/2">
-        <InputBox
-          // type="text"
-          subtitle=""
-          title="Search"
-          value={searchTerm}
-          onChange={(e:any) => setSearchTerm(e.target.value)}
-          noButton
-          inputType="text"
-          placeholder="vault or strategy name..."
-        />
+      <div className="flex items-center justify-between w-full">
+        <h1 className="text-5xl p-8 font-[700]">
+          Prisma Vaults
+        </h1>
+        <div className="p-8 w-2/3">
+          <InputBox
+            // type="text"
+            subtitle=""
+            title="Search"
+            value={searchTerm}
+            onChange={(e:any) => setSearchTerm(e.target.value)}
+            noButton
+            inputType="text"
+            placeholder="Vault or strategy name..."
+          />
+        </div>
       </div>
       <div className="pb-4">
         <table className="w-full text-left">
