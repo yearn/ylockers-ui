@@ -20,7 +20,7 @@ import Tokens from "../components/Tokens";
 import Flipper from "../components/Flipper";
 
 import { useContractReads } from 'wagmi';
-import erc20ABI from '../abis/erc20.json';
+import { erc20Abi } from 'viem';
 import { formatUnits } from 'viem';
 
 
@@ -344,13 +344,13 @@ const TableComponent = (props: any) => {
     contracts: filteredVaultData.flatMap((vault: any) => [
       {
         address: vault.address,
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: [props.address],
       },
       {
         address: vault.token.address,
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: [props.address],
       },
@@ -416,15 +416,17 @@ const TableComponent = (props: any) => {
           <tbody>
             {filteredData.map((item:any, index) => (
               <tr key={index} className="hover:bg-blue">
-                <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2 font-bold"><Image src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
+                <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2 font-bold"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
                 <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
                 <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
                 <td className="text-md font-mono py-4 cursor-pointer">
                   {contractReads.data?.[index * 2] ? (
                     <>
-                      {Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      {/* @ts-ignore */}
+                      {Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       <p className="text-xs opacity-40">
-                        ${(Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)) * item.tvl.price).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        {/* @ts-ignore */}
+                        ${(Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)) * item.tvl.price).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </p>
                     </>
                   ) : (
@@ -434,9 +436,11 @@ const TableComponent = (props: any) => {
                 <td className="text-md font-mono py-4 cursor-pointer">
                   {contractReads.data?.[index * 2] ? (
                     <>
-                      {Number(formatUnits(contractReads.data[index * 2].result, item.decimals)).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      {/* @ts-ignore */}
+                      {Number(formatUnits(contractReads.data[index * 2].result, item.decimals)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       <p className="text-xs opacity-40">
-                        ${(Number(formatUnits(contractReads.data[index * 2].result, item.decimals)) * item.tvl.price).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        {/* @ts-ignore */}
+                        ${(Number(formatUnits(contractReads.data[index * 2].result, item.decimals)) * item.tvl.price).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </p>
                     </>
                   ) : (
@@ -446,8 +450,8 @@ const TableComponent = (props: any) => {
                 <td className="text-md font-mono py-4 cursor-pointer pr-8">
                   {item.tvl.totalAssets ? (
                     <>
-                      {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+                      {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
                     </>
                   ) : (
                     '-'
