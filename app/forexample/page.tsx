@@ -16,6 +16,10 @@ export default function ForExample() {
           functionName: 'deposit'
         }
       }} />
+
+      <div className="relative w-96 h-64 bg-dark-blue rounded-lg rainbow">
+
+      </div>
     </div>
     {/* <Erc20 address={env.PRISMA} className="p-24 border border-charge-red text-charge-red rounded-lg" /> */}
   </div>
