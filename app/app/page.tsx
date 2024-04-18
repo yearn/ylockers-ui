@@ -414,7 +414,7 @@ const TableComponent = (props: any) => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item:any, index) => console.log(contractReads.data) || (
+            {filteredData.map((item:any, index) => (
               <tr key={index} className="hover:bg-blue">
                 <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2 font-bold"><Image src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
                 <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
