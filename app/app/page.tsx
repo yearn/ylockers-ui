@@ -18,6 +18,7 @@ import abis from "../abis";
 import useData from "@/hooks/useData";
 import Tokens from "../components/Tokens";
 import Flipper from "../components/Flipper";
+import ClaimAll from "../components/ClaimAll";
 
 
 
@@ -221,7 +222,7 @@ function TabContent(props: { leftActive: any; }) {
             <span className="font-semibold text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
             <span className="font-thin opacity-70">{fTokens(data.rewards.claimable, data.rewards.decimals)} yvmkUSD-A</span>
             <div>
-              <Button>Claim All</Button>
+              <ClaimAll />
             </div>
             </div>
             <div className="flex flex-col space-y-4 w-1/2 p-8 pt-0 mt-6">

@@ -1,4 +1,4 @@
-import { formatUnits } from "viem"
+import { formatUnits } from 'viem'
 
 export function fPercent (amount: number, fixed?: number) {
   return `${(amount * 100).toFixed(fixed || 2)}%`

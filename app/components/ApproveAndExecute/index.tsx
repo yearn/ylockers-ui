@@ -22,7 +22,7 @@ const steps: {
 function Provided() {
   const { title, step, veryFirstStep, firstStep, lastStep, reset } = useProvider()
   return <div className="flex flex-col gap-2">
-    <div><span className="font-thin text-md">{title}</span></div>
+    <div className="font-thin text-md">{title}</div>
     <div className="relative w-full h-[64px] flex items-start">
       <motion.div key={step}
         className="w-full"
