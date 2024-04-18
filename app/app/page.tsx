@@ -19,6 +19,10 @@ import useData from "@/hooks/useData";
 import Tokens from "../components/Tokens";
 import Flipper from "../components/Flipper";
 
+import { useContractReads } from 'wagmi';
+import erc20ABI from '../abis/erc20.json';
+import { formatUnits } from 'viem';
+
 
 
 export default function Home() {
@@ -328,6 +332,23 @@ const TableComponent = () => {
   const filteredData = sortedData.filter((vault:any) =>
     vault.token.display_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const contractReads = useContractReads({
+    contracts: filteredVaultData.flatMap((vault: any) => [
+      {
+        address: vault.address,
+        abi: erc20ABI,
+        functionName: 'balanceOf',
+        args: [vault.address],
+      },
+      {
+        address: vault.token.address,
+        abi: erc20ABI,
+        functionName: 'balanceOf',
+        args: [vault.address],
+      },
+    ]),
+  });
   
   return (
     <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
@@ -391,9 +412,56 @@ const TableComponent = () => {
                 <td className="text-lg py-4 cursor-pointer pl-8">{item.name}</td>
                 <td className="text-lg font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
                 <td className="text-lg font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
-                <td className="text-lg font-mono py-4 cursor-pointer">{item.available}</td>
-                <td className="text-lg font-mono py-4 cursor-pointer">{item.holdings}</td>
-                <td className="text-lg font-mono py-4 cursor-pointer pr-8">{item.deposits}</td>
+                <td className="text-lg font-mono py-4 cursor-pointer">
+                  {contractReads.data?.[index * 2 + 1] ? (
+                    <>
+                      {formatUnits(contractReads.data[index * 2 + 1], item.token.decimals)}
+                      <br />
+                      <span className="text-sm opacity-70">
+                        ${(Number(formatUnits(contractReads.data[index * 2 + 1], item.token.decimals)) * item.tvl.price).toFixed(2)}
+                      </span>
+                    </>
+                  ) : (
+                    '-'
+                  )} 
+                </td>
+                <td className="text-lg font-mono py-4 cursor-pointer">
+                  {contractReads.data?.[index * 2 + 1]?.status === 'success' && typeof contractReads.data[index * 2 + 1].result === 'bigint' ? (
+                    <>
+                      {formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)}
+                      <br />
+                      <span className="text-sm opacity-70">
+                        ${(Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)) * item.tvl.price).toFixed(2)}
+                      </span>
+                    </>
+                  ) : (
+                    '-'
+                  )}
+                </td>
+                <td className="text-lg font-mono py-4 cursor-pointer">
+                  {contractReads.data?.[index * 2]?.status === 'success' && typeof contractReads.data[index * 2].result === 'bigint' ? (
+                    <>
+                      {formatUnits(contractReads.data[index * 2].result, item.decimals)}
+                      <br />
+                      <span className="text-sm opacity-70">
+                        ${(Number(formatUnits(contractReads.data[index * 2].result, item.decimals)) * item.tvl.price).toFixed(2)}
+                      </span>
+                    </>
+                  ) : (
+                    '-'
+                  )}
+                </td>
+                <td className="text-lg font-mono py-4 cursor-pointer pr-8">
+                  {item.tvl.totalAssets ? (
+                    <>
+                      {formatUnits(BigInt(item.tvl.totalAssets), item.decimals)}
+                      <br />
+                      <span className="text-sm opacity-70">${item.tvl.tvl.toFixed(2)}</span>
+                    </>
+                  ) : (
+                    '-'
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
