@@ -390,7 +390,7 @@ const TableComponent = () => {
               <tr key={index} className="hover:bg-blue">
                 <td className="text-lg py-4 cursor-pointer pl-8">{item.name}</td>
                 <td className="text-lg font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
-                <td className="text-lg font-mono py-4 cursor-pointer">{item.histApr}</td>
+                <td className="text-lg font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
                 <td className="text-lg font-mono py-4 cursor-pointer">{item.available}</td>
                 <td className="text-lg font-mono py-4 cursor-pointer">{item.holdings}</td>
                 <td className="text-lg font-mono py-4 cursor-pointer pr-8">{item.deposits}</td>
