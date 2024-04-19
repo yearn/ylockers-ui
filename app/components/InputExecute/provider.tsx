@@ -1,21 +1,21 @@
 import { z } from 'zod'
-import React, { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { UseSimulateContractParameters, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { erc20Abi, zeroAddress } from 'viem'
 import { zhexstringSchema } from '@/lib/types'
-import { Task } from '.'
 import useData, { TokenSchema } from '@/hooks/useData'
 
-export const steps = [
-  'Input', 'Approve', 'Execute', 'Done'
-] as const
+export const TaskSchema = z.object({
+  verb: z.string().default(''),
+  token: TokenSchema.default({}),
+  parameters: z.object({
+    address: zhexstringSchema.default(zeroAddress),
+    abi: z.any().default([]),
+    functionName: z.string().default(''),
+  }).default({})
+})
 
-export const StepSchema = z.enum(steps)
-export type Step = z.infer<typeof StepSchema>
-
-const setStepSchema = z.function()
-.args(StepSchema.or(z.function().args(StepSchema).returns(StepSchema)))
-.returns(z.void())
+export type Task = z.infer<typeof TaskSchema>
 
 const setAmountSchema = z.function()
 .args(z.bigint().or(z.function().args(z.bigint()).returns(z.bigint())))
@@ -49,14 +49,15 @@ const ContractClientSchema = z.object({
   simulation: z.object({
     status: ContractSimulationStatusSchema.default('pending'),
     disabled: z.boolean().default(true),
-    isPending: z.boolean().default(true),
+    isPending: z.boolean().default(false),
     isSuccess: z.boolean().default(false),
     isError: z.boolean().default(false),
     error: z.string().nullish(),
   }).default({}),
   receipt: z.object({
     status: ContractReceiptStatusSchema.default('pending'),
-    isPending: z.boolean().default(true),
+    isPending: z.boolean().default(false),
+    isLoading: z.boolean().default(false),
     isSuccess: z.boolean().default(false),
     isError: z.boolean().default(false),
     error: z.string().nullish(),
@@ -64,18 +65,17 @@ const ContractClientSchema = z.object({
 })
 
 const ContextSchema = z.object({
-  step: StepSchema.default(StepSchema.Enum.Input),
-  setStep: setStepSchema.default(() => {}),
-  stepForward: z.function().default(() => {}),
-  veryFirstStep: z.boolean().default(true),
-  firstStep: z.boolean().default(true),
-  lastStep: z.boolean().default(false),
+  task: TaskSchema.default({}),
+  needsApproval: z.boolean().default(false),
+  isApproved: z.boolean().default(false),
+  isExecuted: z.boolean().default(false),
+  isError: z.boolean().default(false),
+  error: z.string().nullish(),
   token: TokenSchema.default(TokenSchema.parse({})),
   amount: z.bigint().default(0n),
   setAmount: setAmountSchema.default(() => {}),
   approve: ContractClientSchema.default({}),
   execute: ContractClientSchema.default({}),
-  title: z.string().default(''),
   verb: z.string().default(''),
   reset: z.function().default(() => {})
 })
@@ -83,8 +83,6 @@ const ContextSchema = z.object({
 type Context = z.infer<typeof ContextSchema>
 
 export const context = createContext<Context>(ContextSchema.parse({ 
-  setStep: () => {},
-  stepForward: () => {},
   setAmount: () => {},
   approve: { write: () => {} },
   execute: { write: () => {} },
@@ -94,36 +92,21 @@ export const context = createContext<Context>(ContextSchema.parse({
 export const useProvider = () => useContext(context)
 
 export default function Provider({ task, children }: { task: Task, children: ReactNode }) {
-	const [step, setStep] = useState<Step>(StepSchema.Enum.Input)
-  const [veryFirstStep, setVeryFirstStep] = useState(true)
-  const firstStep = useMemo(() => steps.indexOf(step) === 0, [step])
-  const lastStep = useMemo(() => steps.indexOf(step) === steps.length - 1, [step])
-  const { data, refetch, isSuccess } = useData()
+  const { refetch } = useData()
   const [amount, setAmount] = useState(0n)
+  const [isApproved, setIsApproved] = useState(false)
+  const [isExecuted, setIsExecuted] = useState(false)
+  const { token } = task
 
-  const token = useMemo(() => {
-    if (task.asset === data.asset.address) return data.asset
-    if (task.asset === data.locker.address) return data.locker
-    return TokenSchema.parse({})
-  }, [task, data])
-
-  const stepForward = useCallback(() => {
-    setStep(step => {
-      const current = steps.indexOf(step)
-      const next = (current + 1) % steps.length
-      if (steps[next] === 'Approve' && token.allowance >= amount) {
-        return steps[next + 1]
-      }
-      return steps[next]
-    })
-    setVeryFirstStep(false)
-  }, [setStep, token, amount, setVeryFirstStep])
+  const needsApproval = useMemo(() => {
+    return token.allowance < amount
+  }, [token, amount])
 
   const simulateApprove = useSimulateContract({
-    address: isSuccess ? token.address : zeroAddress,
+    address: token.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [task.parameters.address!, amount],
+    args: [task.parameters.address!, token.balance],
     query: { enabled: amount > 0n }
   })
 
@@ -150,11 +133,19 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     receipt: {
       status: _approveReceipt.status,
       isPending: _approveReceipt.isPending,
+      isLoading: _approveReceipt.isLoading,
       isSuccess: _approveReceipt.isSuccess,
       isError: _approveReceipt.isError,
       error: _approveReceipt.error?.toString()
     }
   }), [_approve, _approveReceipt, simulateApprove, amount])
+
+  useEffect(() => {
+    if (_approveReceipt.isSuccess && !isApproved) {
+      refetch()
+      setIsApproved(true)
+    }
+  }, [_approveReceipt, refetch, isApproved, setIsApproved])
 
   const executeContractParameters = useMemo<UseSimulateContractParameters>(() => 
     ({
@@ -189,33 +180,42 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     receipt: {
       status: _executeReceipt.status,
       isPending: _executeReceipt.isPending,
+      isLoading: _executeReceipt.isLoading,
       isSuccess: _executeReceipt.isSuccess,
       isError: _executeReceipt.isError,
       error: _executeReceipt.error?.toString()
     }
   }), [_execute, _executeReceipt, simulateExecute, amount, token])
 
+  useEffect(() => {
+    if (_executeReceipt.isSuccess && !isExecuted) {
+      refetch()
+      setIsExecuted(true)
+    }
+  }, [_executeReceipt, refetch, isExecuted, setIsExecuted])
+
+  const isError = useMemo(() => approve.isError || execute.isError, [approve, execute])
+  const error = useMemo(() => approve.error || execute.error, [approve, execute])
+
   const reset = useCallback(() => {
-    setStep(steps[0])
     setAmount(0n)
     _approve.reset()
     _execute.reset()
     refetch()
-  }, [setStep, setAmount, _approve, _execute, refetch])
+  }, [setAmount, _approve, _execute, refetch])
 
   return <context.Provider value={{ 
-    step, 
-    setStep, 
-    stepForward,
-    veryFirstStep,
-    firstStep,
-    lastStep,
+    task,
+    needsApproval,
+    isApproved,
+    isExecuted,
+    isError,
+    error,
     token,
     amount,
     setAmount,
     approve,
     execute,
-    title: task.title,
     verb: task.verb,
     reset
     }}>
