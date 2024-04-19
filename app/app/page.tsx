@@ -332,6 +332,25 @@ const TableComponent = (props: any) => {
       const aprB = b.apr.netAPR;
       if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
       if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
+    } else if (sortColumn === 'available') {
+      /* @ts-ignore */
+      const availableA = getAvailable(filteredVaultData.indexOf(a))?.usdValue || 0;
+      /* @ts-ignore */
+      const availableB = getAvailable(filteredVaultData.indexOf(b))?.usdValue || 0;
+      if (availableA < availableB) return sortDirection === 'asc' ? -1 : 1;
+      if (availableA > availableB) return sortDirection === 'asc' ? 1 : -1;
+    } else if (sortColumn === 'holdings') {
+      /* @ts-ignore */
+      const holdingsA = getHoldings(filteredVaultData.indexOf(a))?.usdValue || 0;
+      /* @ts-ignore */
+      const holdingsB = getHoldings(filteredVaultData.indexOf(b))?.usdValue || 0;
+      if (holdingsA < holdingsB) return sortDirection === 'asc' ? -1 : 1;
+      if (holdingsA > holdingsB) return sortDirection === 'asc' ? 1 : -1;
+    } else if (sortColumn === 'deposits') {
+      const depositsA = a.tvl.tvl;
+      const depositsB = b.tvl.tvl;
+      if (depositsA < depositsB) return sortDirection === 'asc' ? -1 : 1;
+      if (depositsA > depositsB) return sortDirection === 'asc' ? 1 : -1;
     }
     return 0;
   });
@@ -341,7 +360,7 @@ const TableComponent = (props: any) => {
   );
 
   const contractReads = useContractReads({
-    contracts: props.address ? filteredVaultData.flatMap((vault: any) => [
+    contracts: props.address ? filteredData.flatMap((vault: any) => [
       {
         address: vault.address,
         abi: erc20Abi,
@@ -356,6 +375,34 @@ const TableComponent = (props: any) => {
       },
     ]) : [],
   });
+
+  function getHoldings (index: number) {
+    if (contractReads.data && contractReads.data[index * 2]) {
+      const vaultBalance = contractReads.data[index * 2].result;
+      const vault = filteredData[index];
+      return {
+        /* @ts-ignore */
+        balance: Number(formatUnits(vaultBalance, vault.decimals)),
+        /* @ts-ignore */
+        usdValue: Number(formatUnits(vaultBalance, vault.decimals)) * vault.tvl.price,
+      };
+    }
+    return null;
+  };
+
+  function getAvailable (index: number) {
+    if (contractReads.data && contractReads.data[index * 2 + 1]) {
+      const tokenBalance = contractReads.data[index * 2 + 1].result;
+      const vault = filteredData[index];
+      return {
+        /* @ts-ignore */
+        balance: Number(formatUnits(tokenBalance, vault.token.decimals)),
+        /* @ts-ignore */
+        usdValue: Number(formatUnits(tokenBalance, vault.token.decimals)) * vault.tvl.price,
+      };
+    }
+    return null;
+  };
   
   return (
     <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
@@ -419,51 +466,45 @@ const TableComponent = (props: any) => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item:any, index) => (
-              <tr key={index} className="hover:bg-blue">
-                <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2 font-bold"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
-                <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
-                <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
-                <td className="text-md font-mono py-4 cursor-pointer">
-                  {contractReads.data?.[index * 2] ? (
-                    <>
-                      {/* @ts-ignore */}
-                      {Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      <p className="text-xs opacity-40">
-                        {/* @ts-ignore */}
-                        ${(Number(formatUnits(contractReads.data[index * 2 + 1].result, item.token.decimals)) * item.tvl.price).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                      </p>
-                    </>
-                  ) : (
-                    '-'
-                  )}
-                </td>
-                <td className="text-md font-mono py-4 cursor-pointer">
-                  {contractReads.data?.[index * 2] ? (
-                    <>
-                      {/* @ts-ignore */}
-                      {Number(formatUnits(contractReads.data[index * 2].result, item.decimals)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      <p className="text-xs opacity-40">
-                        {/* @ts-ignore */}
-                        ${(Number(formatUnits(contractReads.data[index * 2].result, item.decimals)) * item.tvl.price).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                      </p>
-                    </>
-                  ) : (
-                    '-'
-                  )}
-                </td>
-                <td className="text-md font-mono py-4 cursor-pointer pr-8">
-                  {item.tvl.totalAssets ? (
-                    <>
-                      {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
-                    </>
-                  ) : (
-                    '-'
-                  )}
-                </td>
-              </tr>
-            ))}
+            {filteredData.map((item:any, index) => {
+              const holdings = getHoldings(index);
+              const available = getAvailable(index);
+              return (
+                <tr key={index} className="hover:bg-blue">
+                  <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2 font-bold"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
+                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
+                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
+                  <td className="text-md font-mono py-4 cursor-pointer">
+                    {available ? (
+                      <>
+                        {available.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </>
+                    ) : (
+                      '-'
+                    )}
+                  </td>
+                  <td className="text-md font-mono py-4 cursor-pointer">
+                    {holdings ? (
+                      <>
+                        {holdings.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </>
+                    ) : (
+                      '-'
+                    )}
+                  </td>
+                  <td className="text-md font-mono py-4 cursor-pointer pr-8">
+                    {item.tvl.totalAssets ? (
+                      <>
+                        {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+                      </>
+                    ) : (
+                      '-'
+                    )}
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>

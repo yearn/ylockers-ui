@@ -21,7 +21,7 @@ const queryClient = new QueryClient();
 const config = getDefaultConfig({
   appName: 'yPrisma',
   projectId: '84801a4fb569adb34f184f543b6d1762',
-  chains: env.DEV ? [localhost] : [mainnet],
+  chains: [mainnet],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
