@@ -1,7 +1,8 @@
-import { useCallback, useMemo, type ReactElement } from 'react'
-import { formatUnits } from 'viem'
+import { ChangeEvent, useCallback, useMemo, type ReactElement } from 'react'
+import { formatUnits, maxUint256 } from 'viem'
 import Input from './Input'
 import Button from './Button'
+import { useCall } from 'wagmi'
 
 type Props = {
   decimals: number
@@ -45,14 +46,22 @@ export function InputTokenAmount({
     return BigInt(Number(input) * 10 ** decimals)
   }, [decimals])
 
+  const _onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const value = dehumanize(e.target.value)
+    if (onChange 
+      && (value >= (min || 0n)) 
+      && (value <= (max || maxUint256))) {
+      onChange(value)
+    }
+  }, [onChange, min, max])
+
 	return <div className="relative flex w-full items-center justify-center">
     <Input type="number"
       className={inputClassName}
-      autoComplete="off"
       value={humanize(amount)}
-      onChange={onChange ? (e): void => onChange(dehumanize(e.target.value)) : undefined}
+      onChange={_onChange}
       min={min ? humanize(min) : 0}
-      max={max ? humanize(max) : 0}
+      max={max ? humanize(max) : humanize(maxUint256)}
       step={1}
       placeholder={disabled ? '' : placeholder ?? '0'}
       disabled={disabled}

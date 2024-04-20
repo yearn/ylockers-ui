@@ -13,12 +13,11 @@ import {   useConnectModal,
 import { useAccount } from 'wagmi'
 import { useState } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
-import ApproveAndExecute from "../components/ApproveAndExecute";
-import abis from "../abis";
 import useData from "@/hooks/useData";
 import Tokens from "../components/Tokens";
 import Flipper from "../components/Flipper";
 import ClaimAll from "../components/ClaimAll";
+import Stake from "../components/Stake";
 
 
 
@@ -180,17 +179,9 @@ function TabContent(props: { leftActive: any; }) {
       <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
-              <ApproveAndExecute task={{
-                title: 'Stake yPRISMA',
-                verb: 'stake',
-                asset: data.locker.address,
-                parameters: {
-                  address: data.staker.address,
-                  abi: abis.YearnBoostedStaker,
-                  functionName: 'deposit'
-                }
-              }} />
+            <div className="flex flex-col p-8 pt-0 mt-6 w-1/2">
+              <span className="font-thin pb-1 text-md">{'Stake yPRISMA'}</span>
+              <Stake />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>

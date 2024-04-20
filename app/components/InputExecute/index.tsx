@@ -50,9 +50,10 @@ function Provided({ className }: { className?: string }) {
 
   const label = useMemo(() => {
     if (!account.isConnected) return 'Connect'
-    if (needsApproval) return 'Approve'
+    if (needsApproval && !approve.receipt.isLoading) return 'Approve'
+    if (approve.receipt.isLoading || execute.receipt.isLoading) return 'Confirming'
     return task.verb
-  }, [account, needsApproval, task])
+  }, [account, needsApproval, approve, execute, task])
 
   const subtext = useMemo(() => {
     if (isError) { return {
@@ -61,11 +62,11 @@ function Provided({ className }: { className?: string }) {
     }}
     if (approve.receipt.isLoading) { return {
       key: 'approve-confirming',
-      text: <div>Confirming...</div>
+      text: <div>Confirming approval...</div>
     }}
     if (execute.receipt.isLoading) { return {
       key: 'execute-confirming',
-      text: <div>Confirming...</div>
+      text: <div>{`Confirming ${task.verb}...`}</div>
     }}
     if ((!needsApproval || isApproved) && execute.receipt.isSuccess) { return {
       key: 'success',
@@ -75,7 +76,7 @@ function Provided({ className }: { className?: string }) {
       key: 'default',
       text: <div>{`You have ${fTokens(token.balance, token.decimals)} ${token.symbol}`}</div>
     }
-  }, [needsApproval, isApproved, isError, approve, execute, amount])
+  }, [needsApproval, isApproved, isError, approve, execute, task, amount])
 
   useEffect(() => {
     if (isError) console.error(error)

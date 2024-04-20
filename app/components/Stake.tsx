@@ -1,7 +1,7 @@
 'use client'
 
 import useData from '@/hooks/useData'
-import InputExecute from '../components/InputExecute'
+import InputExecute from './InputExecute'
 import env from '@/lib/env'
 import abis from '../abis'
 
