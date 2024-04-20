@@ -41,7 +41,7 @@ function Provided({ className }: { className?: string }) {
   const disabled = useMemo(() => 
     account.isConnected 
     && (!hasBalance || amount === 0n)
-  , [hasBalance, amount])
+  , [account, hasBalance, amount])
 
   const verbPastTense = useMemo(() => {
     const doc = nlp(task.verb)
@@ -77,7 +77,7 @@ function Provided({ className }: { className?: string }) {
       key: 'default',
       text: <div>{`You have ${fTokens(token.balance, token.decimals)} ${token.symbol}`}</div>
     }
-  }, [needsApproval, isApproved, isError, approve, execute, task, amount])
+  }, [needsApproval, isApproved, isError, approve, execute, task, verbPastTense, amountExecuted, token])
 
   useEffect(() => {
     if (isError) console.error(error)
@@ -100,7 +100,7 @@ function Provided({ className }: { className?: string }) {
     } else {
       execute.write()
     }
-  }, [approve, execute, openConnectModal, needsApproval])
+  }, [account, approve, execute, openConnectModal, needsApproval])
 
   return <div className={`flex flex-col gap-2 ${className}`}>
     <div className="flex gap-2">

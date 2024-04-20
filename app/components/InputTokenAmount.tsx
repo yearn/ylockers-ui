@@ -53,7 +53,7 @@ export function InputTokenAmount({
       && (value <= (max !== undefined ? max : maxUint256))) {
       onChange(value)
     }
-  }, [onChange, min, max])
+  }, [onChange, min, max, dehumanize])
 
 	return <div className="relative flex w-full items-center justify-center">
     <Input type="number"
