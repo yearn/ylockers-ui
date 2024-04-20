@@ -3,6 +3,7 @@ import Erc20 from './Erc20'
 import env from '@/lib/env'
 import abis from '../abis'
 import Stake from './Stake'
+import Button from '../components/Button'
 
 export default function ForExample() {
   return <div className="w-full min-h-screen px-96 flex flex-col items-center justify-center gap-12">

@@ -30,8 +30,12 @@ function Provided({ className }: { className?: string }) {
   const { openConnectModal } = useConnectModal()
   const account = useAccount()
   const { data } = useData()
-  const { task, token, amount, setAmount, needsApproval, approve, execute, isError, error, reset } = useProvider()
   const hasBalance = useMemo(() => data.locker.balance > 0n, [data])
+  const {
+    task, token, amount, setAmount, 
+    needsApproval, approve, execute, amountExecuted, 
+    isApproved, isError, error, reset 
+  } = useProvider()
 
   const disabled = useMemo(() => 
     account.isConnected 
@@ -50,21 +54,28 @@ function Provided({ className }: { className?: string }) {
     return task.verb
   }, [account, needsApproval, task])
 
-  const subtextKey = useMemo(() => {
-    if (isError) return 'error'
-    if (approve.receipt.isLoading) 'confirming'
-    if (execute.receipt.isLoading) 'confirming'
-    if (execute.receipt.isSuccess) 'success'
-    return 'default'
-  }, [isError, approve, execute])
-
   const subtext = useMemo(() => {
-    if (isError) return <div>🛑 Error! Please contact support</div>
-    if (approve.receipt.isLoading) return <div>Confirming...</div>
-    if (execute.receipt.isLoading) return <div>Confirming...</div>
-    if (execute.receipt.isSuccess) return <GreatSuccess hash={execute.hash!} message={`You ${verbPastTense} ${fTokens(amount, token.decimals)} ${token.symbol}!`} />
-    return <div>{`You have ${fTokens(token.balance, token.decimals)} ${token.symbol}`}</div>
-  }, [isError, approve, execute, amount])
+    if (isError) { return {
+      key: 'error',
+      text: <div>🛑 Error! Please contact support</div>
+    }}
+    if (approve.receipt.isLoading) { return {
+      key: 'approve-confirming',
+      text: <div>Confirming...</div>
+    }}
+    if (execute.receipt.isLoading) { return {
+      key: 'execute-confirming',
+      text: <div>Confirming...</div>
+    }}
+    if ((!needsApproval || isApproved) && execute.receipt.isSuccess) { return {
+      key: 'success',
+      text: <GreatSuccess hash={execute.hash!} message={`You ${verbPastTense} ${fTokens(amountExecuted, token.decimals)} ${token.symbol}!`} />
+    }}
+    return {
+      key: 'default',
+      text: <div>{`You have ${fTokens(token.balance, token.decimals)} ${token.symbol}`}</div>
+    }
+  }, [needsApproval, isApproved, isError, approve, execute, amount])
 
   useEffect(() => {
     if (isError) console.error(error)
@@ -116,12 +127,12 @@ function Provided({ className }: { className?: string }) {
     </div>
     <div className={`pl-3 font-thin text-xs ${isError ? 'text-charge-yellow' : 'opacity-70'}`}>
       <AnimatePresence initial={false} mode="popLayout">
-        <motion.div key={subtextKey}
+        <motion.div key={subtext.key}
           transition={springs.rollin}
           initial={{ x: 40, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -40, opacity: 0 }} >
-          {subtext}
+          {subtext.text}
         </motion.div>
       </AnimatePresence>
     </div>

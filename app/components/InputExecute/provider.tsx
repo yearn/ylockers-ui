@@ -76,6 +76,7 @@ const ContextSchema = z.object({
   setAmount: setAmountSchema.default(() => {}),
   approve: ContractClientSchema.default({}),
   execute: ContractClientSchema.default({}),
+  amountExecuted: z.bigint().default(0n),
   verb: z.string().default(''),
   reset: z.function().default(() => {})
 })
@@ -94,58 +95,10 @@ export const useProvider = () => useContext(context)
 export default function Provider({ task, children }: { task: Task, children: ReactNode }) {
   const { refetch } = useData()
   const [amount, setAmount] = useState(0n)
+  const [amountExecuted, setAmountExecuted] = useState(0n)
   const [isApproved, setIsApproved] = useState(false)
   const [isExecuted, setIsExecuted] = useState(false)
   const { token } = task
-
-  const needsApproval = useMemo(() => {
-    return token.allowance < amount
-  }, [token, amount])
-
-  const simulateApprove = useSimulateContract({
-    address: token.address,
-    abi: erc20Abi,
-    functionName: 'approve',
-    args: [task.parameters.address!, token.balance],
-    query: { enabled: amount > 0n }
-  })
-
-  const _approve = useWriteContract()
-  const _approveReceipt = useWaitForTransactionReceipt({ hash: _approve.data })
-  const approve = useMemo(() => ({
-    write: () => _approve.writeContract(simulateApprove.data!.request),
-    hash: _approve.data,
-    disabled: !Boolean(simulateApprove.data?.request),
-    status: _approve.status,
-    isIdle: _approve.isIdle,
-    isPending: _approve.isPending,
-    isSuccess: _approve.isSuccess,
-    isError: _approve.isError,
-    error: _approve.error?.toString(),
-    simulation: {
-      status: simulateApprove.status,
-      disabled: amount < 1n,
-      isPending: simulateApprove.isPending,
-      isSuccess: simulateApprove.isSuccess,
-      isError: simulateApprove.isError,
-      error: simulateApprove.error?.toString()
-    },
-    receipt: {
-      status: _approveReceipt.status,
-      isPending: _approveReceipt.isPending,
-      isLoading: _approveReceipt.isLoading,
-      isSuccess: _approveReceipt.isSuccess,
-      isError: _approveReceipt.isError,
-      error: _approveReceipt.error?.toString()
-    }
-  }), [_approve, _approveReceipt, simulateApprove, amount])
-
-  useEffect(() => {
-    if (_approveReceipt.isSuccess && !isApproved) {
-      refetch()
-      setIsApproved(true)
-    }
-  }, [_approveReceipt, refetch, isApproved, setIsApproved])
 
   const executeContractParameters = useMemo<UseSimulateContractParameters>(() => 
     ({
@@ -160,7 +113,11 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   const _execute = useWriteContract()
   const _executeReceipt = useWaitForTransactionReceipt({ hash: _execute.data })
   const execute = useMemo(() => ({
-    write: () => _execute.writeContract(simulateExecute.data!.request),
+    write: () => {
+      setIsExecuted(false)
+      _execute.writeContract(simulateExecute.data!.request)
+      setAmountExecuted(amount)
+    },
     hash: _execute.data,
     disabled: !Boolean(simulateExecute.data?.request),
     status: _execute.status,
@@ -185,16 +142,76 @@ export default function Provider({ task, children }: { task: Task, children: Rea
       isError: _executeReceipt.isError,
       error: _executeReceipt.error?.toString()
     }
-  }), [_execute, _executeReceipt, simulateExecute, amount, token])
+  }), [setIsExecuted, _execute, _executeReceipt, simulateExecute, amount, setAmountExecuted, token])
 
   useEffect(() => {
     if (_executeReceipt.isSuccess && !isExecuted) {
       refetch()
       setIsExecuted(true)
+      setAmount(0n)
     }
-  }, [_executeReceipt, refetch, isExecuted, setIsExecuted])
+  }, [_executeReceipt, refetch, isExecuted, setIsExecuted, setAmount])
 
-  const isError = useMemo(() => approve.isError || execute.isError, [approve, execute])
+  const needsApproval = useMemo(() => {
+    return token.allowance < amount
+  }, [token, amount])
+
+  const simulateApprove = useSimulateContract({
+    address: token.address,
+    abi: erc20Abi,
+    functionName: 'approve',
+    args: [task.parameters.address!, token.balance],
+    query: { enabled: needsApproval && amount > 0n }
+  })
+
+  const _approve = useWriteContract()
+  const _approveReceipt = useWaitForTransactionReceipt({ hash: _approve.data })
+  const approve = useMemo(() => ({
+    write: () => {
+      setIsApproved(false)
+      _approve.writeContract(simulateApprove.data!.request)
+    },
+    hash: _approve.data,
+    disabled: !Boolean(simulateApprove.data?.request),
+    status: _approve.status,
+    isIdle: _approve.isIdle,
+    isPending: _approve.isPending,
+    isSuccess: _approve.isSuccess,
+    isError: _approve.isError,
+    error: _approve.error?.toString(),
+    simulation: {
+      status: simulateApprove.status,
+      disabled: amount < 1n,
+      isPending: simulateApprove.isPending,
+      isSuccess: simulateApprove.isSuccess,
+      isError: simulateApprove.isError,
+      error: simulateApprove.error?.toString()
+    },
+    receipt: {
+      status: _approveReceipt.status,
+      isPending: _approveReceipt.isPending,
+      isLoading: _approveReceipt.isLoading,
+      isSuccess: _approveReceipt.isSuccess,
+      isError: _approveReceipt.isError,
+      error: _approveReceipt.error?.toString()
+    }
+  }), [setIsApproved, _approve, _approveReceipt, simulateApprove, amount])
+
+  useEffect(() => {
+    if (_approveReceipt.isSuccess && !isApproved) {
+      _execute.reset()
+      refetch()
+      setIsApproved(true)
+    }
+  }, [_execute, _approveReceipt, refetch, isApproved, setIsApproved])
+
+  const isError = useMemo(() => 
+    (approve.isError 
+    && !approve.error?.toString().includes('User denied transaction signature'))
+    || (execute.isError
+    && !execute.error?.toString().includes('User denied transaction signature')), 
+  [approve, execute])
+  
   const error = useMemo(() => approve.error || execute.error, [approve, execute])
 
   const reset = useCallback(() => {
@@ -216,6 +233,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     setAmount,
     approve,
     execute,
+    amountExecuted,
     verb: task.verb,
     reset
     }}>
