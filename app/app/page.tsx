@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Button from "../components/Button";
 import InputBox from "../components/InputBox";
 import Header, { headerItems } from "../components/Header";
 import { useSearchParams } from 'next/navigation';
@@ -19,6 +18,7 @@ import Flipper from "../components/Flipper";
 import ClaimAll from "../components/ClaimAll";
 import Stake from "../components/Stake";
 import Unstake from "../components/Unstake";
+import Mint from "../components/Mint";
 
 
 
@@ -231,9 +231,10 @@ function TabContent(props: { leftActive: any; }) {
         )}
         {tab === 'get' && (
           <div className="flex">
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <InputBox title="Mint yPRISMA from PRISMA" button="Mint" subtitle="You have 0,00 PRISMA" />
-              <div className="flex flex-col space-y-4">
+            <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
+              <span className="font-thin pb-1 text-md">Mint yPRISMA from PRISMA</span>
+              <Mint />
+              <div className="mt-4 flex flex-col space-y-4">
                 <p className="font-thin opacity-70">
                 {`Convert your PRISMA to yPRISMA. To ensure you receive the maximum amount of yPRISMA, the zapper will either mint new yPRISMA or swap via the Curve pool.`}
                 </p>
