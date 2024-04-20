@@ -49,8 +49,8 @@ export function InputTokenAmount({
   const _onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const value = dehumanize(e.target.value)
     if (onChange 
-      && (value >= (min || 0n)) 
-      && (value <= (max || maxUint256))) {
+      && (value >= (min !== undefined ? min : 0n)) 
+      && (value <= (max !== undefined ? max : maxUint256))) {
       onChange(value)
     }
   }, [onChange, min, max])
@@ -60,14 +60,14 @@ export function InputTokenAmount({
       className={inputClassName}
       value={humanize(amount)}
       onChange={_onChange}
-      min={min ? humanize(min) : 0}
-      max={max ? humanize(max) : humanize(maxUint256)}
+      min={humanize(min !== undefined ? min : 0n)}
+      max={humanize(max !== undefined ? max : maxUint256)}
       step={1}
       placeholder={disabled ? '' : placeholder ?? '0'}
       disabled={disabled}
     />
     <Button onClick={onMaxClick ? (): void => onMaxClick() : undefined}
-      className={maxButtonClassName}>
+      className={maxButtonClassName} disabled={disabled}>
       {'Max'}
     </Button>
   </div>

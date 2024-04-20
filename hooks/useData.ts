@@ -15,7 +15,7 @@ export const TokenSchema = z.object({
   symbol: z.string().default(''),
   decimals: z.number().default(0),
   balance: z.bigint().default(0n),
-  allowance: z.bigint().default(0n)  
+  allowance: z.bigint().default(0n)
 })
 
 export const DataSchema = z.object({
@@ -24,6 +24,7 @@ export const DataSchema = z.object({
   locker: TokenSchema.default({}),
   staker: z.object({
     address: zhexstringSchema.default(zeroAddress),
+    symbol: z.string().default(''),
     decimals: z.number().default(0),
     balance: z.bigint().default(0n),
     totalSupply: z.bigint().default(0n),
@@ -60,7 +61,7 @@ export default function useData() {
       { address: env.YPRISMA, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
       { address: env.YPRISMA, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YPRISMA_BOOSTED_STAKER] },
 
-      { address: env.YPRISMA_BOOSTED_STAKER, abi: erc20Abi, functionName: 'decimals' },
+      { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'decimals' },
       { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'balanceOf', args: [account.address || zeroAddress] },
       { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'totalSupply' },
 
@@ -110,6 +111,7 @@ export default function useData() {
 
     staker: {
       address: env.YPRISMA_BOOSTED_STAKER,
+      symbol: 'Staked yPRISMA',
       decimals: multicall.data?.[8]?.result,
       balance: multicall.data?.[9]?.result,
       totalSupply: multicall.data?.[10]?.result

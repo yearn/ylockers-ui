@@ -29,13 +29,14 @@ function GreatSuccess({ hash, message }: { hash: `0x${string}`, message: string 
 function Provided({ className }: { className?: string }) {
   const { openConnectModal } = useConnectModal()
   const account = useAccount()
-  const { data } = useData()
-  const hasBalance = useMemo(() => data.locker.balance > 0n, [data])
+
   const {
     task, token, amount, setAmount, 
     needsApproval, approve, execute, amountExecuted, 
     isApproved, isError, error, reset 
   } = useProvider()
+
+  const hasBalance = useMemo(() => task.token.balance > 0n, [task])
 
   const disabled = useMemo(() => 
     account.isConnected 

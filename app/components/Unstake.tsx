@@ -1,21 +1,21 @@
 'use client'
 
-import useData from '@/hooks/useData'
+import useData, { TokenSchema } from '@/hooks/useData'
 import InputExecute from './InputExecute'
 import env from '@/lib/env'
 import abis from '../abis'
 
-export default function Stake({ className }: { className?: string }) {
+export default function Unstake({ className }: { className?: string }) {
   const { data } = useData()
   return <InputExecute className={className} task={{
-    verb: 'stake',
-    token: data.locker,
-    needsApproval: true,
+    verb: 'unstake',
+    token: TokenSchema.parse(data.staker),
+    needsApproval: false,
     parameters: {
       address: env.YPRISMA_BOOSTED_STAKER,
       abi: abis.YearnBoostedStaker,
-      functionName: 'deposit',
-      args: (amount: bigint) => [amount]
+      functionName: 'withdraw',
+      args: (amount: bigint) => [amount, data.account]
     }
   }} />
 }

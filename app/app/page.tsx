@@ -18,6 +18,7 @@ import Tokens from "../components/Tokens";
 import Flipper from "../components/Flipper";
 import ClaimAll from "../components/ClaimAll";
 import Stake from "../components/Stake";
+import Unstake from "../components/Unstake";
 
 
 
@@ -180,7 +181,7 @@ function TabContent(props: { leftActive: any; }) {
         {tab === 'stake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
             <div className="flex flex-col p-8 pt-0 mt-6 w-1/2">
-              <span className="font-thin pb-1 text-md">{'Stake yPRISMA'}</span>
+              <span className="font-thin pb-1 text-md">Stake yPRISMA</span>
               <Stake />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
@@ -194,8 +195,9 @@ function TabContent(props: { leftActive: any; }) {
         )}
         {tab === 'unstake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
-              <InputBox title="Unstake yPRISMA" button="Unstake" subtitle="You have 0,00 PRISMA" />
+            <div className="flex flex-col p-8 pt-0 mt-6 w-1/2">
+              <span className="font-thin pb-1 text-md">Unstake yPRISMA</span>
+              <Unstake />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">UNSTAKE yPRISMA</span>

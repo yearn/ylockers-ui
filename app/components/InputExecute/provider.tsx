@@ -8,11 +8,18 @@ import useData, { TokenSchema } from '@/hooks/useData'
 export const TaskSchema = z.object({
   verb: z.string().default(''),
   token: TokenSchema.default({}),
+  needsApproval: z.boolean().default(false),
   parameters: z.object({
     address: zhexstringSchema.default(zeroAddress),
     abi: z.any().default([]),
     functionName: z.string().default(''),
-  }).default({})
+    args: z.function().args(z.bigint()).returns(z.any().array())
+  }).default({
+    address: zeroAddress,
+    abi: [],
+    functionName: '',
+    args: () => []
+  })
 })
 
 export type Task = z.infer<typeof TaskSchema>
@@ -100,13 +107,17 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   const [isExecuted, setIsExecuted] = useState(false)
   const { token } = task
 
+  const needsApproval = useMemo(() => {
+    return task.needsApproval && token.allowance < amount
+  }, [task, token, amount])
+
   const executeContractParameters = useMemo<UseSimulateContractParameters>(() => 
     ({
       ...task.parameters, 
-      args: [amount],
-      query: { enabled: amount > 0n && token.allowance >= amount }
+      args: task.parameters.args(amount),
+      query: { enabled: amount > 0n && (!needsApproval || token.allowance >= amount) }
     }), 
-  [amount, task, token])
+  [amount, task, needsApproval, token])
 
   const simulateExecute = useSimulateContract(executeContractParameters)
 
@@ -151,10 +162,6 @@ export default function Provider({ task, children }: { task: Task, children: Rea
       setAmount(0n)
     }
   }, [_executeReceipt, refetch, isExecuted, setIsExecuted, setAmount])
-
-  const needsApproval = useMemo(() => {
-    return token.allowance < amount
-  }, [token, amount])
 
   const simulateApprove = useSimulateContract({
     address: token.address,
@@ -206,9 +213,9 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   }, [_execute, _approveReceipt, refetch, isApproved, setIsApproved])
 
   const isError = useMemo(() => 
-    (approve.isError 
+    (approve.simulation.isError || approve.isError 
     && !approve.error?.toString().includes('User denied transaction signature'))
-    || (execute.isError
+    || (execute.simulation.isError || execute.isError
     && !execute.error?.toString().includes('User denied transaction signature')), 
   [approve, execute])
   
