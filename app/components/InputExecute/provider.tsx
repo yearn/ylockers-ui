@@ -107,17 +107,23 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   const [isExecuted, setIsExecuted] = useState(false)
   const { token } = task
 
+  const allowance = useMemo(() => {
+    const allowance = token.allowances.find(a => a.address === task.parameters.address)
+    if (!allowance) return 0n
+    return allowance.amount
+  }, [token, task])
+
   const needsApproval = useMemo(() => {
-    return task.needsApproval && token.allowance < amount
-  }, [task, token, amount])
+    return task.needsApproval && allowance < amount
+  }, [task, allowance, amount])
 
   const executeContractParameters = useMemo<UseSimulateContractParameters>(() => 
     ({
       ...task.parameters, 
       args: task.parameters.args(amount),
-      query: { enabled: amount > 0n && (!needsApproval || token.allowance >= amount) }
+      query: { enabled: amount > 0n && (!needsApproval || allowance >= amount) }
     }), 
-  [amount, task, needsApproval, token])
+  [amount, task, needsApproval, allowance])
 
   const simulateExecute = useSimulateContract(executeContractParameters)
 
@@ -139,7 +145,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     error: _execute.error?.toString(),
     simulation: {
       status: simulateExecute.status,
-      disabled: !(amount > 0n && token.allowance >= amount),
+      disabled: !(amount > 0n && allowance >= amount),
       isPending: simulateExecute.isPending,
       isSuccess: simulateExecute.isSuccess,
       isError: simulateExecute.isError,
@@ -153,7 +159,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
       isError: _executeReceipt.isError,
       error: _executeReceipt.error?.toString()
     }
-  }), [setIsExecuted, _execute, _executeReceipt, simulateExecute, amount, setAmountExecuted, token])
+  }), [setIsExecuted, _execute, _executeReceipt, simulateExecute, amount, setAmountExecuted, allowance])
 
   useEffect(() => {
     if (_executeReceipt.isSuccess && !isExecuted) {

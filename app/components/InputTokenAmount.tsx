@@ -33,7 +33,7 @@ export function InputTokenAmount({
   }, [max, disabled])
 
   const maxButtonClassName = useMemo(() => {
-    return `absolute right-2 h-6 px-2 
+    return `absolute z-10 right-2 h-6 px-2 
     flex items-center text-xs
     ${!!onMaxClick && !!max && !disabled && max !== 0n ? '' : 'hidden pointer-events-none'}`
   }, [onMaxClick, max, disabled])
@@ -66,6 +66,7 @@ export function InputTokenAmount({
       placeholder={disabled ? '' : placeholder ?? '0'}
       disabled={disabled}
     />
+    <div className="absolute z-0 right-0 w-14 h-full"></div>
     <Button onClick={onMaxClick ? (): void => onMaxClick() : undefined}
       className={maxButtonClassName} disabled={disabled}>
       {'Max'}

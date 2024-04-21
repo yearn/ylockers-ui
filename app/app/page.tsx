@@ -19,6 +19,7 @@ import ClaimAll from "../components/ClaimAll";
 import Stake from "../components/Stake";
 import Unstake from "../components/Unstake";
 import Mint from "../components/Mint";
+import Deposit from "../components/Deposit";
 
 
 
@@ -247,9 +248,10 @@ function TabContent(props: { leftActive: any; }) {
         )}
         {tab === 'deposit' && (
           <div className="flex">
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <InputBox title="Deposit" button="Deposit" subtitle="You have 0,00 yPRISMA" />
-              <span className="font-thin opacity-70">
+            <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
+              <span className="font-thin pb-1 text-md">Deposit</span>
+              <Deposit />
+              <span className="mt-4 font-thin opacity-70">
                 {`Deposit your yPRISMA into Yearn's auto-compounding vault and earn start earning the maximum APY immediately. The vault will handle staking, claiming and swapping rewards, and reinvesting your yPRISMA for you.`}
               </span>
             </div>
