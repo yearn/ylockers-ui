@@ -48,10 +48,10 @@ export default function Home() {
         <section className="mt-[5vh] mx-4 lg:mx-0">
           <div className="flex justify-center mb-8 space-x-8">
             <Link href="/app?tab=stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>137.91%</div></div>
+              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{fPercent(data.staker.averageApr)}</div></div>
             </div></Link>
             <Link href="/app?tab=deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>137.91%</div></div>
+              <div className="flex justify-between items-center text-lg pl-4">EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>666.66%</div></div>
             </div></Link>
           </div>
           <div className="flex flex-col lg:flex-row justify-center ">
@@ -114,7 +114,7 @@ export default function Home() {
                 </>
               ) :(
                 <>
-                  <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
+                  <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APR</span>
                   <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">137.91%</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
