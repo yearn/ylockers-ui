@@ -1,6 +1,5 @@
 'use client'
 
-import useData from '@/hooks/useData'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAccount, useConfig } from 'wagmi'
@@ -50,10 +49,26 @@ function Provided({ className }: { className?: string }) {
   }, [task])  
 
   const label = useMemo(() => {
-    if (!account.isConnected) return 'Connect'
-    if (needsApproval && !approve.receipt.isLoading) return 'Approve'
-    if (approve.receipt.isLoading || execute.receipt.isLoading) return 'Confirming'
-    return task.verb
+    if (!account.isConnected) return {
+      key: 'connect',
+      text: 'Connect'
+    }
+    if (needsApproval && !approve.receipt.isLoading) return {
+      key: 'approve',
+      text: 'Approve'
+    }
+    if (approve.receipt.isLoading) return {
+      key: 'approve-confirm',
+      text: 'Confirming'
+    }
+    if (execute.receipt.isLoading) return {
+      key: 'execute-confirm',
+      text: 'Confirming'
+    }
+    return {
+      key: 'verb',
+      text: task.verb
+    }
   }, [account, needsApproval, approve, execute, task])
 
   const subtext = useMemo(() => {
@@ -62,11 +77,11 @@ function Provided({ className }: { className?: string }) {
       text: <div>🛑 Error! Please contact support</div>
     }}
     if (approve.receipt.isLoading) { return {
-      key: 'approve-confirming',
+      key: 'approve-confirm',
       text: <div>Confirming approval...</div>
     }}
     if (execute.receipt.isLoading) { return {
-      key: 'execute-confirming',
+      key: 'execute-confirm',
       text: <div>{`Confirming ${task.verb}...`}</div>
     }}
     if ((!needsApproval || isApproved) && execute.receipt.isSuccess) { return {
@@ -79,16 +94,16 @@ function Provided({ className }: { className?: string }) {
     }
   }, [needsApproval, isApproved, isError, approve, execute, task, verbPastTense, amountExecuted, token])
 
-  useEffect(() => {
-    if (isError) console.error(error)
-  }, [isError, error])
-
   const theme = useMemo(() => {
     if (!account.isConnected) return 'transparent'
     if (approve.receipt.isLoading) return 'onit'
     if (execute.receipt.isLoading) return 'onit'
     return 'default'
   }, [account, approve, execute])
+
+  useEffect(() => {
+    if (isError) console.error(error)
+  }, [isError, error])
 
   const onClick = useCallback(() => {
     if (approve.receipt.isLoading || execute.receipt.isLoading) {
@@ -117,20 +132,20 @@ function Provided({ className }: { className?: string }) {
         className="shrink-0 capitalize overflow-hidden"
         style={{ width: '152px', paddingLeft: 0, paddingRight: 0 }}>
         <AnimatePresence initial={false} mode="popLayout">
-          <motion.div key={label}
-            transition={springs.rollin}
+          <motion.div key={label.key}
+            transition={{ duration: .1 }}
             initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -10, opacity: 0 }} >
-            {label}
+            {label.text}
           </motion.div>
-        </AnimatePresence>          
-        </Button>
+        </AnimatePresence>
+      </Button>
     </div>
     <div className={`pl-3 font-thin text-xs ${isError ? 'text-charge-yellow' : 'opacity-70'}`}>
       <AnimatePresence initial={false} mode="popLayout">
         <motion.div key={subtext.key}
-          transition={springs.rollin}
+          transition={{ duration: .1 }}
           initial={{ x: 40, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -40, opacity: 0 }} >

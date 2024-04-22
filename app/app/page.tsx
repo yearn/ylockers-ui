@@ -20,6 +20,7 @@ import Stake from "../components/Stake";
 import Unstake from "../components/Unstake";
 import Mint from "../components/Mint";
 import Deposit from "../components/Deposit";
+import Withdraw from "../components/Withdraw";
 
 
 
@@ -259,9 +260,10 @@ function TabContent(props: { leftActive: any; }) {
         )}
         {tab === 'withdraw' && (
           <div className="flex">
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <InputBox title="Withdraw" button="Withdraw" subtitle="You have 0,00 yv-yPRISMA" />
-              <span className="font-thin opacity-70">
+            <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
+              <span className="font-thin pb-1 text-md">Withdraw</span>
+              <Withdraw />
+              <span className="mt-4 font-thin opacity-70">
                 {`Withdraw your yPRISMA from Yearn's auto-compounding vault. Please note that this will unstake your yPRISMA (and unstaked yPRISMA doesn’t earn any yield).`}
               </span>
             </div>

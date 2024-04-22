@@ -83,6 +83,7 @@ const ContextSchema = z.object({
   setAmount: setAmountSchema.default(() => {}),
   approve: ContractClientSchema.default({}),
   execute: ContractClientSchema.default({}),
+  amountApproved: z.bigint().default(0n),
   amountExecuted: z.bigint().default(0n),
   verb: z.string().default(''),
   reset: z.function().default(() => {})
@@ -102,20 +103,28 @@ export const useProvider = () => useContext(context)
 export default function Provider({ task, children }: { task: Task, children: ReactNode }) {
   const { refetch } = useData()
   const [amount, setAmount] = useState(0n)
+  const [amountApproved, setAmountApproved] = useState(0n)
   const [amountExecuted, setAmountExecuted] = useState(0n)
   const [isApproved, setIsApproved] = useState(false)
   const [isExecuted, setIsExecuted] = useState(false)
   const { token } = task
 
-  const allowance = useMemo(() => {
-    const allowance = token.allowances.find(a => a.address === task.parameters.address)
-    if (!allowance) return 0n
-    return allowance.amount
-  }, [token, task])
+  const [allowance, setAllowance] = useState(0n)
+
+  useEffect(() => {
+    const _allowance = token.allowances.find(a => a.address === task.parameters.address)
+    setAllowance(_allowance?.amount || 0n)
+  }, [token, task, setAllowance])
+
+  // const allowance = useMemo(() => {
+  //   const allowance = token.allowances.find(a => a.address === task.parameters.address)
+  //   if (!allowance) return 0n
+  //   return allowance.amount
+  // }, [token, task])
 
   const needsApproval = useMemo(() => {
-    return task.needsApproval && allowance < amount
-  }, [task, allowance, amount])
+    return task.needsApproval && allowance < (amount - amountApproved)
+  }, [task, allowance, amount, amountApproved])
 
   const executeContractParameters = useMemo<UseSimulateContractParameters>(() => 
     ({
@@ -163,11 +172,12 @@ export default function Provider({ task, children }: { task: Task, children: Rea
 
   useEffect(() => {
     if (_executeReceipt.isSuccess && !isExecuted) {
-      refetch()
       setIsExecuted(true)
       setAmount(0n)
+      setAmountApproved(0n)
+      refetch()
     }
-  }, [_executeReceipt, refetch, isExecuted, setIsExecuted, setAmount])
+  }, [_executeReceipt, isExecuted, setIsExecuted, setAmount, setAmountApproved, refetch])
 
   const simulateApprove = useSimulateContract({
     address: token.address,
@@ -212,27 +222,41 @@ export default function Provider({ task, children }: { task: Task, children: Rea
 
   useEffect(() => {
     if (_approveReceipt.isSuccess && !isApproved) {
+      setAmountApproved(amount)
+      setAllowance(amount)
+      setIsApproved(true)
       _execute.reset()
       refetch()
-      setIsApproved(true)
     }
-  }, [_execute, _approveReceipt, refetch, isApproved, setIsApproved])
+  }, [_execute, _approveReceipt, isApproved, amount, setAmountApproved, setAllowance, setIsApproved, refetch])
 
-  const isError = useMemo(() => 
-    (approve.simulation.isError || approve.isError 
-    && !approve.error?.toString().includes('User denied transaction signature'))
-    || (execute.simulation.isError || execute.isError
-    && !execute.error?.toString().includes('User denied transaction signature')), 
+  const error = useMemo(() => 
+      approve.simulation.error
+    || approve.error 
+    || approve.receipt.error
+    || execute.simulation.error
+    || execute.error
+    || execute.receipt.error, 
   [approve, execute])
-  
-  const error = useMemo(() => approve.error || execute.error, [approve, execute])
+
+  const isError = useMemo(() => {
+    if (error?.toString().includes('insufficient funds')) return false
+    return approve.simulation.isError 
+    || approve.isError
+    || approve.receipt.isError
+    || execute.simulation.isError 
+    || execute.isError
+    || execute.receipt.isError
+  }, [approve, execute, error])
 
   const reset = useCallback(() => {
     setAmount(0n)
+    setAmountApproved(0n)
+    setAmountExecuted(0n)
     _approve.reset()
     _execute.reset()
     refetch()
-  }, [setAmount, _approve, _execute, refetch])
+  }, [setAmount, setAmountApproved, setAmountExecuted, _approve, _execute, refetch])
 
   return <context.Provider value={{ 
     task,
@@ -246,6 +270,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     setAmount,
     approve,
     execute,
+    amountApproved,
     amountExecuted,
     verb: task.verb,
     reset
