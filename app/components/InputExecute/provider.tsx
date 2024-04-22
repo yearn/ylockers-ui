@@ -116,12 +116,6 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     setAllowance(_allowance?.amount || 0n)
   }, [token, task, setAllowance])
 
-  // const allowance = useMemo(() => {
-  //   const allowance = token.allowances.find(a => a.address === task.parameters.address)
-  //   if (!allowance) return 0n
-  //   return allowance.amount
-  // }, [token, task])
-
   const needsApproval = useMemo(() => {
     return task.needsApproval && allowance < (amount - amountApproved)
   }, [task, allowance, amount, amountApproved])
@@ -275,6 +269,6 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     verb: task.verb,
     reset
     }}>
-		{children}
-	</context.Provider>
+    {children}
+  </context.Provider>
 }
