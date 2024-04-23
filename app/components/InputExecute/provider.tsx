@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { UseSimulateContractParameters, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import { erc20Abi, zeroAddress } from 'viem'
+import { erc20Abi, maxUint256, zeroAddress } from 'viem'
 import { zhexstringSchema } from '@/lib/types'
 import useData, { TokenSchema } from '@/hooks/useData'
 
@@ -177,7 +177,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     address: token.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [task.parameters.address!, token.balance],
+    args: [task.parameters.address!, maxUint256],
     query: { enabled: needsApproval && amount > 0n }
   })
 
@@ -225,7 +225,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   }, [_execute, _approveReceipt, isApproved, amount, setAmountApproved, setAllowance, setIsApproved, refetch])
 
   const error = useMemo(() => 
-      approve.simulation.error
+    approve.simulation.error
     || approve.error 
     || approve.receipt.error
     || execute.simulation.error
@@ -234,7 +234,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   [approve, execute])
 
   const isError = useMemo(() => {
-    if (error?.toString().includes('insufficient funds')) return false
+    if (error?.toString().includes('User denied transaction')) return false
     return approve.simulation.isError 
     || approve.isError
     || approve.receipt.isError
