@@ -11,7 +11,7 @@ import {   useConnectModal,
   useAccountModal,
   useChainModal, } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import ApproveAndExecute from "../components/ApproveAndExecute";
 import abis from "../abis";
@@ -236,7 +236,7 @@ function TabContent(props: { leftActive: any; }) {
                 {`Claim your mkUSD rewards. We've already deposited your mkUSD into our auto-compounding mkUSD vault (`}<Link className="underline" href="https://etherscan.io/token/0x04aebe2e4301cdf5e9c57b01ebdfe4ac4b48dd13">yvmkUSD-A</Link>{`).`}
               </p>
               <p className="font-thin opacity-70">
-                {`That means your yield has been earning you additional yield from the moment we received it! Once claimed, your mkUSD vault holdings will appear below.`}
+                {`That means your yield has been earning you additional yield from the moment we received it. Once claimed, your mkUSD vault holdings will appear below.`}
               </p>
             </div>
           </div>
@@ -311,56 +311,13 @@ const TableComponent = (props: any) => {
       setSortDirection('asc');
     }
   };
-
+  
   const filteredVaultData = vaultData.filter((vault:any) =>
     vault.strategies.some((strategy:any) => strategy.name.toLowerCase().includes('prisma'))
   );
 
-  const sortedData = [...filteredVaultData].sort((a: any, b: any) => {
-    if (sortColumn === 'token') {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-      if (nameA < nameB) return sortDirection === 'asc' ? -1 : 1;
-      if (nameA > nameB) return sortDirection === 'asc' ? 1 : -1;
-    } else if (sortColumn === 'estApr') {
-      const aprA = a.apr.forwardAPR.netAPR;
-      const aprB = b.apr.forwardAPR.netAPR;
-      if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
-      if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
-    } else if (sortColumn === 'histApr') {
-      const aprA = a.apr.netAPR;
-      const aprB = b.apr.netAPR;
-      if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
-      if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
-    } else if (sortColumn === 'available') {
-      /* @ts-ignore */
-      const availableA = getAvailable(filteredVaultData.indexOf(a))?.usdValue || 0;
-      /* @ts-ignore */
-      const availableB = getAvailable(filteredVaultData.indexOf(b))?.usdValue || 0;
-      if (availableA < availableB) return sortDirection === 'asc' ? -1 : 1;
-      if (availableA > availableB) return sortDirection === 'asc' ? 1 : -1;
-    } else if (sortColumn === 'holdings') {
-      /* @ts-ignore */
-      const holdingsA = getHoldings(filteredVaultData.indexOf(a))?.usdValue || 0;
-      /* @ts-ignore */
-      const holdingsB = getHoldings(filteredVaultData.indexOf(b))?.usdValue || 0;
-      if (holdingsA < holdingsB) return sortDirection === 'asc' ? -1 : 1;
-      if (holdingsA > holdingsB) return sortDirection === 'asc' ? 1 : -1;
-    } else if (sortColumn === 'deposits') {
-      const depositsA = a.tvl.tvl;
-      const depositsB = b.tvl.tvl;
-      if (depositsA < depositsB) return sortDirection === 'asc' ? -1 : 1;
-      if (depositsA > depositsB) return sortDirection === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
-
-  const filteredData = sortedData.filter((vault:any) =>
-    vault.token.display_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const contractReads = useContractReads({
-    contracts: props.address ? filteredData.flatMap((vault: any) => [
+    contracts: props.address ? filteredVaultData.flatMap((vault: any) => [
       {
         address: vault.address,
         abi: erc20Abi,
@@ -376,33 +333,84 @@ const TableComponent = (props: any) => {
     ]) : [],
   });
 
-  function getHoldings (index: number) {
-    if (contractReads.data && contractReads.data[index * 2]) {
-      const vaultBalance = contractReads.data[index * 2].result;
-      const vault = filteredData[index];
-      return {
-        /* @ts-ignore */
-        balance: Number(formatUnits(vaultBalance, vault.decimals)),
-        /* @ts-ignore */
-        usdValue: Number(formatUnits(vaultBalance, vault.decimals)) * vault.tvl.price,
-      };
-    }
-    return null;
-  };
+  const getHoldings = useMemo(() => {
+    return (index: number) => {
+      if (contractReads.data && contractReads.data[index * 2]) {
+        const vaultBalance = contractReads.data[index * 2].result;
+        const vault = filteredVaultData[index];
+        return {
+          /* @ts-ignore */
+          balance: Number(formatUnits(vaultBalance, vault.decimals)),
+          /* @ts-ignore */
+          usdValue: Number(formatUnits(vaultBalance, vault.decimals)) * vault.tvl.price,
+        };
+      }
+      return null;
+    };
+  }, [contractReads.data, filteredVaultData]);
 
-  function getAvailable (index: number) {
-    if (contractReads.data && contractReads.data[index * 2 + 1]) {
-      const tokenBalance = contractReads.data[index * 2 + 1].result;
-      const vault = filteredData[index];
-      return {
+  const getAvailable = useMemo(() => {
+    return (index: number) => {
+      if (contractReads.data && contractReads.data[index * 2 + 1]) {
+        const tokenBalance = contractReads.data[index * 2 + 1].result;
+        const vault = filteredVaultData[index];
+        return {
+          /* @ts-ignore */
+          balance: Number(formatUnits(tokenBalance, vault.token.decimals)),
+          /* @ts-ignore */
+          usdValue: Number(formatUnits(tokenBalance, vault.token.decimals)) * vault.tvl.price,
+        };
+      }
+      return null;
+    };
+  }, [contractReads.data, filteredVaultData]);
+
+  const sortedData = useMemo(() => {
+    return [...filteredVaultData].sort((a: any, b: any) => {
+      if (sortColumn === 'token') {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (nameA < nameB) return sortDirection === 'asc' ? -1 : 1;
+        if (nameA > nameB) return sortDirection === 'asc' ? 1 : -1;
+      } else if (sortColumn === 'estApr') {
+        const aprA = a.apr.forwardAPR.netAPR;
+        const aprB = b.apr.forwardAPR.netAPR;
+        if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
+        if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
+      } else if (sortColumn === 'histApr') {
+        const aprA = a.apr.netAPR;
+        const aprB = b.apr.netAPR;
+        if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
+        if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
+      } else if (sortColumn === 'available') {
         /* @ts-ignore */
-        balance: Number(formatUnits(tokenBalance, vault.token.decimals)),
+        const availableA = getAvailable(filteredVaultData.indexOf(a))?.usdValue || 0;
         /* @ts-ignore */
-        usdValue: Number(formatUnits(tokenBalance, vault.token.decimals)) * vault.tvl.price,
-      };
-    }
-    return null;
-  };
+        const availableB = getAvailable(filteredVaultData.indexOf(b))?.usdValue || 0;
+        if (availableA < availableB) return sortDirection === 'asc' ? -1 : 1;
+        if (availableA > availableB) return sortDirection === 'asc' ? 1 : -1;
+      } else if (sortColumn === 'holdings') {
+        /* @ts-ignore */
+        const holdingsA = getHoldings(filteredVaultData.indexOf(a))?.usdValue || 0;
+        /* @ts-ignore */
+        const holdingsB = getHoldings(filteredVaultData.indexOf(b))?.usdValue || 0;
+        if (holdingsA < holdingsB) return sortDirection === 'asc' ? -1 : 1;
+        if (holdingsA > holdingsB) return sortDirection === 'asc' ? 1 : -1;
+      } else if (sortColumn === 'deposits') {
+        const depositsA = a.tvl.tvl;
+        const depositsB = b.tvl.tvl;
+        if (depositsA < depositsB) return sortDirection === 'asc' ? -1 : 1;
+        if (depositsA > depositsB) return sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [filteredVaultData, sortColumn, sortDirection, getHoldings, getAvailable]);
+
+  const filteredData = useMemo(() => {
+    return sortedData.filter((vault:any) =>
+      vault.token.display_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [sortedData, searchTerm]);
   
   return (
     <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
