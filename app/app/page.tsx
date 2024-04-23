@@ -214,7 +214,7 @@ function TabContent(props: { leftActive: any; }) {
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">UNSTAKE yPRISMA</span>
               <span className="font-thin opacity-70">
-                {`Unstake your yPRISMA. You're free to unstake at any time with no lock-ups or penalties. Please note that unstaked yPRISMA doesn’t earn any yield.`}
+                {`Unstake your yPRISMA. You're free to unstake at any time with no lock-ups or penalties. Unstaked yPRISMA doesn’t earn any yield. Withdrawals pull from the least boosted position.`}
               </span>
               <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
             </div>
