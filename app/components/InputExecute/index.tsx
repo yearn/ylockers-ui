@@ -6,13 +6,12 @@ import { useAccount, useConfig } from 'wagmi'
 import { InputTokenAmount } from '../InputTokenAmount'
 import Provider, { Task, useProvider } from './provider'
 import Button from '../Button'
-import { AnimatePresence } from 'framer-motion'
-import { springs } from '@/lib/motion'
 import { motion } from 'framer-motion'
 import { TfiReceipt } from 'react-icons/tfi'
 import A from '../A'
 import { fTokens } from '@/lib/format'
 import nlp from 'compromise'
+import { springs } from '@/lib/motion'
 
 function GreatSuccess({ hash, message }: { hash: `0x${string}`, message: string }) {
   const config = useConfig()
@@ -28,6 +27,8 @@ function GreatSuccess({ hash, message }: { hash: `0x${string}`, message: string 
 function Provided({ className }: { className?: string }) {
   const { openConnectModal } = useConnectModal()
   const account = useAccount()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   const {
     task, token, amount, setAmount, 
@@ -131,27 +132,23 @@ function Provided({ className }: { className?: string }) {
         disabled={disabled}
         className="shrink-0 capitalize overflow-hidden"
         style={{ width: '152px', paddingLeft: 0, paddingRight: 0 }}>
-        <AnimatePresence initial={false} mode="popLayout">
-          <motion.div key={label.key}
-            transition={{ duration: .1 }}
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -10, opacity: 0 }} >
-            {label.text}
-          </motion.div>
-        </AnimatePresence>
+        <motion.div key={label.key}
+          transition={springs.rollin}
+          initial={mounted ? { y: 10, opacity: 0 } : false}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -10, opacity: 0 }} >
+          {label.text}
+        </motion.div>
       </Button>
     </div>
     <div className={`pl-3 font-thin text-xs ${isError ? 'text-charge-yellow' : 'opacity-70'}`}>
-      <AnimatePresence initial={false} mode="popLayout">
-        <motion.div key={subtext.key}
-          transition={{ duration: .1 }}
-          initial={{ x: 40, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -40, opacity: 0 }} >
-          {subtext.text}
-        </motion.div>
-      </AnimatePresence>
+      <motion.div key={subtext.key}
+        transition={springs.rollin}
+        initial={mounted ? { x: 40, opacity: 0 } : false}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ x: -40, opacity: 0 }} >
+        {subtext.text}
+      </motion.div>
     </div>
   </div>
 }
