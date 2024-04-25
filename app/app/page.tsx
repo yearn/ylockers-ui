@@ -281,7 +281,7 @@ function TabContent(props: { leftActive: any; }) {
   );
 }
 
-export const TableComponent = (props: any) => {
+const TableComponent = (props: any) => {
   const [searchTerm, setSearchTerm] = useState('');
   
   const [sortColumn, setSortColumn] = useState('estApr');
