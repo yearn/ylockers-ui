@@ -78,7 +78,7 @@ export default function Home() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">APR</span>
+                      <span className="font-thin opacity-70	">Your APR</span>
                       <span className="font-bold">{fPercent(data.staker.accountApr)}</span>
                     </div>
                     {/* <div className="flex justify-between">
