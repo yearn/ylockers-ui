@@ -411,6 +411,16 @@ const TableComponent = (props: any) => {
   const filteredData = useMemo(() => {
     return sortedData.filter((vault:any) =>
       vault.token.display_name.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.token.name.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.token.address.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.token.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.token.display_symbol.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.address.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.name.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.display_name.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.display_symbol.toLowerCase().includes(searchTerm.toLowerCase())
+      || vault.formated_symbol.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [sortedData, searchTerm]);
   
@@ -480,7 +490,7 @@ const TableComponent = (props: any) => {
               const holdings = getHoldings(item);
               const available = getAvailable(item);
               return (
-                <tr key={index} className="hover:bg-blue">
+                <tr onClick={() => window.open(`https://yearn.fi/vaults/1/${item.address}`, '_blank')} key={index} className="hover:bg-blue">
                   <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
                   <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
                   <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
