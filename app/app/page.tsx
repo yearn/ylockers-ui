@@ -335,6 +335,7 @@ export const TableComponent = (props: any) => {
 
   const getHoldings = useMemo(() => {
     return (vault: any) => {
+      /* @ts-ignore */
       const index = filteredVaultData.indexOf(vault);
       if (contractReads.data && contractReads.data[index * 2]) {
         const vaultBalance = contractReads.data[index * 2].result;
@@ -351,6 +352,7 @@ export const TableComponent = (props: any) => {
 
   const getAvailable = useMemo(() => {
     return (vault: any) => {
+      /* @ts-ignore */
       const index = filteredVaultData.indexOf(vault);
       if (contractReads.data && contractReads.data[index * 2 + 1]) {
         const tokenBalance = contractReads.data[index * 2 + 1].result;
@@ -479,7 +481,7 @@ export const TableComponent = (props: any) => {
               const available = getAvailable(item);
               return (
                 <tr key={index} className="hover:bg-blue">
-                  <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2 font-bold"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
+                  <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
                   <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
                   <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
                   <td className="text-md font-mono py-4 cursor-pointer">
