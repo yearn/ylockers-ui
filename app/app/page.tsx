@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Button from "../components/Button";
 import InputBox from "../components/InputBox";
 import Header, { headerItems } from "../components/Header";
 import { useSearchParams } from 'next/navigation';
@@ -13,12 +12,15 @@ import {   useConnectModal,
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
-import ApproveAndExecute from "../components/ApproveAndExecute";
-import abis from "../abis";
 import useData from "@/hooks/useData";
 import Tokens from "../components/Tokens";
 import Flipper from "../components/Flipper";
 import ClaimAll from "../components/ClaimAll";
+import Stake from "../components/Stake";
+import Unstake from "../components/Unstake";
+import Mint from "../components/Mint";
+import Deposit from "../components/Deposit";
+import Withdraw from "../components/Withdraw";
 
 import { useContractReads } from 'wagmi';
 import { erc20Abi } from 'viem';
@@ -186,17 +188,9 @@ function TabContent(props: { leftActive: any; }) {
       <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
-              <ApproveAndExecute task={{
-                title: 'Stake yPRISMA',
-                verb: 'stake',
-                asset: data.locker.address,
-                parameters: {
-                  address: data.staker.address,
-                  abi: abis.YearnBoostedStaker,
-                  functionName: 'deposit'
-                }
-              }} />
+            <div className="flex flex-col p-8 pt-0 mt-6 w-1/2">
+              <span className="font-thin pb-1 text-md">Stake yPRISMA</span>
+              <Stake />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>
@@ -209,8 +203,9 @@ function TabContent(props: { leftActive: any; }) {
         )}
         {tab === 'unstake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-1/2">
-              <InputBox title="Unstake yPRISMA" button="Unstake" subtitle="You have 0,00 PRISMA" />
+            <div className="flex flex-col p-8 pt-0 mt-6 w-1/2">
+              <span className="font-thin pb-1 text-md">Unstake yPRISMA</span>
+              <Unstake />
             </div>
             <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
               <span className="font-semibold">UNSTAKE yPRISMA</span>
@@ -244,9 +239,10 @@ function TabContent(props: { leftActive: any; }) {
         )}
         {tab === 'get' && (
           <div className="flex">
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <InputBox title="Mint yPRISMA from PRISMA" button="Mint" subtitle="You have 0,00 PRISMA" />
-              <div className="flex flex-col space-y-4">
+            <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
+              <span className="font-thin pb-1 text-md">Mint yPRISMA from PRISMA</span>
+              <Mint />
+              <div className="mt-4 flex flex-col space-y-4">
                 <p className="font-thin opacity-70">
                 {`Convert your PRISMA to yPRISMA. To ensure you receive the maximum amount of yPRISMA, the zapper will either mint new yPRISMA or swap via the Curve pool.`}
                 </p>
@@ -259,9 +255,10 @@ function TabContent(props: { leftActive: any; }) {
         )}
         {tab === 'deposit' && (
           <div className="flex">
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <InputBox title="Deposit" button="Deposit" subtitle="You have 0,00 yPRISMA" />
-              <span className="font-thin opacity-70">
+            <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
+              <span className="font-thin pb-1 text-md">Deposit</span>
+              <Deposit />
+              <span className="mt-4 font-thin opacity-70">
                 {`Deposit your yPRISMA into Yearn's auto-compounding vault and earn start earning the maximum APY immediately. The vault will handle staking, claiming and swapping rewards, and reinvesting your yPRISMA for you.`}
               </span>
             </div>
@@ -269,9 +266,10 @@ function TabContent(props: { leftActive: any; }) {
         )}
         {tab === 'withdraw' && (
           <div className="flex">
-            <div className="flex flex-col space-y-6 p-8 pt-0 mt-6 w-2/3">
-              <InputBox title="Withdraw" button="Withdraw" subtitle="You have 0,00 yv-yPRISMA" />
-              <span className="font-thin opacity-70">
+            <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
+              <span className="font-thin pb-1 text-md">Withdraw</span>
+              <Withdraw />
+              <span className="mt-4 font-thin opacity-70">
                 {`Withdraw your yPRISMA from Yearn's auto-compounding vault. Please note that this will unstake your yPRISMA (and unstaked yPRISMA doesn’t earn any yield).`}
               </span>
             </div>

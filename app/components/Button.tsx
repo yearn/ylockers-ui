@@ -4,27 +4,27 @@ import React, { forwardRef, ButtonHTMLAttributes, useMemo } from 'react'
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   className?: string
-  style?: 'default' | 'transparent' | 'onit'
+  theme?: 'default' | 'transparent' | 'onit'
   onClick?: () => void
 }
 
-const Button = forwardRef<HTMLButtonElement, Props>(({ className, style, onClick, children, ...props }, ref) => {
+const Button = forwardRef<HTMLButtonElement, Props>(({ className, theme, onClick, children, ...props }, ref) => {
   const bg = useMemo(() => {
-    if (style === 'transparent') return 'bg-transparent'
-    if (style === 'onit') return 'bg-transparent hover:bg-lighter-blue'
+    if (theme === 'transparent') return 'bg-transparent'
+    if (theme === 'onit') return 'bg-transparent hover:bg-lighter-blue'
     return 'bg-light-blue hover:bg-lighter-blue'
-  }, [style])
+  }, [theme])
 
   const border = useMemo(() => {
-    if (style === 'transparent') return 'border-2 border-light-blue hover:border-lighter-blue'
-    if (style === 'onit') return 'p-2'
+    if (theme === 'transparent') return 'border-2 border-light-blue hover:border-lighter-blue'
+    if (theme === 'onit') return 'py-[10px]'
     return 'border-2 border-transparent'
-  }, [style])
+  }, [theme])
 
   const animate = useMemo(() => {
-    if (style === 'onit') return 'rainbow'
+    if (theme === 'onit') return 'rainbow'
     return ''
-  }, [style])
+  }, [theme])
 
   return <button onClick={onClick} ref={ref} {...props} className={`
     px-12 py-2 font-bold rounded-lg

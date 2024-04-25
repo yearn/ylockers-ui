@@ -10,32 +10,42 @@ import usePrices from './usePrices'
 import { priced } from '@/lib/bmath'
 import { useCallback } from 'react'
 
+const BalanceSchema = z.object({
+  address: zhexstringSchema.default(zeroAddress),
+  amount: z.bigint().default(0n)
+})
+
 export const TokenSchema = z.object({
   address: zhexstringSchema.default(zeroAddress),
   symbol: z.string().default(''),
   decimals: z.number().default(0),
   balance: z.bigint().default(0n),
-  allowance: z.bigint().default(0n)  
+  allowances: BalanceSchema.array().default([])
 })
 
 export const DataSchema = z.object({
   account: zhexstringSchema.default(zeroAddress),
   asset: TokenSchema.default({}),
   locker: TokenSchema.default({}),
+
   staker: z.object({
     address: zhexstringSchema.default(zeroAddress),
+    symbol: z.string().default(''),
     decimals: z.number().default(0),
     balance: z.bigint().default(0n),
     totalSupply: z.bigint().default(0n),
     averageApr: z.number().default(0),
     accountApr: z.number().default(0)
   }).default({}),
+
   rewards: z.object({
     address: zhexstringSchema.default(zeroAddress),
     decimals: z.number().default(0),
     claimable: z.bigint().default(0n),
     claimableUsd: z.number().default(0)
-  }).default({})
+  }).default({}),
+
+  strategy: TokenSchema.default({})
 })
 
 export default function useData() {
@@ -59,13 +69,18 @@ export default function useData() {
       { address: env.YPRISMA, abi: erc20Abi, functionName: 'decimals' },
       { address: env.YPRISMA, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
       { address: env.YPRISMA, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YPRISMA_BOOSTED_STAKER] },
+      { address: env.YPRISMA, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YPRISMA_STRATEGY] },
 
-      { address: env.YPRISMA_BOOSTED_STAKER, abi: erc20Abi, functionName: 'decimals' },
+      { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'decimals' },
       { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'balanceOf', args: [account.address || zeroAddress] },
       { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'totalSupply' },
 
       { address: env.YVMKUSD, abi: erc20Abi, functionName: 'decimals' },
       { address: env.YPRISMA_REWARDS_DISTRIBUTOR, abi: abis.SingleTokenRewardDistributor, functionName: 'claimable', args: [account.address || zeroAddress] },
+
+      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'symbol' },
+      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'decimals' },
+      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'balanceOf', args: [account.address || zeroAddress] }
     ], multicallAddress })
   )
 
@@ -97,7 +112,9 @@ export default function useData() {
       symbol: multicall.data?.[0]?.result,
       decimals: multicall.data?.[1]?.result,
       balance: multicall.data?.[2]?.result,
-      allowance: multicall.data?.[3]?.result
+      allowances: [
+        { address: env.YPRISMA, amount: multicall.data?.[3]?.result }
+      ]
     },
 
     locker: {
@@ -105,25 +122,37 @@ export default function useData() {
       symbol: multicall.data?.[4]?.result,
       decimals: multicall.data?.[5]?.result,
       balance: multicall.data?.[6]?.result,
-      allowance: multicall.data?.[7]?.result
+      allowances: [
+        { address: env.YPRISMA_BOOSTED_STAKER, amount: multicall.data?.[7]?.result },
+        { address: env.YPRISMA_STRATEGY, amount: multicall.data?.[8]?.result }
+      ]
     },
 
     staker: {
       address: env.YPRISMA_BOOSTED_STAKER,
-      decimals: multicall.data?.[8]?.result,
-      balance: multicall.data?.[9]?.result,
-      totalSupply: multicall.data?.[10]?.result
+      symbol: 'Staked yPRISMA',
+      decimals: multicall.data?.[9]?.result,
+      balance: multicall.data?.[10]?.result,
+      totalSupply: multicall.data?.[11]?.result
     },
 
     rewards: {
       address: env.YPRISMA_REWARDS_DISTRIBUTOR,
-      decimals: multicall.data?.[11]?.result,
-      claimable: multicall.data?.[12]?.result,
+      decimals: multicall.data?.[12]?.result,
+      claimable: multicall.data?.[13]?.result,
       claimableUsd: priced(
+        multicall.data?.[13]?.result!,
         multicall.data?.[12]?.result!,
-        multicall.data?.[11]?.result!,
         prices[env.YVMKUSD]
       )
-    }
+    },
+
+    strategy: {
+      address: env.YPRISMA_STRATEGY,
+      symbol: multicall.data?.[14]?.result,
+      decimals: multicall.data?.[15]?.result,
+      balance: multicall.data?.[16]?.result,
+      allowances: []
+    },
   })}
 }

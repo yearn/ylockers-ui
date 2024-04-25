@@ -87,7 +87,7 @@ export default function ClaimAll({ className }: { className?: string }) {
     return <div></div>
   }, [isError, write, receipt])
 
-  const style = useMemo(() => {
+  const theme = useMemo(() => {
     if (!account.isConnected) return 'transparent'
     if (receipt?.isLoading) return 'onit'
     return 'default'
@@ -112,7 +112,7 @@ export default function ClaimAll({ className }: { className?: string }) {
 
   return <div className={`flex flex-col gap-2 ${className}`}>
     <div>
-      <Button onClick={onClick} style={style} disabled={disabled}>{label}</Button>
+      <Button onClick={onClick} theme={theme} disabled={disabled}>{label}</Button>
     </div>
     <div className={`pl-3 font-thin text-xs ${isError ? 'text-charge-yellow' : ''}`}>
       <AnimatePresence initial={false}>

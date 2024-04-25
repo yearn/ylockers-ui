@@ -1,18 +1,39 @@
+import { z } from 'zod'
 import { zhexstringSchema } from './types'
 
-function address(envar: string | undefined) {
-  return zhexstringSchema.parse(envar)
+class DotEnvError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'DotEnvError'
+  }
 }
 
-const env = {
-  address,
-  PRISMA: address(process.env.NEXT_PUBLIC_PRISMA),
-  YPRISMA: address(process.env.NEXT_PUBLIC_YPRISMA),
-  YPRISMA_BOOSTED_STAKER: address(process.env.NEXT_PUBLIC_YPRISMA_BOOSTED_STAKER),
-  YPRISMA_REWARDS_DISTRIBUTOR: address(process.env.NEXT_PUBLIC_YPRISMA_REWARDS_DISTRIBUTOR),
-  YVMKUSD: address(process.env.NEXT_PUBLIC_YVMKUSD),
-  YDAEMON: process.env.NEXT_PUBLIC_YDAEMON!,
-  DEV: !process.env.NODE_ENV || process.env.NODE_ENV === 'development',
+const EnvSchema = z.object({
+  PRISMA: zhexstringSchema,
+  YPRISMA: zhexstringSchema,
+  YPRISMA_BOOSTED_STAKER: zhexstringSchema,
+  YPRISMA_REWARDS_DISTRIBUTOR: zhexstringSchema,
+  YPRISMA_STRATEGY: zhexstringSchema,
+  YVMKUSD: zhexstringSchema,
+  YDAEMON: z.string(),
+  DEV: z.boolean()
+})
+
+const result = EnvSchema.safeParse({
+  PRISMA: process.env.NEXT_PUBLIC_PRISMA,
+  YPRISMA: process.env.NEXT_PUBLIC_YPRISMA,
+  YPRISMA_BOOSTED_STAKER: process.env.NEXT_PUBLIC_YPRISMA_BOOSTED_STAKER,
+  YPRISMA_REWARDS_DISTRIBUTOR: process.env.NEXT_PUBLIC_YPRISMA_REWARDS_DISTRIBUTOR,
+  YPRISMA_STRATEGY: process.env.NEXT_PUBLIC_YPRISMA_STRATEGY,
+  YVMKUSD: process.env.NEXT_PUBLIC_YVMKUSD,
+  YDAEMON: process.env.NEXT_PUBLIC_YDAEMON,
+  DEV: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+})
+
+if (!result.success) {
+  const messages = result.error.errors.map(e => `${e.path} ${e.message}`).join('\n')
+  throw new DotEnvError(`\n------------\n\n${messages}\n\n------------\n`)
 }
 
+const env = result.data
 export default env

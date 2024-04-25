@@ -39,9 +39,9 @@ const Header = ({ items, selected="", launchApp=true, launchText='Launch App', c
       ))}
     </div>
     {(launchApp && !onClickLaunch) ? <Link href="/app?tab=stake">
-      <Button style="transparent">{launchText}</Button>
+      <Button theme="transparent">{launchText}</Button>
     </Link> : (launchApp && onClickLaunch) && <div>
-      <Button onClick={onClickLaunch} style="transparent">{launchText}</Button>
+      <Button onClick={onClickLaunch} theme="transparent">{launchText}</Button>
     </div>}
   </header>
 )
