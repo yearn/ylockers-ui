@@ -23,6 +23,7 @@ const config: Config = {
         'darker-blue-bg': '#1021835e',
         'soft-blue': '#555D8D',
         'input-bg': '#111B53',
+        'boost-blue': '#0027ff',
         'light-blue': '#00A3FF',
         'lighter-blue': '#4DBFFF',
         'disabled-bg': '#DFDFDF',
