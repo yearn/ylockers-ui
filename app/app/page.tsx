@@ -281,7 +281,7 @@ function TabContent(props: { leftActive: any; }) {
   );
 }
 
-const TableComponent = (props: any) => {
+export const TableComponent = (props: any) => {
   const [searchTerm, setSearchTerm] = useState('');
   
   const [sortColumn, setSortColumn] = useState('estApr');
@@ -334,10 +334,10 @@ const TableComponent = (props: any) => {
   });
 
   const getHoldings = useMemo(() => {
-    return (index: number) => {
+    return (vault: any) => {
+      const index = filteredVaultData.indexOf(vault);
       if (contractReads.data && contractReads.data[index * 2]) {
         const vaultBalance = contractReads.data[index * 2].result;
-        const vault = filteredVaultData[index];
         return {
           /* @ts-ignore */
           balance: Number(formatUnits(vaultBalance, vault.decimals)),
@@ -350,10 +350,10 @@ const TableComponent = (props: any) => {
   }, [contractReads.data, filteredVaultData]);
 
   const getAvailable = useMemo(() => {
-    return (index: number) => {
+    return (vault: any) => {
+      const index = filteredVaultData.indexOf(vault);
       if (contractReads.data && contractReads.data[index * 2 + 1]) {
         const tokenBalance = contractReads.data[index * 2 + 1].result;
-        const vault = filteredVaultData[index];
         return {
           /* @ts-ignore */
           balance: Number(formatUnits(tokenBalance, vault.token.decimals)),
@@ -384,16 +384,16 @@ const TableComponent = (props: any) => {
         if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
       } else if (sortColumn === 'available') {
         /* @ts-ignore */
-        const availableA = getAvailable(filteredVaultData.indexOf(a))?.usdValue || 0;
+        const availableA = getAvailable(a)?.usdValue || 0;
         /* @ts-ignore */
-        const availableB = getAvailable(filteredVaultData.indexOf(b))?.usdValue || 0;
+        const availableB = getAvailable(b)?.usdValue || 0;
         if (availableA < availableB) return sortDirection === 'asc' ? -1 : 1;
         if (availableA > availableB) return sortDirection === 'asc' ? 1 : -1;
       } else if (sortColumn === 'holdings') {
         /* @ts-ignore */
-        const holdingsA = getHoldings(filteredVaultData.indexOf(a))?.usdValue || 0;
+        const holdingsA = getHoldings(a)?.usdValue || 0;
         /* @ts-ignore */
-        const holdingsB = getHoldings(filteredVaultData.indexOf(b))?.usdValue || 0;
+        const holdingsB = getHoldings(b)?.usdValue || 0;
         if (holdingsA < holdingsB) return sortDirection === 'asc' ? -1 : 1;
         if (holdingsA > holdingsB) return sortDirection === 'asc' ? 1 : -1;
       } else if (sortColumn === 'deposits') {
@@ -475,8 +475,8 @@ const TableComponent = (props: any) => {
           </thead>
           <tbody>
             {filteredData.map((item:any, index) => {
-              const holdings = getHoldings(index);
-              const available = getAvailable(index);
+              const holdings = getHoldings(item);
+              const available = getAvailable(item);
               return (
                 <tr key={index} className="hover:bg-blue">
                   <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2 font-bold"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
