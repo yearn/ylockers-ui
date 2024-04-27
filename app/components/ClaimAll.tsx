@@ -26,7 +26,7 @@ export default function ClaimAll({ className }: { className?: string }) {
   const { openConnectModal } = useConnectModal()
   const account = useAccount()
   const { data, refetch } = useData()
-  const hasClaims = useMemo(() => data.rewards.getClaimable > 0n, [data])
+  const hasClaims = useMemo(() => data.rewards.claimable > 0n, [data])
   const disabled = useMemo(() => account.isConnected && !hasClaims, [account, hasClaims])
   const [success, setSuccess] = useState(false)
 
