@@ -14,7 +14,7 @@ export default function Stake({ className }: { className?: string }) {
     parameters: {
       address: env.YPRISMA_BOOSTED_STAKER,
       abi: abis.YearnBoostedStaker,
-      functionName: 'deposit',
+      functionName: 'stake',
       args: (amount: bigint) => [amount]
     }
   }} />

@@ -14,7 +14,7 @@ export default function Unstake({ className }: { className?: string }) {
     parameters: {
       address: env.YPRISMA_BOOSTED_STAKER,
       abi: abis.YearnBoostedStaker,
-      functionName: 'withdraw',
+      functionName: 'unstake',
       args: (amount: bigint) => [amount, data.account]
     }
   }} />
