@@ -76,7 +76,7 @@ export default function useData() {
       { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'totalSupply' },
 
       { address: env.YVMKUSD, abi: erc20Abi, functionName: 'decimals' },
-      { address: env.YPRISMA_REWARDS_DISTRIBUTOR, abi: abis.SingleTokenRewardDistributor, functionName: 'claimable', args: [account.address || zeroAddress] },
+      { address: env.YPRISMA_REWARDS_DISTRIBUTOR, abi: abis.SingleTokenRewardDistributor, functionName: 'getClaimable', args: [account.address || zeroAddress] },
 
       { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'symbol' },
       { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'decimals' },
