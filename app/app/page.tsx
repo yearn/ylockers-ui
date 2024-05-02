@@ -52,7 +52,7 @@ export default function Home() {
     address: env.YPRISMA_STRATEGY,
     abi: erc20Abi,
     functionName: 'balanceOf',
-    args: [account.address],
+    args: [account.address as `0x${string}`],
   });
 
   const earned = useMemo(() => {
