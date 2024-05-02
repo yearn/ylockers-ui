@@ -48,19 +48,12 @@ export default function Home() {
 
   const { data: prices } = usePrices([env.YPRISMA]);
 
-  const { data: depositedAmount } = useContractRead({
-    address: env.YPRISMA_STRATEGY,
-    abi: erc20Abi,
-    functionName: 'balanceOf',
-    args: [account.address as `0x${string}`],
-  });
-
   const earned = useMemo(() => {
-    if (depositedAmount && prices[env.YPRISMA]) {
-      return priced(depositedAmount, 18, prices[env.YPRISMA]);
+    if (data.strategy.balance && prices[env.YPRISMA]) {
+      return priced(data.strategy.balance, data.strategy.decimals, prices[env.YPRISMA]);
     }
     return 0;
-  }, [depositedAmount, prices]);
+  }, [data.strategy.balance, data.strategy.decimals, prices]);
 
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
@@ -143,8 +136,8 @@ export default function Home() {
                     <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Deposited Amount, yPRISMA</span>
-                      <span className="font-bold">{depositedAmount
-                        ? formatUnits(depositedAmount, 18)
+                      <span className="font-bold">{data.strategy.balance
+                        ? formatUnits(data.strategy.balance, 18)
                         : '-'
                       }
                       </span>

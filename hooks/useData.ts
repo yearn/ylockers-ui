@@ -81,6 +81,7 @@ export default function useData() {
       { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'symbol' },
       { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'decimals' },
       { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'balanceOf', args: [account.address || zeroAddress] }
+      
     ], multicallAddress })
   )
 
