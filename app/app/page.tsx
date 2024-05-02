@@ -22,9 +22,13 @@ import Mint from "../components/Mint";
 import Deposit from "../components/Deposit";
 import Withdraw from "../components/Withdraw";
 
-import { useContractReads } from 'wagmi';
+import { useContractReads, useContractRead } from 'wagmi';
 import { erc20Abi } from 'viem';
 import { formatUnits } from 'viem';
+import usePrices from "@/hooks/usePrices";
+import { priced } from "@/lib/bmath";
+import env from '@/lib/env'
+
 
 
 
@@ -41,6 +45,22 @@ export default function Home() {
 
   const leftActive = (tab === "stake" || tab === "unstake" || tab === "claim" || tab === "get")
   const rightActive = !leftActive
+
+  const { data: prices } = usePrices([env.YPRISMA]);
+
+  const { data: depositedAmount } = useContractRead({
+    address: env.YPRISMA_STRATEGY,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [account.address],
+  });
+
+  const earned = useMemo(() => {
+    if (depositedAmount && prices[env.YPRISMA]) {
+      return priced(depositedAmount, 18, prices[env.YPRISMA]);
+    }
+    return 0;
+  }, [depositedAmount, prices]);
 
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
@@ -60,7 +80,7 @@ export default function Home() {
           <div className="flex flex-col lg:flex-row justify-center ">
             <div className="flex-1 bg-darker-blue lg:rounded-bl-lg lg:rounded-tl-lg">
               <Suspense fallback={<div>Loading...</div>}>
-                <TabContent leftActive={leftActive} />
+                <TabContent leftActive={leftActive} account={account} />
               </Suspense>
             </div>
 
@@ -123,11 +143,15 @@ export default function Home() {
                     <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Deposited Amount, yPRISMA</span>
-                      <span className="font-bold">413123.1233</span>
+                      <span className="font-bold">{depositedAmount
+                        ? formatUnits(depositedAmount, 18)
+                        : '-'
+                      }
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Earned</span>
-                      <span className="font-bold">$234.23</span>
+                      <span className="font-bold">${earned.toFixed(2)}</span>
                     </div>
                   </div>
                 </>
@@ -144,7 +168,7 @@ export default function Home() {
   );
 }
 
-function TabContent(props: { leftActive: any; }) {
+function TabContent(props: { leftActive: any; account: any }) {
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
   const { data } = useData();
