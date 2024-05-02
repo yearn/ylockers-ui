@@ -9,7 +9,7 @@ import abis from '@/app/abis'
 import usePrices from './usePrices'
 import { priced } from '@/lib/bmath'
 import { useCallback } from 'react'
-import { computeAverageApr, computeAccountApr } from "@/lib/apr";
+import { useAverageApr, useAccountApr } from "@/lib/apr";
 
 
 const BalanceSchema = z.object({
@@ -106,6 +106,9 @@ export default function useData() {
     return fallback
   }
 
+  const averageApr = useAverageApr(multicall.data?.[11]?.result!, prices[env.YPRISMA], prices[env.YVMKUSD]);
+  const accountApr = useAccountApr(account.address || zeroAddress, multicall.data?.[10]?.result!, multicall.data?.[11]?.result!, prices[env.YPRISMA], prices[env.YVMKUSD]);
+
   return { ...multicall, prices, pricesError, refetch, isLoading, isSuccess, isError, data: DataSchema.parse({
     account: account.address || zeroAddress,
 
@@ -136,8 +139,8 @@ export default function useData() {
       decimals: multicall.data?.[9]?.result,
       balance: multicall.data?.[10]?.result,
       totalSupply: multicall.data?.[11]?.result,
-      averageApr: computeAverageApr(multicall.data?.[11]?.result!, prices[env.YPRISMA], prices[env.YVMKUSD]),
-      accountApr: computeAccountApr(account.address || zeroAddress, multicall.data?.[10]?.result!, multicall.data?.[11]?.result!, prices[env.YPRISMA], prices[env.YVMKUSD]),
+      averageApr,
+      accountApr,
     },
 
     rewards: {

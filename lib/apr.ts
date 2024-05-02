@@ -4,7 +4,7 @@ import env from "@/lib/env";
 import abis from "@/app/abis";
 import bmath from "@/lib/bmath";
 
-export function computeAverageApr(totalSupply: bigint, yPrismaPrice: number, yvmkUsdPrice: number) {
+export function useAverageApr(totalSupply: bigint, yPrismaPrice: number, yvmkUsdPrice: number) {
   const { data } = useContractReads({
     contracts: [
       {
@@ -12,31 +12,24 @@ export function computeAverageApr(totalSupply: bigint, yPrismaPrice: number, yvm
         abi: abis.SingleTokenRewardDistributor,
         functionName: 'getWeek',
       },
-    ],
-  });
-
-  const lastWeek = data?.[0]?.result ? data[0].result - 1 : 0;
-
-  const { data: rewardData } = useContractReads({
-    contracts: [
       {
         address: env.YPRISMA_REWARDS_DISTRIBUTOR,
         abi: abis.SingleTokenRewardDistributor,
         functionName: 'weeklyRewardAmount',
-        args: [lastWeek],
+        args: [data?.[0]?.result ? data[0].result - 1 : 0],
       },
     ],
   });
 
-  const lastWeekAmount = rewardData?.[0]?.result ?? 0n;
+  const lastWeekAmount = data?.[1]?.result ?? 0n;
   const averageRewards = bmath.div(lastWeekAmount, totalSupply);
-  const averageRewardsUsd = averageRewards * yvmkUsdPrice;
-  const capitalValue = yPrismaPrice * bmath.div(totalSupply, 1e18);
+  const averageRewardsUsd = bmath.mul(averageRewards, yvmkUsdPrice);
+  const capitalValue = bmath.mul(yPrismaPrice, bmath.div(totalSupply, 1e18));
 
-  return (averageRewardsUsd / capitalValue) * 52;
+  return bmath.mul(bmath.div(averageRewardsUsd, capitalValue), 52);
 }
 
-export function computeAccountApr(account: string, balance: bigint, totalSupply: bigint, yPrismaPrice: number, yvmkUsdPrice: number) {
+export function useAccountApr(account: string, balance: bigint, totalSupply: bigint, yPrismaPrice: number, yvmkUsdPrice: number) {
   const { data } = useContractReads({
     contracts: [
       {
@@ -44,18 +37,11 @@ export function computeAccountApr(account: string, balance: bigint, totalSupply:
         abi: abis.SingleTokenRewardDistributor,
         functionName: 'getWeek',
       },
-    ],
-  });
-
-  const lastWeek = data?.[0]?.result ? data[0].result - 1 : 0;
-
-  const { data: rewardData } = useContractReads({
-    contracts: [
       {
         address: env.YPRISMA_REWARDS_DISTRIBUTOR,
         abi: abis.SingleTokenRewardDistributor,
         functionName: 'weeklyRewardAmount',
-        args: [lastWeek],
+        args: [data?.[0]?.result ? data[0].result - 1 : 0],
       },
       {
         address: env.YPRISMA_BOOSTED_STAKER,
@@ -66,18 +52,18 @@ export function computeAccountApr(account: string, balance: bigint, totalSupply:
         address: env.YPRISMA_BOOSTED_STAKER,
         abi: abis.YearnBoostedStaker,
         functionName: 'getAccountWeightRatioAt',
-        args: [account, lastWeek],
+        args: [account, data?.[0]?.result ? data[0].result - 1 : 0],
       },
     ],
   });
 
-  const lastWeekAmount = rewardData?.[0]?.result ?? 0n;
-  const ybsDecimals = rewardData?.[1]?.result ?? 0n;
-  const userShare = bmath.div(rewardData?.[2]?.result ?? 0n, 10n ** ybsDecimals);
-  const userRewards = bmath.div(lastWeekAmount * userShare, 1e18);
+  const lastWeekAmount = data?.[1]?.result ?? 0n;
+  const ybsDecimals = data?.[2]?.result ?? 0n;
+  const userShare = bmath.div(data?.[3]?.result ?? 0n, 10n ** ybsDecimals);
+  const userRewards = bmath.div(bmath.mul(lastWeekAmount, userShare), 1e18);
 
-  const userRewardsUsd = userRewards * yvmkUsdPrice;
-  const capitalValue = yPrismaPrice * bmath.div(balance, 1e18);
+  const userRewardsUsd = bmath.mul(userRewards, yvmkUsdPrice);
+  const capitalValue = bmath.mul(yPrismaPrice, bmath.div(balance, 1e18));
 
-  return (userRewardsUsd / capitalValue) * 52;
+  return bmath.mul(bmath.div(userRewardsUsd, capitalValue), 52);
 }
