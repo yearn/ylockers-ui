@@ -13,6 +13,7 @@ import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import useData from "@/hooks/useData";
+import useVault from "@/hooks/useVault";
 import Tokens from "../components/Tokens";
 import Flipper from "../components/Flipper";
 import ClaimAll from "../components/ClaimAll";
@@ -37,7 +38,9 @@ export default function Home() {
   const { openAccountModal } = useAccountModal();
   const { openChainModal } = useChainModal();
   const { data } = useData()
-  console.log(data)
+
+  // const yprismaVault = useVault(env.YPRISMA_STRATEGY)
+  // console.log(yprismaVault)
   
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
@@ -48,7 +51,6 @@ export default function Home() {
   const rightActive = !leftActive
 
   const { data: prices } = usePrices([env.YPRISMA]);
-  console.log(prices)
 
   const earned = useMemo(() => {
     if (data.strategy.balance && prices[env.YPRISMA]) {
