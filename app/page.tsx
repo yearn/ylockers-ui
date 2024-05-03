@@ -5,6 +5,8 @@ import Button from "./components/Button";
 import Header from "./components/Header";
 import Link from "next/link";
 import useData from "@/hooks/useData";
+import { fPercent } from "@/lib/format";
+import bmath from "@/lib/bmath";
 
 export default function Home() {
   const { data } = useData()
@@ -29,7 +31,7 @@ export default function Home() {
             <Link href="/app?tab=stake">
               <Button>Launch App</Button>
             </Link>
-            <h2 className="text-4xl font-bold text-light-blue font-mono">APR {data.utilities.globalAverageApr}%</h2>
+            <h2 className="text-4xl font-bold text-light-blue font-mono">APR {data.utilities ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--'}</h2>
           </div>
         </div>
       </section>

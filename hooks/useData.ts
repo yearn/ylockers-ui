@@ -48,18 +48,17 @@ export const DataSchema = z.object({
   strategy: TokenSchema.default({}),
 
   utilities: z.object({
-    userBoostMultiplier: z.number().default(0),
+    globalAverageApr: z.bigint({ coerce: true }).default(0),
+    globalAverageBoostMultiplier: z.bigint({ coerce: true }).default(0),
     globalMinMaxApr: z.object({
-      min: z.number().default(0),
-      max: z.number().default(0)
+      min: z.bigint({ coerce: true }).default(0),
+      max: z.bigint({ coerce: true }).default(0)
     }).default({}),
-    userApr: z.number().default(0),
-    weeklyRewardAmount: z.number().default(0),
-    globalAverageBoostMultiplier: z.number().default(0),
-    globalAverageApr: z.number().default(0),
-    userAprAt: z.number().default(0),
-    weeklyRewardAmountAt: z.number().default(0),
-    week: z.number().default(0)
+    userApr: z.bigint({ coerce: true }).default(0),
+    // userAprAt: z.bigint({ coerce: true }).default(0),
+    weeklyRewardAmount: z.bigint({ coerce: true }).default(0),
+    // weeklyRewardAmountAt: z.bigint({ coerce: true }).default(0),
+    // week: z.bigint({ coerce: true }).default(0)
   }).default({})
 })
 
@@ -98,14 +97,14 @@ export default function useData() {
       { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'balanceOf', args: [account.address || zeroAddress] },
 
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserBoostMultiplier', args: [account.address || zeroAddress] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalMinMaxApr', args: [0, 0] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserApr', args: [account.address || zeroAddress, 0, 0] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmount' },
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageBoostMultiplier' },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageApr', args: [0, 0] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, 0, 0] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmountAt', args: [0] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getWeek' },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageApr', args: ['200000000000000', '1000000000000000'] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalMinMaxApr', args: ['200000000000000', '1000000000000000'] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserApr', args: [account.address || zeroAddress, '200000000000000', '1000000000000000'] },
+      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, '200000000000000', '1000000000000000'] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmount' },
+      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmountAt', args: [0] },
+      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getWeek' },
 
     ], multicallAddress })
   )
@@ -129,7 +128,7 @@ export default function useData() {
     if (pricesError) console.error(pricesError)
     return fallback
   }
-
+  console.log(multicall.data)
   return { ...multicall, prices, pricesError, refetch, isLoading, isSuccess, isError, data: DataSchema.parse({
     account: account.address || zeroAddress,
 
@@ -182,18 +181,17 @@ export default function useData() {
     },
 
     utilities: {
-      userBoostMultiplier: multicall.data?.[17]?.result,
+      globalAverageApr: multicall.data?.[18]?.result,
+      globalAverageBoostMultiplier: multicall.data?.[19]?.result,
       globalMinMaxApr: {
-        min: multicall.data?.[18]?.result,
-        max: multicall.data?.[18]?.result
+        min: multicall.data?.[20]?.result[0],
+        max: multicall.data?.[20]?.result[1]
       },
-      userApr: multicall.data?.[19]?.result,
-      weeklyRewardAmount: multicall.data?.[20]?.result,
-      globalAverageBoostMultiplier: multicall.data?.[21]?.result,
-      globalAverageApr: multicall.data?.[22]?.result,
-      userAprAt: multicall.data?.[23]?.result,
-      weeklyRewardAmountAt: multicall.data?.[24]?.result,
-      week: multicall.data?.[25]?.result
+      userApr: multicall.data?.[21]?.result,
+      // userAprAt: multicall.data?.[21]?.result,
+      weeklyRewardAmount: multicall.data?.[22]?.result,
+      // weeklyRewardAmountAt: multicall.data?.[23]?.result,
+      // week: multicall.data?.[24]?.result
     },
   })}
 }
