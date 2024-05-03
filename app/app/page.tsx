@@ -37,6 +37,7 @@ export default function Home() {
   const { openAccountModal } = useAccountModal();
   const { openChainModal } = useChainModal();
   const { data } = useData()
+  console.log(data)
   
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
@@ -47,6 +48,7 @@ export default function Home() {
   const rightActive = !leftActive
 
   const { data: prices } = usePrices([env.YPRISMA]);
+  console.log(prices)
 
   const earned = useMemo(() => {
     if (data.strategy.balance && prices[env.YPRISMA]) {

@@ -13,6 +13,13 @@ export function div(a: bigint, b: bigint, precision: number = 18) {
   return sign * Number(wholePart + '.' + fractionalPart.toString().padStart(precision, '0'))
 }
 
+export function mul(a:bigint|number, b:bigint|number) {
+  const bigA = typeof a === 'number' ? BigInt(Math.round(a * Number(b.toString()))) : BigInt(a);
+  const bigB = BigInt(b);
+
+  return bigA * bigB;
+}
+
 export function min(...args: bigint[]): bigint {
   return args.reduce((a, b) => (a < b ? a : b))
 }
@@ -25,5 +32,5 @@ export function priced(amount: bigint, decimals: bigint|number, priceUsd: number
   return priceUsd * Number(amount * BigInt(precision) / BigInt(10 ** Number(decimals))) / precision
 }
 
-const bmath = { div, min, max, priced }
+const bmath = { div, mul, min, max, priced }
 export default bmath
