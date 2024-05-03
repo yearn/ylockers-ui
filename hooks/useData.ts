@@ -48,17 +48,17 @@ export const DataSchema = z.object({
   strategy: TokenSchema.default({}),
 
   utilities: z.object({
-    globalAverageApr: z.bigint({ coerce: true }).default(0),
-    globalAverageBoostMultiplier: z.bigint({ coerce: true }).default(0),
+    globalAverageApr: z.bigint({ coerce: true }).default(0n),
+    globalAverageBoostMultiplier: z.bigint({ coerce: true }).default(0n),
     globalMinMaxApr: z.object({
-      min: z.bigint({ coerce: true }).default(0),
-      max: z.bigint({ coerce: true }).default(0)
+      min: z.bigint({ coerce: true }).default(0n),
+      max: z.bigint({ coerce: true }).default(0n)
     }).default({}),
-    userApr: z.bigint({ coerce: true }).default(0),
-    // userAprAt: z.bigint({ coerce: true }).default(0),
-    weeklyRewardAmount: z.bigint({ coerce: true }).default(0),
-    // weeklyRewardAmountAt: z.bigint({ coerce: true }).default(0),
-    // week: z.bigint({ coerce: true }).default(0)
+    userApr: z.bigint({ coerce: true }).default(0n),
+    // userAprAt: z.bigint({ coerce: true }).default(0n),
+    weeklyRewardAmount: z.bigint({ coerce: true }).default(0n),
+    // weeklyRewardAmountAt: z.bigint({ coerce: true }).default(0n),
+    // week: z.bigint({ coerce: true }).default(0n)
   }).default({})
 })
 
@@ -184,8 +184,8 @@ export default function useData() {
       globalAverageApr: multicall.data?.[18]?.result,
       globalAverageBoostMultiplier: multicall.data?.[19]?.result,
       globalMinMaxApr: {
-        min: multicall.data?.[20]?.result[0],
-        max: multicall.data?.[20]?.result[1]
+        min: (multicall.data?.[20]?.result as any[])[0],
+        max: (multicall.data?.[20]?.result as any[])[1]
       },
       userApr: multicall.data?.[21]?.result,
       // userAprAt: multicall.data?.[21]?.result,
