@@ -81,7 +81,7 @@ export default function Home() {
               {leftActive ? (
                 <>
                   <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
-                  <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</span>
+                  <span className="text-light-blue text-6xl font-bold mb-[19px]">{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</span>
                   <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <div className="flex justify-between items-center pb-4">
                       <span className="font-semibold text-lg">YOUR POSITION</span>
@@ -116,7 +116,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Min/Max APR </span>
-                      <span className="font-bold">{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n)) : '--.--%'} {'—>'} {data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n)) : '--.--%'}</span>
+                      <span className="font-bold">{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 0) : '--.--%'} {'—>'} {data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 0) : '--.--%'}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Average Boost Multiplier</span>
@@ -131,7 +131,7 @@ export default function Home() {
               ) :(
                 <>
                   <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APR</span>
-                  <span className="text-light-blue text-6xl font-mono font-bold mb-[19px]">137.91%</span>
+                  <span className="text-light-blue text-6xl font-bold mb-[19px]">137.91%</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
                     <div className="flex justify-between">

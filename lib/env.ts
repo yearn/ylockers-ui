@@ -16,6 +16,7 @@ const EnvSchema = z.object({
   YPRISMA_REWARDS_DISTRIBUTOR: zhexstringSchema,
   YPRISMA_STRATEGY: zhexstringSchema,
   YVMKUSD: zhexstringSchema,
+  MKUSD: zhexstringSchema,
   YDAEMON: z.string(),
   DEV: z.boolean()
 })
@@ -28,6 +29,7 @@ const result = EnvSchema.safeParse({
   YPRISMA_REWARDS_DISTRIBUTOR: process.env.NEXT_PUBLIC_YPRISMA_REWARDS_DISTRIBUTOR,
   YPRISMA_STRATEGY: process.env.NEXT_PUBLIC_YPRISMA_STRATEGY,
   YVMKUSD: process.env.NEXT_PUBLIC_YVMKUSD,
+  MKUSD: process.env.NEXT_PUBLIC_MKUSD,
   YDAEMON: process.env.NEXT_PUBLIC_YDAEMON,
   DEV: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 })

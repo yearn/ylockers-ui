@@ -1,7 +1,7 @@
 import { formatUnits } from 'viem'
 
 export function fPercent (amount: number, fixed?: number) {
-  return `${(amount * 100).toFixed(fixed || 2)}%`
+  return `${(amount * 100).toFixed(isNaN(fixed) ? 2 : fixed)}%`
 }
 
 export function fAddress(address: `0x${string}`) {
