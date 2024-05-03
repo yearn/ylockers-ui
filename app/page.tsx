@@ -1,3 +1,5 @@
+'use client'
+
 import Image from "next/image";
 import Button from "./components/Button";
 import Header from "./components/Header";
@@ -27,7 +29,6 @@ export default function Home() {
             <Link href="/app?tab=stake">
               <Button>Launch App</Button>
             </Link>
-      globalAverageApr: multicall.data?.[22]?.result,
             <h2 className="text-4xl font-bold text-light-blue font-mono">APR {data.utilities.globalAverageApr}%</h2>
           </div>
         </div>
