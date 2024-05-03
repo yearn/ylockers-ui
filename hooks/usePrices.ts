@@ -2,7 +2,7 @@ import env from '@/lib/env'
 import useSWR from 'swr'
 
 export default function usePrices(tokens: `0x${string}`[]) {
-  const request = `${env.YDAEMON}/1/prices/some/${tokens.join(',')}?humanized=true`
+  const request = `${env.YDAEMON}/1/prices/some/${tokens.join(',')}`
 
   const fallbackData = tokens.reduce((acc: { [key: `0x${string}`]: number }, token) => {
     acc[token] = 0

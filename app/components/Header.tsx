@@ -20,7 +20,7 @@ const Header = ({ items, selected="", launchApp=true, launchText='Launch App', c
     launchApp ? 'xl:w-[1200px] w-full px-4 xl:p-0 h-[72px]' : ''
   } ${className}`}>
     <div className="flex space-x-4">
-      {items.slice(0, -1).map((item:Item, index:Number) => (
+      {(!launchApp ? items.slice(0, -1) : items).map((item:Item, index:Number) => (
         <Link
           href={item.link}
           key={item.text}

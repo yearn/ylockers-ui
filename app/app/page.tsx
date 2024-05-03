@@ -142,10 +142,6 @@ export default function Home() {
                       }
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Earned</span>
-                      <span className="font-bold">${earned.toFixed(2)}</span>
-                    </div>
                   </div>
                 </>
               )}

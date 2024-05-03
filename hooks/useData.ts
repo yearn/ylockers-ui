@@ -10,6 +10,8 @@ import usePrices from './usePrices'
 import bmath, { priced } from '@/lib/bmath'
 import { useCallback } from 'react'
 
+const padRight = (n: number, length: number) => n === 0 ? n : n.toString().padEnd(length, '0')
+
 const BalanceSchema = z.object({
   address: zhexstringSchema.default(zeroAddress),
   amount: z.bigint().default(0n)
@@ -100,10 +102,10 @@ export default function useData() {
 
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserBoostMultiplier', args: [account.address || zeroAddress] },
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageBoostMultiplier' },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageApr', args: [bmath.mul(prices[env.YPRISMA], 10**18), bmath.mul(prices[env.MKUSD], 10**18)] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalMinMaxApr', args: [bmath.mul(prices[env.YPRISMA], 10**18), bmath.mul(prices[env.MKUSD], 10**18)] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserApr', args: [account.address || zeroAddress, bmath.mul(prices[env.YPRISMA], 10**18), bmath.mul(prices[env.MKUSD], 10**18)] },
-      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, bmath.mul(prices[env.YPRISMA], 10**18), bmath.mul(prices[env.MKUSD], 10**18)] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageApr', args: [padRight(prices?.[env.YPRISMA] || 0, 18), padRight(prices?.[env.MKUSD] || 0, 18)] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalMinMaxApr', args: [padRight(prices?.[env.YPRISMA] || 0, 18), padRight(prices?.[env.MKUSD] || 0, 18)] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserApr', args: [account.address || zeroAddress, padRight(prices?.[env.YPRISMA] || 0, 18), padRight(prices?.[env.MKUSD] || 0, 18)] },
+      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, bmath.mul(prices?.[env.YPRISMA], 18), bmath.mul(prices?.[env.MKUSD], 18)] },
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmount' },
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmountAt', args: [0] },
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getWeek' },

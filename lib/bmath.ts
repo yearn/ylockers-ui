@@ -13,19 +13,6 @@ export function div(a: bigint, b: bigint, precision: number = 18) {
   return sign * Number(wholePart + '.' + fractionalPart.toString().padStart(precision, '0'))
 }
 
-export function mul(a: bigint, b: bigint, precision: number = 18) {
-  const sign = a < 0n !== b < 0n ? -1 : 1;
-  a = a < 0n ? -a : a;
-  b = b < 0n ? -b : b;
-
-  const scaleFactor = BigInt(10 ** precision);
-  const product = (a * b) / scaleFactor;
-  const wholePart = product / scaleFactor;
-  const fractionalPart = product % scaleFactor;
-
-  return sign * Number(wholePart + "." + fractionalPart.toString().padStart(precision, "0"))
-}
-
 export function min(...args: bigint[]): bigint {
   return args.reduce((a, b) => (a < b ? a : b))
 }
@@ -38,5 +25,5 @@ export function priced(amount: bigint, decimals: bigint|number, priceUsd: number
   return priceUsd * Number(amount * BigInt(precision) / BigInt(10 ** Number(decimals))) / precision
 }
 
-const bmath = { div, mul, min, max, priced }
+const bmath = { div, min, max, priced }
 export default bmath
