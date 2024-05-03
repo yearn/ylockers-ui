@@ -173,8 +173,10 @@ function TabContent(props: { leftActive: any; account: any }) {
         {tab === 'unstake' && "Stake yPRISMA"}
         {tab === 'claim' && "Stake yPRISMA"}
         {tab === 'get' && "Stake yPRISMA"}
+        {tab === 'learn_more_stake' && "Stake yPRISMA"}
         {tab === 'deposit' && "Auto-compound yPRISMA"}
         {tab === 'withdraw' && "Auto-compound yPRISMA"}
+        {tab === 'learn_more_deposit' && "Auto-compound yPRISMAA"}
         
       </h1>
       {props.leftActive ? (
@@ -184,6 +186,7 @@ function TabContent(props: { leftActive: any; account: any }) {
             { text: 'Unstake', link: '/app?tab=unstake' },
             { text: 'Claim Rewards', link: '/app?tab=claim' },
             { text: 'Get yPRISMA', link: '/app?tab=get' },
+            { text: 'Learn More', link: '/app?tab=learn_more_stake' },
           ]}
           launchApp={false}
           selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
@@ -195,6 +198,7 @@ function TabContent(props: { leftActive: any; account: any }) {
           items={[
             { text: 'Deposit', link: '/app?tab=deposit' },
             { text: 'Withdraw', link: '/app?tab=withdraw' },
+            { text: 'Learn More', link: '/app?tab=learn_more_deposit' },
           ]}
           launchApp={false}
           selected={tab === 'deposit' ? 'Deposit' : tab === 'withdraw' ? 'Withdraw' : ''}
@@ -270,6 +274,19 @@ function TabContent(props: { leftActive: any; account: any }) {
             </div>
           </div>
         )}
+        {tab === 'learn_more_stake' && (
+          <div className="flex flex-row space-y-6 w-full pt-0"> 
+            <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-1/2">
+              <span className="font-semibold">HOW IT WORKS</span>
+              <p className="font-thin opacity-70">
+                {`The longer you stake, the greater your boost! Yearn's yPRISMA staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x). You'll reach max boost and achieve the maximum staking APR less than four weeks after depositing your yPRISMA.`}
+              </p>
+              <p className="font-thin opacity-70">
+                {`For more information on yPRISMA and the yLockers ecosystem, read our`} <Link href="https://docs.yearn.fi/getting-started/products/ylockers/overview">docs</Link>.
+              </p>
+            </div>
+          </div>
+        )}
         {tab === 'deposit' && (
           <div className="flex">
             <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
@@ -289,6 +306,19 @@ function TabContent(props: { leftActive: any; account: any }) {
               <span className="mt-4 font-thin opacity-70">
                 {`Withdraw your yPRISMA from Yearn's auto-compounding vault. Please note that this will unstake your yPRISMA (and unstaked yPRISMA doesn’t earn any yield).`}
               </span>
+            </div>
+          </div>
+        )}
+        {tab === 'learn_more_deposit' && (
+          <div className="flex flex-row space-y-6 w-full pt-0"> 
+            <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-1/2">
+              <span className="font-semibold">HOW IT WORKS</span>
+              <p className="font-thin opacity-70">
+                {`Once a week, the vault claims its boosted share of mkUSD from the yPRISMA staker contract, swaps it for more yPRISMA, and deposits it back into the staker. On top of that, the vault is whitelisted - allowing it to earn max boost immediately on all reinvested yPRISMA.`}
+              </p>
+              <p className="font-thin opacity-70">
+              {`For more information on yPRISMA and the yLockers ecosystem, read our`} <Link href="https://docs.yearn.fi/getting-started/products/ylockers/overview">docs</Link>.
+              </p>
             </div>
           </div>
         )}
