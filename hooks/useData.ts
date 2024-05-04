@@ -7,8 +7,10 @@ import { readContractsQueryOptions } from 'wagmi/query'
 import { zhexstringSchema } from '@/lib/types'
 import abis from '@/app/abis'
 import usePrices from './usePrices'
-import { priced } from '@/lib/bmath'
+import bmath, { priced } from '@/lib/bmath'
 import { useCallback } from 'react'
+
+const padRight = (n: number, length: number) => n === 0 ? n : String(n.toString().padEnd(length, '0'))
 
 const BalanceSchema = z.object({
   address: zhexstringSchema.default(zeroAddress),
@@ -45,14 +47,30 @@ export const DataSchema = z.object({
     claimableUsd: z.number().default(0)
   }).default({}),
 
-  strategy: TokenSchema.default({})
+  strategy: TokenSchema.default({}),
+
+  utilities: z.object({
+    globalAverageApr: z.bigint({ coerce: true }).default(0n),
+    globalAverageBoostMultiplier: z.bigint({ coerce: true }).default(0n),
+    globalMinMaxApr: z.object({
+      min: z.bigint({ coerce: true }).default(0n),
+      max: z.bigint({ coerce: true }).default(0n)
+    }).default({}),
+    userApr: z.bigint({ coerce: true }).default(0n),
+    // userAprAt: z.bigint({ coerce: true }).default(0n),
+    weeklyRewardAmount: z.bigint({ coerce: true }).default(0n),
+    // weeklyRewardAmountAt: z.bigint({ coerce: true }).default(0n),
+    // week: z.bigint({ coerce: true }).default(0n)
+    userBoostMultiplier: z.bigint({ coerce: true }).default(0n),
+    oldStakerBalance: z.bigint({ coerce: true }).default(0n)
+  }).default({})
 })
 
 export default function useData() {
   const account = useAccount()
 
   const { data: prices, mutate: refetchPrices, isLoading: pricesIsLoading, error: pricesError } = usePrices([
-    env.PRISMA, env.YPRISMA, env.YVMKUSD
+    env.PRISMA, env.YPRISMA, env.YVMKUSD, env.MKUSD
   ])
 
   const config = useConfig()
@@ -80,9 +98,27 @@ export default function useData() {
 
       { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'symbol' },
       { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'decimals' },
-      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'balanceOf', args: [account.address || zeroAddress] }
+      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'balanceOf', args: [account.address || zeroAddress] },
+
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserBoostMultiplier', args: [account.address || zeroAddress] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageBoostMultiplier' },
+      // @ts-ignore
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageApr', args: [bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString()] },
+      // @ts-ignore
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalMinMaxApr', args: [bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString()] },
+      // @ts-ignore
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserApr', args: [account.address || zeroAddress, bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString()] },
+      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, bmath.mul(prices?.[env.YPRISMA], 10n**18n), bmath.mul(prices?.[env.MKUSD], 10n**18n)] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmount' },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserBoostMultiplier', args: [account.address || zeroAddress] },
+      { address: env.YPRISMA_OLD_STAKER, abi: abis.OldStaker, functionName: 'balanceOf', args: [account.address || zeroAddress]  },
+      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmountAt', args: [0] },
+      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getWeek' },
+
     ], multicallAddress })
   )
+
+  console.log(multicall)
 
   const refetch = useCallback(() => {
     refetchPrices()
@@ -103,7 +139,6 @@ export default function useData() {
     if (pricesError) console.error(pricesError)
     return fallback
   }
-
   return { ...multicall, prices, pricesError, refetch, isLoading, isSuccess, isError, data: DataSchema.parse({
     account: account.address || zeroAddress,
 
@@ -153,6 +188,22 @@ export default function useData() {
       decimals: multicall.data?.[15]?.result,
       balance: multicall.data?.[16]?.result,
       allowances: []
+    },
+
+    utilities: {
+      globalAverageApr: multicall.data?.[19]?.result,
+      globalAverageBoostMultiplier: multicall.data?.[18]?.result,
+      globalMinMaxApr: {
+        min: (multicall.data?.[20]?.result as any[])[0],
+        max: (multicall.data?.[20]?.result as any[])[1]
+      },
+      userApr: multicall.data?.[21]?.result,
+      // userAprAt: multicall.data?.[21]?.result,
+      weeklyRewardAmount: multicall.data?.[22]?.result,
+      userBoostMultiplier: multicall.data?.[23]?.result,
+      oldStakerBalance: multicall.data?.[24]?.result,
+      // weeklyRewardAmountAt: multicall.data?.[23]?.result,
+      // week: multicall.data?.[24]?.result
     },
   })}
 }

@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 
 export default function Flipper({ className, children }: { className?: string, children: number | string }) {
   const chars = useMemo(() => children.toString().split(''), [children])
-  return <div className={`flex items-center font-mono ${className}`}>
+  return <div className={`flex items-center ${className}`}>
     <AnimatePresence initial={false} mode="popLayout">
       {chars.map((char, index) => <motion.div key={`${index}-${char}`}
         transition={springs.glitchy}
