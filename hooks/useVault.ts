@@ -14,7 +14,7 @@ export default function useVault(vault: `0x${string}`) {
   })
 
   return {
-    data: data as { [key: `0x${string}`]: number },
+    data: data as any,
     isLoading,
     isValidating,
     error,
