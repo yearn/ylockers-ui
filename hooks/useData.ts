@@ -61,6 +61,8 @@ export const DataSchema = z.object({
     weeklyRewardAmount: z.bigint({ coerce: true }).default(0n),
     // weeklyRewardAmountAt: z.bigint({ coerce: true }).default(0n),
     // week: z.bigint({ coerce: true }).default(0n)
+    userBoostMultiplier: z.bigint({ coerce: true }).default(0n),
+    oldStakerBalance: z.bigint({ coerce: true }).default(0n)
   }).default({})
 })
 
@@ -108,11 +110,15 @@ export default function useData() {
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserApr', args: [account.address || zeroAddress, bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString()] },
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, bmath.mul(prices?.[env.YPRISMA], 10n**18n), bmath.mul(prices?.[env.MKUSD], 10n**18n)] },
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmount' },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserBoostMultiplier', args: [account.address || zeroAddress] },
+      { address: env.YPRISMA_OLD_STAKER, abi: abis.OldStaker, functionName: 'balanceOf', args: [account.address || zeroAddress]  },
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmountAt', args: [0] },
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getWeek' },
 
     ], multicallAddress })
   )
+
+  console.log(multicall)
 
   const refetch = useCallback(() => {
     refetchPrices()
@@ -133,7 +139,6 @@ export default function useData() {
     if (pricesError) console.error(pricesError)
     return fallback
   }
-
   return { ...multicall, prices, pricesError, refetch, isLoading, isSuccess, isError, data: DataSchema.parse({
     account: account.address || zeroAddress,
 
@@ -195,6 +200,8 @@ export default function useData() {
       userApr: multicall.data?.[21]?.result,
       // userAprAt: multicall.data?.[21]?.result,
       weeklyRewardAmount: multicall.data?.[22]?.result,
+      userBoostMultiplier: multicall.data?.[23]?.result,
+      oldStakerBalance: multicall.data?.[24]?.result,
       // weeklyRewardAmountAt: multicall.data?.[23]?.result,
       // week: multicall.data?.[24]?.result
     },
