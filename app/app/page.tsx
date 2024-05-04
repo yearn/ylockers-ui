@@ -11,7 +11,7 @@ import {   useConnectModal,
   useChainModal, } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
-import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
+import { fAddress, fPercent, fTokens, fUSD, fPercentNoMult } from "@/lib/format";
 import useData from "@/hooks/useData";
 import useVault from "@/hooks/useVault";
 import Tokens from "../components/Tokens";
@@ -38,6 +38,8 @@ export default function Home() {
   const { openAccountModal } = useAccountModal();
   const { openChainModal } = useChainModal();
   const { data } = useData()
+  
+  console.log(data)
 
   const { data: yprismaVault } = useVault(env.YVMKUSD)
   const vaultAPR:any = fPercent(yprismaVault?.apr?.netAPR)
@@ -71,7 +73,7 @@ export default function Home() {
               <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</div></div>
             </div></Link>
             <Link href="/app?tab=deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{isNaN(vaultAPR) ? '--.--%' : vaultAPR}</div></div>
+              <div className="flex justify-between items-center text-lg pl-4">EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{isNaN(yprismaVault?.apr?.netAPR) ? '--.--%' : vaultAPR}</div></div>
             </div></Link>
           </div>
           <div className="flex flex-col lg:flex-row justify-center ">
@@ -99,7 +101,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Your APR</span>
-                      <span className="font-bold">{data.utilities && data.utilities.userApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.userApr, 10n**18n)) : '--.--%'}</span>
+                      <span className="font-bold">{data.utilities && data.utilities.userApr.toString() !== '0' ? fPercentNoMult(bmath.div(data.utilities.userApr, 10n**18n)) : '--.--%'}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Boost Multiplier</span>
@@ -120,7 +122,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Min/Max APR </span>
-                      <span className="font-bold">{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 0) : '--.--%'} {'—>'} {data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 0) : '--.--%'}</span>
+                      <span className="font-bold">{data.utilities ? fPercentNoMult(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 0) : '--.--%'} {'—>'} {data.utilities ? fPercentNoMult(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 0) : '--.--%'}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Average Boost Multiplier</span>
@@ -135,7 +137,7 @@ export default function Home() {
               ) :(
                 <>
                   <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APR</span>
-                  <span className="text-light-blue text-6xl font-bold mb-[19px]">{isNaN(vaultAPR) ? '--.--%' : vaultAPR}</span>
+                  <span className="text-light-blue text-6xl font-bold mb-[19px]">{isNaN(yprismaVault?.apr?.netAPR) ? '--.--%' : vaultAPR}</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
                     <div className="flex justify-between">

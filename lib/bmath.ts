@@ -13,10 +13,14 @@ export function div(a: bigint, b: bigint, precision: number = 18) {
   return sign * Number(wholePart + '.' + fractionalPart.toString().padStart(precision, '0'))
 }
 
-export function mul(a: bigint | number, b: bigint | number, precision: number = 18): number {
-  const scaleFactor = 10 ** precision;
-  const result = Number(a) * Number(b) * scaleFactor;
-  return Math.round(result) / scaleFactor;
+export function mul(a: number, b: bigint): bigint {
+  const aStr = a.toString();
+  const [integerPart, decimalPart = ''] = aStr.split('.');
+  const decimalLength = decimalPart.length;
+  const scaleFactor = BigInt(10 ** decimalLength);
+  const aInt = BigInt(integerPart + decimalPart);
+  const result = aInt * b;
+  return result / scaleFactor;
 }
 
 export function min(...args: bigint[]): bigint {

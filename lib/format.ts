@@ -4,6 +4,10 @@ export function fPercent (amount: number, fixed?: number) {
   return `${(amount * 100).toFixed(isNaN(fixed as number) ? 2 : fixed)}%`
 }
 
+export function fPercentNoMult (amount: number, fixed?: number) {
+  return `${(amount).toFixed(isNaN(fixed as number) ? 2 : fixed)}%`
+}
+
 export function fAddress(address: `0x${string}`) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
