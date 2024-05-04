@@ -100,8 +100,11 @@ export default function useData() {
 
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserBoostMultiplier', args: [account.address || zeroAddress] },
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageBoostMultiplier' },
+      // @ts-ignore
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalAverageApr', args: [bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString()] },
+      // @ts-ignore
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalMinMaxApr', args: [bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString()] },
+      // @ts-ignore
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserApr', args: [account.address || zeroAddress, bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString()] },
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, bmath.mul(prices?.[env.YPRISMA], 10n**18n), bmath.mul(prices?.[env.MKUSD], 10n**18n)] },
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmount' },
