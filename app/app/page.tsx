@@ -11,7 +11,7 @@ import {   useConnectModal,
   useChainModal, } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
-import { fAddress, fPercent, fTokens, fUSD, fPercentNoMult } from "@/lib/format";
+import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import useData from "@/hooks/useData";
 import useVault from "@/hooks/useVault";
 import Tokens from "../components/Tokens";
@@ -38,11 +38,11 @@ export default function Home() {
   const { openAccountModal } = useAccountModal();
   const { openChainModal } = useChainModal();
   const { data } = useData()
-  
-  console.log(data)
 
   const { data: yprismaVault } = useVault(env.YVMKUSD)
   const vaultAPR:any = fPercent(yprismaVault?.apr?.netAPR)
+
+  
   
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
@@ -101,7 +101,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Your APR</span>
-                      <span className="font-bold">{data.utilities && data.utilities.userApr.toString() !== '0' ? fPercentNoMult(bmath.div(data.utilities.userApr, 10n**18n)) : '--.--%'}</span>
+                      <span className="font-bold">{data.utilities && data.utilities.userApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.userApr, 10n**18n)) : '--.--%'}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Boost Multiplier</span>
@@ -122,7 +122,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Min/Max APR </span>
-                      <span className="font-bold">{data.utilities ? fPercentNoMult(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 0) : '--.--%'} {'—>'} {data.utilities ? fPercentNoMult(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 0) : '--.--%'}</span>
+                      <span className="font-bold">{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 0) : '--.--%'} {'—>'} {data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 0) : '--.--%'}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Average Boost Multiplier</span>
