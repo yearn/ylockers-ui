@@ -42,7 +42,7 @@ export default function Home() {
   const { data: yprismaVault } = useVault(env.YVMKUSD)
   const vaultAPR:any = fPercent(yprismaVault?.apr?.netAPR)
 
-  
+  console.log(data)
   
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
@@ -63,6 +63,11 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
+      {data.utilities.oldStakerBalance > 0n && (
+        <div className="w-full bg-red-500 text-white text-center p-2 z-20">
+          You have an old staker balance of {fTokens(data.utilities.oldStakerBalance, data.staker.decimals)} yPRISMA. <Link className="underline" href="https://yprisma.yearn.fi/">Unstake</Link> it before using this app!
+        </div>
+      )}
       <div className="w-full shadow-lg z-10"></div>
       <Image className="absolute left-[24%] w-[76%] opacity-20" src="/prisma.svg" width={200} height={200} alt="" />
       <div className="max-w-[1200px] w-full z-10">
