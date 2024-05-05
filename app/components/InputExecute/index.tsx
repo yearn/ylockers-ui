@@ -44,6 +44,9 @@ function Provided({ className }: { className?: string }) {
   , [account, hasBalance, amount])
 
   const verbPastTense = useMemo(() => {
+    if (task.verb === "unstake") {
+      return "unstaked"
+    }
     const doc = nlp(task.verb)
     doc.verbs().toPastTense()
     return doc.text()
