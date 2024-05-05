@@ -9,6 +9,7 @@ import abis from '@/app/abis'
 import usePrices from './usePrices'
 import bmath, { priced } from '@/lib/bmath'
 import { useCallback } from 'react'
+import { totalmem } from 'os'
 
 const padRight = (n: number, length: number) => n === 0 ? n : String(n.toString().padEnd(length, '0'))
 
@@ -47,7 +48,14 @@ export const DataSchema = z.object({
     claimableUsd: z.number().default(0)
   }).default({}),
 
-  strategy: TokenSchema.default({}),
+  strategy: z.object({
+    address: zhexstringSchema.default(zeroAddress),
+    symbol: z.string().default(''),
+    decimals: z.number().default(0),
+    balance: z.bigint().default(0n),
+    allowances: BalanceSchema.array().default([]),
+    totalAssets: z.bigint().default(0n)
+  }).default({}),
 
   utilities: z.object({
     globalAverageApr: z.bigint({ coerce: true }).default(0n),
@@ -114,6 +122,8 @@ export default function useData() {
       { address: env.YPRISMA_OLD_STAKER, abi: abis.OldStaker, functionName: 'balanceOf', args: [account.address || zeroAddress]  },
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmountAt', args: [0] },
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getWeek' },
+
+      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'totalAssets' },
 
     ], multicallAddress })
   )
@@ -187,7 +197,8 @@ export default function useData() {
       symbol: multicall.data?.[14]?.result,
       decimals: multicall.data?.[15]?.result,
       balance: multicall.data?.[16]?.result,
-      allowances: []
+      allowances: [],
+      totalAssets: multicall.data?.[25]?.result
     },
 
     utilities: {

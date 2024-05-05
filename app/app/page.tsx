@@ -118,7 +118,7 @@ export default function Home() {
                     <span className="font-semibold pb-4 text-lg">YEARN BOOSTED STAKER</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Total Staked</span>
-                      <span className="font-bold">{bmath.div(data.staker.totalSupply, 10n**18n)}</span>
+                      <span className="font-bold">{bmath.div(data.staker.totalSupply, 10n**18n)} yPRISMA</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Min/Max APR </span>
@@ -130,7 +130,7 @@ export default function Home() {
                     </div> */}
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Rewards this week</span>
-                      <span className="font-bold">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n)}</span>
+                      <span className="font-bold">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n)} mkUSD</span>
                     </div>
                   </div>
                 </>
@@ -139,13 +139,38 @@ export default function Home() {
                   <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APR</span>
                   <span className="text-light-blue text-6xl font-bold mb-[19px]">{isNaN(yprismaVault?.apr?.netAPR) ? '--.--%' : vaultAPR}</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
-                    {/* <span className="font-semibold pb-4 text-lg">YOUR POSITION</span> */}
+                    <span className="font-semibold pb-4 text-lg">MY DEPOSITS</span>
                     <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">My Depositsg</span>
+                      <span className="font-thin opacity-70	">yPRISMA Deposited</span>
                       <span className="font-bold">{data.strategy.balance
-                        ? formatUnits(data.strategy.balance, 18)
+                        ? bmath.div(data.strategy.balance, 10n**18n).toFixed(2)
                         : '-'
                       }
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70">USD Value</span>
+                      <span className="font-bold">
+                        ${data.strategy.balance && prices[env.YPRISMA]
+                          ? (Number(bmath.div(data.strategy.balance, 10n ** 18n)) * prices[env.YPRISMA]).toFixed(2)
+                          : '-'}
+                      </span>
+                    </div>
+                    <span className="font-semibold pb-4 pt-4 text-lg">TOTAL DEPOSITS</span>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">yPRISMA Deposited</span>
+                      <span className="font-bold">{data.strategy.balance
+                        ? bmath.div(data.strategy.totalAssets, 10n**18n).toFixed(2)
+                        : '-'
+                      }
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70">USD Value</span>
+                      <span className="font-bold">
+                        ${data.strategy.totalAssets && prices[env.YPRISMA]
+                          ? (Number(bmath.div(data.strategy.totalAssets, 10n ** 18n)) * prices[env.YPRISMA]).toFixed(2)
+                          : '-'}
                       </span>
                     </div>
                   </div>
