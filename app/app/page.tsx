@@ -117,7 +117,7 @@ export default function Home() {
                   <div className="flex flex-col space-y-2 pt-2">
                     <span className="font-semibold pb-4 text-lg">YEARN BOOSTED STAKER</span>
                     <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">yPRISMA Staked</span>
+                      <span className="font-thin opacity-70	">Staked yPRISMA</span>
                       <span className="font-bold">{bmath.div(data.staker.totalSupply, 10n**18n)}</span>
                     </div>
                     <div className="flex justify-between">
