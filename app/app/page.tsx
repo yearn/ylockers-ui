@@ -91,7 +91,7 @@ export default function Home() {
                   <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <div className="flex justify-between items-center pb-4">
                       <span className="font-semibold text-lg">YOUR POSITION</span>
-                      <span className="font-bold px-2 py-1 bg-disabled-bg rounded-lg text-boost-blue">{bmath.div(data.utilities.userBoostMultiplier, 10n**18n).toFixed(2)}x BOOST</span>
+                      <span className="font-bold px-2 py-1 bg-disabled-bg rounded-lg text-boost-blue">{bmath.div(data.utilities.userBoostMultiplier, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}x BOOST</span>
                     </div>
                     <div className="flex justify-between w-full">
                       <span className="font-thin opacity-70	w">Staked yPRISMA</span>
@@ -118,7 +118,7 @@ export default function Home() {
                     <span className="font-semibold pb-4 text-lg">YEARN BOOSTED STAKER</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Staked yPRISMA</span>
-                      <span className="font-bold">{bmath.div(data.staker.totalSupply, 10n**18n).toFixed(2)}</span>
+                      <span className="font-bold">{bmath.div(data.staker.totalSupply, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Min/Max APR </span>
@@ -130,7 +130,7 @@ export default function Home() {
                     </div> */}
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Rewards this week</span>
-                      <span className="font-bold">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n).toFixed(2)} mkUSD</span>
+                      <span className="font-bold">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} mkUSD</span>
                     </div>
                   </div>
                 </>
@@ -143,7 +143,7 @@ export default function Home() {
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">yPRISMA Deposited</span>
                       <span className="font-bold">{data.strategy.balance
-                        ? bmath.div(data.strategy.balance, 10n**18n).toFixed(2)
+                        ? bmath.div(data.strategy.balance, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                         : '-'
                       }
                       </span>
@@ -152,7 +152,7 @@ export default function Home() {
                       <span className="font-thin opacity-70">USD Value</span>
                       <span className="font-bold">
                         ${data.strategy.balance && prices[env.YPRISMA]
-                          ? (Number(bmath.div(data.strategy.balance, 10n ** 18n)) * prices[env.YPRISMA]).toFixed(2)
+                          ? (Number(bmath.div(data.strategy.balance, 10n ** 18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                           : '-'}
                       </span>
                     </div>
@@ -160,7 +160,7 @@ export default function Home() {
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">yPRISMA Deposited</span>
                       <span className="font-bold">{data.strategy.balance
-                        ? bmath.div(data.strategy.totalAssets, 10n**18n).toFixed(2)
+                        ? bmath.div(data.strategy.totalAssets, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                         : '-'
                       }
                       </span>
@@ -169,7 +169,7 @@ export default function Home() {
                       <span className="font-thin opacity-70">USD Value</span>
                       <span className="font-bold">
                         ${data.strategy.totalAssets && prices[env.YPRISMA]
-                          ? (Number(bmath.div(data.strategy.totalAssets, 10n ** 18n)) * prices[env.YPRISMA]).toFixed(2)
+                          ? (Number(bmath.div(data.strategy.totalAssets, 10n ** 18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                           : '-'}
                       </span>
                     </div>
@@ -565,8 +565,8 @@ const TableComponent = (props: any) => {
               return (
                 <tr onClick={() => window.open(`https://yearn.fi/vaults/1/${item.address}`, '_blank')} key={index} className="hover:bg-blue">
                   <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
-                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toFixed(2)}%</td>
-                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toFixed(2)}%</td>
+                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
                   <td className="text-md font-mono py-4 cursor-pointer">
                     {available ? (
                       <>
