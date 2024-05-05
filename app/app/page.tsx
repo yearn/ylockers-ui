@@ -110,7 +110,7 @@ export default function Home() {
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Claimable Rewards</span>
                       <span className="font-bold">
-                        <Tokens amount={data.rewards.claimable} decimals={data.rewards.decimals} />
+                        <Tokens amount={data.rewards.claimable} decimals={data.rewards.decimals}/> mkUSD
                       </span>
                     </div>
                   </div>
@@ -122,14 +122,14 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Min/Max APR </span>
-                      <span className="font-bold">{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 0) : '--.--%'} {'—>'} {data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 0) : '--.--%'}</span>
+                      <span className="w-7/12 font-bold flex items-center justify-between">{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : '--.--%'} <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" /> {data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : '--.--%'}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Average Boost Multiplier</span>
                       <span className="font-bold">1.7x</span>
                     </div> */}
                     <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Total Rewards Last Week</span>
+                      <span className="font-thin opacity-70	">Rewards this week</span>
                       <span className="font-bold">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n)}</span>
                     </div>
                   </div>
@@ -139,9 +139,9 @@ export default function Home() {
                   <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APR</span>
                   <span className="text-light-blue text-6xl font-bold mb-[19px]">{isNaN(yprismaVault?.apr?.netAPR) ? '--.--%' : vaultAPR}</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
-                    <span className="font-semibold pb-4 text-lg">YOUR POSITION</span>
+                    {/* <span className="font-semibold pb-4 text-lg">YOUR POSITION</span> */}
                     <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Deposited Amount, yPRISMA</span>
+                      <span className="font-thin opacity-70	">My Depositsg</span>
                       <span className="font-bold">{data.strategy.balance
                         ? formatUnits(data.strategy.balance, 18)
                         : '-'
