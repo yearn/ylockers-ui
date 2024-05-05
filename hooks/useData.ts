@@ -128,8 +128,6 @@ export default function useData() {
     ], multicallAddress })
   )
 
-  console.log(multicall)
-
   const refetch = useCallback(() => {
     refetchPrices()
     multicall.refetch()
