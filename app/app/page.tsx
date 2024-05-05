@@ -94,7 +94,7 @@ export default function Home() {
                       <span className="font-bold px-2 py-1 bg-disabled-bg rounded-lg text-boost-blue">{bmath.div(data.utilities.userBoostMultiplier, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}x BOOST</span>
                     </div>
                     <div className="flex justify-between w-full">
-                      <span className="font-thin opacity-70	w">Staked yPRISMA</span>
+                      <span className="font-thin opacity-70	w">yPRISMA Staked</span>
                       <span className="font-bold">
                         <Flipper>{fTokens(data.staker.balance, data.staker.decimals)}</Flipper>
                       </span>
@@ -117,7 +117,7 @@ export default function Home() {
                   <div className="flex flex-col space-y-2 pt-2">
                     <span className="font-semibold pb-4 text-lg">YEARN BOOSTED STAKER</span>
                     <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Staked yPRISMA</span>
+                      <span className="font-thin opacity-70	">yPRISMA Staked</span>
                       <span className="font-bold">{bmath.div(data.staker.totalSupply, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                     <div className="flex justify-between">
