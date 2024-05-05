@@ -570,7 +570,7 @@ const TableComponent = (props: any) => {
                   <td className="text-md font-mono py-4 cursor-pointer">
                     {available ? (
                       <>
-                        {available.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {available.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </>
                     ) : (
                       '-'
@@ -579,7 +579,7 @@ const TableComponent = (props: any) => {
                   <td className="text-md font-mono py-4 cursor-pointer">
                     {holdings ? (
                       <>
-                        {holdings.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {holdings.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </>
                     ) : (
                       '-'
@@ -589,7 +589,7 @@ const TableComponent = (props: any) => {
                     {item.tvl.totalAssets ? (
                       <>
                         {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+                        <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                       </>
                     ) : (
                       '-'
