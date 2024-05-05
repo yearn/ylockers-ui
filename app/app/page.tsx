@@ -96,7 +96,7 @@ export default function Home() {
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Staked Amount</span>
                       <span className="font-bold">
-                        <Flipper>{fTokens(data.staker.balance, data.staker.decimals)}</Flipper>
+                        <Flipper>{fTokens(data.staker.balance, data.staker.decimals)}</Flipper> yPRISMA
                       </span>
                     </div>
                     <div className="flex justify-between">
