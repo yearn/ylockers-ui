@@ -250,7 +250,7 @@ function TabContent(props: { leftActive: any; account: any }) {
               <span className="font-thin opacity-70">
                 {`Stake your yPRISMA and start earning a share of Yearn's vePRISMA stablecoin revenue today. You'll reach max boost and hit the maximum staking APR after just 4 weeks.`}
               </span>
-              <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
+              <Image alt="charge multiplier" className="" src="/charge.png" width={370} height={136} />
             </div>
           </div>
         )}
@@ -265,7 +265,7 @@ function TabContent(props: { leftActive: any; account: any }) {
               <span className="font-thin opacity-70">
                 {`Unstake your yPRISMA. You're free to unstake at any time with no lock-ups or penalties. Unstaked yPRISMA doesn’t earn any yield. Withdrawals pull from the least boosted position.`}
               </span>
-              <Image alt="charge multiplier" className="" src="/charge.svg" width={370} height={136} />
+              <Image alt="charge multiplier" className="" src="/charge.png" width={370} height={136} />
             </div>
           </div>
         )}
