@@ -47,6 +47,9 @@ function Provided({ className }: { className?: string }) {
     if (task.verb === "unstake") {
       return "unstaked"
     }
+    if (task.verb === "mint") {
+      return "minted"
+    }
     const doc = nlp(task.verb)
     doc.verbs().toPastTense()
     return doc.text()
