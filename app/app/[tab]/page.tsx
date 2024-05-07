@@ -72,7 +72,7 @@ export default function Home() {
       <div className="w-full shadow-lg z-10"></div>
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
-        <Header items={headerItems} launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
+        <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-[5vh] mx-4 lg:mx-0">
           <div className="flex justify-center mb-8 space-x-8">
             <Link href="/app/stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>

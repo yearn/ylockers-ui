@@ -1,7 +1,7 @@
 'use client'
 
 import Button from "./components/Button";
-import Header from "./components/Header";
+import Header, { headerItems } from "./components/Header";
 import Link from "next/link";
 import useData from "@/hooks/useData";
 import { fPercent } from "@/lib/format";
@@ -15,11 +15,7 @@ export default function Home() {
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <div className="w-full shadow-lg z-10"></div>
       <Background />
-      <Header items={[
-        { text: 'Earn', link: '/' },
-        { text: 'About', link: '/about' },
-        { text: 'Expired farms', link: '/expired' },
-      ]} selected="Earn"/>
+      <Header items={headerItems} selected="Home"/>
       <section className="px-8 xl:px-0 xl:w-[1200px] mt-[27vh] z-10">
         <div className="w-full">
           <h1 className="text-6xl font-bold">Put your<br />yPRISMA to work</h1>
