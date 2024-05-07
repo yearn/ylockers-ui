@@ -22,6 +22,7 @@ import Unstake from "../components/Unstake";
 import Mint from "../components/Mint";
 import Deposit from "../components/Deposit";
 import Withdraw from "../components/Withdraw";
+import WithdrawAllFromOldStaker from "../components/WithdrawAllFromOldStaker";
 
 import { useContractReads, useContractRead } from 'wagmi';
 import { erc20Abi } from 'viem';
@@ -64,8 +65,10 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       {data.utilities.oldStakerBalance > 0n && (
-        <div className="w-full bg-red-500 text-white text-center p-2 z-20">
-          You have an old staker balance of {fTokens(data.utilities.oldStakerBalance, data.staker.decimals)} yPRISMA. <Link className="underline" href="https://yprisma.yearn.fi/">Unstake</Link> it before using this app!
+        <div className="w-full bg-yellow-200 text-black text-center p-2 z-20">
+          <b>⚠️ Warning: </b>You have a balance of {fTokens(data.utilities.oldStakerBalance, data.staker.decimals)} yPRISMA in the old st-yPRISMA contract.
+          <WithdrawAllFromOldStaker className="mt-2" />
+          Use the above button to withdraw from it before using this app!
         </div>
       )}
       <div className="w-full shadow-lg z-10"></div>

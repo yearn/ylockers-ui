@@ -24,7 +24,7 @@ function GreatSuccess({ hash, message }: { hash: `0x${string}`, message: string 
   </A>
 }
 
-function Provided({ className }: { className?: string }) {
+function Provided({ className, noInput=false }: { className?: string, noInput?: boolean}) {
   const { openConnectModal } = useConnectModal()
   const account = useAccount()
   const [mounted, setMounted] = useState(false)
@@ -124,20 +124,29 @@ function Provided({ className }: { className?: string }) {
     }
   }, [account, approve, execute, openConnectModal, needsApproval])
 
+  useEffect(() => {
+    if (token.balance && noInput) {
+      setAmount(token.balance)
+    }
+  }, [token.balance])
+
+
   return <div className={`flex flex-col gap-2 ${className}`}>
-    <div className="flex gap-2">
-      <InputTokenAmount
+    <div className={`flex gap-2 ${noInput ? 'justify-center' : ''}`}>
+      {!noInput && <InputTokenAmount
         amount={amount}
         decimals={token.decimals}
         max={token.balance}
         onChange={value => setAmount(value)}
-        onMaxClick={() => setAmount(token.balance)} />
+        onMaxClick={() => setAmount(token.balance)} />}
       <Button
         onClick={onClick}
         theme={theme}
         disabled={disabled}
-        className="shrink-0 capitalize overflow-hidden"
-        style={{ width: '152px', paddingLeft: 0, paddingRight: 0 }}>
+        className={`shrink-0 capitalize overflow-hidden ${noInput ? 'text-black bg-yellow-400 hover:bg-yellow-400 hover:opacity-70' : ''}`}
+        style={{ width: '135px', paddingLeft: 0, paddingRight: 0 }}
+        noInput={noInput}
+      >
         <motion.div key={label.key}
           transition={springs.rollin}
           initial={mounted ? { y: 10, opacity: 0 } : false}
@@ -157,6 +166,10 @@ function Provided({ className }: { className?: string }) {
       </motion.div>
     </div>
   </div>
+}
+
+export function JustExecute({ task, className }: { task: Task, className?: string }) {
+  return <Provider task={task}><Provided noInput className={className}/></Provider>
 }
 
 export default function InputExecute({ task, className }: { task: Task, className?: string }) {
