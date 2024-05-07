@@ -16,10 +16,10 @@ type HeaderProps = {
 }
 
 const Header = ({ items, selected="", launchApp=true, launchText='Launch App', className="", onClickLaunch }: HeaderProps) => (
-  <header className={`flex flex-wrap justify-between items-center z-10 ${
+  <header className={`flex flex-wrap justify-between items-start md:items-center space-y-2 z-10 ${
     launchApp ? 'xl:w-[1200px] w-full px-4 xl:p-0 h-[72px]' : ''
   } ${className}`}>
-    <div className="flex space-x-4">
+    <div className="flex flex-col md:flex-row md:space-x-4">
       {(!launchApp ? items.slice(0, -1) : items).map((item:Item, index:Number) => (
           <Link
             href={item.link}
