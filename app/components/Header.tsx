@@ -26,9 +26,9 @@ const Header = ({ items, selected="", launchApp=true, launchText='Launch App', c
             key={item.text}
             className={`py-2 border-b-2 border-transparent hover:border-white flex ${launchApp ? 'px-2' : 'py-[18px]'} ${
               selected === item.text
-                ? 'border-b-2 font-bold'
+                ? 'border-b-2 border-white font-bold'
                 : (launchApp
-                  ? 'font-thin'
+                  ? 'font-thin '
                   : 'border-b-2 border-transparent')} ${
                 (!launchApp && !(selected === item.text))
                   ? 'text-soft-blue'
@@ -60,9 +60,10 @@ const Header = ({ items, selected="", launchApp=true, launchText='Launch App', c
 )
 
 export const headerItems = [
-  { text: 'Earn', link: '/' },
+  { text: 'Earn', link: '/app/stake' },
   { text: 'About', link: '/about' },
   { text: 'Expired farms', link: '/expired' },
+  { text: 'Home', link: '/' },
 ]
 
 export default Header
