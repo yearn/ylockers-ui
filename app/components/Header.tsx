@@ -4,7 +4,7 @@ import Button from "./Button";
 import Link from "next/link";
 import { ReactNode } from "react";
 
-type Item = { text: string, link: string }
+type Item = { text: string, link: string, notification?: boolean }
 type Items = Array<Item>
 type HeaderProps = {
   items: Items,
@@ -21,21 +21,21 @@ const Header = ({ items, selected="", launchApp=true, launchText='Launch App', c
   } ${className}`}>
     <div className="flex space-x-4">
       {(!launchApp ? items.slice(0, -1) : items).map((item:Item, index:Number) => (
-        <Link
-          href={item.link}
-          key={item.text}
-          className={`py-2 border-b-2 border-transparent hover:border-white ${launchApp ? 'px-2' : 'py-[18px]'} ${
-            selected === item.text
-              ? 'border-b-2 font-bold'
-              : (launchApp
-                ? 'font-thin'
-                : 'border-b-2 border-transparent')} ${
-              (!launchApp && !(selected === item.text))
-                ? 'text-soft-blue'
-                : ''
-          }`}>
-          {item.text}
-        </Link>
+          <Link
+            href={item.link}
+            key={item.text}
+            className={`py-2 border-b-2 border-transparent hover:border-white flex ${launchApp ? 'px-2' : 'py-[18px]'} ${
+              selected === item.text
+                ? 'border-b-2 font-bold'
+                : (launchApp
+                  ? 'font-thin'
+                  : 'border-b-2 border-transparent')} ${
+                (!launchApp && !(selected === item.text))
+                  ? 'text-soft-blue'
+                  : ''
+            }`}>
+            {item.text} {item.notification && <div className="w-2 h-2 bg-light-blue rounded-full" />}
+          </Link>
       ))}
     </div>
     {!launchApp && items.length > 0 && (
