@@ -99,6 +99,36 @@ export default function Home() {
                 </b></div>
                 <dl className="flex flex-col gap-2 p-4 md:p-6 ">
                   <div className="flex flex-col justify-between md:flex-row">
+                    <dt className="text-white">Yearn Boosted Staker</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x8CeA85eC7f3D314c4d144e34F2206C8Ac0bbadA1">
+                      <dd className="font-mono">0x8CeA85eC7f3D314c4d144e34F2206C8Ac0bbadA1</dd>
+                    </a>
+                  </div>
+                  <div className="flex flex-col justify-between md:flex-row">
+                    <dt className="text-white">Rewards Distributor</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x3Af511B1bdD6A0377e23796aD6B7391d8De68636">
+                      <dd className="font-mono">0x3Af511B1bdD6A0377e23796aD6B7391d8De68636</dd>
+                    </a>
+                  </div>
+                  <div className="flex flex-col justify-between md:flex-row">
+                    <dt className="text-white">Boosted Staker Utilities</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x4dcA4bFA0bAa0C8ce741b92B255D967599d994f0">
+                      <dd className="font-mono">0x4dcA4bFA0bAa0C8ce741b92B255D967599d994f0</dd>
+                    </a>
+                  </div>
+                  <div className="flex flex-col justify-between md:flex-row">
+                    <dt className="text-white">yvyPRISMA</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x10537D7bD661C9c34F547b38EC662D6FD482Ae95">
+                      <dd className="font-mono">0x10537D7bD661C9c34F547b38EC662D6FD482Ae95</dd>
+                    </a>
+                  </div>
+                  <div className="flex flex-col justify-between md:flex-row">
+                    <dt className="text-white">yvmkUSD-A</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x0000000000000000000000000000000000000000">
+                      <dd className="font-mono">0x0000000000000000000000000000000000000000</dd>
+                    </a>
+                  </div>
+                  <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Prisma Token</dt>
                     <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xdA47862a83dac0c112BA89c6abC2159b95afd71C">
                       <dd className="font-mono">0xdA47862a83dac0c112BA89c6abC2159b95afd71C</dd>
@@ -116,28 +146,10 @@ export default function Home() {
                       <dd className="font-mono">0xfd37356c1a62288b32Fa58188c77Ab0D694a0f4E</dd>
                     </a>
                   </div>
-                  <div className="flex flex-col justify-between md:flex-row">
-                    <dt className="text-white">yPrisma Staking Contract</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x774a55C3Eeb79929fD445Ae97191228Ab39c4d0f">
-                      <dd className="font-mono">0x774a55C3Eeb79929fD445Ae97191228Ab39c4d0f</dd>
-                    </a>
-                  </div>
-                  <div className="flex flex-col justify-between md:flex-row">
-                    <dt className="text-white">yCRV Staking Contract</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x84c94d739e075b3C7431bdb1A005F0412DF828a5">
-                      <dd className="font-mono">0x84c94d739e075b3C7431bdb1A005F0412DF828a5</dd>
-                    </a>
-                  </div>
-                  <div className="flex flex-col justify-between md:flex-row">
-                    <dt className="text-white">yPrismaLP Staking Contract</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x6806D62AAdF2Ee97cd4BCE46BF5fCD89766EF246">
-                      <dd className="font-mono">0x6806D62AAdF2Ee97cd4BCE46BF5fCD89766EF246</dd>
-                    </a>
-                  </div>
-                  <div className="flex flex-col justify-between md:flex-row">
-                    <dt className="text-white">dYFI Staking Contract</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x93283184650f4d3B4253ABd00978176732118428">
-                      <dd className="font-mono">0x93283184650f4d3B4253ABd00978176732118428</dd>
+                  <div className="flex flex-col justify-between opacity-40 md:flex-row">
+                    <dt className="text-white">Legacy yPrisma Staking Contract</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xE3EE395C9067dD15C492Ca950B101a7d6c85b5Fc">
+                      <dd className="font-mono">0xE3EE395C9067dD15C492Ca950B101a7d6c85b5Fc</dd>
                     </a>
                   </div>
                 </dl>

@@ -6,10 +6,12 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   className?: string
   theme?: 'default' | 'transparent' | 'onit'
   onClick?: () => void
+  noInput?: boolean
 }
 
-const Button = forwardRef<HTMLButtonElement, Props>(({ className, theme, onClick, children, ...props }, ref) => {
+const Button = forwardRef<HTMLButtonElement, Props>(({ className, theme, onClick, children, noInput, ...props }, ref) => {
   const bg = useMemo(() => {
+    if (noInput) return 'bg-yellow-100'
     if (theme === 'transparent') return 'bg-transparent'
     if (theme === 'onit') return 'bg-transparent hover:bg-lighter-blue'
     return 'bg-light-blue hover:bg-lighter-blue'
@@ -22,6 +24,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(({ className, theme, onClick
   }, [theme])
 
   const animate = useMemo(() => {
+    if (theme === 'onit' && noInput) return 'rainbow-no-bg'
     if (theme === 'onit') return 'rainbow'
     return ''
   }, [theme])
