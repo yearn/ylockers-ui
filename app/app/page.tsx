@@ -219,7 +219,7 @@ function TabContent(props: { leftActive: any; account: any }) {
           items={[
             { text: 'Stake', link: '/app?tab=stake' },
             { text: 'Unstake', link: '/app?tab=unstake' },
-            { text: 'Claim Rewards', link: '/app?tab=claim' },
+            { text: 'Claim Rewards', link: '/app?tab=claim', notification: data.rewards.claimable > 0 },
             { text: 'Get yPRISMA', link: '/app?tab=get' },
             { text: 'Learn More', link: '/app?tab=learn_more_stake' },
           ]}
