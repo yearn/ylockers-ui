@@ -277,7 +277,7 @@ function TabContent(props: { leftActive: any; account: any }) {
             <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-1/2">
             <span className="font-semibold">YOUR REWARD</span>
             <span className="font-semibold text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
-            <span className="font-thin opacity-70">{fTokens(data.rewards.claimable, data.rewards.decimals)} yvmkUSD-A</span>
+            <span className="font-thin opacity-70">{bmath.div(data.rewards.claimable, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} yvmkUSD-A</span>
             <div>
               <ClaimAll />
             </div>
