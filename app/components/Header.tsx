@@ -16,10 +16,10 @@ type HeaderProps = {
 }
 
 const Header = ({ items, selected="", launchApp=true, launchText='Launch App', className="", onClickLaunch }: HeaderProps) => (
-  <header className={`flex flex-wrap justify-between items-start md:items-center space-y-2 z-10 ${
+  <header className={`flex flex-wrap justify-between items-start md:items-center space-y-2 z-50 ${
     launchApp ? 'xl:w-[1200px] w-full px-4 xl:p-0 h-[72px]' : ''
   } ${className}`}>
-    <div className="flex flex-col md:flex-row md:space-x-4">
+    <div className={`flex ${launchApp ? 'flex-col' : 'space-x-4'} md:flex-row md:space-x-4 pt-2 md:pt-0`}>
       {(!launchApp ? items.slice(0, -1) : items).map((item:Item, index:Number) => (
           <Link
             href={item.link}
@@ -52,9 +52,9 @@ const Header = ({ items, selected="", launchApp=true, launchText='Launch App', c
       </div>
     )}
     {(launchApp && !onClickLaunch) ? <Link href="/app/stake">
-      <Button theme="transparent">{launchText}</Button>
+      <Button theme="transparent" className="px-4 md:px-12 mt-4 md:mt-0">{launchText}</Button>
     </Link> : (launchApp && onClickLaunch) && <div>
-      <Button onClick={onClickLaunch} theme="transparent">{launchText}</Button>
+      <Button onClick={onClickLaunch} theme="transparent" className="px-4 md:px-12 mt-4 md:mt-0">{launchText}</Button>
     </div>}
   </header>
 )
