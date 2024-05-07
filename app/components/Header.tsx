@@ -60,10 +60,10 @@ const Header = ({ items, selected="", launchApp=true, launchText='Launch App', c
 )
 
 export const headerItems = [
+  { text: 'Home', link: '/' },
   { text: 'Earn', link: '/app/stake' },
   { text: 'About', link: '/about' },
   { text: 'Expired farms', link: '/expired' },
-  { text: 'Home', link: '/' },
 ]
 
 export default Header
