@@ -15,7 +15,6 @@ import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import useData from "@/hooks/useData";
 import useVault from "@/hooks/useVault";
 import Tokens from "../components/Tokens";
-import Flipper from "../components/Flipper";
 import ClaimAll from "../components/ClaimAll";
 import Stake from "../components/Stake";
 import Unstake from "../components/Unstake";
@@ -103,7 +102,7 @@ export default function Home() {
                     <div className="flex justify-between w-full">
                       <span className="font-thin opacity-70	w">yPRISMA Staked</span>
                       <span className="font-bold">
-                        <Flipper>{fTokens(data.staker.balance, data.staker.decimals)}</Flipper>
+                        <Tokens amount={data.staker.balance} decimals={data.staker.decimals}/>
                       </span>
                     </div>
                     <div className="flex justify-between">
