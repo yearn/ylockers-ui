@@ -4,7 +4,7 @@ import Button from "./Button";
 import Link from "next/link";
 import { ReactNode } from "react";
 
-type Item = { text: string, link: string, notification: boolean }
+type Item = { text: string, link: string, notification?: boolean }
 type Items = Array<Item>
 type HeaderProps = {
   items: Items,
