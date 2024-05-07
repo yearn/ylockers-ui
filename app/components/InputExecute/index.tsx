@@ -153,7 +153,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
         {label.text}
       </Button>
     </div>
-    <div className={`pl-3 font-thin text-xs ${isError ? 'text-charge-yellow' : 'opacity-70'}`}>
+    {!noInput && <div className={`pl-3 font-thin text-xs ${isError ? 'text-charge-yellow' : 'opacity-70'}`}>
       <motion.div key={subtext.key}
         transition={springs.rollin}
         initial={mounted ? { x: 40, opacity: 0 } : false}
@@ -161,7 +161,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
         exit={{ x: -40, opacity: 0 }} >
         {subtext.text}
       </motion.div>
-    </div>
+    </div>}
   </div>
 }
 

@@ -14,8 +14,8 @@ export default function WithdrawAllFromOldStaker({ className }: { className?: st
     parameters: {
       address: env.YPRISMA_OLD_STAKER,
       abi: abis.OldStaker,
-      functionName: 'withdraw',
-      args: () => [data.utilities.oldStakerBalance]
+      functionName: 'exit',
+      args: () => [],
     }
   }} />
 }

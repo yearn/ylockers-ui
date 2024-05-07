@@ -64,9 +64,9 @@ export default function Home() {
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       {data.utilities.oldStakerBalance > 0n && (
         <div className="w-full bg-yellow-200 text-black text-center p-2 z-20">
-          <b>⚠️ Warning: </b>You have a balance of {fTokens(data.utilities.oldStakerBalance, data.staker.decimals)} yPRISMA in the old st-yPRISMA contract.
+          <b>⚠️ Warning: </b>Your wallet has balance of {fTokens(data.utilities.oldStakerBalance, data.staker.decimals)} yPRISMA in the deprecated yPRISMA staker.
           <WithdrawAllFromOldStaker className="mt-2" />
-          Use the above button to withdraw from it before using this app!
+          Use the above button to withdraw + claim pending rewards so that you can begin your migration! <Link className="underline" href="https://blog.yearn.fi/ybs-yprisma-launch" target="_blank">Read more.</Link>
         </div>
       )}
       <div className="w-full shadow-lg z-10"></div>
