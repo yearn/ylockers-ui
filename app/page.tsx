@@ -1,12 +1,12 @@
 'use client'
 
-import Image from "next/image";
 import Button from "./components/Button";
 import Header from "./components/Header";
 import Link from "next/link";
 import useData from "@/hooks/useData";
 import { fPercent } from "@/lib/format";
 import bmath from "@/lib/bmath";
+import Background from "./components/Background";
 
 export default function Home() {
   const { data } = useData()
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <div className="w-full shadow-lg z-10"></div>
-      <Image className="absolute left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
+      <Background />
       <Header items={[
         { text: 'Earn', link: '/' },
         { text: 'About', link: '/about' },
@@ -28,7 +28,7 @@ export default function Home() {
             {`This is converted to mkUSD stablecoin and distributed to yPRISMA stakers.`}
           </p>
           <div className="flex flex-wrap items-center space-x-4">
-            <Link href="/app?tab=stake">
+            <Link href="/app/stake">
               <Button>Launch App</Button>
             </Link>
             <h2 className="text-4xl font-bold text-light-blue font-mono">APR {data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</h2>

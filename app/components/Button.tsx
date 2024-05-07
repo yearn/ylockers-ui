@@ -15,7 +15,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(({ className, theme, onClick
     if (theme === 'transparent') return 'bg-transparent'
     if (theme === 'onit') return 'bg-transparent hover:bg-lighter-blue'
     return 'bg-light-blue hover:bg-lighter-blue'
-  }, [theme])
+  }, [theme, noInput])
 
   const border = useMemo(() => {
     if (theme === 'transparent') return 'border-2 border-light-blue hover:border-lighter-blue'
@@ -27,7 +27,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(({ className, theme, onClick
     if (theme === 'onit' && noInput) return 'rainbow-no-bg'
     if (theme === 'onit') return 'rainbow'
     return ''
-  }, [theme])
+  }, [theme, noInput])
 
   return <button onClick={onClick} ref={ref} {...props} className={`
     px-12 py-2 font-bold rounded-lg

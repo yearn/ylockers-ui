@@ -1,13 +1,12 @@
-import Image from "next/image";
-import Button from "../components/Button";
 import Header, { headerItems } from "../components/Header";
 import Link from "next/link";
+import Background from "../components/Background";
 
 export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <div className="w-full shadow-lg z-10"></div>
-      <Image className="absolute left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
+      <Background />
       <Header items={headerItems} selected="About"/>
       <section className="xl:w-[1200px] px-8 xl:p-0 z-10">
         <div className="w-full">
