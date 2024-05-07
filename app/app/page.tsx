@@ -44,8 +44,6 @@ export default function Home() {
   const { data: yprismaVault } = useVault(env.YVMKUSD)
   const vaultAPR:any = fPercent(yprismaVault?.apr?.netAPR)
 
-  console.log(data)
-  
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
 

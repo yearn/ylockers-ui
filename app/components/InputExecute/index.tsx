@@ -39,9 +39,10 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
   const hasBalance = useMemo(() => task.token.balance > 0n, [task])
 
   const disabled = useMemo(() => 
-    account.isConnected 
+    mounted
+    && account.isConnected 
     && (!hasBalance || amount === 0n)
-  , [account, hasBalance, amount])
+  , [mounted, account, hasBalance, amount])
 
   const verbPastTense = useMemo(() => {
     if (task.verb === "unstake") {
@@ -56,6 +57,10 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
   }, [task])  
 
   const label = useMemo(() => {
+    if (!mounted) return {
+      key: 'loading',
+      text: 'Connect'
+    }
     if (!account.isConnected) return {
       key: 'connect',
       text: 'Connect'
@@ -76,7 +81,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
       key: 'verb',
       text: task.verb
     }
-  }, [account, needsApproval, approve, execute, task])
+  }, [mounted, account, needsApproval, approve, execute, task])
 
   const subtext = useMemo(() => {
     if (isError) { return {
@@ -147,13 +152,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
         style={{ width: '135px', paddingLeft: 0, paddingRight: 0 }}
         noInput={noInput}
       >
-        <motion.div key={label.key}
-          transition={springs.rollin}
-          initial={mounted ? { y: 10, opacity: 0 } : false}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -10, opacity: 0 }} >
-          {label.text}
-        </motion.div>
+        {label.text}
       </Button>
     </div>
     <div className={`pl-3 font-thin text-xs ${isError ? 'text-charge-yellow' : 'opacity-70'}`}>
