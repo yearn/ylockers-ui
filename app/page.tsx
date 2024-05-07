@@ -28,7 +28,7 @@ export default function Home() {
             {`This is converted to mkUSD stablecoin and distributed to yPRISMA stakers.`}
           </p>
           <div className="flex flex-wrap items-center space-x-4">
-            <Link href="/app?tab=stake">
+            <Link href="/app/stake">
               <Button>Launch App</Button>
             </Link>
             <h2 className="text-4xl font-bold text-light-blue font-mono">APR {data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</h2>
