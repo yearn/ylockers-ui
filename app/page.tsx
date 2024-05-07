@@ -1,12 +1,12 @@
 'use client'
 
-import Image from "next/image";
 import Button from "./components/Button";
 import Header from "./components/Header";
 import Link from "next/link";
 import useData from "@/hooks/useData";
 import { fPercent } from "@/lib/format";
 import bmath from "@/lib/bmath";
+import Background from "./components/Background";
 
 export default function Home() {
   const { data } = useData()
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
       <div className="w-full shadow-lg z-10"></div>
-      <Image className="absolute left-[24%] w-[76%]" src="/prisma.svg" width={200} height={200} alt="" />
+      <Background />
       <Header items={[
         { text: 'Earn', link: '/' },
         { text: 'About', link: '/about' },

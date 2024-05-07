@@ -30,6 +30,7 @@ import { formatUnits } from 'viem';
 import usePrices from "@/hooks/usePrices";
 import bmath, { priced } from "@/lib/bmath";
 import env from '@/lib/env'
+import Background from "../components/Background";
 
 
 
@@ -72,7 +73,7 @@ export default function Home() {
         </div>
       )}
       <div className="w-full shadow-lg z-10"></div>
-      <Image className="absolute left-[24%] w-[76%] opacity-20" src="/prisma.svg" width={200} height={200} alt="" />
+      <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-[5vh] mx-4 lg:mx-0">
