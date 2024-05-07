@@ -2,26 +2,25 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import InputBox from "../components/InputBox";
-import Header, { headerItems } from "../components/Header";
-import { useSearchParams } from 'next/navigation';
-import { Suspense, useCallback, useEffect } from 'react';
-import {   useConnectModal,
-  useAccountModal,
-  useChainModal, } from '@rainbow-me/rainbowkit';
+import InputBox from "../../components/InputBox";
+import Header, { headerItems } from "../../components/Header";
+import { useParams } from 'next/navigation';
+import { Suspense, useEffect } from 'react';
+import { useConnectModal, useAccountModal } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import useData from "@/hooks/useData";
 import useVault from "@/hooks/useVault";
-import Tokens from "../components/Tokens";
-import ClaimAll from "../components/ClaimAll";
-import Stake from "../components/Stake";
-import Unstake from "../components/Unstake";
-import Mint from "../components/Mint";
-import Deposit from "../components/Deposit";
-import Withdraw from "../components/Withdraw";
-import WithdrawAllFromOldStaker from "../components/WithdrawAllFromOldStaker";
+import Tokens from "../../components/Tokens";
+
+import ClaimAll from "../../components/ClaimAll";
+import Stake from "../../components/Stake";
+import Unstake from "../../components/Unstake";
+import Mint from "../../components/Mint";
+import Deposit from "../../components/Deposit";
+import Withdraw from "../../components/Withdraw";
+import WithdrawAllFromOldStaker from "../../components/WithdrawAllFromOldStaker";
 
 import { useContractReads, useContractRead } from 'wagmi';
 import { erc20Abi } from 'viem';
@@ -29,22 +28,23 @@ import { formatUnits } from 'viem';
 import usePrices from "@/hooks/usePrices";
 import bmath, { priced } from "@/lib/bmath";
 import env from '@/lib/env'
-import Background from "../components/Background";
+import Background from "../../components/Background";
 
 
-
+function useTab() {
+  const params = useParams()
+  return params.tab as string
+}
 
 export default function Home() {
   const { openConnectModal  } = useConnectModal();
   const { openAccountModal } = useAccountModal();
-  const { openChainModal } = useChainModal();
   const { data } = useData()
 
   const { data: yprismaVault } = useVault(env.YVMKUSD)
   const vaultAPR:any = fPercent(yprismaVault?.apr?.netAPR)
 
-  const searchParams = useSearchParams();
-  const tab = searchParams.get('tab');
+  const tab = useTab();
 
   const account = useAccount()
 
@@ -75,10 +75,10 @@ export default function Home() {
         <Header items={headerItems} launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-[5vh] mx-4 lg:mx-0">
           <div className="flex justify-center mb-8 space-x-8">
-            <Link href="/app?tab=stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
+            <Link href="/app/stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
               <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</div></div>
             </div></Link>
-            <Link href="/app?tab=deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
+            <Link href="/app/deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
               <div className="flex justify-between items-center text-lg pl-4">EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{isNaN(yprismaVault?.apr?.netAPR) ? '--.--%' : vaultAPR}</div></div>
             </div></Link>
           </div>
@@ -195,8 +195,7 @@ export default function Home() {
 }
 
 function TabContent(props: { leftActive: any; account: any }) {
-  const searchParams = useSearchParams();
-  const tab = searchParams.get('tab');
+  const tab = useTab();
   const { data } = useData();
 
   return (
@@ -215,11 +214,11 @@ function TabContent(props: { leftActive: any; account: any }) {
       {props.leftActive ? (
         <Header
           items={[
-            { text: 'Stake', link: '/app?tab=stake' },
-            { text: 'Unstake', link: '/app?tab=unstake' },
-            { text: 'Claim Rewards', link: '/app?tab=claim', notification: data.rewards.claimable > 0 },
-            { text: 'Get yPRISMA', link: '/app?tab=get' },
-            { text: 'Learn More', link: '/app?tab=learn_more_stake' },
+            { text: 'Stake', link: '/app/stake' },
+            { text: 'Unstake', link: '/app/unstake' },
+            { text: 'Claim Rewards', link: '/app/claim', notification: data.rewards.claimable > 0 },
+            { text: 'Get yPRISMA', link: '/app/get' },
+            { text: 'Learn More', link: '/app/learn_more_stake' }
           ]}
           launchApp={false}
           selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'learn_more_stake' ? 'Learn More' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
@@ -229,9 +228,9 @@ function TabContent(props: { leftActive: any; account: any }) {
       ) : (
         <Header
           items={[
-            { text: 'Deposit', link: '/app?tab=deposit' },
-            { text: 'Withdraw', link: '/app?tab=withdraw' },
-            { text: 'Learn More', link: '/app?tab=learn_more_deposit' },
+            { text: 'Deposit', link: '/app/deposit' },
+            { text: 'Withdraw', link: '/app/withdraw' },
+            { text: 'Learn More', link: '/app/learn_more_deposit' },
           ]}
           launchApp={false}
           selected={tab === 'deposit' ? 'Deposit' : tab === 'learn_more_deposit' ? 'Learn More' : tab === 'withdraw' ? 'Withdraw' : ''}

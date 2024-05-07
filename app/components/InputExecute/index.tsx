@@ -133,8 +133,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
     if (token.balance && noInput) {
       setAmount(token.balance)
     }
-  }, [token.balance])
-
+  }, [token, noInput, setAmount])
 
   return <div className={`flex flex-col gap-2 ${className}`}>
     <div className={`flex gap-2 ${noInput ? 'justify-center' : ''}`}>
@@ -150,8 +149,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
         disabled={disabled}
         className={`shrink-0 capitalize overflow-hidden ${noInput ? 'text-black bg-yellow-400 hover:bg-yellow-400 hover:opacity-70' : ''}`}
         style={{ width: '135px', paddingLeft: 0, paddingRight: 0 }}
-        noInput={noInput}
-      >
+        noInput={noInput} >
         {label.text}
       </Button>
     </div>
