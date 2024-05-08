@@ -127,8 +127,12 @@ export default function Home() {
                       <span className="font-bold">{bmath.div(data.staker.totalSupply, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Min/Max APR </span>
-                      <span className="w-7/12 font-bold flex items-end md:items-center md:justify-end space-x-2 flex-col md:flex-row">
+                      <span className="font-thin opacity-70	">Rewards this week</span>
+                      <span className="font-bold">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} mkUSD</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-thin opacity-70	">APR </span>
+                      <span className="w-7/12 font-bold flex items-end md:items-center md:justify-end space-x-2">
                         <span>{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : '--.--%'}</span>
                         <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
                         <span>{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : '--.--%'}</span>
@@ -138,10 +142,7 @@ export default function Home() {
                       <span className="font-thin opacity-70	">Average Boost Multiplier</span>
                       <span className="font-bold">1.7x</span>
                     </div> */}
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Rewards this week</span>
-                      <span className="font-bold">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} mkUSD</span>
-                    </div>
+
                   </div>
                 </>
               ) :(
