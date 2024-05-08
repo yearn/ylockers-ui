@@ -73,8 +73,8 @@ export default function Home() {
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
-        <section className="mt-28 md:mt-[5vh] mx-4 lg:mx-0">
-          <div className="w-full flex flex-wrap justify-center items-center mb-8 space-y-2 md:space-x-8 md:space-y-0 flex-col md:flex-row">
+        <section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0">
+          <div className="w-full flex flex-wrap justify-center items-center mb-12 md:mb-8 space-y-4 md:space-x-8 md:space-y-0 flex-col md:flex-row">
             <Link href="/app/stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
               <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</div></div>
             </div></Link>
@@ -128,7 +128,11 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Min/Max APR </span>
-                      <span className="w-7/12 font-bold flex items-center justify-between">{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : '--.--%'} <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" /> {data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : '--.--%'}</span>
+                      <span className="w-7/12 font-bold flex items-end md:items-center md:justify-end space-x-2 flex-col md:flex-row">
+                        <span>{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : '--.--%'}</span>
+                        <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
+                        <span>{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : '--.--%'}</span>
+                      </span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Average Boost Multiplier</span>
@@ -504,11 +508,11 @@ const TableComponent = (props: any) => {
   
   return (
     <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
-      <div className="flex items-center justify-between w-full">
-        <h1 className="text-5xl p-8 font-[700]">
+      <div className="flex flex-col md:flex-row items-center justify-between w-full">
+        <h1 className="text-4xl md:text-5xl p-6 pt-8 md:p-8 font-[700] pb-0">
           Prisma Vaults
         </h1>
-        <div className="p-8 w-2/3">
+        <div className="p-4 md:p-8 w-full md:w-2/3">
           <InputBox
             // type="text"
             subtitle=""
@@ -526,7 +530,7 @@ const TableComponent = (props: any) => {
           <thead>
             <tr className="">
               <th
-                className="text-xs font-thin py-2 hover:underline cursor-pointer pl-8"
+                className="text-xs font-thin py-2 hover:underline cursor-pointer pl-4 md:pl-8"
                 onClick={() => handleSort('token')}
               >
                 Token {sortColumn === 'token' && (sortDirection === 'asc' ? '▲' : '▼')}
@@ -538,25 +542,25 @@ const TableComponent = (props: any) => {
                 Est. APR {sortColumn === 'estApr' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
               <th
-                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                className="text-xs font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
                 onClick={() => handleSort('histApr')}
               >
                 Hist. APR {sortColumn === 'histApr' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
               <th
-                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                className="text-xs font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
                 onClick={() => handleSort('available')}
               >
                 Available {sortColumn === 'available' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
               <th
-                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                className="text-xs font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
                 onClick={() => handleSort('holdings')}
               >
                 Holdings {sortColumn === 'holdings' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
               <th
-                className="text-xs font-thin hover:underline py-2 cursor-pointer pr-8"
+                className="text-xs font-thin hover:underline py-2 cursor-pointer pr-8 hidden md:table-cell"
                 onClick={() => handleSort('deposits')}
               >
                 Deposits {sortColumn === 'deposits' && (sortDirection === 'asc' ? '▲' : '▼')}
@@ -569,10 +573,10 @@ const TableComponent = (props: any) => {
               const available = getAvailable(item);
               return (
                 <tr onClick={() => window.open(`https://yearn.fi/vaults/1/${item.address}`, '_blank')} key={index} className="hover:bg-blue">
-                  <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
-                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-md font-mono py-4 cursor-pointer">
+                  <td className="text-sm md:text-md py-4 cursor-pointer px-4 md:pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
+                  <td className="text-md font-mono py-4 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-md font-mono py-4 cursor-pointer hidden md:table-cell">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-md font-mono py-4 cursor-pointer hidden md:table-cell">
                     {available ? (
                       <>
                         {available.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -581,7 +585,7 @@ const TableComponent = (props: any) => {
                       '-'
                     )}
                   </td>
-                  <td className="text-md font-mono py-4 cursor-pointer">
+                  <td className="text-md font-mono py-4 cursor-pointer hidden md:table-cell">
                     {holdings ? (
                       <>
                         {holdings.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -590,7 +594,7 @@ const TableComponent = (props: any) => {
                       '-'
                     )}
                   </td>
-                  <td className="text-md font-mono py-4 cursor-pointer pr-8">
+                  <td className="text-md font-mono py-4 cursor-pointer pr-8 hidden md:table-cell">
                     {item.tvl.totalAssets ? (
                       <>
                         {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -605,6 +609,7 @@ const TableComponent = (props: any) => {
             })}
           </tbody>
         </table>
+        {!contractReads.data && <span className="pl-4 md:pl-8">Loading...</span>}
       </div>
     </div>
   );
