@@ -525,7 +525,7 @@ const TableComponent = (props: any) => {
           />
         </div>
       </div>
-      <div className="pb-4">
+      <div className="pb-2">
         <table className="w-full text-left">
           <thead>
             <tr className="">
