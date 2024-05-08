@@ -93,7 +93,7 @@ export default function Home() {
               {leftActive ? (
                 <>
                   <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
-                  <span className="text-light-blue text-6xl font-bold mb-[19px]">{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</span>
+                  <span className="text-light-blue text-6xl font-bold mb-[26px]">{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</span>
                   <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <div className="flex justify-between items-center pb-4">
                       <span className="font-semibold text-lg">YOUR POSITION</span>
@@ -147,7 +147,7 @@ export default function Home() {
               ) :(
                 <>
                   <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APR</span>
-                  <span className="text-light-blue text-6xl font-bold mb-[19px]">{isNaN(yprismaVault?.apr?.netAPR) ? '--.--%' : vaultAPR}</span>
+                  <span className="text-light-blue text-6xl font-bold mb-[26px]">{isNaN(yprismaVault?.apr?.netAPR) ? '--.--%' : vaultAPR}</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <span className="font-semibold pb-4 text-lg">MY DEPOSITS</span>
                     <div className="flex justify-between">
@@ -159,14 +159,14 @@ export default function Home() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-thin opacity-70">USD Value</span>
+                      <span className="font-thin opacity-70 mb-4">USD Value</span>
                       <span className="font-bold">
                         ${data.strategy.balance && prices[env.YPRISMA]
                           ? (Number(bmath.div(data.strategy.balance, 10n ** 18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                           : '-'}
                       </span>
                     </div>
-                    <span className="font-semibold pb-4 pt-4 text-lg">TOTAL DEPOSITS</span>
+                    <span className="font-semibold pb-4 pt-6 text-lg border-t-2 border-soft-blue">TOTAL DEPOSITS</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">yPRISMA Deposited</span>
                       <span className="font-bold">{data.strategy.balance
