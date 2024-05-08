@@ -73,8 +73,8 @@ export default function Home() {
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
-        <section className="mt-[5vh] mx-4 lg:mx-0">
-          <div className="flex justify-center mb-8 space-x-8">
+        <section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0">
+          <div className="w-full flex flex-wrap justify-center items-center mb-12 md:mb-8 space-y-4 md:space-x-8 md:space-y-0 flex-col md:flex-row">
             <Link href="/app/stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
               <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '--.--%'}</div></div>
             </div></Link>
@@ -128,7 +128,11 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Min/Max APR </span>
-                      <span className="w-7/12 font-bold flex items-center justify-between">{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : '--.--%'} <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" /> {data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : '--.--%'}</span>
+                      <span className="w-7/12 font-bold flex items-end md:items-center md:justify-end space-x-2 flex-col md:flex-row">
+                        <span>{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : '--.--%'}</span>
+                        <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
+                        <span>{data.utilities ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : '--.--%'}</span>
+                      </span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Average Boost Multiplier</span>
@@ -222,7 +226,7 @@ function TabContent(props: { leftActive: any; account: any }) {
           ]}
           launchApp={false}
           selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'learn_more_stake' ? 'Learn More' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
-          className="pl-8"
+          className="pl-4 mb-2 md:mb-0 md:pl-8"
           onClickLaunch={() => {}}
         />
       ) : (
@@ -234,18 +238,18 @@ function TabContent(props: { leftActive: any; account: any }) {
           ]}
           launchApp={false}
           selected={tab === 'deposit' ? 'Deposit' : tab === 'learn_more_deposit' ? 'Learn More' : tab === 'withdraw' ? 'Withdraw' : ''}
-          className="pl-8"
+          className="pl-4 mb-2 md:mb-0 md:pl-8"
           onClickLaunch={() => {}}
         />
       )}
       <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (
-          <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col p-8 pt-0 mt-6 w-1/2">
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-1/2">
               <span className="font-thin pb-1 text-md">Stake yPRISMA</span>
               <Stake />
             </div>
-            <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
+            <div className="flex flex-col space-y-6 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>
               <span className="font-thin opacity-70">
                 {`Stake your yPRISMA and start earning a share of Yearn's vePRISMA stablecoin revenue today. You'll reach max boost and hit the maximum staking APR after just 4 weeks.`}
@@ -255,12 +259,12 @@ function TabContent(props: { leftActive: any; account: any }) {
           </div>
         )}
         {tab === 'unstake' && (
-          <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col p-8 pt-0 mt-6 w-1/2">
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-1/2">
               <span className="font-thin pb-1 text-md">Unstake yPRISMA</span>
               <Unstake />
             </div>
-            <div className="flex flex-col space-y-6 w-1/2 p-8 pt-0 mt-6">
+            <div className="flex flex-col space-y-6 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">UNSTAKE yPRISMA</span>
               <span className="font-thin opacity-70">
                 {`Unstake your yPRISMA. You're free to unstake at any time with no lock-ups or penalties. Unstaked yPRISMA doesn’t earn any yield. Withdrawals pull from the least boosted position.`}
@@ -270,8 +274,8 @@ function TabContent(props: { leftActive: any; account: any }) {
           </div>
         )}
         {tab === 'claim' && (
-          <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-1/2">
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
+            <div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-1/2">
             <span className="font-semibold">YOUR REWARD</span>
             <span className="font-semibold text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
             <span className="font-thin opacity-70">{bmath.div(data.rewards.claimable, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} yvmkUSD-A</span>
@@ -279,7 +283,7 @@ function TabContent(props: { leftActive: any; account: any }) {
               <ClaimAll />
             </div>
             </div>
-            <div className="flex flex-col space-y-4 w-1/2 p-8 pt-0 mt-6">
+            <div className="flex flex-col space-y-4 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">DESCRIPTION</span>
               <p className="font-thin opacity-70">
                 {`Claim your mkUSD rewards. We've already deposited your mkUSD into our auto-compounding mkUSD vault (`}<Link className="underline" href="https://etherscan.io/token/0x04aebe2e4301cdf5e9c57b01ebdfe4ac4b48dd13">yvmkUSD-A</Link>{`).`}
@@ -292,7 +296,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'get' && (
           <div className="flex">
-            <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
               <span className="font-thin pb-1 text-md">Mint yPRISMA from PRISMA</span>
               <Mint />
               <div className="mt-4 flex flex-col space-y-4">
@@ -308,7 +312,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'learn_more_stake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-2/3">
+            <div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-2/3">
               <span className="font-semibold">HOW IT WORKS</span>
               <p className="font-thin opacity-70">
                 {`The longer you stake, the greater your boost! Yearn's yPRISMA staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x). You'll reach max boost and achieve the maximum staking APR less than four weeks after depositing your yPRISMA.`}
@@ -321,7 +325,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'deposit' && (
           <div className="flex">
-            <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
               <span className="font-thin pb-1 text-md">Deposit</span>
               <Deposit />
               <span className="mt-4 font-thin opacity-70">
@@ -332,7 +336,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'withdraw' && (
           <div className="flex">
-            <div className="flex flex-col p-8 pt-0 mt-6 w-2/3">
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
               <span className="font-thin pb-1 text-md">Withdraw</span>
               <Withdraw />
               <span className="mt-4 font-thin opacity-70">
@@ -343,7 +347,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'learn_more_deposit' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-2/3">
+            <div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-2/3">
               <span className="font-semibold">HOW IT WORKS</span>
               <p className="font-thin opacity-70">
                 {`Once a week, the vault claims its boosted share of mkUSD from the yPRISMA staker contract, swaps it for more yPRISMA, and deposits it back into the staker. On top of that, the vault is whitelisted - allowing it to earn max boost immediately on all reinvested yPRISMA.`}
@@ -504,11 +508,11 @@ const TableComponent = (props: any) => {
   
   return (
     <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
-      <div className="flex items-center justify-between w-full">
-        <h1 className="text-5xl p-8 font-[700]">
+      <div className="flex flex-col md:flex-row items-center justify-between w-full">
+        <h1 className="text-4xl md:text-5xl p-6 pt-8 md:p-8 font-[700] pb-0">
           Prisma Vaults
         </h1>
-        <div className="p-8 w-2/3">
+        <div className="p-4 md:p-8 w-full md:w-2/3">
           <InputBox
             // type="text"
             subtitle=""
@@ -526,7 +530,7 @@ const TableComponent = (props: any) => {
           <thead>
             <tr className="">
               <th
-                className="text-xs font-thin py-2 hover:underline cursor-pointer pl-8"
+                className="text-xs font-thin py-2 hover:underline cursor-pointer pl-4 md:pl-8"
                 onClick={() => handleSort('token')}
               >
                 Token {sortColumn === 'token' && (sortDirection === 'asc' ? '▲' : '▼')}
@@ -538,25 +542,25 @@ const TableComponent = (props: any) => {
                 Est. APR {sortColumn === 'estApr' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
               <th
-                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                className="text-xs font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
                 onClick={() => handleSort('histApr')}
               >
                 Hist. APR {sortColumn === 'histApr' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
               <th
-                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                className="text-xs font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
                 onClick={() => handleSort('available')}
               >
                 Available {sortColumn === 'available' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
               <th
-                className="text-xs font-thin hover:underline py-2 cursor-pointer"
+                className="text-xs font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
                 onClick={() => handleSort('holdings')}
               >
                 Holdings {sortColumn === 'holdings' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
               <th
-                className="text-xs font-thin hover:underline py-2 cursor-pointer pr-8"
+                className="text-xs font-thin hover:underline py-2 cursor-pointer pr-8 hidden md:table-cell"
                 onClick={() => handleSort('deposits')}
               >
                 Deposits {sortColumn === 'deposits' && (sortDirection === 'asc' ? '▲' : '▼')}
@@ -569,10 +573,10 @@ const TableComponent = (props: any) => {
               const available = getAvailable(item);
               return (
                 <tr onClick={() => window.open(`https://yearn.fi/vaults/1/${item.address}`, '_blank')} key={index} className="hover:bg-blue">
-                  <td className="text-md py-4 cursor-pointer pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
-                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-md font-mono py-4 cursor-pointer">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-md font-mono py-4 cursor-pointer">
+                  <td className="text-sm md:text-md py-4 cursor-pointer px-4 md:pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
+                  <td className="text-md font-mono py-4 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-md font-mono py-4 cursor-pointer hidden md:table-cell">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-md font-mono py-4 cursor-pointer hidden md:table-cell">
                     {available ? (
                       <>
                         {available.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -581,7 +585,7 @@ const TableComponent = (props: any) => {
                       '-'
                     )}
                   </td>
-                  <td className="text-md font-mono py-4 cursor-pointer">
+                  <td className="text-md font-mono py-4 cursor-pointer hidden md:table-cell">
                     {holdings ? (
                       <>
                         {holdings.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -590,7 +594,7 @@ const TableComponent = (props: any) => {
                       '-'
                     )}
                   </td>
-                  <td className="text-md font-mono py-4 cursor-pointer pr-8">
+                  <td className="text-md font-mono py-4 cursor-pointer pr-8 hidden md:table-cell">
                     {item.tvl.totalAssets ? (
                       <>
                         {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -605,6 +609,7 @@ const TableComponent = (props: any) => {
             })}
           </tbody>
         </table>
+        {vaultData.length === 0 && <span className="p-4 md:p-8">Loading...</span>}
       </div>
     </div>
   );

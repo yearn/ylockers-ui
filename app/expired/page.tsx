@@ -14,7 +14,7 @@ export default function Home() {
               <section className="grid-cols-12 gap-0 md:grid md:pt-12">
                 <div className="col-span-12 md:col-span-8 md:mb-0 md:pr-20">
                   <div className="mb-10 flex flex-col justify-center">
-                    <h1 className="mt-6 block font-black text-5xl">
+                    <h1 className="mt-28 md:mt-6 block font-black text-5xl">
                         Expired Farms 
                     </h1>
                   </div>
