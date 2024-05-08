@@ -609,7 +609,7 @@ const TableComponent = (props: any) => {
             })}
           </tbody>
         </table>
-        {!contractReads.data && <span className="pl-4 md:pl-8">Loading...</span>}
+        {vaultData.length === 0 && <span className="pl-4 md:pl-8">Loading...</span>}
       </div>
     </div>
   );
