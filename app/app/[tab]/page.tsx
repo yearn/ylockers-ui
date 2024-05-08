@@ -226,7 +226,7 @@ function TabContent(props: { leftActive: any; account: any }) {
           ]}
           launchApp={false}
           selected={tab === 'get' ? 'Get yPRISMA' : tab === 'stake' ? 'Stake' : tab === 'learn_more_stake' ? 'Learn More' : tab === 'unstake' ? 'Unstake' : tab === 'claim' ? 'Claim Rewards' : ''}
-          className="pl-8"
+          className="pl-4 mb-2 md:mb-0 md:pl-8"
           onClickLaunch={() => {}}
         />
       ) : (
@@ -238,18 +238,18 @@ function TabContent(props: { leftActive: any; account: any }) {
           ]}
           launchApp={false}
           selected={tab === 'deposit' ? 'Deposit' : tab === 'learn_more_deposit' ? 'Learn More' : tab === 'withdraw' ? 'Withdraw' : ''}
-          className="pl-8"
+          className="pl-4 mb-2 md:mb-0 md:pl-8"
           onClickLaunch={() => {}}
         />
       )}
       <div className="border-t-2 border-input-bg">
         {tab === 'stake' && (
-          <div className="flex flex-col md:flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col p-8 pt-0 mt-6 w-full md:w-1/2">
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-1/2">
               <span className="font-thin pb-1 text-md">Stake yPRISMA</span>
               <Stake />
             </div>
-            <div className="flex flex-col space-y-6 w-full md:w-1/2 p-8 pt-0 mt-6">
+            <div className="flex flex-col space-y-6 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">STAKE yPRISMA - EARN STABLES</span>
               <span className="font-thin opacity-70">
                 {`Stake your yPRISMA and start earning a share of Yearn's vePRISMA stablecoin revenue today. You'll reach max boost and hit the maximum staking APR after just 4 weeks.`}
@@ -259,12 +259,12 @@ function TabContent(props: { leftActive: any; account: any }) {
           </div>
         )}
         {tab === 'unstake' && (
-          <div className="flex flex-col md:flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col p-8 pt-0 mt-6 w-full md:w-1/2">
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-1/2">
               <span className="font-thin pb-1 text-md">Unstake yPRISMA</span>
               <Unstake />
             </div>
-            <div className="flex flex-col space-y-6 w-full md:w-1/2 p-8 pt-0 mt-6">
+            <div className="flex flex-col space-y-6 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">UNSTAKE yPRISMA</span>
               <span className="font-thin opacity-70">
                 {`Unstake your yPRISMA. You're free to unstake at any time with no lock-ups or penalties. Unstaked yPRISMA doesn’t earn any yield. Withdrawals pull from the least boosted position.`}
@@ -274,8 +274,8 @@ function TabContent(props: { leftActive: any; account: any }) {
           </div>
         )}
         {tab === 'claim' && (
-          <div className="flex flex-col md:flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-full md:w-1/2">
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
+            <div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-1/2">
             <span className="font-semibold">YOUR REWARD</span>
             <span className="font-semibold text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
             <span className="font-thin opacity-70">{bmath.div(data.rewards.claimable, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} yvmkUSD-A</span>
@@ -283,7 +283,7 @@ function TabContent(props: { leftActive: any; account: any }) {
               <ClaimAll />
             </div>
             </div>
-            <div className="flex flex-col space-y-4 w-full md:w-1/2 p-8 pt-0 mt-6">
+            <div className="flex flex-col space-y-4 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">DESCRIPTION</span>
               <p className="font-thin opacity-70">
                 {`Claim your mkUSD rewards. We've already deposited your mkUSD into our auto-compounding mkUSD vault (`}<Link className="underline" href="https://etherscan.io/token/0x04aebe2e4301cdf5e9c57b01ebdfe4ac4b48dd13">yvmkUSD-A</Link>{`).`}
@@ -296,7 +296,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'get' && (
           <div className="flex">
-            <div className="flex flex-col p-8 pt-0 mt-6 w-full md:w-2/3">
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
               <span className="font-thin pb-1 text-md">Mint yPRISMA from PRISMA</span>
               <Mint />
               <div className="mt-4 flex flex-col space-y-4">
@@ -312,7 +312,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'learn_more_stake' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-full md:w-2/3">
+            <div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-2/3">
               <span className="font-semibold">HOW IT WORKS</span>
               <p className="font-thin opacity-70">
                 {`The longer you stake, the greater your boost! Yearn's yPRISMA staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x). You'll reach max boost and achieve the maximum staking APR less than four weeks after depositing your yPRISMA.`}
@@ -325,7 +325,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'deposit' && (
           <div className="flex">
-            <div className="flex flex-col p-8 pt-0 mt-6 w-full md:w-2/3">
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
               <span className="font-thin pb-1 text-md">Deposit</span>
               <Deposit />
               <span className="mt-4 font-thin opacity-70">
@@ -336,7 +336,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'withdraw' && (
           <div className="flex">
-            <div className="flex flex-col p-8 pt-0 mt-6 w-full md:w-2/3">
+            <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
               <span className="font-thin pb-1 text-md">Withdraw</span>
               <Withdraw />
               <span className="mt-4 font-thin opacity-70">
@@ -347,7 +347,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'learn_more_deposit' && (
           <div className="flex flex-row space-y-6 w-full pt-0"> 
-            <div className="flex flex-col space-y-4 p-8 pt-0 mt-6 w-full md:w-2/3">
+            <div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-2/3">
               <span className="font-semibold">HOW IT WORKS</span>
               <p className="font-thin opacity-70">
                 {`Once a week, the vault claims its boosted share of mkUSD from the yPRISMA staker contract, swaps it for more yPRISMA, and deposits it back into the staker. On top of that, the vault is whitelisted - allowing it to earn max boost immediately on all reinvested yPRISMA.`}
