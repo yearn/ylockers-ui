@@ -574,9 +574,9 @@ const TableComponent = (props: any) => {
               return (
                 <tr onClick={() => window.open(`https://yearn.fi/vaults/1/${item.address}`, '_blank')} key={index} className="hover:bg-blue">
                   <td className="text-sm md:text-base py-2 cursor-pointer px-4 md:pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
-                  <td className="text-lg font-mono py-2 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-lg font-mono py-2 cursor-pointer hidden md:table-cell">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-lg font-mono py-2 cursor-pointer hidden md:table-cell">
+                  <td className="text-base font-mono py-2 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
                     {available ? (
                       <>
                         {available.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -585,7 +585,7 @@ const TableComponent = (props: any) => {
                       '-'
                     )}
                   </td>
-                  <td className="text-lg font-mono py-2 cursor-pointer hidden md:table-cell">
+                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
                     {holdings ? (
                       <>
                         {holdings.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -594,7 +594,7 @@ const TableComponent = (props: any) => {
                       '-'
                     )}
                   </td>
-                  <td className="text-lg font-mono py-2 cursor-pointer pr-8 hidden md:table-cell">
+                  <td className="text-base font-mono py-2 cursor-pointer pr-8 hidden md:table-cell">
                     {item.tvl.totalAssets ? (
                       <>
                         {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
