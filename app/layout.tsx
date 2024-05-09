@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from 'next/font/local'
 import "./globals.css";
 import '@rainbow-me/rainbowkit/styles.css';
-import { Roboto } from 'next/font/google';
 
 import Provider from './contexts/Provider';
 
@@ -10,6 +9,7 @@ const sans = localFont({
   variable: '--font-aeonik-sans',
   display: 'swap',
   src: [
+    { path: './fonts/Aeonik-Thin.ttf', weight: '200', style: 'normal' },
     { path: './fonts/Aeonik-Regular.woff2', weight: '400', style: 'normal' },
     { path: './fonts/Aeonik-Regular.woff', weight: '400', style: 'normal' },
     { path: './fonts/Aeonik-Regular.ttf', weight: '400', style: 'normal' },
@@ -31,12 +31,6 @@ const mono = localFont({
     { path: './fonts/AeonikMono-Bold.ttf', weight: '700', style: 'normal' },
   ]})
 
-const roboto = Roboto({
-  variable: '--font-roboto-thin',
-  weight: '100',
-  subsets: ['latin'],
-})
-
 export const metadata: Metadata = {
   title: "yPrisma",
   description: "Put your yPRISMA to work",
@@ -48,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable} ${roboto.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <Provider>
           {children}

@@ -15,7 +15,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-aeonik-sans)'],
-        thin: ['var(--font-roboto-thin)'],
+        thin: ['var(--font-aeonik-sans)'],
         mono: ['var(--font-aeonik-mono)'],
       },
       colors: {
