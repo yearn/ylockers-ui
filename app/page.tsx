@@ -19,7 +19,7 @@ export default function Home() {
       <section className="px-8 xl:px-0 xl:w-[1200px] mt-[15vh] md:mt-[27vh] z-10">
         <div className="w-full px-12 md:px-0">
           <h1 className="text-6xl font-bold">Put your<br />yPRISMA to work</h1>
-          <p className="my-8 xl:w-[670px] font-thin">
+          <p className="my-8 xl:w-[670px] font-thin sm:whitespace-nowrap">
             {`Each week, Yearn's vePRISMA position earns revenue from protocol fees and vote-maximized bribes.`}<br />
             {`This is converted to mkUSD stablecoin and distributed to yPRISMA stakers.`}
           </p>

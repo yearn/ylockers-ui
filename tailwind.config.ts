@@ -13,6 +13,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-aeonik-sans)'],
+        thin: ['var(--font-aeonik-sans)'],
+        mono: ['var(--font-aeonik-mono)'],
+      },
       colors: {
         'dark-black': '#000107',
         'dark-blue': '#000A3D',

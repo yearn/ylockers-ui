@@ -9,6 +9,7 @@ const sans = localFont({
   variable: '--font-aeonik-sans',
   display: 'swap',
   src: [
+    { path: './fonts/Aeonik-Thin.ttf', weight: '200', style: 'normal' },
     { path: './fonts/Aeonik-Regular.woff2', weight: '400', style: 'normal' },
     { path: './fonts/Aeonik-Regular.woff', weight: '400', style: 'normal' },
     { path: './fonts/Aeonik-Regular.ttf', weight: '400', style: 'normal' },

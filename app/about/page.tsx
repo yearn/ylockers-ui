@@ -33,7 +33,7 @@ export default function Home() {
                       <h3 className="text-xl font-bold">
                         Stake
                       </h3>
-                      <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
+                      <div className="mt-2 flex flex-col space-y-2 text-white font-thin white">
                         <p>
                           {`Each week, Yearn's vePRISMA position earns revenue from protocol fees and bribes. This is converted to mkUSD stablecoin and distributed to yPRISMA stakers at the start of the week.`}
                         </p>
