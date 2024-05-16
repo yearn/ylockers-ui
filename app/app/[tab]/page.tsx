@@ -302,7 +302,7 @@ function TabContent(props: { leftActive: any; account: any }) {
               <Mint />
               <div className="mt-4 flex flex-col space-y-4">
                 <p className="font-thin opacity-70">
-                {`Convert your PRISMA to yPRISMA. To ensure you receive the maximum amount of yPRISMA, the zapper will either mint new yPRISMA or swap via the Curve pool.`}
+                {`Convert your PRISMA to yPRISMA using the yPRISMA contract (1:1 mint)`}
                 </p>
                 <p className="font-thin opacity-70">
                 <b>⚠️ Important: </b>{`yLocker tokens (such as yPRISMA) can never be redeemed for the underlying locked tokens (PRISMA). However, because they are liquid, they can be traded on decentralized exchanges, and bought and sold at the current market rate.`}
