@@ -17,20 +17,20 @@ import env from '@/lib/env';
 
 const queryClient = new QueryClient();
 
-const newMainnet = Object.assign({}, mainnet, {
-  "id": 6969,
-  "rpcUrls": {
-    "default": {
-      "http": ["https://virtual.mainnet.rpc.tenderly.co/bb40feda-1904-4527-8de7-347b90c78112"]
-    }
-  }
-})
+// const newMainnet = Object.assign({}, mainnet, {
+//   "id": 6969,
+//   "rpcUrls": {
+//     "default": {
+//       "http": ["https://virtual.mainnet.rpc.tenderly.co/bb40feda-1904-4527-8de7-347b90c78112"]
+//     }
+//   }
+// })
 
 const config = getDefaultConfig({
   appName: 'yPrisma',
   projectId: '84801a4fb569adb34f184f543b6d1762',
-  chains: [newMainnet],
-  // chains: env.DEV ? [localhost] : [mainnet],
+  // chains: [newMainnet],
+  chains: [mainnet],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 

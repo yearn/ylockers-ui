@@ -99,20 +99,20 @@ export default function Home() {
                 <dl className="flex flex-col gap-2 p-4 md:p-6 ">
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Yearn Boosted Staker</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x8CeA85eC7f3D314c4d144e34F2206C8Ac0bbadA1">
-                      <dd className="font-mono">0x8CeA85eC7f3D314c4d144e34F2206C8Ac0bbadA1</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xF4C6e0E006F164535508787873d86b84fe901975">
+                      <dd className="font-mono">0xF4C6e0E006F164535508787873d86b84fe901975</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Rewards Distributor</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x3Af511B1bdD6A0377e23796aD6B7391d8De68636">
-                      <dd className="font-mono">0x3Af511B1bdD6A0377e23796aD6B7391d8De68636</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xc480b481dD194EAc469EC9c4484D23d54B868EDD">
+                      <dd className="font-mono">0xc480b481dD194EAc469EC9c4484D23d54B868EDD</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Boosted Staker Utilities</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x4dcA4bFA0bAa0C8ce741b92B255D967599d994f0">
-                      <dd className="font-mono">0x4dcA4bFA0bAa0C8ce741b92B255D967599d994f0</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x0FA98fB436CCc6694f9C8cf35C16b0D3b720D2f0">
+                      <dd className="font-mono">0x0FA98fB436CCc6694f9C8cf35C16b0D3b720D2f0</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
@@ -123,8 +123,8 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">yvmkUSD-A</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x0000000000000000000000000000000000000000">
-                      <dd className="font-mono">0x0000000000000000000000000000000000000000</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13">
+                      <dd className="font-mono">0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
