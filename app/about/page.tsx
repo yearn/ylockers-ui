@@ -111,8 +111,8 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Boosted Staker Utilities</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x0FA98fB436CCc6694f9C8cf35C16b0D3b720D2f0">
-                      <dd className="font-mono">0x0FA98fB436CCc6694f9C8cf35C16b0D3b720D2f0</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xf04037D102b64E365eF6Eb81937bDf59B31fE5B8">
+                      <dd className="font-mono">0xf04037D102b64E365eF6Eb81937bDf59B31fE5B8</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
