@@ -170,7 +170,7 @@ export default function Home() {
                     <span className="font-semibold pb-4 pt-6 text-lg border-t-2 border-soft-blue">TOTAL DEPOSITS</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">yPRISMA Deposited</span>
-                      <span className="font-bold">{data.strategy.balance
+                      <span className="font-bold">{data.strategy.totalAssets
                         ? bmath.div(data.strategy.totalAssets, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                         : '0.00'
                       }
