@@ -76,10 +76,10 @@ export default function Home() {
         <section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0">
           <div className="w-full flex flex-wrap justify-center items-center mb-12 md:mb-8 space-y-4 md:space-x-8 md:space-y-0 flex-col md:flex-row">
             <Link href="/app/stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '🌈✨%'}</div></div>
+              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</div></div>
             </div></Link>
             <Link href="/app/deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{isNaN(yprismaVault?.apr?.netAPR) || yprismaVault?.apr?.netAPR === 0 ? '🌈✨%' : vaultAPR}</div></div>
+              <div className="flex justify-between items-center text-lg pl-4">EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{isNaN(yprismaVault?.apr?.netAPR) || yprismaVault?.apr?.netAPR === 0 ? <span title="APR will show when migration period ends after first week.">🌈✨%</span> : vaultAPR}</div></div>
             </div></Link>
           </div>
           <div className="flex flex-col lg:flex-row justify-center ">
@@ -93,7 +93,7 @@ export default function Home() {
               {leftActive ? (
                 <>
                   <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
-                  <span className="text-light-blue text-6xl font-bold mb-[26px]">{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : '🌈✨%'}</span>
+                  <span className="text-light-blue text-6xl font-bold mb-[26px]">{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                   <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <div className="flex justify-between items-center pb-4">
                       <span className="font-semibold text-lg">YOUR POSITION</span>
@@ -107,7 +107,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Your APR</span>
-                      <span className="font-bold">{data.utilities && data.utilities.userApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.userApr, 10n**18n)) : '🌈✨%'}</span>
+                      <span className="font-bold">{data.utilities && data.utilities.userApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.userApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Boost Multiplier</span>
@@ -133,9 +133,9 @@ export default function Home() {
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">APR </span>
                       <span className="w-7/12 font-bold flex items-end md:items-center md:justify-end space-x-2">
-                        <span>{data.utilities && bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : '🌈✨%'}</span>
+                        <span>{data.utilities && bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                         <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
-                        <span>{data.utilities && bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : '🌈✨%'}</span>
+                        <span>{data.utilities && bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                       </span>
                     </div>
                     {/* <div className="flex justify-between">
@@ -148,7 +148,7 @@ export default function Home() {
               ) :(
                 <>
                   <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APR</span>
-                  <span className="text-light-blue text-6xl font-bold mb-[26px]">{isNaN(yprismaVault?.apr?.netAPR) || yprismaVault?.apr?.netAPR === 0 ? '🌈✨%' : vaultAPR}</span>
+                  <span className="text-light-blue text-6xl font-bold mb-[26px]">{isNaN(yprismaVault?.apr?.netAPR) || yprismaVault?.apr?.netAPR === 0 ? <span title="APR will show when migration period ends after first week.">🌈✨%</span> : vaultAPR}</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <span className="font-semibold pb-4 text-lg">MY DEPOSITS</span>
                     <div className="flex justify-between">
