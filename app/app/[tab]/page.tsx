@@ -330,7 +330,7 @@ function TabContent(props: { leftActive: any; account: any }) {
               <span className="font-thin pb-1 text-md">Deposit</span>
               <Deposit />
               <span className="mt-4 font-thin opacity-70">
-                {`Deposit your yPRISMA into Yearn's auto-compounding vault and earn start earning the maximum APY immediately. The vault will handle staking, claiming and swapping rewards, and reinvesting your yPRISMA for you.`}
+                {`Deposit your yPRISMA into Yearn's auto-compounding vault and start earning the maximum APY immediately. The vault will handle staking, claiming and swapping rewards, and reinvesting your yPRISMA for you.`}
               </span>
             </div>
           </div>
