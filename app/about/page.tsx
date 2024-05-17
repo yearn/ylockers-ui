@@ -105,14 +105,14 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Rewards Distributor</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xc480b481dD194EAc469EC9c4484D23d54B868EDD">
-                      <dd className="font-mono">0xc480b481dD194EAc469EC9c4484D23d54B868EDD</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x2667BA23c782a8DDc31174Ef472a676eb5C709b3">
+                      <dd className="font-mono">0x2667BA23c782a8DDc31174Ef472a676eb5C709b3</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Boosted Staker Utilities</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xf04037D102b64E365eF6Eb81937bDf59B31fE5B8">
-                      <dd className="font-mono">0xf04037D102b64E365eF6Eb81937bDf59B31fE5B8</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xC4B4CeAF8bF4f2dAD1502457d53D084f20291fAE ">
+                      <dd className="font-mono">0xC4B4CeAF8bF4f2dAD1502457d53D084f20291fAE </dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
