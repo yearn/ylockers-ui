@@ -287,7 +287,7 @@ function TabContent(props: { leftActive: any; account: any }) {
             <div className="flex flex-col space-y-4 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">DESCRIPTION</span>
               <p className="font-thin opacity-70">
-                {`Claim your mkUSD rewards. We've already deposited your mkUSD into our auto-compounding mkUSD vault (`}<Link className="underline" href="https://etherscan.io/token/0x04aebe2e4301cdf5e9c57b01ebdfe4ac4b48dd13">yvmkUSD-A</Link>{`).`}
+                {`Claim your mkUSD rewards. We've already deposited your mkUSD into our auto-compounding mkUSD vault (`}<Link target="_blank" rel="noreferrer" className="underline" href="https://yearn.fi/v3/1/0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13">yvmkUSD-A</Link>{`).`}
               </p>
               <p className="font-thin opacity-70">
                 {`That means your yield has been earning you additional yield from the moment we received it. Once claimed, your mkUSD vault holdings will appear below.`}
