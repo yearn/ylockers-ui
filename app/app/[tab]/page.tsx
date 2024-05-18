@@ -22,13 +22,15 @@ import Deposit from "../../components/Deposit";
 import Withdraw from "../../components/Withdraw";
 import WithdrawAllFromOldStaker from "../../components/WithdrawAllFromOldStaker";
 
-import { useContractReads, useContractRead } from 'wagmi';
+import { useContractReads } from 'wagmi';
+import { PiVaultLight } from "react-icons/pi";
 import { erc20Abi } from 'viem';
 import { formatUnits } from 'viem';
 import usePrices from "@/hooks/usePrices";
 import bmath, { priced } from "@/lib/bmath";
 import env from '@/lib/env'
 import Background from "../../components/Background";
+import A from "@/app/components/A";
 
 
 function useTab() {
@@ -279,7 +281,7 @@ function TabContent(props: { leftActive: any; account: any }) {
             <div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-1/2">
             <span className="font-semibold">YOUR REWARD</span>
             <span className="font-semibold text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
-            <span className="font-thin opacity-70">{bmath.div(data.rewards.claimable, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} yvmkUSD-A</span>
+            <span className="font-thin opacity-70">{bmath.div(data.rewards.claimable, 10n ** BigInt(data.rewards.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} yvmkUSD-A</span>
             <div>
               <ClaimAll />
             </div>
@@ -287,11 +289,21 @@ function TabContent(props: { leftActive: any; account: any }) {
             <div className="flex flex-col space-y-4 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">DESCRIPTION</span>
               <p className="font-thin opacity-70">
-                {`Claim your mkUSD rewards. We've already deposited your mkUSD into our auto-compounding mkUSD vault (`}<Link target="_blank" rel="noreferrer" className="underline" href="https://yearn.fi/v3/1/0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13">yvmkUSD-A</Link>{`).`}
+                {`Claim your mkUSD rewards. We already deposited your mkUSD into our auto-compounding mkUSD vault (`}
+                  <A target="_blank" rel="noreferrer" className="underline" href={`https://yearn.fi/v3/1/${env.YVMKUSD}`}>yvmkUSD-A</A>
+                {`).`}
               </p>
               <p className="font-thin opacity-70">
                 {`That means your yield has been earning you additional yield from the moment we received it. Once claimed, your mkUSD vault holdings will appear below.`}
               </p>
+              <div>
+                <div className="font-thin opacity-70">Your yvmkUSD balance</div>
+                <A className="flex items-center gap-2 font-mono" href={`https://yearn.fi/v3/1/${env.YVMKUSD}`} target="_blank" rel="noreferrer">
+                  <PiVaultLight />
+                  <Tokens amount={data.rewards.vaultBalance} decimals={data.rewards.decimals} />
+                  ({fUSD(data.rewards.vaultBalanceUsd)})
+                </A>
+              </div>
             </div>
           </div>
         )}
