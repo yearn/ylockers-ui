@@ -45,7 +45,9 @@ export const DataSchema = z.object({
     address: zhexstringSchema.default(zeroAddress),
     decimals: z.number().default(0),
     claimable: z.bigint().default(0n),
-    claimableUsd: z.number().default(0)
+    claimableUsd: z.number().default(0),
+    vaultBalance: z.bigint().default(0n),
+    vaultBalanceUsd: z.number().default(0)
   }).default({}),
 
   strategy: z.object({
@@ -124,6 +126,7 @@ export default function useData() {
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getWeek' },
 
       { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'totalAssets' },
+      { address: env.YVMKUSD, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
 
     ], multicallAddress })
   )
@@ -185,6 +188,12 @@ export default function useData() {
       claimable: multicall.data?.[13]?.result,
       claimableUsd: priced(
         multicall.data?.[13]?.result!,
+        multicall.data?.[12]?.result!,
+        prices[env.YVMKUSD]
+      ),
+      vaultBalance: multicall.data?.[26]?.result,
+      vaultBalanceUsd: priced(
+        multicall.data?.[26]?.result!,
         multicall.data?.[12]?.result!,
         prices[env.YVMKUSD]
       )
