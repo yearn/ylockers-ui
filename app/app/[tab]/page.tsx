@@ -297,7 +297,7 @@ function TabContent(props: { leftActive: any; account: any }) {
                 {`That means your yield has been earning you additional yield from the moment we received it. Once claimed, your mkUSD vault holdings will appear below.`}
               </p>
               <div>
-                <div className="font-thin opacity-70">Your yvmkUSD balance</div>
+                <div className="font-thin opacity-70">Your yvmkUSD-A balance</div>
                 <A className="flex items-center gap-2 font-mono" href={`https://yearn.fi/v3/1/${env.YVMKUSD}`} target="_blank" rel="noreferrer">
                   <PiVaultLight />
                   <Tokens amount={data.rewards.vaultBalance} decimals={data.rewards.decimals} />
