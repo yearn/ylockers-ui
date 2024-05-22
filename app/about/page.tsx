@@ -140,12 +140,6 @@ export default function Home() {
                     </a>
                   </div>
                   <div className="flex flex-col justify-between opacity-40 md:flex-row">
-                    <dt className="text-white">Legacy yPrisma Token</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xfd37356c1a62288b32Fa58188c77Ab0D694a0f4E">
-                      <dd className="font-mono">0xfd37356c1a62288b32Fa58188c77Ab0D694a0f4E</dd>
-                    </a>
-                  </div>
-                  <div className="flex flex-col justify-between opacity-40 md:flex-row">
                     <dt className="text-white">Legacy yPrisma Staking Contract</dt>
                     <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xE3EE395C9067dD15C492Ca950B101a7d6c85b5Fc">
                       <dd className="font-mono">0xE3EE395C9067dD15C492Ca950B101a7d6c85b5Fc</dd>
