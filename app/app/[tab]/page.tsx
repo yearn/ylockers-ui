@@ -109,7 +109,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Your APR</span>
-                      <span className="font-bold">{data.utilities && data.utilities.userApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.userApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
+                      <span className="font-bold">{data.utilities && fPercent(bmath.div(data.utilities.userApr, 10n**18n))}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Boost Multiplier</span>
