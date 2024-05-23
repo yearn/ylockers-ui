@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import env from '@/lib/env'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { erc20Abi, zeroAddress } from 'viem'
+import { erc20Abi, parseUnits, zeroAddress } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 import { readContractsQueryOptions } from 'wagmi/query'
 import { zhexstringSchema } from '@/lib/types'
@@ -9,7 +9,6 @@ import abis from '@/app/abis'
 import usePrices from './usePrices'
 import bmath, { priced } from '@/lib/bmath'
 import { useCallback } from 'react'
-import { totalmem } from 'os'
 
 const padRight = (n: number, length: number) => n === 0 ? n : String(n.toString().padEnd(length, '0'))
 
@@ -112,10 +111,25 @@ export default function useData() {
 
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserProjectedBoostMultiplier', args: [account.address || zeroAddress] },
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalProjectedBoostMultiplier' },
+
       // @ts-ignore
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalProjectedApr', args: [bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString()] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES,
+        abi: abis.Utilities, functionName: 'getGlobalProjectedApr',
+        args: [
+          parseUnits((prices?.[env.YPRISMA] ?? 0).toString(), 18).toString(),
+          parseUnits((prices?.[env.YVMKUSD] ?? 0).toString(), 18).toString()
+        ]
+      },
+
       // @ts-ignore
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalMinMaxProjectedApr', args: [bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString()] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, 
+        abi: abis.Utilities, functionName: 'getGlobalMinMaxProjectedApr', 
+        args: [
+          parseUnits((prices?.[env.YPRISMA] ?? 0).toString(), 18).toString(),
+          parseUnits((prices?.[env.YVMKUSD] ?? 0).toString(), 18).toString()
+        ] 
+      },
+
       // @ts-ignore
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserProjectedApr', args: [account.address || zeroAddress, bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString()] },
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, bmath.mul(prices?.[env.YPRISMA], 10n**18n), bmath.mul(prices?.[env.MKUSD], 10n**18n)] },
