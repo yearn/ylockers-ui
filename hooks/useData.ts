@@ -131,7 +131,15 @@ export default function useData() {
       },
 
       // @ts-ignore
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserProjectedApr', args: [account.address || zeroAddress, bmath.mul(prices?.[env.YVMKUSD] || BigInt(0), 10n**18n).toString(), bmath.mul(prices?.[env.YPRISMA] || BigInt(0), 10n**18n).toString()] },
+      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, 
+        abi: abis.Utilities, functionName: 'getUserProjectedApr', 
+        args: [
+          account.address || zeroAddress, 
+          parseUnits((prices?.[env.YPRISMA] ?? 0).toString(), 18).toString(),
+          parseUnits((prices?.[env.YVMKUSD] ?? 0).toString(), 18).toString()
+        ] 
+      },
+
       // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, bmath.mul(prices?.[env.YPRISMA], 10n**18n), bmath.mul(prices?.[env.MKUSD], 10n**18n)] },
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'projectedRewardAmount' },
       { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserProjectedBoostMultiplier', args: [account.address || zeroAddress] },
