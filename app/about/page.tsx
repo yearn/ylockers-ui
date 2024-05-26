@@ -1,6 +1,7 @@
 import Header, { headerItems } from "../components/Header";
 import Link from "next/link";
 import Background from "../components/Background";
+import env from "@/lib/env";
 
 export default function Home() {
   return (
@@ -117,8 +118,8 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">yvyPRISMA</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x10537D7bD661C9c34F547b38EC662D6FD482Ae95">
-                      <dd className="font-mono">0x10537D7bD661C9c34F547b38EC662D6FD482Ae95</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.YPRISMA_STRATEGY}`}>
+                      <dd className="font-mono">{env.YPRISMA_STRATEGY}</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
