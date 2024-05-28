@@ -135,9 +135,9 @@ export default function Home() {
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">APR </span>
                       <span className="w-7/12 font-bold flex items-end md:items-center md:justify-end space-x-2">
-                        <span>{data.utilities && bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
+                        <span>1x</span>
                         <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
-                        <span>{data.utilities && bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
+                        <span>2.5x</span>
                       </span>
                     </div>
                     {/* <div className="flex justify-between">
