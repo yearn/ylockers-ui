@@ -1,5 +1,6 @@
 "use client";
 
+import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
 import InputBox from "../../components/InputBox";
@@ -43,8 +44,8 @@ export default function Home() {
   const { openAccountModal } = useAccountModal();
   const { data } = useData()
 
-  const { data: yprismaVault } = useVault(env.YVMKUSD)
-  const vaultAPR:any = fPercent(yprismaVault?.apr?.netAPR)
+  const { data: yprismaVault } = useVault(env.YPRISMA_STRATEGY)
+  const vaultApr: number = z.number({ coerce: true }).parse(yprismaVault?.apr?.forwardAPR.netAPR ?? 0)
 
   const tab = useTab();
 
@@ -81,7 +82,10 @@ export default function Home() {
               <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</div></div>
             </div></Link>
             <Link href="/app/deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{isNaN(yprismaVault?.apr?.netAPR) || yprismaVault?.apr?.netAPR === 0 ? <span title="APR will show when migration period ends after first week.">🌈✨%</span> : vaultAPR}</div></div>
+              <div className="flex justify-between items-center text-lg pl-4">
+                EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>
+                  {vaultApr > 0 ? fPercent(vaultApr) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}
+              </div></div>
             </div></Link>
           </div>
           <div className="flex flex-col lg:flex-row justify-center ">
@@ -153,7 +157,8 @@ export default function Home() {
               ) :(
                 <>
                   <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APR</span>
-                  <span className="text-light-blue text-6xl font-bold mb-[26px]">{isNaN(yprismaVault?.apr?.netAPR) || yprismaVault?.apr?.netAPR === 0 ? <span title="APR will show when migration period ends after first week.">🌈✨%</span> : vaultAPR}</span>
+                  <span className="text-light-blue text-6xl font-bold mb-[26px]">
+                    {(vaultApr > 0) ? fPercent(vaultApr) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <span className="font-semibold pb-4 text-lg">MY DEPOSITS</span>
                     <div className="flex justify-between">
@@ -478,8 +483,8 @@ const TableComponent = (props: any) => {
         if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
         if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
       } else if (sortColumn === 'histApr') {
-        const aprA = a.apr.netAPR;
-        const aprB = b.apr.netAPR;
+        const aprA = a.apr.netAPR ?? a.apr.points.weekAgo ?? a.apr.points.monthAgo;
+        const aprB = b.apr.netAPR ?? b.apr.points.weekAgo ?? b.apr.points.monthAgo;
         if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
         if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
       } else if (sortColumn === 'available') {
@@ -591,7 +596,7 @@ const TableComponent = (props: any) => {
                 <tr onClick={() => window.open(`https://yearn.fi/vaults/1/${item.address}`, '_blank')} key={index} className="hover:bg-blue">
                   <td className="text-sm md:text-base py-2 cursor-pointer px-4 md:pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
                   <td className="text-base font-mono py-2 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">{(((item.apr.netAPR || item.apr.points.weekAgo || item.apr.points.monthAgo) ?? 0) * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
                   <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
                     {available ? (
                       <>
