@@ -46,6 +46,7 @@ export default function Home() {
 
   const { data: yprismaVault } = useVault(env.YPRISMA_STRATEGY)
   const vaultApr: number = z.number({ coerce: true }).parse(yprismaVault?.apr?.forwardAPR.netAPR ?? 0)
+  const vaultApy: number = (1 + (vaultApr / 52)) ** 52 - 1;
 
   const tab = useTab();
 
@@ -84,7 +85,7 @@ export default function Home() {
             <Link href="/app/deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
               <div className="flex justify-between items-center text-lg pl-4">
                 EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>
-                  {vaultApr > 0 ? fPercent(vaultApr) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}
+                  {vaultApy > 0 ? fPercent(vaultApy) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}
               </div></div>
             </div></Link>
           </div>
@@ -156,9 +157,9 @@ export default function Home() {
                 </>
               ) :(
                 <>
-                  <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APR</span>
+                  <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APY</span>
                   <span className="text-light-blue text-6xl font-bold mb-[26px]">
-                    {(vaultApr > 0) ? fPercent(vaultApr) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
+                    {(vaultApy > 0) ? fPercent(vaultApy) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <span className="font-semibold pb-4 text-lg">MY DEPOSITS</span>
                     <div className="flex justify-between">
@@ -221,9 +222,9 @@ function TabContent(props: { leftActive: any; account: any }) {
         {tab === 'claim' && "Stake yPRISMA"}
         {tab === 'get' && "Stake yPRISMA"}
         {tab === 'learn_more_stake' && "Stake yPRISMA"}
-        {tab === 'deposit' && "Auto-compound yPRISMA"}
-        {tab === 'withdraw' && "Auto-compound yPRISMA"}
-        {tab === 'learn_more_deposit' && "Auto-compound yPRISMA"}
+        {tab === 'deposit' && "Auto-Compound yPRISMA"}
+        {tab === 'withdraw' && "Auto-Compound yPRISMA"}
+        {tab === 'learn_more_deposit' && "Auto-Compound yPRISMA"}
         
       </h1>
       {props.leftActive ? (
