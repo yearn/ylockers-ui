@@ -165,7 +165,7 @@ export default function Home() {
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">yPRISMA Deposited</span>
                       <span className="font-bold">{data.strategy.balance
-                        ? bmath.div(data.strategy.balance, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                        ? (bmath.div(data.strategy.balance, 10n**18n) * bmath.div(data.strategy.pricePerShare, 10n**18n)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                         : '-'
                       }
                       </span>
@@ -174,7 +174,7 @@ export default function Home() {
                       <span className="font-thin opacity-70 mb-4">USD Value</span>
                       <span className="font-bold">
                         ${data.strategy.balance && prices[env.YPRISMA]
-                          ? (Number(bmath.div(data.strategy.balance, 10n ** 18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                          ? (Number(bmath.div(data.strategy.balance, 10n**18n) * bmath.div(data.strategy.pricePerShare, 10n**18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                           : '0.00'}
                       </span>
                     </div>
