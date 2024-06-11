@@ -33,6 +33,17 @@ import env from '@/lib/env'
 import Background from "../../components/Background";
 import A from "@/app/components/A";
 
+function isVersionGte(version: string, compareVersion: string) {
+    const versionParts = version.split('.').map(Number);
+    const compareVersionParts = compareVersion.split('.').map(Number);
+    for (let i = 0; i < Math.max(versionParts.length, compareVersionParts.length); i++) {
+        const v = versionParts[i] || 0;
+        const cv = compareVersionParts[i] || 0;
+        if (v > cv) return true;
+        if (v < cv) return false;
+    }
+    return true; 
+}
 
 function useTab() {
   const params = useParams()
@@ -594,7 +605,7 @@ const TableComponent = (props: any) => {
               const holdings = getHoldings(item);
               const available = getAvailable(item);
               return (
-                <tr onClick={() => window.open(`https://yearn.fi/vaults/1/${item.address}`, '_blank')} key={index} className="hover:bg-blue">
+                <tr onClick={() => window.open(`https://yearn.fi/${isVersionGte(item.version, "3.0.0") ? "v3/1" : "vaults/1"}/${item.address}`, '_blank')} key={item.address} className="hover:bg-blue">
                   <td className="text-sm md:text-base py-2 cursor-pointer px-4 md:pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
                   <td className="text-base font-mono py-2 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
                   <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">{(((item.apr.netAPR || item.apr.points.weekAgo || item.apr.points.monthAgo) ?? 0) * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
