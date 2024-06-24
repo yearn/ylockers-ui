@@ -1,28 +1,48 @@
-# yLockers Interface
+# yLockers Frontend Monorepo
 
-## Live URL
+## Live
 
-- yPRISMA: https://ylockers-ui.vercel.app
+- yPrisma, https://yprisma.yearn.fi
+
+- yCrv, https://ycrv.yearn.fi
 
 ## About
 
 - https://docs.yearn.finance/getting-started/products/ylockers/overview
 
-## Development
+## LFG
+
+First install bun, https://bun.sh/docs/installation
 
 ```bash
 git clone git@github.com:MarcoWorms/ylockers-ui.git
 
 cd ylockers-ui
 
-npm i
+cp .env.example .env
 
-npm run dev
+# configure .env
+
+bun i
+
+bun dev:{assetName}
+```
+
+## How to add a new locker frontend
+
+```bash
+cd packages
+bunx create-next-app@14.1.3 {assetName}
+cd {assetName}
+bun add {TODO}
+cd ..
+# add dev:{assetName} script to packages.json
+bun dev:{assetName}
 ```
 
 ## Deployment
 
-Push to `main` branch to deploy a new version of the live URL. Pull requests have independent preview links created when open.
+Push to `main` branch to deploy a new version. Pull requests have independent preview links created when open.
 
 ## Support
 
