@@ -30,15 +30,21 @@ bun dev:{assetName}
 
 ## How to add a new locker frontend
 
+
+### setup
 ```bash
-cd packages
-bunx create-next-app@14.1.3 {assetName}
+bunx create-next-app@14.1.3 packages/{assetName}
 cd {assetName}
 bun add {TODO}
 cd ..
 # add dev:{assetName} script to packages.json
 bun dev:{assetName}
 ```
+{maybe les write a copy paste script for this instead}
+
+### packages/lib integration
+- Add `"lib": "0.1.0"` to the new project's package.json dependencies.
+- Add `../lib/components/**/*.{js,ts,jsx,tsx,mdx}` to the `content` array in the project's `tailwind.config.js`.
 
 ## Deployment
 
