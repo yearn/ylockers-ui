@@ -1,4 +1,8 @@
 import type { Config } from "tailwindcss";
+import libConfig from "lib/tailwind.config";
+import { deepMerge } from "lib/tools/object";
+import colors from 'tailwindcss/colors'
+import Theme from 'tailwindcss/defaultTheme'
 
 const config: Config = {
   content: [
@@ -20,6 +24,9 @@ const config: Config = {
         mono: ['var(--font-aeonik-mono)'],
       },
       colors: {
+        one: colors.blue,
+        two: colors.red,
+        three: colors.yellow,
         'dark-black': '#000107',
         'dark-blue': '#000A3D',
         'white': '#FFFFFF',
@@ -39,6 +46,9 @@ const config: Config = {
         'tab-inactive': 'rgba(255,255,255,0.2)',
         'tab-inactive-inner': 'rgba(255,255,255,0.3)'
       },
+      borderRadius: {
+        one: Theme.borderRadius.xl
+      },
       boxShadow: {
         'lg': '0 -40px 80px 80px rgba(0,0,0,0.9)',
       },
@@ -52,4 +62,7 @@ const config: Config = {
   },
   plugins: [],
 };
+
+config.theme = deepMerge(libConfig.theme, config.theme);
+
 export default config;
