@@ -4,8 +4,8 @@
   "private": true,
   "workspaces": ["packages/*"],
   "scripts": {
-    "dev:prisma": "cd packages/prisma && next dev",
-    "dev:crv": "cd packages/crv && next dev",
+    "dev:prisma": "cd packages/prisma && NEXT_TELEMETRY_DISABLED=1 next dev",
+    "dev:crv": "cd packages/crv && NEXT_TELEMETRY_DISABLED=1 next dev",
     "clean": "rm -R node_modules && rm -R packages/*/.next"
   }
 }
