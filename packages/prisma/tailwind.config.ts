@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
-import libConfig from "lib/tailwind.config";
-import { deepMerge } from "lib/tools/object";
+import libConfig from "--lib/tailwind.config";
+import { deepMerge } from "--lib/tools/object";
 import colors from 'tailwindcss/colors'
 import Theme from 'tailwindcss/defaultTheme'
 
@@ -9,7 +9,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "../lib/components/**/*.{js,ts,jsx,tsx,mdx}"
+    "../--lib/components/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   safelist: [
     'bg-light-blue/60', 'border-light-blue',

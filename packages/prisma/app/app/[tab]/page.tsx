@@ -7,7 +7,7 @@ import InputBox from "../../components/InputBox";
 import Header, { headerItems } from "../../components/Header";
 import { useParams } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
-import { useConnectModal, useAccountModal } from '@rainbow-me/rainbowkit';
+import { useConnectModal, useAccountModal } from '--heavy-deps/hooks/rainbowkit';
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";

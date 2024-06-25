@@ -3,26 +3,25 @@
 import {
   getDefaultConfig,
   RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { injectedWallet, frameWallet, metaMaskWallet, walletConnectWallet, rainbowWallet, coinbaseWallet, safeWallet } from '@rainbow-me/rainbowkit/wallets';
-import { http, WagmiProvider } from 'wagmi';
+} from '@rainbow-me/rainbowkit'
+import { injectedWallet, frameWallet, metaMaskWallet, walletConnectWallet, rainbowWallet, coinbaseWallet, safeWallet } from '@rainbow-me/rainbowkit/wallets'
+import { http, WagmiProvider } from 'wagmi'
 import {
   mainnet,
   localhost
-} from 'wagmi/chains';
+} from 'wagmi/chains'
 import {
   QueryClientProvider,
   QueryClient,
-} from "@tanstack/react-query";
-import env from '@/lib/env';
+} from '@tanstack/react-query'
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 // const newMainnet = Object.assign({}, mainnet, {
-//   "id": 6969,
-//   "rpcUrls": {
-//     "default": {
-//       "http": ["https://virtual.mainnet.rpc.tenderly.co/bb40feda-1904-4527-8de7-347b90c78112"]
+//   'id': 6969,
+//   'rpcUrls': {
+//     'default': {
+//       'http': ['https://virtual.mainnet.rpc.tenderly.co/bb40feda-1904-4527-8de7-347b90c78112']
 //     }
 //   }
 // })
@@ -47,13 +46,13 @@ const config = getDefaultConfig({
       safeWallet
     ]
   }],
-  ssr: true, // If your dApp uses server side rendering (SSR)
-});
+  ssr: true
+})
 
-export default function Provider ({
+export default function Providers ({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <WagmiProvider config={config}>
@@ -63,5 +62,5 @@ export default function Provider ({
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
-  );
+  )
 }

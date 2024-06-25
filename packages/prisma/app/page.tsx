@@ -7,7 +7,7 @@ import useData from "@/hooks/useData";
 import { fPercent } from "@/lib/format";
 import bmath from "@/lib/bmath";
 import Background from "./components/Background";
-import Ahoy from "lib/components/Ahoy";
+import Ahoy from "--lib/components/Ahoy";
 
 export default function Home() {
   const { data } = useData()
