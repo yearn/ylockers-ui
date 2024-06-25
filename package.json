@@ -6,6 +6,8 @@
   "scripts": {
     "dev:prisma": "cd packages/prisma && NEXT_TELEMETRY_DISABLED=1 next dev",
     "dev:crv": "cd packages/crv && NEXT_TELEMETRY_DISABLED=1 next dev",
+    "build:prisma": "cd packages/prisma && next build",
+    "build:crv": "cd packages/crv && next build",
     "clean": "rm -R node_modules && rm -R packages/*/.next"
   }
 }
