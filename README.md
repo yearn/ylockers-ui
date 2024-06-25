@@ -47,3 +47,8 @@ Push to `main` branch to deploy a new version. Pull requests have independent pr
 ## Support
 
 - Reach https://discord.gg/yearn at #support channel if you have any issues using the live URL.
+
+## Dev notes
+
+### wagmi, viem, react-query
+Because wagmi, viem, and react-query change often, the versions are frozen. Keep these versions in sync across all packages.
