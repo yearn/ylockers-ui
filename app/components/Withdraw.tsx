@@ -12,7 +12,7 @@ export default function Withdraw({ className }: { className?: string }) {
     token: data.strategy,
     needsApproval: false,
     parameters: {
-      address: env.YPRISMA_STRATEGY,
+      address: env.YTOKEN_VAULT,
       abi: abis.Strategy,
       functionName: 'redeem',
       args: (amount: bigint) => [amount, data.account, data.account]

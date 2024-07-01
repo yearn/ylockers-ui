@@ -80,7 +80,7 @@ export default function useData() {
   const account = useAccount()
 
   const { data: prices, mutate: refetchPrices, isLoading: pricesIsLoading, error: pricesError } = usePrices([
-    env.PRISMA, env.YPRISMA, env.YVMKUSD, env.MKUSD
+    env.PUBLIC_BASE_TOKEN, env.YTOKEN, env.STABLE_TOKEN_VAULT, env.STABLE_TOKEN
   ])
 
   const config = useConfig()
@@ -88,69 +88,69 @@ export default function useData() {
 
   const multicall = useSuspenseQuery(
     readContractsQueryOptions(config, { contracts: [
-      { address: env.PRISMA, abi: erc20Abi, functionName: 'symbol' },
-      { address: env.PRISMA, abi: erc20Abi, functionName: 'decimals' },
-      { address: env.PRISMA, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
-      { address: env.PRISMA, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YPRISMA] },
+      { address: env.PUBLIC_BASE_TOKEN, abi: erc20Abi, functionName: 'symbol' },
+      { address: env.PUBLIC_BASE_TOKEN, abi: erc20Abi, functionName: 'decimals' },
+      { address: env.PUBLIC_BASE_TOKEN, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
+      { address: env.PUBLIC_BASE_TOKEN, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YTOKEN] },
 
-      { address: env.YPRISMA, abi: erc20Abi, functionName: 'symbol' },
-      { address: env.YPRISMA, abi: erc20Abi, functionName: 'decimals' },
-      { address: env.YPRISMA, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
-      { address: env.YPRISMA, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YPRISMA_BOOSTED_STAKER] },
-      { address: env.YPRISMA, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YPRISMA_STRATEGY] },
+      { address: env.YTOKEN, abi: erc20Abi, functionName: 'symbol' },
+      { address: env.YTOKEN, abi: erc20Abi, functionName: 'decimals' },
+      { address: env.YTOKEN, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
+      { address: env.YTOKEN, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.BOOSTED_STAKER] },
+      { address: env.YTOKEN, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YTOKEN_VAULT] },
 
-      { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'decimals' },
-      { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'balanceOf', args: [account.address || zeroAddress] },
-      { address: env.YPRISMA_BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'totalSupply' },
+      { address: env.BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'decimals' },
+      { address: env.BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'balanceOf', args: [account.address || zeroAddress] },
+      { address: env.BOOSTED_STAKER, abi: abis.YearnBoostedStaker, functionName: 'totalSupply' },
 
-      { address: env.YVMKUSD, abi: erc20Abi, functionName: 'decimals' },
-      { address: env.YPRISMA_REWARDS_DISTRIBUTOR, abi: abis.SingleTokenRewardDistributor, functionName: 'getClaimable', args: [account.address || zeroAddress] },
+      { address: env.STABLE_TOKEN_VAULT, abi: erc20Abi, functionName: 'decimals' },
+      { address: env.REWARDS_DISTRIBUTOR, abi: abis.SingleTokenRewardDistributor, functionName: 'getClaimable', args: [account.address || zeroAddress] },
 
-      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'symbol' },
-      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'decimals' },
-      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'balanceOf', args: [account.address || zeroAddress] },
+      { address: env.YTOKEN_VAULT, abi: abis.Strategy, functionName: 'symbol' },
+      { address: env.YTOKEN_VAULT, abi: abis.Strategy, functionName: 'decimals' },
+      { address: env.YTOKEN_VAULT, abi: abis.Strategy, functionName: 'balanceOf', args: [account.address || zeroAddress] },
 
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserActiveBoostMultiplier', args: [account.address || zeroAddress] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalActiveBoostMultiplier' },
+      { address: env.BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserActiveBoostMultiplier', args: [account.address || zeroAddress] },
+      { address: env.BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getGlobalActiveBoostMultiplier' },
 
       // @ts-ignore
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES,
+      { address: env.BOOSTED_STAKER_UTILITIES,
         abi: abis.Utilities, functionName: 'getGlobalActiveApr',
         args: [
-          parseUnits((prices?.[env.YPRISMA] ?? 0).toString(), 18).toString(),
-          parseUnits((prices?.[env.YVMKUSD] ?? 0).toString(), 18).toString()
+          parseUnits((prices?.[env.YTOKEN] ?? 0).toString(), 18).toString(),
+          parseUnits((prices?.[env.STABLE_TOKEN_VAULT] ?? 0).toString(), 18).toString()
         ]
       },
 
       // @ts-ignore
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, 
+      { address: env.BOOSTED_STAKER_UTILITIES, 
         abi: abis.Utilities, functionName: 'getGlobalMinMaxActiveApr', 
         args: [
-          parseUnits((prices?.[env.YPRISMA] ?? 0).toString(), 18).toString(),
-          parseUnits((prices?.[env.YVMKUSD] ?? 0).toString(), 18).toString()
+          parseUnits((prices?.[env.YTOKEN] ?? 0).toString(), 18).toString(),
+          parseUnits((prices?.[env.STABLE_TOKEN_VAULT] ?? 0).toString(), 18).toString()
         ]
       },
 
       // @ts-ignore
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, 
+      { address: env.BOOSTED_STAKER_UTILITIES, 
         abi: abis.Utilities, functionName: 'getUserActiveApr', 
         args: [
           account.address || zeroAddress, 
-          parseUnits((prices?.[env.YPRISMA] ?? 0).toString(), 18).toString(),
-          parseUnits((prices?.[env.YVMKUSD] ?? 0).toString(), 18).toString()
+          parseUnits((prices?.[env.YTOKEN] ?? 0).toString(), 18).toString(),
+          parseUnits((prices?.[env.STABLE_TOKEN_VAULT] ?? 0).toString(), 18).toString()
         ] 
       },
 
-      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, bmath.mul(prices?.[env.YPRISMA], 10n**18n), bmath.mul(prices?.[env.MKUSD], 10n**18n)] },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'activeRewardAmount' },
-      { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserProjectedBoostMultiplier', args: [account.address || zeroAddress] },
-      { address: env.YPRISMA_OLD_STAKER, abi: abis.OldStaker, functionName: 'balanceOf', args: [account.address || zeroAddress]  },
-      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmountAt', args: [0] },
-      // { address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getWeek' },
+      // { address: env.BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserAprAt', args: [account.address || zeroAddress, 0, bmath.mul(prices?.[env.YTOKEN], 10n**18n), bmath.mul(prices?.[env.STABLE_TOKEN], 10n**18n)] },
+      { address: env.BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'activeRewardAmount' },
+      { address: env.BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getUserProjectedBoostMultiplier', args: [account.address || zeroAddress] },
+      { address: env.OLD_STAKER, abi: abis.OldStaker, functionName: 'balanceOf', args: [account.address || zeroAddress]  },
+      // { address: env.BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'weeklyRewardAmountAt', args: [0] },
+      // { address: env.BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, functionName: 'getWeek' },
 
-      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'totalAssets' },
-      { address: env.YVMKUSD, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
-      { address: env.YPRISMA_STRATEGY, abi: abis.Strategy, functionName: 'pricePerShare' },
+      { address: env.YTOKEN_VAULT, abi: abis.Strategy, functionName: 'totalAssets' },
+      { address: env.STABLE_TOKEN_VAULT, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
+      { address: env.YTOKEN_VAULT, abi: abis.Strategy, functionName: 'pricePerShare' },
 
     ], multicallAddress })
   )
@@ -178,28 +178,28 @@ export default function useData() {
     account: account.address || zeroAddress,
 
     asset: {
-      address: env.PRISMA,
+      address: env.PUBLIC_BASE_TOKEN,
       symbol: multicall.data?.[0]?.result,
       decimals: multicall.data?.[1]?.result,
       balance: multicall.data?.[2]?.result,
       allowances: [
-        { address: env.YPRISMA, amount: multicall.data?.[3]?.result }
+        { address: env.YTOKEN, amount: multicall.data?.[3]?.result }
       ]
     },
 
     locker: {
-      address: env.YPRISMA,
+      address: env.YTOKEN,
       symbol: multicall.data?.[4]?.result,
       decimals: multicall.data?.[5]?.result,
       balance: multicall.data?.[6]?.result,
       allowances: [
-        { address: env.YPRISMA_BOOSTED_STAKER, amount: multicall.data?.[7]?.result },
-        { address: env.YPRISMA_STRATEGY, amount: multicall.data?.[8]?.result }
+        { address: env.BOOSTED_STAKER, amount: multicall.data?.[7]?.result },
+        { address: env.YTOKEN_VAULT, amount: multicall.data?.[8]?.result }
       ]
     },
 
     staker: {
-      address: env.YPRISMA_BOOSTED_STAKER,
+      address: env.BOOSTED_STAKER,
       symbol: 'Staked yPRISMA',
       decimals: multicall.data?.[9]?.result,
       balance: multicall.data?.[10]?.result,
@@ -207,24 +207,24 @@ export default function useData() {
     },
 
     rewards: {
-      address: env.YPRISMA_REWARDS_DISTRIBUTOR,
+      address: env.REWARDS_DISTRIBUTOR,
       decimals: multicall.data?.[12]?.result,
       claimable: multicall.data?.[13]?.result,
       claimableUsd: priced(
         multicall.data?.[13]?.result!,
         multicall.data?.[12]?.result!,
-        prices[env.YVMKUSD]
+        prices[env.STABLE_TOKEN_VAULT]
       ),
       vaultBalance: multicall.data?.[26]?.result,
       vaultBalanceUsd: priced(
         multicall.data?.[26]?.result!,
         multicall.data?.[12]?.result!,
-        prices[env.YVMKUSD]
+        prices[env.STABLE_TOKEN_VAULT]
       )
     },
 
     strategy: {
-      address: env.YPRISMA_STRATEGY,
+      address: env.YTOKEN_VAULT,
       symbol: multicall.data?.[14]?.result,
       decimals: multicall.data?.[15]?.result,
       balance: multicall.data?.[16]?.result,

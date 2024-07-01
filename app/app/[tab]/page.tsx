@@ -44,7 +44,7 @@ export default function Home() {
   const { openAccountModal } = useAccountModal();
   const { data } = useData()
 
-  const { data: yprismaVault } = useVault(env.YPRISMA_STRATEGY)
+  const { data: yprismaVault } = useVault(env.YTOKEN_VAULT)
   const vaultApr: number = z.number({ coerce: true }).parse(yprismaVault?.apr?.forwardAPR.netAPR ?? 0)
   const vaultApy: number = (1 + (vaultApr / 52)) ** 52 - 1;
 
@@ -55,11 +55,11 @@ export default function Home() {
   const leftActive = (tab === "stake" || tab === "unstake" || tab === "claim" || tab === "get" || tab === "learn_more_stake")
   const rightActive = !leftActive
 
-  const { data: prices } = usePrices([env.YPRISMA]);
+  const { data: prices } = usePrices([env.YTOKEN]);
 
   const earned = useMemo(() => {
-    if (data.strategy.balance && prices[env.YPRISMA]) {
-      return priced(data.strategy.balance, data.strategy.decimals, prices[env.YPRISMA]);
+    if (data.strategy.balance && prices[env.YTOKEN]) {
+      return priced(data.strategy.balance, data.strategy.decimals, prices[env.YTOKEN]);
     }
     return 0;
   }, [data.strategy.balance, data.strategy.decimals, prices]);
@@ -173,8 +173,8 @@ export default function Home() {
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70 mb-4">USD Value</span>
                       <span className="font-bold">
-                        ${data.strategy.balance && prices[env.YPRISMA]
-                          ? (Number(bmath.div(data.strategy.balance, 10n**18n) * bmath.div(data.strategy.pricePerShare, 10n**18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                        ${data.strategy.balance && prices[env.YTOKEN]
+                          ? (Number(bmath.div(data.strategy.balance, 10n**18n) * bmath.div(data.strategy.pricePerShare, 10n**18n)) * prices[env.YTOKEN]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                           : '0.00'}
                       </span>
                     </div>
@@ -190,8 +190,8 @@ export default function Home() {
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70">USD Value</span>
                       <span className="font-bold">
-                        ${data.strategy.totalAssets && prices[env.YPRISMA]
-                          ? (Number(bmath.div(data.strategy.totalAssets, 10n ** 18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                        ${data.strategy.totalAssets && prices[env.YTOKEN]
+                          ? (Number(bmath.div(data.strategy.totalAssets, 10n ** 18n)) * prices[env.YTOKEN]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                           : '-'}
                       </span>
                     </div>
@@ -299,7 +299,7 @@ function TabContent(props: { leftActive: any; account: any }) {
               <span className="font-semibold">DESCRIPTION</span>
               <p className="font-thin opacity-70">
                 {`Claim your mkUSD rewards. We already deposited your mkUSD into our auto-compounding mkUSD vault (`}
-                  <A target="_blank" rel="noreferrer" className="underline" href={`https://yearn.fi/v3/1/${env.YVMKUSD}`}>yvmkUSD-A</A>
+                  <A target="_blank" rel="noreferrer" className="underline" href={`https://yearn.fi/v3/1/${env.STABLE_TOKEN_VAULT}`}>yvmkUSD-A</A>
                 {`).`}
               </p>
               <p className="font-thin opacity-70">
@@ -307,7 +307,7 @@ function TabContent(props: { leftActive: any; account: any }) {
               </p>
               <div>
                 <div className="font-thin opacity-70">Your yvmkUSD-A balance</div>
-                <A className="flex items-center gap-2 font-mono" href={`https://yearn.fi/v3/1/${env.YVMKUSD}`} target="_blank" rel="noreferrer">
+                <A className="flex items-center gap-2 font-mono" href={`https://yearn.fi/v3/1/${env.STABLE_TOKEN_VAULT}`} target="_blank" rel="noreferrer">
                   <PiVaultLight />
                   <Tokens amount={data.rewards.vaultBalance} decimals={data.rewards.decimals} />
                   ({fUSD(data.rewards.vaultBalanceUsd)})

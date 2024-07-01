@@ -12,7 +12,7 @@ export default function WithdrawAllFromOldStaker({ className }: { className?: st
     token: { balance: data.utilities.oldStakerBalance, symbol: 'Old Staked yPrisma', decimals: 18, allowances: [], address: '0xE3EE395C9067dD15C492Ca950B101a7d6c85b5Fc' },
     needsApproval: false,
     parameters: {
-      address: env.YPRISMA_OLD_STAKER,
+      address: env.OLD_STAKER,
       abi: abis.OldStaker,
       functionName: 'exit',
       args: () => [],

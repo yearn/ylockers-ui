@@ -12,7 +12,7 @@ export default function Unstake({ className }: { className?: string }) {
     token: TokenSchema.parse(data.staker),
     needsApproval: false,
     parameters: {
-      address: env.YPRISMA_BOOSTED_STAKER,
+      address: env.BOOSTED_STAKER,
       abi: abis.YearnBoostedStaker,
       functionName: 'unstake',
       args: (amount: bigint) => [amount, data.account]

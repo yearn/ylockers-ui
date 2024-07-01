@@ -118,8 +118,8 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">yvyPRISMA</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.YPRISMA_STRATEGY}`}>
-                      <dd className="font-mono">{env.YPRISMA_STRATEGY}</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.YTOKEN_VAULT}`}>
+                      <dd className="font-mono">{env.YTOKEN_VAULT}</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
