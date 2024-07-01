@@ -8,6 +8,6 @@ export default function ForExample() {
       {/* <div className="relative w-96 h-64 bg-dark-blue rounded-lg rainbow">
       </div> */}
     </div>
-    {/* <Erc20 address={env.PUBLIC_BASE_TOKEN} className="p-24 border border-charge-red text-charge-red rounded-lg" /> */}
+    {/* <Erc20 address={env.BASE_TOKEN} className="p-24 border border-charge-red text-charge-red rounded-lg" /> */}
   </div>
 }

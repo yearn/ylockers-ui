@@ -80,7 +80,7 @@ export default function useData() {
   const account = useAccount()
 
   const { data: prices, mutate: refetchPrices, isLoading: pricesIsLoading, error: pricesError } = usePrices([
-    env.PUBLIC_BASE_TOKEN, env.YTOKEN, env.STABLE_TOKEN_VAULT, env.STABLE_TOKEN
+    env.BASE_TOKEN, env.YTOKEN, env.STABLE_TOKEN_VAULT, env.STABLE_TOKEN
   ])
 
   const config = useConfig()
@@ -88,10 +88,10 @@ export default function useData() {
 
   const multicall = useSuspenseQuery(
     readContractsQueryOptions(config, { contracts: [
-      { address: env.PUBLIC_BASE_TOKEN, abi: erc20Abi, functionName: 'symbol' },
-      { address: env.PUBLIC_BASE_TOKEN, abi: erc20Abi, functionName: 'decimals' },
-      { address: env.PUBLIC_BASE_TOKEN, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
-      { address: env.PUBLIC_BASE_TOKEN, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YTOKEN] },
+      { address: env.BASE_TOKEN, abi: erc20Abi, functionName: 'symbol' },
+      { address: env.BASE_TOKEN, abi: erc20Abi, functionName: 'decimals' },
+      { address: env.BASE_TOKEN, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
+      { address: env.BASE_TOKEN, abi: erc20Abi, functionName: 'allowance', args: [account.address || zeroAddress, env.YTOKEN] },
 
       { address: env.YTOKEN, abi: erc20Abi, functionName: 'symbol' },
       { address: env.YTOKEN, abi: erc20Abi, functionName: 'decimals' },
@@ -178,7 +178,7 @@ export default function useData() {
     account: account.address || zeroAddress,
 
     asset: {
-      address: env.PUBLIC_BASE_TOKEN,
+      address: env.BASE_TOKEN,
       symbol: multicall.data?.[0]?.result,
       decimals: multicall.data?.[1]?.result,
       balance: multicall.data?.[2]?.result,
