@@ -12,10 +12,10 @@
 
 ## LFG
 
-First install bun, https://bun.sh/docs/installation
+Install bun, https://bun.sh/docs/installation
 
 ```bash
-git clone git@github.com:MarcoWorms/ylockers-ui.git
+git clone git@github.com:yearn/ylockers-ui.git
 
 cd ylockers-ui
 
@@ -58,4 +58,4 @@ Push to `main` branch to deploy a new version. Pull requests have independent pr
 ## Dev notes
 
 ### wagmi, viem, react-query
-Because wagmi, viem, and react-query change often, the versions are frozen. Keep these versions in sync across all packages.
+Because wagmi, viem, and react-query change often, the version numbers are fixed in package.json. It's great to keep these dependencies upgraded, but make sure versions are the same across all packages.
