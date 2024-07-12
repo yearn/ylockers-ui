@@ -34,7 +34,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
 export function useVaultContext() {
   const context = useContext(VaultContext);
   if (context === undefined) {
-    throw new Error('useVault must be used within a VaultProvider');
+    throw new Error('useVaultContext must be used within a VaultProvider');
   }
   return context;
 }
