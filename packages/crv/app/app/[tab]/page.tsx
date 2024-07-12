@@ -12,7 +12,8 @@ import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import useData from "@/hooks/useData";
-import useVault from "@/hooks/useVault";
+import { useVaultContext } from '../../contexts/VaultContext';
+import useVault from '@/hooks/useVault';
 import Tokens from "../../components/Tokens";
 
 import ClaimAll from "../../components/ClaimAll";
@@ -392,24 +393,10 @@ function TabContent(props: { leftActive: any; account: any }) {
 }
 
 const TableComponent = (props: any) => {
+  const { vaultData, isLoading, error } = useVaultContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortColumn, setSortColumn] = useState('estApr');
   const [sortDirection, setSortDirection] = useState('desc');
-  const [vaultData, setVaultData] = useState([]);
-
-  useEffect(() => {
-    const fetchVaultData = async () => {
-      try {
-        const response = await fetch('https://ydaemon.yearn.finance/1/vaults/all');
-        const data = await response.json();
-        setVaultData(data);
-      } catch (error) {
-        console.error('Error fetching vault data:', error);
-      }
-    };
-
-    fetchVaultData();
-  }, []);
 
   const handleSort = (column: any) => {
     if (column === sortColumn) {
@@ -420,12 +407,15 @@ const TableComponent = (props: any) => {
     }
   };
 
-  const filteredVaultData = vaultData.filter((vault:any) =>
-    vault.category === "Curve"
-    && vault.endorsed
-    && !vault.details.isRetired
-    && !vault.details.isHidden
-  );
+  const filteredVaultData = useMemo(() => {
+    if (!vaultData) return [];
+    return vaultData.filter((vault:any) =>
+      vault.category === "Curve"
+      && vault.endorsed
+      && !vault.details.isRetired
+      && !vault.details.isHidden
+    );
+  }, [vaultData]);
 
   const contractReads = useContractReads({
     contracts: props.address ? filteredVaultData.flatMap((vault: any) => [
