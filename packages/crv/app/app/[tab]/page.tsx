@@ -456,11 +456,9 @@ const TableComponent = (props: any) => {
       /* @ts-ignore */
       const index = filteredVaultData.indexOf(vault);
       if (contractReads.data && contractReads.data[index * 2 + 1]) {
-        const tokenBalance = contractReads.data[index * 2 + 1].result;
+        const tokenBalance = BigInt(contractReads.data[index * 2 + 1].result ?? 0n);
         return {
-          /* @ts-ignore */
           balance: Number(formatUnits(tokenBalance, vault.token.decimals)),
-          /* @ts-ignore */
           usdValue: Number(formatUnits(tokenBalance, vault.token.decimals)) * vault.tvl.price,
         };
       }
@@ -637,7 +635,7 @@ const TableComponent = (props: any) => {
             })}
           </tbody>
         </table>
-        {vaultData.length === 0 && <span className="p-4 md:p-8">Loading...</span>}
+        {!(vaultData?.length > 0) && <span className="p-4 md:p-8">Loading...</span>}
       </div>
     </div>
   );

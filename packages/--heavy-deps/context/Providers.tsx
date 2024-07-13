@@ -14,6 +14,7 @@ import {
   QueryClientProvider,
   QueryClient,
 } from '@tanstack/react-query'
+import { VaultProvider } from './VaultContext'
 
 const queryClient = new QueryClient()
 
@@ -58,7 +59,9 @@ export default function Providers ({
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          {children}
+          <VaultProvider>
+            {children}
+          </VaultProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
