@@ -45,7 +45,7 @@ export default function RootLayout({
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <Providers>
-          {children}
+         {children}
         </Providers>
       </body>
     </html>

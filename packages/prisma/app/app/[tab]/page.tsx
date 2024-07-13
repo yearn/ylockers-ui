@@ -6,8 +6,9 @@ import Link from "next/link";
 import InputBox from "../../components/InputBox";
 import Header, { headerItems } from "../../components/Header";
 import { useParams } from 'next/navigation';
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { useConnectModal, useAccountModal } from '--heavy-deps/hooks/rainbowkit';
+import { useVaultContext } from "--heavy-deps/context/VaultContext";
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
@@ -397,26 +398,11 @@ function TabContent(props: { leftActive: any; account: any }) {
 }
 
 const TableComponent = (props: any) => {
+  const { vaultData, isLoading, error } = useVaultContext();
   const [searchTerm, setSearchTerm] = useState('');
   
   const [sortColumn, setSortColumn] = useState('estApr');
   const [sortDirection, setSortDirection] = useState('desc');
-
-  const [vaultData, setVaultData] = useState([]);
-
-  useEffect(() => {
-    const fetchVaultData = async () => {
-      try {
-        const response = await fetch('https://ydaemon.yearn.finance/1/vaults/all');
-        const data = await response.json();
-        setVaultData(data);
-      } catch (error) {
-        console.error('Error fetching vault data:', error);
-      }
-    };
-  
-    fetchVaultData();
-  }, []);
 
   const handleSort = (column: any) => {
     if (column === sortColumn) {
@@ -427,9 +413,9 @@ const TableComponent = (props: any) => {
     }
   };
   
-  const filteredVaultData = vaultData.filter((vault:any) =>
+  const filteredVaultData = useMemo(() => vaultData ? vaultData.filter((vault:any) =>
     vault.strategies.some((strategy:any) => strategy.name.toLowerCase().includes('prisma'))
-  );
+  ) : [], [vaultData]);
 
   const contractReads = useContractReads({
     contracts: props.address ? filteredVaultData.flatMap((vault: any) => [
@@ -453,11 +439,9 @@ const TableComponent = (props: any) => {
       /* @ts-ignore */
       const index = filteredVaultData.indexOf(vault);
       if (contractReads.data && contractReads.data[index * 2]) {
-        const vaultBalance = contractReads.data[index * 2].result;
+        const vaultBalance = BigInt(contractReads.data[index * 2].result ?? 0n);
         return {
-          /* @ts-ignore */
           balance: Number(formatUnits(vaultBalance, vault.decimals)),
-          /* @ts-ignore */
           usdValue: Number(formatUnits(vaultBalance, vault.decimals)) * vault.tvl.price,
         };
       }
@@ -642,7 +626,7 @@ const TableComponent = (props: any) => {
             })}
           </tbody>
         </table>
-        {vaultData.length === 0 && <span className="p-4 md:p-8">Loading...</span>}
+        {!(vaultData?.length > 0) && <span className="p-4 md:p-8">Loading...</span>}
       </div>
     </div>
   );
