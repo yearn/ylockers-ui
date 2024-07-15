@@ -14,29 +14,31 @@ import {
   QueryClientProvider,
   QueryClient,
 } from "@tanstack/react-query";
-import env from '@/lib/env';
 import { VaultProvider } from './VaultContext';
 
 
 const queryClient = new QueryClient();
 
-// const chain = mainnet
-const chain = Object.assign({}, mainnet, {
-  "id": 6969,
-  "rpcUrls": {
-    "default": {
-      "http": [
-        "https://virtual.mainnet.rpc.tenderly.co/e96d48c7-b7df-4ee3-8c02-da4fb68f9fcf"
-      ]
+const useTestnet = Boolean(process.env.NEXT_PUBLIC_USE_TESTNET ?? false)
+const testnetId = parseInt(process.env.NEXT_PUBLIC_TESTNET_ID ?? '0')
+const testnetRpc = process.env.NEXT_PUBLIC_TESTNET_RPC ?? ''
+const testnet = Object.assign({}, mainnet, {
+  'id': testnetId,
+  'rpcUrls': {
+    'default': {
+      'http': [testnetRpc]
     }
   }
 })
+
+const chain = useTestnet ? testnet : mainnet
+const rpc = useTestnet ? testnetRpc : process.env.NEXT_PUBLIC_RPC_1
 
 const config = getDefaultConfig({
   appName: 'yPrisma',
   projectId: '84801a4fb569adb34f184f543b6d1762',
   chains: [chain],
-  transports: { [chain.id]: http(process.env.NEXT_PUBLIC_RPC_1) },
+  transports: { [chain.id]: http(rpc) },
   wallets: [{
     groupName: 'Popular',
     wallets: [
