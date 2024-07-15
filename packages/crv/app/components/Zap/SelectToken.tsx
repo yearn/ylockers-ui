@@ -20,7 +20,7 @@ function Balance({
 
   if (balance.amount === 0n) return <></>
 
-  return <div className="flex flex-col items-end gap-2 text-xs text-primary-400">
+  return <div className="flex flex-col items-end gap-0 text-sm text-neutral-400">
     <div>{fTokens(balance.amount, balance.decimals)}</div>
     <div>{balance.price ? fUSD(priced(balance.amount, balance.decimals, balance.price)) : 'price na'}</div>
   </div>
@@ -56,11 +56,11 @@ export default function SelectToken({
     outputToken, setOutputToken, setOutputAmount
   ])
 
-  return <div className="px-4 py-6 flex flex-col gap-3 bg-primary-900 rounded-primary">
+  return <div className="px-4 py-6 flex flex-col gap-3 bg-input-bg rounded-primary">
     <div className="flex items-center justify-between">
-      <div className="text-sm text-primary-400">Select an {mode === 'in' ? 'input' : 'output'} token</div>
-      <div className="text-sm text-primary-400">
-        <Button onClick={onClose} className="px-2 py-1 text-xs">Close</Button>
+      <div className="text-sm text-neutral-400">Select an {mode === 'in' ? 'input' : 'output'} token</div>
+      <div className="text-sm">
+        <Button onClick={onClose} className="px-2 py-1 text-xs text-neutral-200">Close</Button>
       </div>
     </div>
     <ScrollArea className="w-full max-h-[16rem] overflow-auto">
@@ -70,11 +70,11 @@ export default function SelectToken({
         pl-4 pr-12 py-4
         flex items-center justify-between
         border border-transparent
-        hover:bg-primary-800 
+        hover:bg-darker-blue 
         rounded-primary cursor-pointer`}>
         <div className="flex items-center gap-4">
           <Image
-            className="rounded-full bg-primary-600"
+            className="rounded-full bg-lighter-blue"
             src={token.icon}
             alt={token.symbol}
             width={32}

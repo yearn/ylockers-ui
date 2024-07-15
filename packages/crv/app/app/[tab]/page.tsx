@@ -84,7 +84,7 @@ export default function Home() {
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
-        <section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0">
+        <section className="mt-32 md:mt-[5vh] sm:mx-4 lg:mx-0">
           <div className="w-full flex flex-wrap justify-center items-center mb-12 md:mb-8 space-y-4 md:space-x-8 md:space-y-0 flex-col md:flex-row">
             <Link href="/app/stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
               <div className="flex justify-between items-center text-lg pl-4">EARN crvUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</div></div>
@@ -326,14 +326,14 @@ function TabContent(props: { leftActive: any; account: any }) {
         )}
         {tab === 'get' && (
           <div className="flex">
-            <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
-              <span className="font-thin pb-1 text-md">Supercharge your yield with yCRV</span>
-              <div className="mt-4 flex flex-col space-y-4">
-                <p className="font-thin opacity-70">
-                  Zap any token within the yCRV ecosystem for any other. Maybe you want to zap for a higher yield, or maybe you just like zapping (it's ok, we don't judge).
-                </p>
-               </div>
-               <Zap />
+            <div className="flex flex-col gap-4 p-4 md:p-8 w-full md:w-2/3">
+              <span className="text-xl font-bold">Supercharge your yield with yCRV</span>
+              <p className="font-thin opacity-70">
+                Zap any token within the yCRV ecosystem for any other. Maybe you want to zap for a higher yield, or maybe you just like zapping.
+              </p>
+              <div className="mt-6 flex justify-center">
+                <Zap />
+              </div>
             </div>
           </div>
         )}

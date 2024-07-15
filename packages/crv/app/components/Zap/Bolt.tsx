@@ -12,13 +12,13 @@ export default function Bolt() {
   }, [theme])
 
   const fill = useMemo(() => {
-    if (theme === 'onit') return 'fill-primary-200'
-    return 'fill-primary-600'
+    if (theme === 'onit') return 'fill-neutral-200'
+    return 'fill-light-blue'
   }, [theme])
 
   return <div className={cn(`
     p-2 border-8 border-darker-blue
-    bg-primary-900 rounded-primary`, bg)}>
+    bg-input-bg rounded-primary`, bg)}>
     <BsFillLightningFill className={fill} />
   </div>
 }

@@ -16,7 +16,7 @@ function Layout() {
   const [selectTokenMode, setSelectTokenMode] = useState<'in' | 'out' | undefined>()
   const mounted = useMounted()
 
-  return <div className="w-full sm:w-[32rem] p-4 flex flex-col gap-1">
+  return <div className="w-full sm:w-[32rem] sm:p-4 flex flex-col gap-1">
 
     <div className="h-[22.5rem]">
       {selectTokenMode && <motion.div key={`select-token-${selectTokenMode}`}

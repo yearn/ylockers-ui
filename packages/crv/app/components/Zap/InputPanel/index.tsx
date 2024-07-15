@@ -25,7 +25,7 @@ export default function InputPanel({
   const label = useMemo(() => isModeIn ? 'Zap in' : 'Zap out (min)', [isModeIn])
 
   const labelClassName = useMemo(() => {
-    return cn(`text-sm`, disabled ? 'text-primary-600' : 'text-primary-400')
+    return cn(`text-sm`, disabled ? 'text-neutral-600' : 'text-neutral-300')
   }, [disabled])
 
   const {
@@ -38,9 +38,9 @@ export default function InputPanel({
   const setAmount = useMemo(() => isModeIn ? setInputAmount : setOutputAmount, [isModeIn, setInputAmount, setOutputAmount])
 
   return <div className={`group
-    px-4 py-6 bg-primary-900 rounded-primary
+    px-4 py-6 bg-input-bg rounded-primary
     flex flex-col justify-center gap-3
-    border border-transparent focus-within:border-primary-500`}>
+    border border-transparent focus-within:border-light-blue`}>
     <div className={labelClassName}>{label}</div>
     <div className="flex items-center gap-4">
       <Suspense fallback={<InputDisplay />}>
@@ -49,7 +49,7 @@ export default function InputPanel({
       <Button disabled={disabled} onClick={onSelectToken} className="px-2 py-2 flex items-center gap-2 !rounded-full">
         <div className="w-[32px] h-[32px]">
           <Image
-            className={cn(disabled ? 'opacity-20' : '', 'rounded-full bg-primary-600')}
+            className={cn(disabled ? 'opacity-20' : '', 'rounded-full bg-lighter-blue')}
             src={token.icon}
             alt={token.symbol}
             width={32}
@@ -57,7 +57,7 @@ export default function InputPanel({
         </div>
         <div>{token.symbol}</div>
         <div>
-          <BsChevronDown className={disabled ? 'fill-primary-600' : 'fill-primary-400'} />
+          <BsChevronDown className={disabled ? 'fill-neutral-600' : 'fill-neutral-200'} />
         </div>
       </Button>
     </div>

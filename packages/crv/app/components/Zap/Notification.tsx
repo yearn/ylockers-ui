@@ -173,7 +173,7 @@ export default function Notification({ className }: { className?: string }) {
       initial={mounted ? { x: 40, opacity: 0 } : false}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -40, opacity: 0 }}
-      className="text-primary-400">
+      className="text-neutral-400">
       {info.jsx}
     </motion.div>}
 

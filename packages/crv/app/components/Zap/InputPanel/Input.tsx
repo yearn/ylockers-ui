@@ -16,10 +16,9 @@ export function InputDisplay({
 }) {
   return <input disabled={disabled} className={`
   relative w-full text-4xl font-mono bg-transparent truncate
-  placeholder:text-primary-500
-  disabled:text-primary-400 disabled:bg-transparent hover:disabled:border-primary-950
-  disabled:placeholder-primary-800 disabled:border-transparent
-  outline-none focus:ring-0 focus:outline-none`}
+  placeholder:text-neutral-500
+  disabled:text-neutral-400 disabled:bg-transparent hover:disabled:border-neutral-950
+  disabled:border-transparent outline-none focus:ring-0 focus:outline-none`}
   inputMode="decimal"
   autoComplete="off"
   autoCorrect="off"

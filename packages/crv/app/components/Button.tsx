@@ -19,7 +19,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(({ className, theme, onClick
 
   const border = useMemo(() => {
     if (theme === 'transparent') return 'border-2 border-light-blue hover:border-lighter-blue'
-    if (theme === 'onit') return 'py-[10px]'
+    if (theme === 'onit') return 'border-2 border-darker-blue'
     return 'border-2 border-transparent'
   }, [theme])
 

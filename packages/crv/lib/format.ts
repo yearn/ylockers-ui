@@ -15,12 +15,13 @@ export function fUSD(amount: number, options?: { fixed?: number }) {
   return fNumber(amount, { ...options, prefix: '$' })
 }
 
-export function fTokens(amount: bigint, decimals: number, options?: { accuracy?: number, padStart?: number }) {
-  const { accuracy, padStart } = options || {}
+export function fTokens(amount: bigint, decimals: number, options?: { accuracy?: number, locale?: string }) {
+  const { accuracy = 2, locale } = options || {}
   const units = formatUnits(amount, decimals)
-  const separator = Intl.NumberFormat().format(1.1).charAt(1)
-  const [ whole, fraction ] = units.split(separator)
-  return `${whole.padStart(padStart || 0, '0')}.${(fraction || '0'.repeat(accuracy || 2)).slice(0, accuracy || 2)}`
+  const [whole, fraction] = units.split('.')
+  const formattedWhole = new Intl.NumberFormat(locale).format(parseInt(whole))
+  const formattedFraction = (fraction || '0'.repeat(accuracy)).slice(0, accuracy)
+  return `${formattedWhole}.${formattedFraction}`
 }
 
 export function fNumber(amount: number, options?: { fixed?: number, prefix?: string }) {
