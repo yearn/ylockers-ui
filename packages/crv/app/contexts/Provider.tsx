@@ -20,23 +20,23 @@ import { VaultProvider } from './VaultContext';
 
 const queryClient = new QueryClient();
 
-// const newMainnet = Object.assign({}, mainnet, {
-//   "id": 420420,
-//   "rpcUrls": {
-//     "default": {
-//       "http": ["https://virtual.mainnet.rpc.tenderly.co/f27fc283-2742-40d2-97cc-ffe73e9f5787"]
-//     }
-//   }
-// })
+// const chain = mainnet
+const chain = Object.assign({}, mainnet, {
+  "id": 6969,
+  "rpcUrls": {
+    "default": {
+      "http": [
+        "https://virtual.mainnet.rpc.tenderly.co/e96d48c7-b7df-4ee3-8c02-da4fb68f9fcf"
+      ]
+    }
+  }
+})
 
 const config = getDefaultConfig({
   appName: 'yPrisma',
   projectId: '84801a4fb569adb34f184f543b6d1762',
-  // chains: [newMainnet],
-  chains: [mainnet],
-  transports: {
-    [mainnet.id]: http(process.env.NEXT_PUBLIC_RPC_1)
-  },
+  chains: [chain],
+  transports: { [chain.id]: http(process.env.NEXT_PUBLIC_RPC_1) },
   wallets: [{
     groupName: 'Popular',
     wallets: [

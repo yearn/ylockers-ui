@@ -186,8 +186,8 @@ export default function useData() {
   }
 
   if (isError) {
-    if (multicall.data?.some(d => d.error)) console.error('multicall', multicall)
-    if (pricesError) console.error(pricesError)
+    // if (multicall.data?.some(d => d.error)) console.error('multicall', multicall)
+    // if (pricesError) console.error(pricesError)
     return fallback
   }
   return { ...multicall, prices, pricesError, refetch, isLoading, isSuccess, isError, data: DataSchema.parse({

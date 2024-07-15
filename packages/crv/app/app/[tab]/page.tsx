@@ -34,6 +34,7 @@ import env from '@/lib/env'
 import Background from "../../components/Background";
 import A from "@/app/components/A";
 import ImageOrFallback from "@/app/components/ImageOrFallback";
+import Zap from "@/app/components/Zap";
 
 function isVersionGte(version: string, compareVersion: string) {
     const versionParts = version.split('.').map(Number);
@@ -326,16 +327,13 @@ function TabContent(props: { leftActive: any; account: any }) {
         {tab === 'get' && (
           <div className="flex">
             <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
-              <span className="font-thin pb-1 text-md">Mint yCRV from CRV</span>
-              <Mint />
+              <span className="font-thin pb-1 text-md">Supercharge your yield with yCRV</span>
               <div className="mt-4 flex flex-col space-y-4">
                 <p className="font-thin opacity-70">
-                {`Convert your CRV to yCRV using the yCRV contract. This mints yCRV in a 1:1 ratio. ⚠️ Depending on peg it may be more efficient to use a DEX and swap instead of minting.`}
+                  Zap any token within the yCRV ecosystem for any other. Maybe you want to zap for a higher yield, or maybe you just like zapping (it's ok, we don't judge).
                 </p>
-                <p className="font-thin opacity-70">
-                <b>⚠️ Important: </b>{`yLocker tokens (such as yCRV) can never be redeemed for the underlying locked tokens (CRV). However, because they are liquid, they can be traded on decentralized exchanges, and bought and sold at the current market rate.`}
-                </p>
-              </div>
+               </div>
+               <Zap />
             </div>
           </div>
         )}

@@ -1,4 +1,6 @@
-import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss"
+import colors from 'tailwindcss/colors'
+import Theme from 'tailwindcss/defaultTheme'
 
 const config: Config = {
   content: [
@@ -36,7 +38,12 @@ const config: Config = {
         'charge-red': '#FF0F00',
         'charge-yellow': '#DBFF00',
         'tab-inactive': 'rgba(255,255,255,0.2)',
-        'tab-inactive-inner': 'rgba(255,255,255,0.3)'
+        'tab-inactive-inner': 'rgba(255,255,255,0.3)',
+        primary: colors.indigo,
+        alert: colors.red
+      },
+      borderRadius: {
+        primary: Theme.borderRadius.xl
       },
       boxShadow: {
         'lg': '0 -40px 80px 80px rgba(0,0,0,0.9)',
