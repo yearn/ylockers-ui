@@ -33,12 +33,13 @@ export function InputDisplay({
 }
 
 export function Input({
-  mode
+  mode,
+  disabled
 }: {
-  mode: 'in' | 'out'
+  mode: 'in' | 'out',
+  disabled: boolean
 }) {
   const { isConnected } = useAccount()
-  const disabled = useMemo(() => !isConnected, [isConnected])
 
   const { 
     inputAmount, setInputAmount, 
@@ -74,7 +75,7 @@ export function Input({
   }, [debouncedInput, mode, setAmount])
 
   return <InputDisplay
-    disabled={disabled || mode === 'out'}
+    disabled={disabled}
     onChange={onRawInputChange}
     value={amount ?? ''} />
 }

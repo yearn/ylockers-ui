@@ -38,15 +38,26 @@ export default function SelectToken({
     outputToken, setOutputToken, setOutputAmount,
   } = useParameters()
 
+  const { getBalance } = useBalances({ tokens: TOKENS })
+
+  const computeInputTokens = useCallback(() => {
+    const result: Token[] = []
+    for (const token of INPUTS) {
+      if (!token.legacy) result.push(token)
+      else if (getBalance(token).amount > 0n) result.push(token)
+    }
+    return result
+  }, [getBalance])
+
   const computeOutputTokens = useCallback((_inputToken: Token) => {
     const outputSymbols = TOKEN_ROUTES[_inputToken.symbol] ?? OUTPUTS.map(t => t.symbol)
     return OUTPUTS.filter(t => outputSymbols.includes(t.symbol))
   }, [])
 
   const tokens = useMemo(() => {
-    if (mode === 'in') return INPUTS
+    if (mode === 'in') return computeInputTokens()
     else return computeOutputTokens(inputToken)
-  }, [mode, inputToken, computeOutputTokens])
+  }, [mode, computeInputTokens, inputToken, computeOutputTokens])
 
   const onSelect = useCallback((token: Token) => {
     if (mode === 'in' && token !== inputToken) {

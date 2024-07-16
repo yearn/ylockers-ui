@@ -23,7 +23,9 @@ function Layout() {
         transition={springs.rollin}
         initial={ mounted ? { y: 10 } : false }
         animate={{ y: 0 }}>
-        <SelectToken mode={selectTokenMode} onClose={() => setSelectTokenMode(undefined)} />
+        <Suspense fallback={<></>}>
+          <SelectToken mode={selectTokenMode} onClose={() => setSelectTokenMode(undefined)} />
+        </Suspense>
       </motion.div>}
 
       {!selectTokenMode && <motion.div key="io"

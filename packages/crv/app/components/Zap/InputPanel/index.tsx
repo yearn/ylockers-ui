@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { useAccount } from 'wagmi'
 import Button from '../../Button'
-import { BsChevronDown } from 'react-icons/bs'
 import { Suspense, useMemo } from 'react'
 import { cn } from '@/lib/shadcn'
 import { useParameters } from '../Parameters'
@@ -44,7 +43,11 @@ export default function InputPanel({
     <div className={labelClassName}>{label}</div>
     <div className="flex items-center gap-4">
       <Suspense fallback={<InputDisplay />}>
-        <Input mode={mode} />
+        {/* <Button disabled={disabled} className="px-2 py-1 text-xs text-neutral-200 rounded-full">MAX</Button>
+        {isModeIn && <Suspense fallback={<MaxButtonDisplay disabled={true} />}>
+          <MaxButton token={token} setAmount={setAmount} disabled={disabled} />
+        </Suspense>} */}
+        <Input disabled={disabled || mode === 'out'} mode={mode} />
       </Suspense>
       <Button disabled={disabled} onClick={onSelectToken} className="px-2 py-2 flex items-center gap-2 !rounded-full">
         <div className="w-[32px] h-[32px]">
@@ -56,9 +59,7 @@ export default function InputPanel({
             height={32} />
         </div>
         <div>{token.symbol}</div>
-        <div>
-          <BsChevronDown className={disabled ? 'fill-neutral-600' : 'fill-neutral-200'} />
-        </div>
+        <div className={cn('text-xs', disabled ? 'fill-neutral-600' : 'fill-neutral-200')}>▼</div>
       </Button>
     </div>
     <div className={cn(labelClassName, `flex items-center justify-between text-sm`)}>
