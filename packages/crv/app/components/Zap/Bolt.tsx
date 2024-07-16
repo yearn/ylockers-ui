@@ -1,10 +1,10 @@
 import { cn } from '@/lib/shadcn'
 import { useMemo } from 'react'
 import { BsFillLightningFill } from 'react-icons/bs'
-import { useProvider } from './provider'
+import { useParameters } from './Parameters'
 
 export default function Bolt() {
-  const { theme } = useProvider()
+  const { theme } = useParameters()
 
   const bg = useMemo(() => {
     if (theme === 'onit') return 'rainbow-no-bg'
@@ -13,12 +13,12 @@ export default function Bolt() {
 
   const fill = useMemo(() => {
     if (theme === 'onit') return 'fill-neutral-200'
-    return 'fill-light-blue'
+    return 'fill-darker-blue'
   }, [theme])
 
   return <div className={cn(`
-    p-2 border-8 border-darker-blue
+    p-1 border-8 border-darker-blue
     bg-input-bg rounded-primary`, bg)}>
-    <BsFillLightningFill className={fill} />
+    <BsFillLightningFill size={24} className={fill} />
   </div>
 }

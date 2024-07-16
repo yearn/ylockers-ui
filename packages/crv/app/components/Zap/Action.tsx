@@ -4,11 +4,11 @@ import { useAccount } from 'wagmi'
 import Button from '../Button'
 import { ReactNode, useCallback, useEffect, useMemo } from 'react'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { useProvider } from './provider'
+import { useParameters } from './Parameters'
 import { useInsufficientFunds } from './hooks/useInsufficientFunds'
 import { TOKENS } from './tokens'
 import useBalances from './hooks/useBalances'
-import { useContracts } from './contracts'
+import { useContracts } from './Contracts'
 
 export function ActionDisplay({
   onClick,
@@ -35,15 +35,16 @@ export function Action({
   const { isConnected } = useAccount()
 
   const { 
-    inputAmount, setInputAmount,
+    inputToken, inputAmount, setInputAmount,
     outputAmount, setOutputAmount,
     theme, setTheme
-  } = useProvider()
+  } = useParameters()
 
   const {
     inputAmountExpanded, inputIsYbs, outputIsYbs,
     approveErc20, approveYbsAsInput, approveYbsAsOutput,
-    needsApproval, zap, isVerifying, isConfirming
+    needsErc20Approval, needsYbsApproval, needsApproval, 
+    zap, isVerifying, isConfirming
   } = useContracts()
 
   const { refetch: refetchBalances } = useBalances({ tokens: TOKENS })
@@ -54,30 +55,31 @@ export function Action({
     if (isVerifying || isConfirming) return true
     if (!inputAmount || !outputAmount) return true
     if (insufficientBalance) return true
-    if (inputIsYbs && !approveYbsAsInput.simulation.isSuccess) return true
-    if (!inputIsYbs && !approveErc20.simulation.isSuccess) return true
-    if (outputIsYbs && !approveYbsAsOutput.simulation.isSuccess) return true
+    if (inputIsYbs && needsYbsApproval && !approveYbsAsInput.simulation.isSuccess) return true
+    if (needsErc20Approval && !approveErc20.simulation.isSuccess) return true
+    if (outputIsYbs && needsYbsApproval && !approveYbsAsOutput.simulation.isSuccess) return true
     if (!(needsApproval || zap.simulation.isSuccess)) return true
     return false
   }, [
     isConnected, isVerifying, isConfirming,
     inputAmount, outputAmount, insufficientBalance, inputIsYbs, outputIsYbs,
-    approveErc20, approveYbsAsInput, approveYbsAsOutput, needsApproval,
+    approveErc20, approveYbsAsInput, approveYbsAsOutput, needsErc20Approval, needsYbsApproval, needsApproval,
     zap
   ])
 
   const label = useMemo(() => {
     if (!isConnected) return 'Connect'
-    if (!inputAmount || !outputAmount) return 'Enter zap amount'
     if (insufficientBalance) return 'Insufficient funds'
+    if (!inputAmount || !outputAmount) return 'Enter zap amount'
     if (isConfirming) return 'Confirming...'
-    if (needsApproval) return 'Approve'
+    if (needsErc20Approval) return `Approve ${inputToken.symbol}`
+    if (needsYbsApproval) return 'Enable YBS Zap'
     return 'Zap!'
   }, [
     isConnected, isConfirming,
-    inputAmount, outputAmount, 
+    inputToken, inputAmount, outputAmount, 
     insufficientBalance,
-    needsApproval
+    needsErc20Approval, needsYbsApproval
   ])
 
   const reset = useCallback((resetAmounts: boolean) => {

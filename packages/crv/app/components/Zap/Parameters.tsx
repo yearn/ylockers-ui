@@ -39,9 +39,9 @@ export const context = createContext<Context>({
   setTheme: () => {}
 })
 
-export const useProvider = () => useContext(context)
+export const useParameters = () => useContext(context)
 
-export default function Provider({ children }: { children: ReactNode }) {
+export default function Parameters({ children }: { children: ReactNode }) {
   const [inputToken, setInputToken] = useState<Token>(INPUTS[0])
   const [inputAmount, setInputAmount] = useState<string | undefined>()
   const [outputToken, setOutputToken] = useState<Token>(OUTPUTS[0])

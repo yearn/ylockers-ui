@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { useProvider } from '../provider'
-import { useReadContract } from 'wagmi'
+import { useParameters } from '../Parameters'
+import { useAccount, useReadContract } from 'wagmi'
 import zapAbi from '../abis/zap'
 import { parseUnits } from 'viem'
 import { compareEvmAddresses, ONE_TO_ONES, TOKENS_MAP } from '../tokens'
@@ -8,27 +8,36 @@ import bmath from '@/lib/bmath'
 import { DEFAULT_SLIPPAGE, ZAP } from '../constants'
 
 export function useMinOut() {
-  const { inputToken, inputAmount, outputToken } = useProvider()
-
-  const inputAmountOrZero = useMemo(() => {
-    if ((inputAmount?.length ?? 0) === 0) return '0'
-    return inputAmount!
-  }, [inputAmount])
+  const { isConnected } = useAccount()
+  const { inputToken, inputAmountExpanded, outputToken } = useParameters()
 
   const expectedOut = useReadContract({
     abi: zapAbi, address: ZAP, functionName: 'calc_expected_out', 
     args: [
       inputToken.address, 
       outputToken.address, 
-      parseUnits(inputAmountOrZero, inputToken.decimals)
+      inputAmountExpanded
     ],
     query: {
+      enabled: isConnected && inputAmountExpanded > 0,
       refetchInterval: 10_000
     }
   })
 
   const minOut = useMemo(() => {
-    if (expectedOut.isError || expectedOut.data === undefined) return undefined
+    if (expectedOut.isError) {
+      console.info('expectedOut.isError')
+      console.error(expectedOut.error?.message)
+      return undefined
+    }
+
+    if (expectedOut.failureCount > 0) {
+      console.info('expectedOut.failureCount > 0')
+      console.error(expectedOut.failureReason)
+      return undefined
+    }
+
+    if (expectedOut.data === undefined) return undefined
 
     const isOneToOne = ONE_TO_ONES.includes(inputToken.address) && ONE_TO_ONES.includes(outputToken.address)
     if (isOneToOne) return expectedOut.data

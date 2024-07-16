@@ -5,11 +5,11 @@ import { springs } from '@/lib/motion'
 import { cn } from '@/lib/shadcn'
 import { motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
-import { useContracts } from './contracts'
+import { useContracts } from './Contracts'
 import { fAddress } from '../../../lib/format'
 import { useConfig } from 'wagmi'
 import A from '../A'
-import { useProvider } from './provider'
+import { useParameters } from './Parameters'
 
 function makeNotificationWithExplorerLink({ 
   key, message, hash, explorerUrl 
@@ -33,7 +33,7 @@ export default function Notification({ className }: { className?: string }) {
   const {
     inputToken, inputAmount,
     outputToken, outputAmount
-  } = useProvider()
+  } = useParameters()
 
   const zapped = useMemo(() => {
     const locale = new Intl.NumberFormat()
@@ -128,7 +128,7 @@ export default function Notification({ className }: { className?: string }) {
   useEffect(() => {
     if (approveErc20.simulation.isError || approveErc20.confirmation.isError) {
       console.info('approveErc20.simulation.error ?? approveErc20.confirmation.error')
-      console.info(approveErc20.simulation.error ?? approveErc20.confirmation.error)
+      console.error(approveErc20.simulation.error?.message ?? approveErc20.confirmation.error?.message)
       setError({
         key: 'error-approve-erc20', 
         jsx: <div>Error! Please check your browser's console</div> 
@@ -136,7 +136,7 @@ export default function Notification({ className }: { className?: string }) {
 
     } else if (approveYbsAsInput.simulation.isError || approveYbsAsInput.confirmation.isError) {
       console.info('approveYbsAsInput.simulation.error ?? approveYbsAsInput.confirmation.error')
-      console.info(approveYbsAsInput.simulation.error ?? approveYbsAsInput.confirmation.error)
+      console.error(approveYbsAsInput.simulation.error?.message ?? approveYbsAsInput.confirmation.error?.message)
       setError({ 
         key: 'error-approve-ybs-in', 
         jsx: <div>Error! Please check your browser's console</div> 
@@ -144,7 +144,7 @@ export default function Notification({ className }: { className?: string }) {
 
     } else if (approveYbsAsOutput.simulation.isError || approveYbsAsOutput.confirmation.isError) {
       console.info('approveYbsAsOutput.simulation.error ?? approveYbsAsOutput.confirmation.error')
-      console.info(approveYbsAsOutput.simulation.error ?? approveYbsAsOutput.confirmation.error)
+      console.error(approveYbsAsOutput.simulation.error?.message ?? approveYbsAsOutput.confirmation.error?.message)
       setError({ 
         key: 'error-approve-ybs-out', 
         jsx: <div>Error! Please check your browser's console</div> 
@@ -152,7 +152,7 @@ export default function Notification({ className }: { className?: string }) {
 
     } else if (zap.simulation.isError || zap.confirmation.isError) {
       console.info('zap.simulation.error ?? zap.confirmation.error')
-      console.info(zap.simulation.error ?? zap.confirmation.error)
+      console.error(zap.simulation.error?.message ?? zap.confirmation.error?.message)
       setError({ 
         key: 'error-zap', 
         jsx: <div>Error! Please check your browser's console</div> 

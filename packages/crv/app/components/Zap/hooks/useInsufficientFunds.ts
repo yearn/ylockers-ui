@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
-import { useProvider } from '../provider'
+import { useParameters } from '../Parameters'
 import { TOKENS } from '../tokens'
 import useBalances from './useBalances'
 import { parseUnits } from 'viem'
 
 export function useInsufficientFunds() {
-  const { inputAmount, inputToken } = useProvider()
+  const { inputAmount, inputToken } = useParameters()
   const { getBalance } = useBalances({ tokens: TOKENS })
   const inputBalance = useMemo(() => getBalance(inputToken), [getBalance, inputToken])
   const insufficientFunds = useMemo(() => {

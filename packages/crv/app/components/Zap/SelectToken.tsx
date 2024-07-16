@@ -3,12 +3,12 @@
 import Image from 'next/image'
 import Button from '../Button'
 import { ScrollArea } from '../shadcn/scroll-area'
-import { INPUTS, OUTPUTS, Token, TOKENS } from './tokens'
+import { INPUTS, OUTPUTS, Token, TOKEN_ROUTES, TOKENS } from './tokens'
 import useBalances from './hooks/useBalances'
 import { useCallback, useMemo } from 'react'
 import { fTokens, fUSD } from '@/lib/format'
 import { priced } from '@/lib/bmath'
-import { useProvider } from './provider'
+import { useParameters } from './Parameters'
 
 function Balance({ 
   token 
@@ -36,31 +36,57 @@ export default function SelectToken({
   const { 
     inputToken, setInputToken, setInputAmount,
     outputToken, setOutputToken, setOutputAmount,
-  } = useProvider()
+  } = useParameters()
 
-  const tokens = useMemo(() => mode === 'in' ? INPUTS : OUTPUTS, [mode])
+  const computeOutputTokens = useCallback((_inputToken: Token) => {
+    const outputSymbols = TOKEN_ROUTES[_inputToken.symbol] ?? OUTPUTS.map(t => t.symbol)
+    return OUTPUTS.filter(t => outputSymbols.includes(t.symbol))
+  }, [])
+
+  const tokens = useMemo(() => {
+    if (mode === 'in') return INPUTS
+    if (mode === 'out') return computeOutputTokens(inputToken)
+  }, [mode, inputToken, computeOutputTokens])
 
   const onSelect = useCallback((token: Token) => {
     if (mode === 'in' && token !== inputToken) {
       setInputToken(token)
       setInputAmount(undefined)
       setOutputAmount(undefined)
+
+      const outputTokens = computeOutputTokens(token)
+      if (!outputTokens.find(t => t === outputToken)) {
+        setOutputToken(outputTokens[0])
+
+      } else if (token === outputToken) {
+        setOutputToken(OUTPUTS.find(t => t !== token)!)
+
+      }
+
     } else if (mode === 'out' && token !== outputToken) {
       setOutputToken(token)
       setOutputAmount(undefined)
+      if (token === inputToken) {
+        setInputAmount(undefined)
+        setInputToken(INPUTS.find(t => t !== token)!)
+      }
+
     }
+
     onClose()
+
   }, [
     mode, onClose, 
     inputToken, setInputToken, setInputAmount,
-    outputToken, setOutputToken, setOutputAmount
+    outputToken, setOutputToken, setOutputAmount,
+    computeOutputTokens
   ])
 
   return <div className="px-4 py-6 flex flex-col gap-3 bg-input-bg rounded-primary">
     <div className="flex items-center justify-between">
       <div className="text-sm text-neutral-400">Select an {mode === 'in' ? 'input' : 'output'} token</div>
       <div className="text-sm">
-        <Button onClick={onClose} className="px-2 py-1 text-xs text-neutral-200">Close</Button>
+        <Button onClick={onClose} className="px-2 py-1 text-xs text-neutral-200 rounded-full">Close</Button>
       </div>
     </div>
     <ScrollArea className="w-full max-h-[16rem] overflow-auto">

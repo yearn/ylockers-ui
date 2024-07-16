@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import { useProvider } from '../provider'
+import { useParameters } from '../Parameters'
 import { useMinOut } from './useMinOut'
 import { formatUnits } from 'viem'
 
 export function useInputAmountEffect() {
   const { expectedOut, minOut } = useMinOut()
-  const { inputAmount, outputToken, setOutputAmount } = useProvider()
+  const { inputAmount, outputToken, setOutputAmount } = useParameters()
 
   useEffect(() => {
     if (expectedOut.isFetching) return

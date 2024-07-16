@@ -6,7 +6,7 @@ import Button from '../../Button'
 import { BsChevronDown } from 'react-icons/bs'
 import { Suspense, useMemo } from 'react'
 import { cn } from '@/lib/shadcn'
-import { useProvider } from '../provider'
+import { useParameters } from '../Parameters'
 import { Input, InputDisplay } from './Input'
 import { AmountUsd, AmountUsdDisplay } from './AmountUsd'
 import { Balance, BalanceDisplay } from './Balance'
@@ -31,7 +31,7 @@ export default function InputPanel({
   const {
     inputToken, inputAmount, setInputAmount, 
     outputToken, outputAmount, setOutputAmount 
-  } = useProvider()
+  } = useParameters()
 
   const token = useMemo(() => isModeIn ? inputToken : outputToken, [isModeIn, inputToken, outputToken])
   const amount = useMemo(() => isModeIn ? inputAmount : outputAmount, [isModeIn, inputAmount, outputAmount])

@@ -6,11 +6,11 @@ import Bolt from './Bolt'
 import { Action, ActionDisplay } from './Action'
 import InputPanel from './InputPanel'
 import SelectToken from './SelectToken'
-import Provider from './provider'
+import Parameters from './Parameters'
 import { useMounted } from '../../../hooks/useMounted'
 import Notification from './Notification'
 import { springs } from '@/lib/motion'
-import Contracts from './contracts'
+import Contracts from './Contracts'
 
 function Layout() {
   const [selectTokenMode, setSelectTokenMode] = useState<'in' | 'out' | undefined>()
@@ -35,7 +35,7 @@ function Layout() {
         bg-transparent rounded-primary`}>
         <InputPanel mode="in" onSelectToken={() => setSelectTokenMode('in')} />
         <InputPanel mode="out" onSelectToken={() => setSelectTokenMode('out')} />
-        <div className={`pt-5
+        <div className={`pt-1
           absolute z-10 inset-0 
           flex items-center justify-center
           pointer-events-none`}>
@@ -53,9 +53,11 @@ function Layout() {
 }
 
 export default function Zap() {
-  return <Provider>
-    <Contracts>
-      <Layout />
-    </Contracts>
-  </Provider>
+  return (
+    <Parameters>
+      <Contracts>
+        <Layout />
+      </Contracts>
+    </Parameters>
+  )
 }

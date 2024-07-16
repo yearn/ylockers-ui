@@ -1,5 +1,5 @@
 import { useAccount, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt } from 'wagmi'
-import { useProvider } from '../provider'
+import { useParameters } from '../Parameters'
 import { ZAP } from '../constants'
 import { useMemo } from 'react'
 import { useWriteContract } from './useWriteContract'
@@ -9,7 +9,7 @@ import { useMinOut } from './useMinOut'
 
 export function useZap({ needsApproval }: { needsApproval: boolean }) {
   const { isConnected } = useAccount()
-  const { inputAmount, inputToken, outputToken } = useProvider()
+  const { inputAmount, inputToken, outputToken } = useParameters()
   const { minOut } = useMinOut()
 
   const amount = useMemo(() => parseUnits((inputAmount ?? '0'), 18), [inputAmount])

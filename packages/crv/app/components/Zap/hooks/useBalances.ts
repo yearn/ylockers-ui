@@ -1,7 +1,7 @@
 'use client'
 
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { Token } from '../tokens'
+import { PRICE_PROXIES, Token, TOKENS_MAP } from '../tokens'
 import { readContractsQueryOptions } from 'wagmi/query'
 import { useAccount, useConfig } from 'wagmi'
 import { erc20Abi, zeroAddress } from 'viem'
@@ -31,14 +31,20 @@ export default function useBalances({
 
   const prices = usePrices({ tokens })
 
+  const getPrice = useCallback((token: Token) => {
+    if (!prices.isFetched) return 0
+    const symbol = PRICE_PROXIES[token.symbol] ?? token.symbol
+    return prices.data[TOKENS_MAP[symbol].address] as number
+  }, [[prices]])
+
   const result = useMemo(() => {
     if (!(isConnected && balances.isFetched && prices.isFetched)) return []
     return tokens.map((token, index) => ({
       ...token,
       amount: (balances.data[index].result ?? 0n) as bigint,
-      price: prices.data[token.address] as number
+      price: getPrice(token)
     })) as Balance[]
-  }, [tokens, isConnected, balances, prices])
+  }, [tokens, isConnected, balances, prices, getPrice])
 
   const refetch = useCallback(async () => {
     await Promise.all([balances.refetch(), prices.refetch()])

@@ -39,7 +39,6 @@ const config: Config = {
         'charge-yellow': '#DBFF00',
         'tab-inactive': 'rgba(255,255,255,0.2)',
         'tab-inactive-inner': 'rgba(255,255,255,0.3)',
-        primary: colors.neutral,
         alert: colors.yellow
       },
       borderRadius: {

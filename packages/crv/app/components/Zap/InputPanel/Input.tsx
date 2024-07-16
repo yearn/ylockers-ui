@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAccount } from 'wagmi'
-import { useProvider } from '../provider'
+import { useParameters } from '../Parameters'
 import useDebounce from '@/hooks/useDebounce'
 
 export function InputDisplay({
@@ -43,7 +43,7 @@ export function Input({
   const { 
     inputAmount, setInputAmount, 
     outputAmount, setOutputAmount
-  } = useProvider()
+  } = useParameters()
 
   const isModeIn = useMemo(() => mode === 'in', [mode])
   const amount = useMemo(() => isModeIn ? inputAmount : outputAmount, [isModeIn, inputAmount, outputAmount])

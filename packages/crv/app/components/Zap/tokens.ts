@@ -101,6 +101,7 @@ export const TOKENS_MAP: Record<string, Token> = {
 export const TOKENS = Object.values(TOKENS_MAP)
 
 export const INPUTS = [
+  TOKENS_MAP['CRV'],
   TOKENS_MAP['yveCRV-DAO'],
   TOKENS_MAP['yvBOOST'],
   TOKENS_MAP['yCRV'],
@@ -108,16 +109,15 @@ export const INPUTS = [
   TOKENS_MAP['lp-yCRVv2'],
   TOKENS_MAP['yCRV-f v1'],
   TOKENS_MAP['yCRV-f v2'],
-  TOKENS_MAP['CRV'],
   TOKENS_MAP['lp-yCRVv1'],
   TOKENS_MAP['YBS'],
 ]
 
 export const OUTPUTS = [
-  TOKENS_MAP['yCRV'],
   TOKENS_MAP['yvyCRV'],
-  TOKENS_MAP['lp-yCRVv2'],
   TOKENS_MAP['YBS'],
+  TOKENS_MAP['lp-yCRVv2'],
+  TOKENS_MAP['yCRV'],
   TOKENS_MAP['yCRV-f v2']
 ]
 
@@ -128,3 +128,12 @@ export const ONE_TO_ONES = [
   TOKENS_MAP['yvyCRV'].address,
   TOKENS_MAP['YBS'].address
 ]
+
+export const PRICE_PROXIES: { [key: string]: string } = {
+  'yveCRV-DAO': 'yCRV',
+  'YBS': 'yCRV'
+}
+
+export const TOKEN_ROUTES: { [key: string]: string[] | undefined } = {
+  'yCRV-f v1': ['lp-yCRVv2']
+}

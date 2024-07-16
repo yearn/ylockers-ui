@@ -5,7 +5,7 @@ import { useApproveYbsAsInput, useApproveYbsAsOutput } from './hooks/useApproveY
 import { useZap } from './hooks/useZap'
 import { UseReadContractReturnType, UseSimulateContractReturnType, UseWaitForTransactionReceiptReturnType, UseWriteContractReturnType } from 'wagmi'
 import ybsAbi from './abis/ybs'
-import { useProvider } from './provider'
+import { useParameters } from './Parameters'
 import { useInputAmountEffect } from './hooks/useInputAmountEffect'
 
 interface Context {
@@ -34,6 +34,8 @@ interface Context {
     confirmation: UseWaitForTransactionReceiptReturnType
   }
 
+  needsErc20Approval: boolean
+  needsYbsApproval: boolean
   needsApproval: boolean
 
   zap: {
@@ -53,6 +55,8 @@ export const context = createContext<Context>({
   approveErc20: {} as any,
   approveYbsAsInput: {} as any,
   approveYbsAsOutput: {} as any,
+  needsErc20Approval: false,
+  needsYbsApproval: false,
   needsApproval: false,
   zap: {} as any,
   isVerifying: false,
@@ -66,22 +70,29 @@ export default function Contracts({ children }: { children: ReactNode }) {
 
   const { 
     inputAmountExpanded, inputIsYbs, outputIsYbs
-  } = useProvider()
+  } = useParameters()
 
   const approveErc20 = useApproveErc20()
   const approveYbsAsInput = useApproveYbsAsInput()
   const approveYbsAsOutput = useApproveYbsAsOutput()
 
-  const needsApproval = useMemo(() => {
-    if (inputIsYbs && approveYbsAsInput.approvedCaller.data !== 3) return true
+  const needsErc20Approval = useMemo(() => {
     if (!inputIsYbs && ((approveErc20.allowance.data ?? 0n) < inputAmountExpanded)) return true
+    return false
+  }, [
+    inputAmountExpanded, inputIsYbs, approveErc20
+  ])
+
+  const needsYbsApproval = useMemo(() => {
+    if (inputIsYbs && approveYbsAsInput.approvedCaller.data !== 3) return true
     if (outputIsYbs && approveYbsAsOutput.approvedCaller.data !== 3) return true
     return false
   }, [
-    inputAmountExpanded, 
     inputIsYbs, outputIsYbs,
-    approveErc20, approveYbsAsInput, approveYbsAsOutput
+    approveYbsAsInput, approveYbsAsOutput
   ])
+
+  const needsApproval = useMemo(() => needsErc20Approval || needsYbsApproval, [needsErc20Approval, needsYbsApproval])
 
   const zap = useZap({ needsApproval })
 
@@ -105,8 +116,8 @@ export default function Contracts({ children }: { children: ReactNode }) {
     approveErc20, 
     approveYbsAsInput, 
     approveYbsAsOutput,
-    needsApproval, zap, 
-    isVerifying, isConfirming
+    needsErc20Approval, needsYbsApproval, needsApproval, 
+    zap, isVerifying, isConfirming
   }}>
     {children}
   </context.Provider>

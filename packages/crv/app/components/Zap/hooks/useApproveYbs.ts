@@ -1,5 +1,5 @@
 import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt } from 'wagmi'
-import { useProvider } from '../provider'
+import { useParameters } from '../Parameters'
 import { zeroAddress } from 'viem'
 import { ZAP } from '../constants'
 import ybsAbi from '../abis/ybs'
@@ -8,7 +8,7 @@ import { useWriteContract } from './useWriteContract'
 
 export function useApproveYbsAsInput() {
   const { isConnected, address } = useAccount()
-  const { inputToken, inputIsYbs } = useProvider()
+  const { inputToken, inputIsYbs } = useParameters()
 
   const approvedCaller = useReadContract({
     abi: ybsAbi, address: inputToken.address, functionName: 'approvedCaller', 
@@ -33,7 +33,7 @@ export function useApproveYbsAsInput() {
 
 export function useApproveYbsAsOutput() {
   const { isConnected, address } = useAccount()
-  const { outputToken, outputIsYbs } = useProvider()
+  const { outputToken, outputIsYbs } = useParameters()
 
   const approvedCaller = useReadContract({
     abi: ybsAbi, address: outputToken.address, functionName: 'approvedCaller', 
