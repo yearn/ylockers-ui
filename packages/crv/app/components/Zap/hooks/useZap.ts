@@ -23,7 +23,7 @@ export function useZap({ needsApproval }: { needsApproval: boolean }) {
       minOut
     ],
     query: {
-      enabled: isConnected && !needsApproval && amount > 0
+      enabled: isConnected && !needsApproval && amount > 0 && minOut !== undefined
     }
   }), [isConnected, inputAmount, inputToken, outputToken, minOut, needsApproval])
 

@@ -1,2 +1,2 @@
-export const ZAP: `0x${string}` = '0x5271058928d31b6204fc95eee15fe9fbbdca681a'
+export const ZAP: `0x${string}` = '0x8Fc2a9cC1E5dD19e9d3f61d88A7790f1111390Ac'
 export const DEFAULT_SLIPPAGE = 0.0003

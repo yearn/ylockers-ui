@@ -2,8 +2,7 @@ import { useMemo } from 'react'
 import { useParameters } from '../Parameters'
 import { useAccount, useReadContract } from 'wagmi'
 import zapAbi from '../abis/zap'
-import { parseUnits } from 'viem'
-import { compareEvmAddresses, ONE_TO_ONES, TOKENS_MAP } from '../tokens'
+import { compareEvmAddresses, NO_DEX_NO_SLIPPAGE, TOKENS_MAP } from '../tokens'
 import bmath from '@/lib/bmath'
 import { DEFAULT_SLIPPAGE, ZAP } from '../constants'
 
@@ -37,12 +36,12 @@ export function useMinOut() {
       return undefined
     }
 
-    if (expectedOut.data === undefined) return undefined
+    if (expectedOut === undefined || expectedOut.data === undefined) return undefined
 
-    const isOneToOne = ONE_TO_ONES.includes(inputToken.address) && ONE_TO_ONES.includes(outputToken.address)
-    if (isOneToOne) return expectedOut.data
+    const doesntHaveSlippage = NO_DEX_NO_SLIPPAGE.includes(inputToken.address) && NO_DEX_NO_SLIPPAGE.includes(outputToken.address)
+    if (doesntHaveSlippage) return expectedOut.data
 
-    if (compareEvmAddresses(outputToken.address, TOKENS_MAP['YBS'].address )) {
+    if (compareEvmAddresses(outputToken.address, TOKENS_MAP['YBS'].address)) {
       return bmath.mul((1 - DEFAULT_SLIPPAGE), expectedOut.data!) - 1n
     }
 

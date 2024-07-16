@@ -121,11 +121,10 @@ export const OUTPUTS = [
   TOKENS_MAP['yCRV-f v2']
 ]
 
-export const ONE_TO_ONES = [
+export const NO_DEX_NO_SLIPPAGE = [
   TOKENS_MAP['yveCRV-DAO'].address,
   TOKENS_MAP['yvBOOST'].address,
   TOKENS_MAP['yCRV'].address,
-  TOKENS_MAP['yvyCRV'].address,
   TOKENS_MAP['YBS'].address
 ]
 
