@@ -45,7 +45,7 @@ export default function SelectToken({
 
   const tokens = useMemo(() => {
     if (mode === 'in') return INPUTS
-    if (mode === 'out') return computeOutputTokens(inputToken)
+    else return computeOutputTokens(inputToken)
   }, [mode, inputToken, computeOutputTokens])
 
   const onSelect = useCallback((token: Token) => {
