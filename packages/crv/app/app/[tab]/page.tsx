@@ -6,7 +6,6 @@ import Link from "next/link";
 import InputBox from "../../components/InputBox";
 import Header, { headerItems } from "../../components/Header";
 import { useParams } from 'next/navigation';
-import { Suspense, useEffect } from 'react';
 import { useConnectModal, useAccountModal } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
@@ -58,25 +57,17 @@ export default function Home() {
   const { openAccountModal } = useAccountModal();
   const { data } = useData()
 
-  const { data: yprismaVault } = useVault(env.YPRISMA_STRATEGY)
   const vaultApr: number = z.number({ coerce: true }).parse(bmath.div(data.utilities.vaultAPR, 10n**18n) ?? 0)
   const vaultApy: number = (1 + (vaultApr / 52)) ** 52 - 1;
 
   const tab = useTab();
 
-  const account = useAccount()
+  const account = useAccount();
 
   const leftActive = (tab === "stake" || tab === "unstake" || tab === "claim" || tab === "get" || tab === "learn_more_stake")
   const rightActive = !leftActive
 
   const { data: prices } = usePrices([env.YPRISMA]);
-
-  const earned = useMemo(() => {
-    if (data.strategy.balance && prices[env.YPRISMA]) {
-      return priced(data.strategy.balance, data.strategy.decimals, prices[env.YPRISMA]);
-    }
-    return 0;
-  }, [data.strategy.balance, data.strategy.decimals, prices]);
 
   return (
     <main className="flex flex-col items-center min-h-screen bg-[linear-gradient(350deg,var(--tw-gradient-from),var(--tw-gradient-to))] from-dark-black to-dark-blue text-white">
@@ -98,9 +89,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col lg:flex-row justify-center ">
             <div className="flex-1 bg-darker-blue lg:rounded-bl-lg lg:rounded-tl-lg">
-              <Suspense fallback={<div>Loading...</div>}>
-                <TabContent leftActive={leftActive} account={account} />
-              </Suspense>
+              <TabContent leftActive={leftActive} account={account} />
             </div>
 
             <div className="lg:w-[408px] bg-blue flex flex-col p-10 lg:rounded-br-lg lg:rounded-tr-lg">
@@ -220,7 +209,7 @@ export default function Home() {
 
 function TabContent(props: { leftActive: any; account: any }) {
   const tab = useTab();
-  const { data } = useData();
+  const { data, refetch } = useData();
 
   return (
     <div className="flex flex-col">
@@ -333,7 +322,7 @@ function TabContent(props: { leftActive: any; account: any }) {
               </p>
             </div>
             <div className="w-full px-4 md:px-0 flex justify-center">
-              <Zap />
+              <Zap onZap={() => refetch()} />
             </div>
           </div>
         )}

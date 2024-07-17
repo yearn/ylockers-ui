@@ -43,10 +43,6 @@ export default function InputPanel({
     <div className={labelClassName}>{label}</div>
     <div className="flex items-center gap-4">
       <Suspense fallback={<InputDisplay />}>
-        {/* <Button disabled={disabled} className="px-2 py-1 text-xs text-neutral-200 rounded-full">MAX</Button>
-        {isModeIn && <Suspense fallback={<MaxButtonDisplay disabled={true} />}>
-          <MaxButton token={token} setAmount={setAmount} disabled={disabled} />
-        </Suspense>} */}
         <Input disabled={disabled || mode === 'out'} mode={mode} />
       </Suspense>
       <Button disabled={disabled} onClick={onSelectToken} className="px-2 py-2 flex items-center gap-2 !rounded-full">
@@ -59,7 +55,7 @@ export default function InputPanel({
             height={32} />
         </div>
         <div>{token.symbol}</div>
-        <div className={cn('text-xs', disabled ? 'fill-neutral-600' : 'fill-neutral-200')}>▼</div>
+        <div className={cn('pr-1 text-xs', disabled ? 'fill-neutral-600' : 'fill-neutral-200')}>▼</div>
       </Button>
     </div>
     <div className={cn(labelClassName, `flex items-center justify-between text-sm`)}>

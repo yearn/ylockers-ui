@@ -37,7 +37,8 @@ export function Action({
   const { 
     inputToken, inputAmount, setInputAmount,
     outputAmount, setOutputAmount,
-    theme, setTheme
+    theme, setTheme,
+    onZap
   } = useParameters()
 
   const {
@@ -132,8 +133,9 @@ export function Action({
       || zap.confirmation.isSuccess
     ) {
       reset(zap.confirmation.isSuccess)
+      if (zap.confirmation.isSuccess) onZap()
     }
-  }, [reset, approveErc20, approveYbsAsInput, approveYbsAsOutput, zap])
+  }, [reset, approveErc20, approveYbsAsInput, approveYbsAsOutput, zap, onZap])
 
   const onClick = useCallback(() => {
     if (!isConnected) {

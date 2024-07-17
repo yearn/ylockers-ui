@@ -11,6 +11,7 @@ import { useMounted } from '../../../hooks/useMounted'
 import Notification from './Notification'
 import { springs } from '@/lib/motion'
 import Contracts from './Contracts'
+import { Token } from './tokens'
 
 function Layout() {
   const [selectTokenMode, setSelectTokenMode] = useState<'in' | 'out' | undefined>()
@@ -54,9 +55,13 @@ function Layout() {
   </div>
 }
 
-export default function Zap() {
+export default function Zap({
+  onZap
+}: {
+  onZap?: (inputToken: Token, inputAmount: string, outputToken: Token, outputAmount: string) => void
+}) {
   return (
-    <Parameters>
+    <Parameters onZap={onZap}>
       <Contracts>
         <Layout />
       </Contracts>

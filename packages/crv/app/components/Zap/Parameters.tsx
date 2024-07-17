@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
 import { compareEvmAddresses, INPUTS, OUTPUTS, Token, TOKENS_MAP } from './tokens'
 import { parseUnits } from 'viem'
 
@@ -20,7 +20,8 @@ interface Context {
   setOutputAmount: SetString
   outputIsYbs: boolean
   theme?: Theme
-  setTheme: Setter<Theme | undefined>
+  setTheme: Setter<Theme | undefined>,
+  onZap: () => void
 }
 
 export const context = createContext<Context>({
@@ -36,12 +37,19 @@ export const context = createContext<Context>({
   setOutputAmount: () => {},
   outputIsYbs: false,
   theme: undefined,
-  setTheme: () => {}
+  setTheme: () => {},
+  onZap: () => {}
 })
 
 export const useParameters = () => useContext(context)
 
-export default function Parameters({ children }: { children: ReactNode }) {
+export default function Parameters({ 
+  onZap,
+  children 
+}: {
+  onZap?: (inputToken: Token, inputAmount: string, outputToken: Token, outputAmount: string) => void,
+  children: ReactNode 
+}) {
   const [inputToken, setInputToken] = useState<Token>(INPUTS[0])
   const [inputAmount, setInputAmount] = useState<string | undefined>()
   const [outputToken, setOutputToken] = useState<Token>(OUTPUTS[0])
@@ -52,12 +60,17 @@ export default function Parameters({ children }: { children: ReactNode }) {
   const inputIsYbs = useMemo(() => compareEvmAddresses(inputToken.address, TOKENS_MAP['YBS'].address), [inputToken])
   const outputIsYbs = useMemo(() => compareEvmAddresses(outputToken.address, TOKENS_MAP['YBS'].address), [outputToken])
 
+  const _onZap = useCallback(() => {
+    onZap?.(inputToken, inputAmount ?? '0', outputToken, outputAmount ?? '0')
+  }, [onZap, inputToken, inputAmount, outputToken, outputAmount])
+
   return <context.Provider value={{
     inputToken, setInputToken,
     inputAmount, setInputAmount, inputAmountExpanded, inputIsYbs,
     outputToken, setOutputToken, outputIsYbs,
     outputAmount, setOutputAmount,
-    theme, setTheme
+    theme, setTheme,
+    onZap: _onZap
   }}>
     {children}
   </context.Provider>
