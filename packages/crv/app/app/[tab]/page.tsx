@@ -6,7 +6,6 @@ import Link from "next/link";
 import InputBox from "../../components/InputBox";
 import Header, { headerItems } from "../../components/Header";
 import { useParams } from 'next/navigation';
-import { Suspense, useEffect } from 'react';
 import { useConnectModal, useAccountModal } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
@@ -34,6 +33,7 @@ import env from '@/lib/env'
 import Background from "../../components/Background";
 import A from "@/app/components/A";
 import ImageOrFallback from "@/app/components/ImageOrFallback";
+import Zap from "@/app/components/Zap";
 
 function isVersionGte(version: string, compareVersion: string) {
     const versionParts = version.split('.').map(Number);
@@ -57,25 +57,17 @@ export default function Home() {
   const { openAccountModal } = useAccountModal();
   const { data } = useData()
 
-  const { data: yprismaVault } = useVault(env.YPRISMA_STRATEGY)
   const vaultApr: number = z.number({ coerce: true }).parse(bmath.div(data.utilities.vaultAPR, 10n**18n) ?? 0)
   const vaultApy: number = (1 + (vaultApr / 52)) ** 52 - 1;
 
   const tab = useTab();
 
-  const account = useAccount()
+  const account = useAccount();
 
   const leftActive = (tab === "stake" || tab === "unstake" || tab === "claim" || tab === "get" || tab === "learn_more_stake")
   const rightActive = !leftActive
 
   const { data: prices } = usePrices([env.YPRISMA]);
-
-  const earned = useMemo(() => {
-    if (data.strategy.balance && prices[env.YPRISMA]) {
-      return priced(data.strategy.balance, data.strategy.decimals, prices[env.YPRISMA]);
-    }
-    return 0;
-  }, [data.strategy.balance, data.strategy.decimals, prices]);
 
   return (
     <main className="flex flex-col items-center min-h-screen bg-[linear-gradient(350deg,var(--tw-gradient-from),var(--tw-gradient-to))] from-dark-black to-dark-blue text-white">
@@ -83,7 +75,7 @@ export default function Home() {
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
-        <section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0">
+        <section className="mt-32 md:mt-[5vh] sm:mx-4 lg:mx-0">
           <div className="w-full flex flex-wrap justify-center items-center mb-12 md:mb-8 space-y-4 md:space-x-8 md:space-y-0 flex-col md:flex-row">
             <Link href="/app/stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
               <div className="flex justify-between items-center text-lg pl-4">EARN crvUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</div></div>
@@ -97,9 +89,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col lg:flex-row justify-center ">
             <div className="flex-1 bg-darker-blue lg:rounded-bl-lg lg:rounded-tl-lg">
-              <Suspense fallback={<div>Loading...</div>}>
-                <TabContent leftActive={leftActive} account={account} />
-              </Suspense>
+              <TabContent leftActive={leftActive} account={account} />
             </div>
 
             <div className="lg:w-[408px] bg-blue flex flex-col p-10 lg:rounded-br-lg lg:rounded-tr-lg">
@@ -219,7 +209,7 @@ export default function Home() {
 
 function TabContent(props: { leftActive: any; account: any }) {
   const tab = useTab();
-  const { data } = useData();
+  const { data, refetch } = useData();
 
   return (
     <div className="flex flex-col">
@@ -324,18 +314,15 @@ function TabContent(props: { leftActive: any; account: any }) {
           </div>
         )}
         {tab === 'get' && (
-          <div className="flex">
-            <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
-              <span className="font-thin pb-1 text-md">Mint yCRV from CRV</span>
-              <Mint />
-              <div className="mt-4 flex flex-col space-y-4">
-                <p className="font-thin opacity-70">
-                {`Convert your CRV to yCRV using the yCRV contract. This mints yCRV in a 1:1 ratio. ⚠️ Depending on peg it may be more efficient to use a DEX and swap instead of minting.`}
-                </p>
-                <p className="font-thin opacity-70">
-                <b>⚠️ Important: </b>{`yLocker tokens (such as yCRV) can never be redeemed for the underlying locked tokens (CRV). However, because they are liquid, they can be traded on decentralized exchanges, and bought and sold at the current market rate.`}
-                </p>
-              </div>
+          <div className="flex flex-col">
+            <div className="flex flex-col gap-4 p-4 md:p-8 w-full md:w-2/3">
+              <span className="text-xl font-bold">Supercharge your yield with yCRV</span>
+              <p className="font-thin opacity-70">
+                Zap any token within the yCRV ecosystem for any other, including staked positions. Maybe you want to zap for a higher yield. Maybe you just like zapping.
+              </p>
+            </div>
+            <div className="w-full px-4 md:px-0 flex justify-center">
+              <Zap onZap={() => refetch()} />
             </div>
           </div>
         )}
