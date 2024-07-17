@@ -1,9 +1,9 @@
 import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, UseSimulateContractReturnType, useWaitForTransactionReceipt } from 'wagmi'
 import { useParameters } from '../Parameters'
 import { erc20Abi, maxUint256, zeroAddress } from 'viem'
-import { ZAP } from '../constants'
 import { useMemo } from 'react'
 import { useWriteContract } from './useWriteContract'
+import env from '@/lib/env'
 
 export function useApproveErc20() {
   const { isConnected, address } = useAccount()
@@ -11,7 +11,7 @@ export function useApproveErc20() {
 
   const allowance = useReadContract({
     abi: erc20Abi, address: inputToken.address, functionName: 'allowance', 
-    args: [address ?? zeroAddress, ZAP],
+    args: [address ?? zeroAddress, env.ZAP],
     query: {
       enabled: isConnected && !inputIsYbs
     }
@@ -19,7 +19,7 @@ export function useApproveErc20() {
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
     abi: erc20Abi, address: inputToken.address, functionName: 'approve',
-    args: [ZAP, maxUint256],
+    args: [env.ZAP, maxUint256],
     query: { enabled:
       isConnected
       && !inputIsYbs

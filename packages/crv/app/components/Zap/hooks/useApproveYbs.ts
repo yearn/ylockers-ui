@@ -1,10 +1,10 @@
 import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt } from 'wagmi'
 import { useParameters } from '../Parameters'
 import { zeroAddress } from 'viem'
-import { ZAP } from '../constants'
 import ybsAbi from '../abis/ybs'
 import { useMemo } from 'react'
 import { useWriteContract } from './useWriteContract'
+import env from '@/lib/env'
 
 export function useApproveYbsAsInput() {
   const { isConnected, address } = useAccount()
@@ -12,7 +12,7 @@ export function useApproveYbsAsInput() {
 
   const approvedCaller = useReadContract({
     abi: ybsAbi, address: inputToken.address, functionName: 'approvedCaller', 
-    args: [address ?? zeroAddress, ZAP],
+    args: [address ?? zeroAddress, env.ZAP],
     query: {
       enabled: isConnected && inputIsYbs
     }
@@ -20,7 +20,7 @@ export function useApproveYbsAsInput() {
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
     abi: ybsAbi, address: inputToken.address, functionName: 'setApprovedCaller',
-    args: [ZAP, 3],
+    args: [env.ZAP, 3],
     query: { enabled: isConnected && inputIsYbs }
   }), [isConnected, inputToken, inputIsYbs])
 
@@ -37,7 +37,7 @@ export function useApproveYbsAsOutput() {
 
   const approvedCaller = useReadContract({
     abi: ybsAbi, address: outputToken.address, functionName: 'approvedCaller', 
-    args: [address ?? zeroAddress, ZAP],
+    args: [address ?? zeroAddress, env.ZAP],
     query: {
       enabled: isConnected && outputIsYbs
     }
@@ -45,7 +45,7 @@ export function useApproveYbsAsOutput() {
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
     abi: ybsAbi, address: outputToken.address, functionName: 'setApprovedCaller',
-    args: [ZAP, 3],
+    args: [env.ZAP, 3],
     query: { enabled: isConnected && outputIsYbs }
   }), [isConnected, outputToken, outputIsYbs])
 

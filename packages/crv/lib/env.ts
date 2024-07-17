@@ -19,6 +19,7 @@ const EnvSchema = z.object({
   YVMKUSD: zhexstringSchema,
   MKUSD: zhexstringSchema,
   YDAEMON: z.string(),
+  ZAP: zhexstringSchema,
   DEV: z.boolean()
 })
 
@@ -33,6 +34,7 @@ const result = EnvSchema.safeParse({
   YVMKUSD: process.env.NEXT_PUBLIC_YVMKUSD,
   MKUSD: process.env.NEXT_PUBLIC_MKUSD,
   YDAEMON: process.env.NEXT_PUBLIC_YDAEMON,
+  ZAP: process.env.NEXT_PUBLIC_ZAP,
   DEV: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 })
 
