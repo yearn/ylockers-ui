@@ -18,7 +18,8 @@ function Balance({
   const { getBalance } = useBalances({ tokens: TOKENS })
   const balance = useMemo(() => getBalance(token), [getBalance, token])
 
-  if (balance.amount === 0n) return <></>
+  const dust = 100n
+  if (balance.amount < dust) return <></>
 
   return <div className="flex flex-col items-end gap-0 text-sm text-neutral-400">
     <div>{fTokens(balance.amount, balance.decimals)}</div>

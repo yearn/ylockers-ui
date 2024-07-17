@@ -19,7 +19,7 @@ import { VaultProvider } from './VaultContext';
 
 const queryClient = new QueryClient();
 
-const useTestnet = Boolean(process.env.NEXT_PUBLIC_USE_TESTNET ?? false)
+const useTestnet = process.env.NEXT_PUBLIC_USE_TESTNET === 'true'
 const testnetId = parseInt(process.env.NEXT_PUBLIC_TESTNET_ID ?? '0')
 const testnetRpc = process.env.NEXT_PUBLIC_TESTNET_RPC ?? ''
 const testnet = Object.assign({}, mainnet, {
