@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useAccount } from 'wagmi'
 import Button from '../../Button'
 import { Suspense, useMemo } from 'react'
@@ -10,6 +9,7 @@ import { Input, InputDisplay } from './Input'
 import { AmountUsd, AmountUsdDisplay } from './AmountUsd'
 import { Balance, BalanceDisplay } from './Balance'
 import { MaxButton, MaxButtonDisplay } from './MaxButton'
+import ImageOrBg from '../ImageOrBg'
 
 export default function InputPanel({
   mode,
@@ -45,15 +45,14 @@ export default function InputPanel({
       <Suspense fallback={<InputDisplay />}>
         <Input disabled={disabled || mode === 'out'} mode={mode} />
       </Suspense>
-      <Button disabled={disabled} onClick={onSelectToken} className="px-2 py-2 flex items-center gap-2 !rounded-full">
-        <div className="w-[32px] h-[32px]">
-          <Image
-            className={cn(disabled ? 'opacity-20' : '', 'rounded-full bg-lighter-blue')}
-            src={token.icon}
-            alt={token.symbol}
-            width={32}
-            height={32} />
-        </div>
+      <Button disabled={disabled} onClick={onSelectToken} className="group px-2 py-2 flex items-center gap-2 !rounded-full">
+        <ImageOrBg
+          className={disabled ? 'opacity-20' : ''}
+          bgClassName="bg-neutral-200 rounded-full"
+          src={token.icon}
+          alt={token.symbol}
+          width={32}
+          height={32} />
         <div>{token.symbol}</div>
         <div className={cn('pr-1 text-xs', disabled ? 'fill-neutral-600' : 'fill-neutral-200')}>▼</div>
       </Button>

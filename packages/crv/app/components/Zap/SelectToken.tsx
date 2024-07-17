@@ -9,6 +9,7 @@ import { useCallback, useMemo } from 'react'
 import { fTokens, fUSD } from '@/lib/format'
 import { priced } from '@/lib/bmath'
 import { useParameters } from './Parameters'
+import ImageOrBg from './ImageOrBg'
 
 function Balance({ 
   token 
@@ -111,8 +112,8 @@ export default function SelectToken({
         hover:bg-darker-blue 
         rounded-primary cursor-pointer`}>
         <div className="flex items-center gap-4">
-          <Image
-            className="rounded-full bg-lighter-blue"
+          <ImageOrBg
+            bgClassName="bg-darker-blue-bg rounded-full"
             src={token.icon}
             alt={token.symbol}
             width={32}
