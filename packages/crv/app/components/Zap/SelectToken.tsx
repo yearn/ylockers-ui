@@ -112,12 +112,14 @@ export default function SelectToken({
         hover:bg-darker-blue 
         rounded-primary cursor-pointer`}>
         <div className="flex items-center gap-4">
-          <ImageOrBg
-            bgClassName="bg-darker-blue-bg rounded-full"
-            src={token.icon}
-            alt={token.symbol}
-            width={32}
-            height={32} />
+          <div className="size-[32px]">
+            <ImageOrBg
+              bgClassName="bg-darker-blue-bg rounded-full"
+              src={token.icon}
+              alt={token.symbol}
+              width={32}
+              height={32} />
+          </div>
           <div>{token.symbol}</div>
         </div>
         <Balance token={token} />

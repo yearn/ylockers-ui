@@ -46,13 +46,15 @@ export default function InputPanel({
         <Input disabled={disabled || mode === 'out'} mode={mode} />
       </Suspense>
       <Button disabled={disabled} onClick={onSelectToken} className="group px-2 py-2 flex items-center gap-2 !rounded-full">
-        <ImageOrBg
-          className={disabled ? 'opacity-20' : ''}
-          bgClassName="bg-neutral-200 rounded-full"
-          src={token.icon}
-          alt={token.symbol}
-          width={32}
-          height={32} />
+        <div className="size-[32px]">
+          <ImageOrBg
+            className={disabled ? 'opacity-20' : ''}
+            bgClassName="bg-neutral-200 rounded-full"
+            src={token.icon}
+            alt={token.symbol}
+            width={32}
+            height={32} />
+        </div>
         <div>{token.symbol}</div>
         <div className={cn('pr-1 text-xs', disabled ? 'fill-neutral-600' : 'fill-neutral-200')}>▼</div>
       </Button>
