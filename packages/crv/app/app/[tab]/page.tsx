@@ -221,6 +221,7 @@ function TabContent(props: { leftActive: any; account: any }) {
         {tab === 'learn_more_stake' && "Stake yCRV"}
         {tab === 'deposit' && "Auto-Compound yCRV"}
         {tab === 'withdraw' && "Auto-Compound yCRV"}
+        {tab === "get2" && "Auto-Compound yCRV"}
         {tab === 'learn_more_deposit' && "Auto-Compound yCRV"}
         
       </h1>
@@ -243,10 +244,11 @@ function TabContent(props: { leftActive: any; account: any }) {
           items={[
             { text: 'Deposit', link: '/app/deposit' },
             { text: 'Withdraw', link: '/app/withdraw' },
+            { text: "Get yCRV", link: "/app/get2" },
             { text: 'Learn More', link: '/app/learn_more_deposit' },
           ]}
           launchApp={false}
-          selected={tab === 'deposit' ? 'Deposit' : tab === 'learn_more_deposit' ? 'Learn More' : tab === 'withdraw' ? 'Withdraw' : ''}
+          selected={tab === 'deposit' ? 'Deposit' : tab === 'learn_more_deposit' ? 'Learn More' : tab === 'withdraw' ? 'Withdraw' : tab === "get2" ? "Get yCRV" : ''}
           className="pl-4 mb-2 md:mb-0 md:pl-8"
           onClickLaunch={() => {}}
         />
@@ -313,7 +315,7 @@ function TabContent(props: { leftActive: any; account: any }) {
             </div>
           </div>
         )}
-        {tab === 'get' && (
+        {(tab === "get" || tab === "get2") && (
           <div className="flex flex-col">
             <div className="flex flex-col gap-4 p-4 md:p-8 w-full md:w-2/3">
               <span className="text-xl font-bold">Supercharge your yield with yCRV</span>
