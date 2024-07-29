@@ -6,7 +6,7 @@ import { useCall } from 'wagmi'
 
 type Props = {
   decimals: number
-	amount: bigint
+	amount?: bigint
   min?: bigint
 	max?: bigint
 	placeholder?: string
@@ -51,14 +51,15 @@ export function InputTokenAmount({
     if (onChange 
       && (value >= (min !== undefined ? min : 0n)) 
       && (value <= (max !== undefined ? max : maxUint256))) {
+      console.log('changing')
       onChange(value)
     }
-  }, [onChange, min, max, dehumanize])
+  }, [onChange, min, max, dehumanize, decimals])
 
 	return <div className="relative flex w-full items-center justify-center">
     <Input type="number"
       className={inputClassName}
-      value={humanize(amount)}
+      value={amount !== undefined ? humanize(amount) : ''}
       onChange={_onChange}
       min={humanize(min !== undefined ? min : 0n)}
       max={humanize(max !== undefined ? max : maxUint256)}
