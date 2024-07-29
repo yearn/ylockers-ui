@@ -21,6 +21,8 @@ interface Context {
   outputIsYbs: boolean
   theme?: Theme
   setTheme: Setter<Theme | undefined>,
+  reversable: boolean,
+  reverse: () => void,
   onZap: () => void
 }
 
@@ -38,6 +40,8 @@ export const context = createContext<Context>({
   outputIsYbs: false,
   theme: undefined,
   setTheme: () => {},
+  reversable: false,
+  reverse: () => {},
   onZap: () => {}
 })
 
@@ -60,6 +64,19 @@ export default function Parameters({
   const inputIsYbs = useMemo(() => compareEvmAddresses(inputToken.address, TOKENS_MAP['YBS'].address), [inputToken])
   const outputIsYbs = useMemo(() => compareEvmAddresses(outputToken.address, TOKENS_MAP['YBS'].address), [outputToken])
 
+  const reversable = useMemo(() => {
+    const inputInOutputs = OUTPUTS.some( t => compareEvmAddresses(t.address, inputToken.address))
+    const outputInInputs = INPUTS.some( t => compareEvmAddresses(t.address, outputToken.address))
+    return inputInOutputs && outputInInputs
+  }, [inputToken, outputToken])
+
+  const reverse = useCallback(() => {
+    setInputToken(outputToken)
+    setOutputToken(inputToken)
+    setInputAmount(outputAmount)
+    setOutputAmount(inputAmount)
+  }, [inputToken, outputToken, inputAmount, outputAmount])
+
   const _onZap = useCallback(() => {
     onZap?.(inputToken, inputAmount ?? '0', outputToken, outputAmount ?? '0')
   }, [onZap, inputToken, inputAmount, outputToken, outputAmount])
@@ -70,6 +87,7 @@ export default function Parameters({
     outputToken, setOutputToken, outputIsYbs,
     outputAmount, setOutputAmount,
     theme, setTheme,
+    reversable, reverse,
     onZap: _onZap
   }}>
     {children}
