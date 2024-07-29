@@ -4,8 +4,7 @@ import Background from "../components/Background";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center min-h-screen bg-[linear-gradient(350deg,var(--tw-gradient-from),var(--tw-gradient-to))] from-dark-black to-dark-blue text-white">
-      <div className="w-full shadow-lg z-10"></div>
+    <main className="relative flex flex-col items-center min-h-screen text-white">
       <Background />
       <Header items={headerItems} selected="About"/>
       <section className="xl:w-[1200px] px-8 xl:p-0 z-10">
