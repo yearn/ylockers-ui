@@ -47,30 +47,38 @@ export default function InputPanel({
       </Suspense>
       <Button disabled={disabled} onClick={onSelectToken} className="group px-2 py-2 flex items-center gap-2 !rounded-full">
         <div className="size-[32px]">
-          <ImageOrBg
+          {token && <ImageOrBg
             className={disabled ? 'opacity-20' : ''}
             bgClassName="bg-neutral-200 rounded-full"
             src={token.icon}
             alt={token.symbol}
             width={32}
             height={32} />
+          }
+
+          {!token && <div className="size-[30px] border-2 border-dashed border-neutral-200 rounded-full"></div>}
+
         </div>
-        <div>{token.symbol}</div>
+        <div>{token?.symbol ?? 'Select a token'}</div>
         <div className={cn('pr-1 text-xs', disabled ? 'fill-neutral-600' : 'fill-neutral-200')}>▼</div>
       </Button>
     </div>
     <div className={cn(labelClassName, `flex items-center justify-between text-sm`)}>
-      <Suspense fallback={<AmountUsdDisplay />}>
-        <AmountUsd amount={amount} token={token} />
-      </Suspense>
-      <div className="flex items-center gap-2">
-        <Suspense fallback={<BalanceDisplay />}>
-          <Balance token={token} />
+      {token && <>
+        <Suspense fallback={<AmountUsdDisplay />}>
+          <AmountUsd amount={amount} token={token} />
         </Suspense>
-        {isModeIn && <Suspense fallback={<MaxButtonDisplay disabled={true} />}>
-          <MaxButton token={token} setAmount={setAmount} disabled={disabled} />
-        </Suspense>}
-      </div>
+        <div className="flex items-center gap-2">
+          <Suspense fallback={<BalanceDisplay />}>
+            <Balance token={token} />
+          </Suspense>
+          {isModeIn && <Suspense fallback={<MaxButtonDisplay disabled={true} />}>
+            <MaxButton token={token} setAmount={setAmount} disabled={disabled} />
+          </Suspense>}
+        </div>
+      </>}
+
+      {!token && <div className="h-7"></div>}
     </div>
   </div>
 }

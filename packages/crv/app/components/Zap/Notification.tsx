@@ -36,10 +36,13 @@ export default function Notification({ className }: { className?: string }) {
   } = useParameters()
 
   const zapped = useMemo(() => {
+    if (inputToken === undefined || outputToken === undefined) return ''
+
     const locale = new Intl.NumberFormat()
     const amountIn = Math.round(parseFloat(inputAmount ?? '0') * 1e2) / 1e2
     const amountOut = Math.round(parseFloat(outputAmount ?? '0') * 1e2) / 1e2
     return `Zapped ${locale.format(amountIn)} ${inputToken.symbol} → ${locale.format(amountOut)} ${outputToken.symbol}`
+
   }, [inputToken, inputAmount, outputToken, outputAmount])
 
   const {

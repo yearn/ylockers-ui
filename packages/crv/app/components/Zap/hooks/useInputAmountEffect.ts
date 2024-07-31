@@ -9,7 +9,7 @@ export function useInputAmountEffect() {
 
   useEffect(() => {
     if (expectedOut.isFetching) return
-    if (minOut === undefined || (inputAmount?.length ?? 0) === 0) {
+    if (minOut === undefined || (inputAmount?.length ?? 0) === 0 || outputToken === undefined) {
       setOutputAmount(undefined)
     } else {
       setOutputAmount(formatUnits(minOut, outputToken.decimals))

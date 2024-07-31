@@ -10,18 +10,19 @@ export function useApproveErc20() {
   const { inputToken, inputIsYbs } = useParameters()
 
   const allowance = useReadContract({
-    abi: erc20Abi, address: inputToken.address, functionName: 'allowance', 
+    abi: erc20Abi, address: inputToken?.address ?? zeroAddress, functionName: 'allowance', 
     args: [address ?? zeroAddress, env.ZAP],
     query: {
-      enabled: isConnected && !inputIsYbs
+      enabled: isConnected && inputToken !== undefined && !inputIsYbs
     }
   })
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
-    abi: erc20Abi, address: inputToken.address, functionName: 'approve',
+    abi: erc20Abi, address: inputToken?.address ?? zeroAddress, functionName: 'approve',
     args: [env.ZAP, maxUint256],
     query: { enabled:
       isConnected
+      && inputToken !== undefined
       && !inputIsYbs
       && allowance.isFetched
       && allowance.data! === 0n

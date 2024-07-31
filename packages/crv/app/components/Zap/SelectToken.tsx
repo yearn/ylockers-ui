@@ -51,7 +51,8 @@ export default function SelectToken({
     return result
   }, [getBalance])
 
-  const computeOutputTokens = useCallback((_inputToken: Token) => {
+  const computeOutputTokens = useCallback((_inputToken?: Token) => {
+    if (_inputToken === undefined) return OUTPUTS
     const outputSymbols = TOKEN_ROUTES[_inputToken.symbol] ?? OUTPUTS.map(t => t.symbol)
     return OUTPUTS.filter(t => outputSymbols.includes(t.symbol))
   }, [])

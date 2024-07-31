@@ -74,7 +74,7 @@ export function Action({
     if (insufficientBalance) return 'Insufficient funds'
     if (!inputAmount || !outputAmount) return 'Enter zap amount'
     if (isConfirming) return 'Confirming...'
-    if (needsErc20Approval) return `Approve ${inputToken.symbol}`
+    if (needsErc20Approval) return `Approve ${inputToken?.symbol ?? 'token'}`
     if (needsYbsApproval) return 'Enable YBS Zap'
     return 'Zap!'
   }, [

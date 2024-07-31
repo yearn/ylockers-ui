@@ -9,7 +9,7 @@ export function useInsufficientFunds() {
   const { getBalance } = useBalances({ tokens: TOKENS })
   const inputBalance = useMemo(() => getBalance(inputToken), [getBalance, inputToken])
   const insufficientFunds = useMemo(() => {
-    if ((inputAmount?.length ?? 0) === 0) return false
+    if (inputToken === undefined || (inputAmount?.length ?? 0) === 0) return false
     const inputExpansion = parseUnits(inputAmount!, inputToken.decimals)
     return inputExpansion > inputBalance.amount
   }, [inputAmount, inputToken, inputBalance])

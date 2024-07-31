@@ -4,11 +4,11 @@ import { BsFillLightningFill } from 'react-icons/bs'
 import { useParameters } from './Parameters'
 
 export default function Bolt() {
-  const { theme, reversable, reverse } = useParameters()
+  const { theme, reverse } = useParameters()
 
   const enabled = useMemo(() => {
-    return (!theme || theme === 'default') && reversable
-  }, [theme, reversable])
+    return !theme || theme === 'default'
+  }, [theme])
 
   const cursor = useMemo(() => {
     if (enabled) return 'cursor-pointer'
