@@ -7,8 +7,8 @@ import InputBox from "../../components/InputBox";
 import Header, { headerItems } from "../../components/Header";
 import { useParams } from 'next/navigation';
 import { Suspense } from 'react';
-import { useConnectModal, useAccountModal } from '--heavy-deps/hooks/rainbowkit';
-import { useVaultContext } from "--heavy-deps/context/VaultContext";
+import { useConnectModal, useAccountModal } from '--lib/hooks/rainbowkit';
+import { useVaultContext } from "--lib/context/VaultContext";
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
@@ -77,7 +77,7 @@ export default function Home() {
   }, [data.strategy.balance, data.strategy.decimals, prices]);
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
+    <main className="flex flex-col items-center min-h-screen text-white">
       {data.utilities.oldStakerBalance > 0n && (
         <div className="w-full bg-yellow-200 text-black text-center p-2 z-20">
           <b>⚠️ Warning: </b>Your wallet has balance of {fTokens(data.utilities.oldStakerBalance, data.staker.decimals)} yPRISMA in the deprecated yPRISMA staker.
@@ -85,18 +85,17 @@ export default function Home() {
           Use the above button to withdraw + claim pending rewards so that you can begin your migration! <Link className="underline" href="https://blog.yearn.fi/ybs-yprisma-launch" target="_blank">Read more.</Link>
         </div>
       )}
-      <div className="w-full shadow-lg z-10"></div>
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : "Connect Wallet"} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
         <section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0">
           <div className="w-full flex flex-wrap justify-center items-center mb-12 md:mb-8 space-y-4 md:space-x-8 md:space-y-0 flex-col md:flex-row">
             <Link href="/app/stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</div></div>
+              <div className="flex justify-between items-center text-lg pl-4">EARN mkUSD <div className={`font-mono rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</div></div>
             </div></Link>
             <Link href="/app/deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
               <div className="flex justify-between items-center text-lg pl-4">
-                EARN yPRISMA <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>
+                EARN yPRISMA <div className={`font-mono rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>
                   {vaultApy > 0 ? fPercent(vaultApy) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}
               </div></div>
             </div></Link>
@@ -112,21 +111,21 @@ export default function Home() {
               {leftActive ? (
                 <>
                   <span className="text-light-blue font-bold pb-2">AVERAGE STAKING APR</span>
-                  <span className="text-light-blue text-6xl font-bold mb-[26px]">{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
+                  <span className="text-light-blue text-6xl font-bold font-mono mb-[26px]">{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                   <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <div className="flex justify-between items-center pb-4">
                       <span className="font-semibold text-lg">YOUR POSITION</span>
-                      <span className="font-bold px-2 py-1 bg-disabled-bg rounded-lg text-boost-blue">{bmath.div(data.utilities.userBoostMultiplier, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}x BOOST</span>
+                      <span className="font-mono font-bold px-2 py-1 bg-disabled-bg rounded-lg text-boost-blue">{bmath.div(data.utilities.userBoostMultiplier, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}x BOOST</span>
                     </div>
                     <div className="flex justify-between w-full">
                       <span className="font-thin opacity-70	w">yPRISMA Staked</span>
-                      <span className="font-bold">
+                      <span className="font-mono font-bold">
                         <Tokens amount={data.staker.balance} decimals={data.staker.decimals}/>
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Your APR</span>
-                      <span className="font-bold">{data.utilities && fPercent(bmath.div(data.utilities.userApr, 10n**18n))}</span>
+                      <span className="font-mono font-bold">{data.utilities && fPercent(bmath.div(data.utilities.userApr, 10n**18n))}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Boost Multiplier</span>
@@ -134,7 +133,7 @@ export default function Home() {
                     </div> */}
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Claimable Rewards</span>
-                      <span className="font-bold">
+                      <span className="font-mono font-bold">
                         <Tokens amount={data.rewards.claimable} decimals={data.rewards.decimals}/> mkUSD
                       </span>
                     </div>
@@ -143,11 +142,11 @@ export default function Home() {
                     <span className="font-semibold pb-4 text-lg">YEARN BOOSTED STAKER</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">yPRISMA Staked</span>
-                      <span className="font-bold">{bmath.div(data.staker.totalSupply, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      <span className="font-mono font-bold">{bmath.div(data.staker.totalSupply, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Rewards this week</span>
-                      <span className="font-bold">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} mkUSD</span>
+                      <span className="font-mono font-bold">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} mkUSD</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	flex items-center gap-2 whitespace-nowrap">
@@ -156,9 +155,9 @@ export default function Home() {
                         <div>2.5x</div>
                       </span>
                       <span className="w-7/12 font-bold flex items-end md:items-center md:justify-end space-x-2">
-                        <span>{data.utilities && bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
+                        <span className="font-mono">{data.utilities && bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                         <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
-                        <span>{data.utilities && bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>                     </span>
+                        <span className="font-mono">{data.utilities && bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>                     </span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="font-thin opacity-70	">Average Boost Multiplier</span>
@@ -170,13 +169,13 @@ export default function Home() {
               ) :(
                 <>
                   <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APY</span>
-                  <span className="text-light-blue text-6xl font-bold mb-[26px]">
+                  <span className="text-light-blue text-6xl font-mono font-bold mb-[26px]">
                     {(vaultApy > 0) ? fPercent(vaultApy) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
                     <span className="font-semibold pb-4 text-lg">MY DEPOSITS</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">yPRISMA Deposited</span>
-                      <span className="font-bold">{data.strategy.balance
+                      <span className="font-mono font-bold">{data.strategy.balance
                         ? (bmath.div(data.strategy.balance, 10n**18n) * bmath.div(data.strategy.pricePerShare, 10n**18n)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                         : '-'
                       }
@@ -184,7 +183,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70 mb-4">USD Value</span>
-                      <span className="font-bold">
+                      <span className="font-mono font-bold">
                         ${data.strategy.balance && prices[env.YPRISMA]
                           ? (Number(bmath.div(data.strategy.balance, 10n**18n) * bmath.div(data.strategy.pricePerShare, 10n**18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                           : '0.00'}
@@ -193,7 +192,7 @@ export default function Home() {
                     <span className="font-semibold pb-4 pt-6 text-lg border-t-2 border-soft-blue">TOTAL DEPOSITS</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">yPRISMA Deposited</span>
-                      <span className="font-bold">{data.strategy.totalAssets
+                      <span className="font-mono font-bold">{data.strategy.totalAssets
                         ? bmath.div(data.strategy.totalAssets, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                         : '-'
                       }
@@ -201,7 +200,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70">USD Value</span>
-                      <span className="font-bold">
+                      <span className="font-mono font-bold">
                         ${data.strategy.totalAssets && prices[env.YPRISMA]
                           ? (Number(bmath.div(data.strategy.totalAssets, 10n ** 18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                           : '-'}
@@ -283,7 +282,7 @@ function TabContent(props: { leftActive: any; account: any }) {
           </div>
         )}
         {tab === 'unstake' && (
-          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0">
             <div className="flex flex-col p-4 md:p-8 w-full md:w-1/2">
               <span className="font-thin pb-1 text-md">Unstake yPRISMA</span>
               <Unstake />
@@ -301,8 +300,11 @@ function TabContent(props: { leftActive: any; account: any }) {
           <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
             <div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-1/2">
             <span className="font-semibold">YOUR REWARD</span>
-            <span className="font-semibold text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
-            <span className="font-thin opacity-70">{bmath.div(data.rewards.claimable, 10n ** BigInt(data.rewards.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} yvmkUSD-A</span>
+            <span className="font-semibold font-mono text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
+            <span className="flex items-end gap-1">
+              <span className="font-mono opacity-50">{bmath.div(data.rewards.claimable, 10n ** BigInt(data.rewards.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              <span className="font-thin opacity-70">yvmkUSD-A</span>
+            </span>
             <div>
               <ClaimAll />
             </div>

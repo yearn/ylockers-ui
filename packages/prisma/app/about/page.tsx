@@ -5,8 +5,7 @@ import env from "@/lib/env";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center min-h-screen bg-gradient-to-r from-dark-black to-dark-blue text-white">
-      <div className="w-full shadow-lg z-10"></div>
+    <main className="flex flex-col items-center min-h-screen text-white">
       <Background />
       <Header items={headerItems} selected="About"/>
       <section className="xl:w-[1200px] px-8 xl:p-0 z-10">

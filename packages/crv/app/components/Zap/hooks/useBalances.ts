@@ -50,7 +50,8 @@ export default function useBalances({
     await Promise.all([balances.refetch(), prices.refetch()])
   }, [balances, prices])
 
-  const getBalance = useCallback((token: Token) => {
+  const getBalance = useCallback((token?: Token) => {
+    if (!token) return { address: zeroAddress, amount: BigInt(0), price: 0, decimals: 0, symbol: '', icon: '' }
     const balance = result?.find(balance => balance.address === token.address)
     return balance ?? {...token, amount: BigInt(0), price: 0}
   }, [result])

@@ -11,17 +11,19 @@ export function useApproveYbsAsInput() {
   const { inputToken, inputIsYbs } = useParameters()
 
   const approvedCaller = useReadContract({
-    abi: ybsAbi, address: inputToken.address, functionName: 'approvedCaller', 
+    abi: ybsAbi, address: inputToken?.address ?? zeroAddress, functionName: 'approvedCaller', 
     args: [address ?? zeroAddress, env.ZAP],
     query: {
-      enabled: isConnected && inputIsYbs
+      enabled: isConnected && inputToken !== undefined && inputIsYbs
     }
   })
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
-    abi: ybsAbi, address: inputToken.address, functionName: 'setApprovedCaller',
+    abi: ybsAbi, address: inputToken?.address ?? zeroAddress, functionName: 'setApprovedCaller',
     args: [env.ZAP, 3],
-    query: { enabled: isConnected && inputIsYbs }
+    query: { 
+      enabled: isConnected && inputToken !== undefined && inputIsYbs 
+    }
   }), [isConnected, inputToken, inputIsYbs])
 
   const simulation = useSimulateContract(parameters)
@@ -36,17 +38,19 @@ export function useApproveYbsAsOutput() {
   const { outputToken, outputIsYbs } = useParameters()
 
   const approvedCaller = useReadContract({
-    abi: ybsAbi, address: outputToken.address, functionName: 'approvedCaller', 
+    abi: ybsAbi, address: outputToken?.address ?? zeroAddress, functionName: 'approvedCaller', 
     args: [address ?? zeroAddress, env.ZAP],
     query: {
-      enabled: isConnected && outputIsYbs
+      enabled: isConnected && outputToken !== undefined && outputIsYbs
     }
   })
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
-    abi: ybsAbi, address: outputToken.address, functionName: 'setApprovedCaller',
+    abi: ybsAbi, address: outputToken?.address ?? zeroAddress, functionName: 'setApprovedCaller',
     args: [env.ZAP, 3],
-    query: { enabled: isConnected && outputIsYbs }
+    query: { 
+      enabled: isConnected && outputToken !== undefined && outputIsYbs
+    }
   }), [isConnected, outputToken, outputIsYbs])
 
   const simulation = useSimulateContract(parameters)

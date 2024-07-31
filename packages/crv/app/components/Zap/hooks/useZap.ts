@@ -1,9 +1,9 @@
 import { useAccount, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt } from 'wagmi'
 import { useParameters } from '../Parameters'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useWriteContract } from './useWriteContract'
 import zapAbi from '../abis/zap'
-import { parseUnits } from 'viem'
+import { parseUnits, zeroAddress } from 'viem'
 import { useMinOut } from './useMinOut'
 import env from '@/lib/env'
 
@@ -14,17 +14,23 @@ export function useZap({ needsApproval }: { needsApproval: boolean }) {
 
   const amount = useMemo(() => parseUnits((inputAmount ?? '0'), 18), [inputAmount])
 
+  const enabled = useMemo(
+    () => isConnected
+      && inputToken !== undefined
+      && outputToken !== undefined
+      && !needsApproval && amount > 0 && minOut !== undefined,
+    [isConnected, inputAmount, inputToken, outputToken, minOut, needsApproval]
+  )
+
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
     abi: zapAbi, address: env.ZAP, functionName: 'zap',
     args: [
-      inputToken.address,
-      outputToken.address,
+      inputToken?.address ?? zeroAddress,
+      outputToken?.address ?? zeroAddress,
       amount,
-      minOut
+      minOut ?? 1n
     ],
-    query: {
-      enabled: isConnected && !needsApproval && amount > 0 && minOut !== undefined
-    }
+    query: { enabled }
   }), [isConnected, inputAmount, inputToken, outputToken, minOut, needsApproval])
 
   const simulation = useSimulateContract(parameters)

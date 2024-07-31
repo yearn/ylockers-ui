@@ -6,6 +6,7 @@ import { compareEvmAddresses, NO_DEX_NO_SLIPPAGE, TOKENS_MAP } from '../tokens'
 import bmath from '@/lib/bmath'
 import { DEFAULT_SLIPPAGE } from '../constants'
 import env from '@/lib/env'
+import { zeroAddress } from 'viem'
 
 export function useMinOut() {
   const { isConnected } = useAccount()
@@ -14,17 +15,19 @@ export function useMinOut() {
   const expectedOut = useReadContract({
     abi: zapAbi, address: env.ZAP, functionName: 'calc_expected_out', 
     args: [
-      inputToken.address, 
-      outputToken.address, 
+      inputToken?.address ?? zeroAddress, 
+      outputToken?.address ?? zeroAddress, 
       inputAmountExpanded
     ],
     query: {
-      enabled: isConnected && inputAmountExpanded > 0,
+      enabled: isConnected && inputToken !== undefined && outputToken !== undefined && inputAmountExpanded > 0,
       refetchInterval: 10_000
     }
   })
 
   const minOut = useMemo(() => {
+    if (inputToken === undefined || outputToken === undefined) return undefined
+
     if (expectedOut.isError) {
       console.info('expectedOut.isError')
       console.error(expectedOut.error?.message)

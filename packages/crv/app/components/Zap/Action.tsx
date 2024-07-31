@@ -9,6 +9,7 @@ import { useInsufficientFunds } from './hooks/useInsufficientFunds'
 import { TOKENS } from './tokens'
 import useBalances from './hooks/useBalances'
 import { useContracts } from './Contracts'
+import useDebounce from '@/hooks/useDebounce'
 
 export function ActionDisplay({
   onClick,
@@ -68,12 +69,12 @@ export function Action({
     zap
   ])
 
-  const label = useMemo(() => {
+  const _label = useMemo(() => {
     if (!isConnected) return 'Connect'
     if (insufficientBalance) return 'Insufficient funds'
     if (!inputAmount || !outputAmount) return 'Enter zap amount'
     if (isConfirming) return 'Confirming...'
-    if (needsErc20Approval) return `Approve ${inputToken.symbol}`
+    if (needsErc20Approval) return `Approve ${inputToken?.symbol ?? 'token'}`
     if (needsYbsApproval) return 'Enable YBS Zap'
     return 'Zap!'
   }, [
@@ -82,6 +83,8 @@ export function Action({
     insufficientBalance,
     needsErc20Approval, needsYbsApproval
   ])
+
+  const label = useDebounce(_label, 68)
 
   const reset = useCallback((resetAmounts: boolean) => {
     approveErc20.write.reset()

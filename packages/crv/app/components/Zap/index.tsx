@@ -39,7 +39,7 @@ function Layout() {
         <InputPanel mode="in" onSelectToken={() => setSelectTokenMode('in')} />
         <InputPanel mode="out" onSelectToken={() => setSelectTokenMode('out')} />
         <div className={`pt-1
-          absolute z-10 inset-0 
+          isolate absolute z-50 inset-0 
           flex items-center justify-center
           pointer-events-none`}>
           <Bolt />
@@ -48,7 +48,7 @@ function Layout() {
     </div>
 
     <Suspense fallback={<ActionDisplay disabled={true} className="py-3 w-full" />}>
-      <Action className="py-3 w-full" />
+      <Action className="py-3 w-full select-none" />
     </Suspense>
 
     <Notification className="h-16 px-2" />

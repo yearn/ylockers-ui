@@ -3,24 +3,25 @@ import { compareEvmAddresses, INPUTS, OUTPUTS, Token, TOKENS_MAP } from './token
 import { parseUnits } from 'viem'
 
 type Setter<T> = (value: T | ((prev: T) => T)) => void
-type SetToken = Setter<Token>
+type SetToken = Setter<Token | undefined>
 type SetString = Setter<string | undefined>
 type Theme = 'default' | 'transparent' | 'onit'
 
 interface Context {
-  inputToken: Token
+  inputToken?: Token
   setInputToken: SetToken
   inputAmount?: string
   setInputAmount: SetString
   inputAmountExpanded: bigint
   inputIsYbs: boolean
-  outputToken: Token
+  outputToken?: Token
   setOutputToken: SetToken
   outputAmount?: string
   setOutputAmount: SetString
   outputIsYbs: boolean
   theme?: Theme
   setTheme: Setter<Theme | undefined>,
+  reverse: () => void,
   onZap: () => void
 }
 
@@ -38,6 +39,7 @@ export const context = createContext<Context>({
   outputIsYbs: false,
   theme: undefined,
   setTheme: () => {},
+  reverse: () => {},
   onZap: () => {}
 })
 
@@ -50,17 +52,26 @@ export default function Parameters({
   onZap?: (inputToken: Token, inputAmount: string, outputToken: Token, outputAmount: string) => void,
   children: ReactNode 
 }) {
-  const [inputToken, setInputToken] = useState<Token>(INPUTS[0])
+  const [inputToken, setInputToken] = useState<Token | undefined>(INPUTS[0])
   const [inputAmount, setInputAmount] = useState<string | undefined>()
-  const [outputToken, setOutputToken] = useState<Token>(OUTPUTS[0])
+  const [outputToken, setOutputToken] = useState<Token | undefined>(OUTPUTS[0])
   const [outputAmount, setOutputAmount] = useState<string | undefined>()
   const [theme, setTheme] = useState<'default' | 'transparent' | 'onit' | undefined>(undefined)
 
-  const inputAmountExpanded = useMemo(() => parseUnits(inputAmount ?? '0', inputToken.decimals), [inputAmount, inputToken])
-  const inputIsYbs = useMemo(() => compareEvmAddresses(inputToken.address, TOKENS_MAP['YBS'].address), [inputToken])
-  const outputIsYbs = useMemo(() => compareEvmAddresses(outputToken.address, TOKENS_MAP['YBS'].address), [outputToken])
+  const inputAmountExpanded = useMemo(() => inputToken ? parseUnits(inputAmount ?? '0', inputToken.decimals) : 0n, [inputAmount, inputToken])
+  const inputIsYbs = useMemo(() => compareEvmAddresses(inputToken?.address, TOKENS_MAP['YBS'].address), [inputToken])
+  const outputIsYbs = useMemo(() => compareEvmAddresses(outputToken?.address, TOKENS_MAP['YBS'].address), [outputToken])
+
+  const reverse = useCallback(() => {
+    const inputInOutputs = OUTPUTS.some( t => compareEvmAddresses(t.address, inputToken?.address))
+    const outputInInputs = INPUTS.some( t => compareEvmAddresses(t.address, outputToken?.address))
+    setInputToken(outputInInputs ? outputToken : undefined)
+    setOutputToken(inputInOutputs ? inputToken : undefined)
+    setInputAmount(outputAmount)
+  }, [inputToken, outputToken, outputAmount])
 
   const _onZap = useCallback(() => {
+    if (!(inputToken && outputToken)) return
     onZap?.(inputToken, inputAmount ?? '0', outputToken, outputAmount ?? '0')
   }, [onZap, inputToken, inputAmount, outputToken, outputAmount])
 
@@ -70,6 +81,7 @@ export default function Parameters({
     outputToken, setOutputToken, outputIsYbs,
     outputAmount, setOutputAmount,
     theme, setTheme,
+    reverse,
     onZap: _onZap
   }}>
     {children}

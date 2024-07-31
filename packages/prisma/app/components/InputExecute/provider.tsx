@@ -25,7 +25,7 @@ export const TaskSchema = z.object({
 export type Task = z.infer<typeof TaskSchema>
 
 const setAmountSchema = z.function()
-.args(z.bigint().or(z.function().args(z.bigint()).returns(z.bigint())))
+.args(z.bigint().optional().or(z.function().args(z.bigint().optional()).returns(z.bigint())))
 .returns(z.void())
 
 const contractSimulationStatuses = [
@@ -79,7 +79,7 @@ const ContextSchema = z.object({
   isError: z.boolean().default(false),
   error: z.string().nullish(),
   token: TokenSchema.default(TokenSchema.parse({})),
-  amount: z.bigint().default(0n),
+  amount: z.bigint().optional(),
   setAmount: setAmountSchema.default(() => {}),
   approve: ContractClientSchema.default({}),
   execute: ContractClientSchema.default({}),
@@ -102,7 +102,7 @@ export const useProvider = () => useContext(context)
 
 export default function Provider({ task, children }: { task: Task, children: ReactNode }) {
   const { refetch } = useData()
-  const [amount, setAmount] = useState(0n)
+  const [amount, setAmount] = useState<bigint | undefined>(undefined)
   const [amountApproved, setAmountApproved] = useState(0n)
   const [amountExecuted, setAmountExecuted] = useState(0n)
   const [isApproved, setIsApproved] = useState(false)
@@ -117,14 +117,18 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   }, [token, task, setAllowance])
 
   const needsApproval = useMemo(() => {
+    if (amount === undefined) return false
     return task.needsApproval && allowance < (amount - amountApproved)
   }, [task, allowance, amount, amountApproved])
 
   const executeContractParameters = useMemo<UseSimulateContractParameters>(() => 
     ({
       ...task.parameters, 
-      args: task.parameters.args(amount),
-      query: { enabled: amount > 0n && (!needsApproval || allowance >= amount) }
+      args: task.parameters.args(amount ?? 0n),
+      query: { enabled: 
+        amount !== undefined
+        && amount > 0n && (!needsApproval || allowance >= amount) 
+      }
     }), 
   [amount, task, needsApproval, allowance])
 
@@ -136,7 +140,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     write: () => {
       setIsExecuted(false)
       _execute.writeContract(simulateExecute.data!.request)
-      setAmountExecuted(amount)
+      setAmountExecuted(amount ?? 0n)
     },
     hash: _execute.data,
     disabled: !Boolean(simulateExecute.data?.request),
@@ -148,7 +152,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     error: _execute.error?.toString(),
     simulation: {
       status: simulateExecute.status,
-      disabled: !(amount > 0n && allowance >= amount),
+      disabled: !(amount !== undefined && amount > 0n && allowance >= amount),
       isPending: simulateExecute.isPending,
       isSuccess: simulateExecute.isSuccess,
       isError: simulateExecute.isError,
@@ -178,7 +182,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     abi: erc20Abi,
     functionName: 'approve',
     args: [task.parameters.address!, maxUint256],
-    query: { enabled: needsApproval && amount > 0n }
+    query: { enabled: needsApproval && amount !== undefined && amount > 0n }
   })
 
   const _approve = useWriteContract()
@@ -198,7 +202,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     error: _approve.error?.toString(),
     simulation: {
       status: simulateApprove.status,
-      disabled: amount < 1n,
+      disabled: amount !== undefined && amount < 1n,
       isPending: simulateApprove.isPending,
       isSuccess: simulateApprove.isSuccess,
       isError: simulateApprove.isError,
@@ -216,8 +220,8 @@ export default function Provider({ task, children }: { task: Task, children: Rea
 
   useEffect(() => {
     if (_approveReceipt.isSuccess && !isApproved) {
-      setAmountApproved(amount)
-      setAllowance(amount)
+      setAmountApproved(amount ?? 0n)
+      setAllowance(amount ?? 0n)
       setIsApproved(true)
       _execute.reset()
       refetch()
@@ -244,7 +248,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   }, [approve, execute, error])
 
   const reset = useCallback(() => {
-    setAmount(0n)
+    setAmount(undefined)
     setAmountApproved(0n)
     setAmountExecuted(0n)
     _approve.reset()
