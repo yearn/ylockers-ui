@@ -3,7 +3,7 @@ import localFont from 'next/font/local'
 import "./globals.css";
 import '@rainbow-me/rainbowkit/styles.css';
 
-import Provider from './contexts/Provider';
+import Providers from '--lib/context/Providers';
 
 const sans = localFont({
   variable: '--font-aeonik-sans',
@@ -44,9 +44,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
-        <Provider>
+        <Providers>
           {children}
-        </Provider>
+        </Providers>
       </body>
     </html>
   );

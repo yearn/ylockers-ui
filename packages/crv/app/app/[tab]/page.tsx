@@ -11,7 +11,6 @@ import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import useData from "@/hooks/useData";
-import { useVaultContext } from '../../contexts/VaultContext';
 import useVault from '@/hooks/useVault';
 import Tokens from "../../components/Tokens";
 
@@ -34,6 +33,7 @@ import Background from "../../components/Background";
 import A from "@/app/components/A";
 import ImageOrFallback from "@/app/components/ImageOrFallback";
 import Zap from "@/app/components/Zap";
+import { useVaultContext } from "--lib/context/VaultContext";
 
 function isVersionGte(version: string, compareVersion: string) {
     const versionParts = version.split('.').map(Number);
