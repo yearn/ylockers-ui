@@ -2,16 +2,15 @@ import { ChangeEvent, useCallback, useMemo, type ReactElement } from 'react'
 import { formatUnits, maxUint256 } from 'viem'
 import Input from './Input'
 import Button from './Button'
-import { useCall } from 'wagmi'
 
 type Props = {
   decimals: number
-	amount: bigint
+	amount?: bigint
   min?: bigint
 	max?: bigint
 	placeholder?: string
 	disabled?: boolean
-	onChange?: (amount: bigint) => void
+	onChange?: (amount?: bigint) => void
 	onMaxClick?: () => void
 }
 
@@ -47,9 +46,15 @@ export function InputTokenAmount({
   }, [decimals])
 
   const _onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    if (!onChange) return
+
+    if (e.target.value.length === 0) {
+      onChange(undefined)
+      return
+    }
+
     const value = dehumanize(e.target.value)
-    if (onChange 
-      && (value >= (min !== undefined ? min : 0n)) 
+    if ((value >= (min !== undefined ? min : 0n)) 
       && (value <= (max !== undefined ? max : maxUint256))) {
       onChange(value)
     }
@@ -58,7 +63,7 @@ export function InputTokenAmount({
 	return <div className="relative flex w-full items-center justify-center">
     <Input type="number"
       className={inputClassName}
-      value={humanize(amount)}
+      value={amount !== undefined ? humanize(amount) : ''}
       onChange={_onChange}
       min={humanize(min !== undefined ? min : 0n)}
       max={humanize(max !== undefined ? max : maxUint256)}

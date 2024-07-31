@@ -102,7 +102,11 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
     }}
     return {
       key: 'default',
-      text: <div>{`You have ${fTokens(token.balance, token.decimals)} ${token.symbol}`}</div>
+      text: <div className="flex items-center gap-1">
+        <span>You have</span>
+        <span className="font-mono opacity-60">{fTokens(token.balance, token.decimals)}</span>
+        <span>{token.symbol}</span>
+      </div>
     }
   }, [needsApproval, isApproved, isError, approve, execute, task, verbPastTense, amountExecuted, token])
 

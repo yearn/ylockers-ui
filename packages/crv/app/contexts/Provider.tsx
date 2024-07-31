@@ -6,10 +6,7 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { injectedWallet, frameWallet, metaMaskWallet, walletConnectWallet, rainbowWallet, coinbaseWallet, safeWallet } from '@rainbow-me/rainbowkit/wallets';
 import { http, WagmiProvider } from 'wagmi';
-import {
-  mainnet,
-  localhost
-} from 'wagmi/chains';
+import { mainnet } from 'wagmi/chains';
 import {
   QueryClientProvider,
   QueryClient,

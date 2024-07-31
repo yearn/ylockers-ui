@@ -3,7 +3,7 @@ import localFont from 'next/font/local'
 import "./globals.css";
 import '@rainbow-me/rainbowkit/styles.css';
 
-import Providers from '--heavy-deps/context/Providers';
+import Providers from '--lib/context/Providers';
 
 const sans = localFont({
   variable: '--font-aeonik-sans',

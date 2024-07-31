@@ -44,7 +44,6 @@ bun dev:{assetName}
 
 ### packages/--lib integration
 - Add `"--lib": "0.1.0"` to the new project's package.json dependencies.
-- Add `"--heavy-deps": "0.1.0"` to the new project's package.json dependencies.
 - Add `../--lib/components/**/*.{js,ts,jsx,tsx,mdx}` to the `content` array in the project's `tailwind.config.js`.
 
 ## Deployment

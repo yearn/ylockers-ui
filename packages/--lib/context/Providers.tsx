@@ -6,10 +6,7 @@ import {
 } from '@rainbow-me/rainbowkit'
 import { injectedWallet, frameWallet, metaMaskWallet, walletConnectWallet, rainbowWallet, coinbaseWallet, safeWallet } from '@rainbow-me/rainbowkit/wallets'
 import { http, WagmiProvider } from 'wagmi'
-import {
-  mainnet,
-  localhost
-} from 'wagmi/chains'
+import { mainnet } from 'wagmi/chains'
 import {
   QueryClientProvider,
   QueryClient,
@@ -18,23 +15,26 @@ import { VaultProvider } from './VaultContext'
 
 const queryClient = new QueryClient()
 
-// const newMainnet = Object.assign({}, mainnet, {
-//   'id': 6969,
-//   'rpcUrls': {
-//     'default': {
-//       'http': ['https://virtual.mainnet.rpc.tenderly.co/bb40feda-1904-4527-8de7-347b90c78112']
-//     }
-//   }
-// })
+const useTestnet = process.env.NEXT_PUBLIC_USE_TESTNET === 'true'
+const testnetId = parseInt(process.env.NEXT_PUBLIC_TESTNET_ID ?? '0')
+const testnetRpc = process.env.NEXT_PUBLIC_TESTNET_RPC ?? ''
+const testnet = Object.assign({}, mainnet, {
+  'id': testnetId,
+  'rpcUrls': {
+    'default': {
+      'http': [testnetRpc]
+    }
+  }
+})
+
+const chain = useTestnet ? testnet : mainnet
+const rpc = useTestnet ? testnetRpc : process.env.NEXT_PUBLIC_RPC_1
 
 const config = getDefaultConfig({
-  appName: 'yPrisma',
-  projectId: '84801a4fb569adb34f184f543b6d1762',
-  // chains: [newMainnet],
-  chains: [mainnet],
-  transports: {
-    [mainnet.id]: http(process.env.NEXT_PUBLIC_RPC_1)
-  },
+  appName: process.env.NEXT_PUBLIC_RAINBOWKIT_APPNAME ?? 'NEXT_PUBLIC_RAINBOWKIT_APPNAME',
+  projectId: process.env.NEXT_PUBLIC_RAINBOWKIT_PROJECTID ?? 'NEXT_PUBLIC_RAINBOWKIT_PROJECTID',
+  chains: [chain],
+  transports: { [chain.id]: http(rpc) },
   wallets: [{
     groupName: 'Popular',
     wallets: [
