@@ -10,6 +10,12 @@
     "build:--lib": "cd packages/--lib && next build",
     "build:prisma": "cd packages/prisma && next build",
     "build:crv": "cd packages/crv && next build",
+    "lint:--lib": "cd packages/--lib && NEXT_TELEMETRY_DISABLED=1 next lint",
+    "lint:fix:--lib": "cd packages/--lib && NEXT_TELEMETRY_DISABLED=1 next lint --fix",
+    "lint:prisma": "cd packages/prisma && NEXT_TELEMETRY_DISABLED=1 next lint",
+    "lint:fix:prisma": "cd packages/prisma && NEXT_TELEMETRY_DISABLED=1 next lint --fix",
+    "lint:crv": "cd packages/crv && NEXT_TELEMETRY_DISABLED=1 next lint",
+    "lint:fix:crv": "cd packages/crv && NEXT_TELEMETRY_DISABLED=1 next lint --fix",
     "clean": "rm -R node_modules && rm -R packages/**/.next"
   }
 }
