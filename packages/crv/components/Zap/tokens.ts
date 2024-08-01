@@ -1,7 +1,7 @@
 import { getAddress } from 'viem'
 import { z } from 'zod'
 
-export const zevmaddressstring = z.custom<`0x${string}`>((val: any) => /^0x[a-fA-F0-9]{40}$/.test(val))
+export const zevmaddressstring = z.custom<`0x${string}`>((val: string) => /^0x[a-fA-F0-9]{40}$/.test(val))
 export const EvmAddressSchema = zevmaddressstring.transform(s => getAddress(s))
 export type EvmAddress = z.infer<typeof EvmAddressSchema>
 
@@ -104,7 +104,7 @@ export const TOKENS_MAP: Record<string, Token> = {
     address: '0xE9A115b77A1057C918F997c32663FdcE24FB873f', 
     symbol: 'YBS', 
     decimals: 18, 
-    icon: `/token/1/0xE9A115b77A1057C918F997c32663FdcE24FB873f/logo-128.png`,
+    icon: '/token/1/0xE9A115b77A1057C918F997c32663FdcE24FB873f/logo-128.png',
     legacy: false
   }
 } as const

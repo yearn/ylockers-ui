@@ -24,7 +24,7 @@ export default function InputPanel({
   const label = useMemo(() => isModeIn ? 'Zap in' : 'Zap out (min)', [isModeIn])
 
   const labelClassName = useMemo(() => {
-    return cn(`text-sm`, disabled ? 'text-neutral-600' : 'text-neutral-300')
+    return cn('text-sm', disabled ? 'text-neutral-600' : 'text-neutral-300')
   }, [disabled])
 
   const {
@@ -63,7 +63,7 @@ export default function InputPanel({
         <div className={cn('pr-1 text-xs', disabled ? 'fill-neutral-600' : 'fill-neutral-200')}>▼</div>
       </Button>
     </div>
-    <div className={cn(labelClassName, `flex items-center justify-between text-sm`)}>
+    <div className={cn(labelClassName, 'flex items-center justify-between text-sm')}>
       {token && <>
         <Suspense fallback={<AmountUsdDisplay />}>
           <AmountUsd amount={amount} token={token} />

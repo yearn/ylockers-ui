@@ -5,7 +5,9 @@ type AnchorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 }
 
 const A = forwardRef<HTMLAnchorElement, AnchorProps>(({ className, children, ...props }, ref) => (
-  <a ref={ref} {...props} className={`
+  <a ref={ref}
+    {...props}
+    className={`
   hover:underline hover:text-light-blue hover:decoration-light-blue
   active:underline active:text-charge-yellow active:decoration-charge-yellow
   ${className}`}>

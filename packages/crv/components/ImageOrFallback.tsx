@@ -11,5 +11,5 @@ export default function ImageOrFallback(props : {
   fallback: string
 }) {
   const [_src, setSrc] = useState(props.src)
-  return <Image {...props} src={_src} onError={() => setSrc(props.fallback)} />
+  return <Image {...props} alt={props.alt ?? ''} src={_src} onError={() => setSrc(props.fallback)} />
 }

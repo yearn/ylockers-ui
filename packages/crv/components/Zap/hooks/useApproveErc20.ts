@@ -1,4 +1,4 @@
-import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, UseSimulateContractReturnType, useWaitForTransactionReceipt } from 'wagmi'
+import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt } from 'wagmi'
 import { useParameters } from '../Parameters'
 import { erc20Abi, maxUint256, zeroAddress } from 'viem'
 import { useMemo } from 'react'

@@ -18,9 +18,9 @@ export default function ImageOrBg({ bgClassName, ...imageProps }: ImageOrBgProps
       <div className={cn(`absolute z-10 inset-0 w-[${imageProps.width}px]`, `h-[${imageProps.height}px]`, bgClassName, bgClassNameInner)}></div>
       <Image 
         {...imageProps} 
+        alt={imageProps.alt ?? ''} 
         onLoad={() => setLoaded(true)} 
-        className={cn('absolute z-20 inset-0', imageProps.className, imageClassName)} 
-      />
+        className={cn('absolute z-20 inset-0', imageProps.className, imageClassName)} />
     </div>
   )
 }

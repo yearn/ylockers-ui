@@ -25,8 +25,8 @@ export const TaskSchema = z.object({
 export type Task = z.infer<typeof TaskSchema>
 
 const setAmountSchema = z.function()
-.args(z.bigint().optional().or(z.function().args(z.bigint().optional()).returns(z.bigint())))
-.returns(z.void())
+  .args(z.bigint().optional().or(z.function().args(z.bigint().optional()).returns(z.bigint())))
+  .returns(z.void())
 
 const contractSimulationStatuses = [
   'error', 'pending', 'success'
@@ -143,7 +143,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
       setAmountExecuted(amount ?? 0n)
     },
     hash: _execute.data,
-    disabled: !Boolean(simulateExecute.data?.request),
+    disabled: !simulateExecute.data?.request,
     status: _execute.status,
     isIdle: _execute.isIdle,
     isPending: _execute.isPending,
@@ -193,7 +193,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
       _approve.writeContract(simulateApprove.data!.request)
     },
     hash: _approve.data,
-    disabled: !Boolean(simulateApprove.data?.request),
+    disabled: !simulateApprove.data?.request,
     status: _approve.status,
     isIdle: _approve.isIdle,
     isPending: _approve.isPending,
@@ -272,7 +272,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     amountExecuted,
     verb: task.verb,
     reset
-    }}>
+  }}>
     {children}
   </context.Provider>
 }

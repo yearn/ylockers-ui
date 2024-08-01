@@ -35,7 +35,7 @@ export default function useBalances({
     if (!prices.isFetched) return 0
     const symbol = PRICE_PROXIES[token.symbol] ?? token.symbol
     return prices.data[TOKENS_MAP[symbol].address] as number
-  }, [[prices]])
+  }, [prices])
 
   const result = useMemo(() => {
     if (!(isConnected && balances.isFetched && prices.isFetched)) return []

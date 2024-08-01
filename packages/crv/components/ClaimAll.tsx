@@ -14,7 +14,8 @@ import { springs } from '@/lib/motion'
 function GreatSuccess({ hash }: { hash: `0x${string}`}) {
   const config = useConfig()
   return <A href={`${config.getClient().chain.blockExplorers?.default.url}/tx/${hash}`} 
-    target='_blank' rel="noreferrer">
+    target='_blank'
+    rel="noreferrer">
     <div className="flex items-center gap-2">
       <TfiReceipt />
       <div>Rewards claimed!</div>
@@ -46,7 +47,7 @@ export default function ClaimAll({ className }: { className?: string }) {
     address: env.YPRISMA_REWARDS_DISTRIBUTOR,
     abi: abis.SingleTokenRewardDistributor,
     functionName: 'claimWithRange',
-    args: [range.data?.[0]!, range.data?.[1]!],
+    args: [range.data?.[0] ?? 0n, range.data?.[1] ?? 0n],
     query: { enabled: account.isConnected && range.isSuccess && hasClaims }
   })
 
@@ -75,8 +76,8 @@ export default function ClaimAll({ className }: { className?: string }) {
 
   const subtextKey = useMemo(() => {
     if (isError) return 'error'
-    if (receipt.isLoading) 'confirming'
-    if (receipt.isSuccess) 'success'
+    if (receipt.isLoading) return 'confirming'
+    if (receipt.isSuccess) return 'success'
     return 'default'
   }, [isError, receipt])
 
@@ -120,7 +121,7 @@ export default function ClaimAll({ className }: { className?: string }) {
           transition={springs.rollin}
           initial={{ x: 40, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -40, opacity: 0 }} >
+          exit={{ x: -40, opacity: 0 }}>
           {subtext}
         </motion.div>
       </AnimatePresence>

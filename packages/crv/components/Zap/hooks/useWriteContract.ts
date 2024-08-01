@@ -2,13 +2,13 @@ import { useWriteContract as _useWriteContract } from 'wagmi'
 
 export function useWriteContract() {
   const write = _useWriteContract({
-		mutation: {
-			onError(error) {
+    mutation: {
+      onError() {
 
-			},
-			onSuccess(hash) {
+      },
+      onSuccess() {
         // confirming..
-			}
+      }
     }
   })
   return { write }

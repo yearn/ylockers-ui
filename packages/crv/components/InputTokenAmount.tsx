@@ -16,13 +16,13 @@ type Props = {
 
 export function InputTokenAmount({
   decimals,
-	amount,
+  amount,
   min,
-	max,
-	placeholder,
-	disabled,
-	onChange,
-	onMaxClick
+  max,
+  placeholder,
+  disabled,
+  onChange,
+  onMaxClick
 }: Props): ReactElement {
 
   const inputClassName = useMemo(() => {
@@ -60,7 +60,7 @@ export function InputTokenAmount({
     }
   }, [onChange, min, max, dehumanize])
 
-	return <div className="relative flex w-full items-center justify-center">
+  return <div className="relative flex w-full items-center justify-center">
     <Input type="number"
       className={inputClassName}
       value={amount !== undefined ? humanize(amount) : ''}
@@ -69,11 +69,11 @@ export function InputTokenAmount({
       max={humanize(max !== undefined ? max : maxUint256)}
       step={1}
       placeholder={disabled ? '' : placeholder ?? '0'}
-      disabled={disabled}
-    />
+      disabled={disabled} />
     <div className="absolute z-0 right-0 w-14 h-full"></div>
     <Button onClick={onMaxClick ? (): void => onMaxClick() : undefined}
-      className={maxButtonClassName} disabled={disabled}>
+      className={maxButtonClassName}
+      disabled={disabled}>
       {'Max'}
     </Button>
   </div>

@@ -1,10 +1,10 @@
 import { createContext, ReactNode, useContext, useMemo } from 'react'
-import { erc20Abi } from 'viem'
+import type { erc20Abi } from 'viem'
 import { useApproveErc20 } from './hooks/useApproveErc20'
 import { useApproveYbsAsInput, useApproveYbsAsOutput } from './hooks/useApproveYbs'
 import { useZap } from './hooks/useZap'
 import { UseReadContractReturnType, UseSimulateContractReturnType, UseWaitForTransactionReceiptReturnType, UseWriteContractReturnType } from 'wagmi'
-import ybsAbi from './abis/ybs'
+import type ybsAbi from './abis/ybs'
 import { useParameters } from './Parameters'
 import { useInputAmountEffect } from './hooks/useInputAmountEffect'
 
@@ -48,6 +48,7 @@ interface Context {
   isConfirming: boolean
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const context = createContext<Context>({
   inputAmountExpanded: 0n,
   inputIsYbs: false,
@@ -62,6 +63,7 @@ export const context = createContext<Context>({
   isVerifying: false,
   isConfirming: false
 })
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export const useContracts = () => useContext(context)
 

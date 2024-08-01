@@ -1,12 +1,12 @@
-import Header, { headerItems } from "../../components/Header";
-import Background from "../../components/Background";
+import Header, { headerItems } from '../../components/Header'
+import Background from '../../components/Background'
 
 export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen bg-gradient-to-t from-dark-black to-dark-blue text-white">
       <div className="w-full shadow-lg z-10"></div>
       <Background />
-      <Header items={headerItems} selected="Expired farms"/>
+      <Header items={headerItems} selected="Expired farms" />
       <section className="xl:w-[1200px] px-8 xl:p-0 z-10">
         <div className="w-full">
           <div className="relative mx-auto mb-0 flex w-full flex-col bg-neutral-0">
@@ -41,7 +41,7 @@ export default function Home() {
                       <dd className="font-mono">0x774a55C3Eeb79929fD445Ae97191228Ab39c4d0f</dd>
                     </a>
                   </div>
-                   <div className="flex flex-col justify-between md:flex-row">
+                  <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">yPRISMA Staking (dYFI rewards)</dt>
                     <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x93283184650f4d3B4253ABd00978176732118428">
                       <dd className="font-mono">0x93283184650f4d3B4253ABd00978176732118428</dd>
@@ -66,5 +66,5 @@ export default function Home() {
         </div>
       </section>
     </main>
-  );
+  )
 }

@@ -134,7 +134,7 @@ export default function Notification({ className }: { className?: string }) {
       console.error(approveErc20.simulation.error?.message ?? approveErc20.confirmation.error?.message)
       setError({
         key: 'error-approve-erc20', 
-        jsx: <div>Error! Please check your browser's console</div> 
+        jsx: <div>Error! Please check your browser&apos;s console</div> 
       })
 
     } else if (approveYbsAsInput.simulation.isError || approveYbsAsInput.confirmation.isError) {
@@ -142,7 +142,7 @@ export default function Notification({ className }: { className?: string }) {
       console.error(approveYbsAsInput.simulation.error?.message ?? approveYbsAsInput.confirmation.error?.message)
       setError({ 
         key: 'error-approve-ybs-in', 
-        jsx: <div>Error! Please check your browser's console</div> 
+        jsx: <div>Error! Please check your browser&apos;s console</div> 
       })
 
     } else if (approveYbsAsOutput.simulation.isError || approveYbsAsOutput.confirmation.isError) {
@@ -150,7 +150,7 @@ export default function Notification({ className }: { className?: string }) {
       console.error(approveYbsAsOutput.simulation.error?.message ?? approveYbsAsOutput.confirmation.error?.message)
       setError({ 
         key: 'error-approve-ybs-out', 
-        jsx: <div>Error! Please check your browser's console</div> 
+        jsx: <div>Error! Please check your browser&apos;s console</div> 
       })
 
     } else if (zap.simulation.isError || zap.confirmation.isError) {
@@ -158,7 +158,7 @@ export default function Notification({ className }: { className?: string }) {
       console.error(zap.simulation.error?.message ?? zap.confirmation.error?.message)
       setError({ 
         key: 'error-zap', 
-        jsx: <div>Error! Please check your browser's console</div> 
+        jsx: <div>Error! Please check your browser&apos;s console</div> 
       })
 
     } else {
@@ -169,7 +169,7 @@ export default function Notification({ className }: { className?: string }) {
 
   return <div className={cn(`
     relative flex items-center justify-end text-sm`,
-    className)}>
+  className)}>
 
     {error.key.length === 0 && <motion.div key={info.key}
       transition={springs.rollin}

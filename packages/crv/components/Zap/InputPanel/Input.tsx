@@ -1,7 +1,6 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useAccount } from 'wagmi'
 import { useParameters } from '../Parameters'
 import useDebounce from '@/hooks/useDebounce'
 
@@ -14,22 +13,23 @@ export function InputDisplay({
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
   value?: string
 }) {
-  return <input disabled={disabled} className={`
+  return <input disabled={disabled}
+    className={`
   relative w-full text-4xl font-mono bg-transparent truncate
   placeholder:text-neutral-500
   disabled:text-neutral-400 disabled:bg-transparent hover:disabled:border-neutral-950
   disabled:border-transparent outline-none focus:ring-0 focus:outline-none`}
-  inputMode="decimal"
-  autoComplete="off"
-  autoCorrect="off"
-  type="text"
-  pattern="^[0-9]*[.,]?[0-9]*$" 
-  placeholder="0" 
-  min="1" 
-  max="79" 
-  spellCheck="false"
-  onChange={onChange}
-  value={value} />
+    inputMode="decimal"
+    autoComplete="off"
+    autoCorrect="off"
+    type="text"
+    pattern="^[0-9]*[.,]?[0-9]*$" 
+    placeholder="0" 
+    min="1" 
+    max="79" 
+    spellCheck="false"
+    onChange={onChange}
+    value={value} />
 }
 
 export function Input({
@@ -39,8 +39,6 @@ export function Input({
   mode: 'in' | 'out',
   disabled: boolean
 }) {
-  const { isConnected } = useAccount()
-
   const { 
     inputAmount, setInputAmount, 
     outputAmount, setOutputAmount
@@ -51,7 +49,7 @@ export function Input({
   const setAmount = useMemo(() => isModeIn ? setInputAmount : setOutputAmount, [isModeIn, setInputAmount, setOutputAmount])
 
   function processInputAmount(input: string): string {
-    let result = input.replace(/[^\d.,]/g, '').replace(/,/g, '.')
+    const result = input.replace(/[^\d.,]/g, '').replace(/,/g, '.')
     const firstPeriod = result.indexOf('.')
     if (firstPeriod === -1) {
       return result

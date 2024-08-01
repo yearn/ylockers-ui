@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Button from '../Button'
 import { ScrollArea } from '../shadcn/scroll-area'
 import { INPUTS, OUTPUTS, Token, TOKEN_ROUTES, TOKENS } from './tokens'

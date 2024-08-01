@@ -39,7 +39,8 @@ export default function Bolt() {
     if (enabled) reverse()
   }, [enabled, reverse])
 
-  return <div onClick={onClick} className={cn(`group
+  return <div onClick={onClick}
+    className={cn(`group
     p-1 border-8 border-darker-blue
     bg-input-bg rounded-primary pointer-events-auto`, bg, cursor, divHover)}>
     <BsFillLightningFill size={24} className={cn(fill, iconHover)} />
