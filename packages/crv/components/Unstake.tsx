@@ -3,7 +3,7 @@
 import useData, { TokenSchema } from '@/hooks/useData'
 import InputExecute from './InputExecute'
 import env from '@/lib/env'
-import abis from '../abis'
+import abis from '../app/abis'
 
 export default function Unstake({ className }: { className?: string }) {
   const { data } = useData()

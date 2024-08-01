@@ -3,18 +3,18 @@
 import useData from '@/hooks/useData'
 import InputExecute from './InputExecute'
 import env from '@/lib/env'
-import abis from '../abis'
+import abis from '../app/abis'
 
-export default function Mint({ className }: { className?: string }) {
+export default function Deposit({ className }: { className?: string }) {
   const { data } = useData()
   return <InputExecute className={className} task={{
-    verb: 'mint',
-    token: data.asset,
+    verb: 'deposit',
+    token: data.locker,
     needsApproval: true,
     parameters: {
-      address: env.YPRISMA,
-      abi: abis.yPrisma,
-      functionName: 'mint',
+      address: env.YPRISMA_STRATEGY,
+      abi: abis.Strategy,
+      functionName: 'deposit',
       args: (amount: bigint) => [amount, data.account]
     }
   }} />

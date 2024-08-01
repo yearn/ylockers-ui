@@ -3,7 +3,7 @@
 import useData from '@/hooks/useData'
 import InputExecute from './InputExecute'
 import env from '@/lib/env'
-import abis from '../abis'
+import abis from '../app/abis'
 
 export default function Deposit({ className }: { className?: string }) {
   const { data } = useData()
@@ -15,7 +15,7 @@ export default function Deposit({ className }: { className?: string }) {
       address: env.YPRISMA_STRATEGY,
       abi: abis.Strategy,
       functionName: 'deposit',
-      args: (amount: bigint) => [amount, data.account]
+      args: (amount: bigint) => [amount]
     }
   }} />
 }

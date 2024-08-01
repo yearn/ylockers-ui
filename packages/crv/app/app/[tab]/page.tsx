@@ -3,8 +3,8 @@
 import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
-import InputBox from "../../components/InputBox";
-import Header, { headerItems } from "../../components/Header";
+import InputBox from "../../../components/InputBox";
+import Header, { headerItems } from "../../../components/Header";
 import { useParams } from 'next/navigation';
 import { useConnectModal, useAccountModal } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi'
@@ -12,15 +12,15 @@ import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import useData from "@/hooks/useData";
 import useVault from '@/hooks/useVault';
-import Tokens from "../../components/Tokens";
+import Tokens from "../../../components/Tokens";
 
-import ClaimAll from "../../components/ClaimAll";
-import Stake from "../../components/Stake";
-import Unstake from "../../components/Unstake";
-import Mint from "../../components/Mint";
-import Deposit from "../../components/Deposit";
-import Withdraw from "../../components/Withdraw";
-import WithdrawAllFromOldStaker from "../../components/WithdrawAllFromOldStaker";
+import ClaimAll from "../../../components/ClaimAll";
+import Stake from "../../../components/Stake";
+import Unstake from "../../../components/Unstake";
+import Mint from "../../../components/Mint";
+import Deposit from "../../../components/Deposit";
+import Withdraw from "../../../components/Withdraw";
+import WithdrawAllFromOldStaker from "../../../components/WithdrawAllFromOldStaker";
 
 import { useContractReads } from 'wagmi';
 import { PiVaultLight } from "react-icons/pi";
@@ -29,10 +29,10 @@ import { formatUnits } from 'viem';
 import usePrices from "@/hooks/usePrices";
 import bmath, { priced } from "@/lib/bmath";
 import env from '@/lib/env'
-import Background from "../../components/Background";
-import A from "@/app/components/A";
-import ImageOrFallback from "@/app/components/ImageOrFallback";
-import Zap from "@/app/components/Zap";
+import Background from "../../../components/Background";
+import A from "@/components/A";
+import ImageOrFallback from "@/components/ImageOrFallback";
+import Zap from "@/components/Zap";
 import { useVaultContext } from "--lib/context/VaultContext";
 
 function isVersionGte(version: string, compareVersion: string) {

@@ -3,7 +3,7 @@
 import useData from '@/hooks/useData'
 import InputExecute from './InputExecute'
 import env from '@/lib/env'
-import abis from '../abis'
+import abis from '../app/abis'
 
 export default function Withdraw({ className }: { className?: string }) {
   const { data } = useData()
@@ -14,8 +14,8 @@ export default function Withdraw({ className }: { className?: string }) {
     parameters: {
       address: env.YPRISMA_STRATEGY,
       abi: abis.Strategy,
-      functionName: 'redeem',
-      args: (amount: bigint) => [amount, data.account, data.account]
+      functionName: 'withdraw',
+      args: (amount: bigint) => [amount]
     }
   }} />
 }

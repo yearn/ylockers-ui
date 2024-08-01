@@ -3,19 +3,19 @@
 import useData from '@/hooks/useData'
 import InputExecute from './InputExecute'
 import env from '@/lib/env'
-import abis from '../abis'
+import abis from '../app/abis'
 
-export default function Deposit({ className }: { className?: string }) {
+export default function Withdraw({ className }: { className?: string }) {
   const { data } = useData()
   return <InputExecute className={className} task={{
-    verb: 'deposit',
-    token: data.locker,
-    needsApproval: true,
+    verb: 'withdraw',
+    token: data.strategy,
+    needsApproval: false,
     parameters: {
       address: env.YPRISMA_STRATEGY,
       abi: abis.Strategy,
-      functionName: 'deposit',
-      args: (amount: bigint) => [amount]
+      functionName: 'redeem',
+      args: (amount: bigint) => [amount, data.account, data.account]
     }
   }} />
 }

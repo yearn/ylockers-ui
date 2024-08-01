@@ -1,6 +1,6 @@
-import Header, { headerItems } from "../components/Header";
+import Header, { headerItems } from "../../components/Header";
 import Link from "next/link";
-import Background from "../components/Background";
+import Background from "../../components/Background";
 import env from "@/lib/env";
 
 export default function Home() {

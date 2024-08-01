@@ -3,8 +3,8 @@
 import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
-import InputBox from "../../components/InputBox";
-import Header, { headerItems } from "../../components/Header";
+import InputBox from "../../../components/InputBox";
+import Header, { headerItems } from "../../../components/Header";
 import { useParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { useConnectModal, useAccountModal } from '--lib/hooks/rainbowkit';
@@ -14,15 +14,15 @@ import { useState, useMemo } from 'react';
 import { fAddress, fPercent, fTokens, fUSD } from "@/lib/format";
 import useData from "@/hooks/useData";
 import useVault from "@/hooks/useVault";
-import Tokens from "../../components/Tokens";
+import Tokens from "../../../components/Tokens";
 
-import ClaimAll from "../../components/ClaimAll";
-import Stake from "../../components/Stake";
-import Unstake from "../../components/Unstake";
-import Mint from "../../components/Mint";
-import Deposit from "../../components/Deposit";
-import Withdraw from "../../components/Withdraw";
-import WithdrawAllFromOldStaker from "../../components/WithdrawAllFromOldStaker";
+import ClaimAll from "../../../components/ClaimAll";
+import Stake from "../../../components/Stake";
+import Unstake from "../../../components/Unstake";
+import Mint from "../../../components/Mint";
+import Deposit from "../../../components/Deposit";
+import Withdraw from "../../../components/Withdraw";
+import WithdrawAllFromOldStaker from "../../../components/WithdrawAllFromOldStaker";
 
 import { useContractReads } from 'wagmi';
 import { PiVaultLight } from "react-icons/pi";
@@ -31,8 +31,8 @@ import { formatUnits } from 'viem';
 import usePrices from "@/hooks/usePrices";
 import bmath, { priced } from "@/lib/bmath";
 import env from '@/lib/env'
-import Background from "../../components/Background";
-import A from "@/app/components/A";
+import Background from "../../../components/Background";
+import A from "@/components/A";
 
 function isVersionGte(version: string, compareVersion: string) {
     const versionParts = version.split('.').map(Number);
