@@ -7,15 +7,16 @@ import abis from '../app/abis'
 
 export default function Mint({ className }: { className?: string }) {
   const { data } = useData()
-  return <InputExecute className={className} task={{
-    verb: 'mint',
-    token: data.asset,
-    needsApproval: true,
-    parameters: {
-      address: env.YPRISMA,
-      abi: abis.yPrisma,
-      functionName: 'mint',
-      args: (amount: bigint) => [amount, data.account]
-    }
-  }} />
+  return <InputExecute className={className}
+    task={{
+      verb: 'mint',
+      token: data.asset,
+      needsApproval: true,
+      parameters: {
+        address: env.YPRISMA,
+        abi: abis.yPrisma,
+        functionName: 'mint',
+        args: (amount: bigint) => [amount, data.account]
+      }
+    }} />
 }

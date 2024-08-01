@@ -7,15 +7,16 @@ import abis from '../app/abis'
 
 export default function Deposit({ className }: { className?: string }) {
   const { data } = useData()
-  return <InputExecute className={className} task={{
-    verb: 'deposit',
-    token: data.locker,
-    needsApproval: true,
-    parameters: {
-      address: env.YPRISMA_STRATEGY,
-      abi: abis.Strategy,
-      functionName: 'deposit',
-      args: (amount: bigint) => [amount, data.account]
-    }
-  }} />
+  return <InputExecute className={className}
+    task={{
+      verb: 'deposit',
+      token: data.locker,
+      needsApproval: true,
+      parameters: {
+        address: env.YPRISMA_STRATEGY,
+        abi: abis.Strategy,
+        functionName: 'deposit',
+        args: (amount: bigint) => [amount, data.account]
+      }
+    }} />
 }

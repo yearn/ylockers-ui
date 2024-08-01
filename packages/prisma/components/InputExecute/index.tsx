@@ -16,7 +16,8 @@ import { springs } from '@/lib/motion'
 function GreatSuccess({ hash, message }: { hash: `0x${string}`, message: string }) {
   const config = useConfig()
   return <A href={`${config.getClient().chain.blockExplorers?.default.url}/tx/${hash}`} 
-    target='_blank' rel="noreferrer">
+    target='_blank'
+    rel="noreferrer">
     <div className="flex items-center gap-2">
       <TfiReceipt />
       <div>{message}</div>
@@ -33,7 +34,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
   const {
     task, token, amount, setAmount, 
     needsApproval, approve, execute, amountExecuted, 
-    isApproved, isError, error, reset 
+    isApproved, isError, error
   } = useProvider()
 
   const hasBalance = useMemo(() => task.token.balance > 0n, [task])
@@ -45,11 +46,11 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
   , [mounted, account, hasBalance, amount])
 
   const verbPastTense = useMemo(() => {
-    if (task.verb === "unstake") {
-      return "unstaked"
+    if (task.verb === 'unstake') {
+      return 'unstaked'
     }
-    if (task.verb === "mint") {
-      return "minted"
+    if (task.verb === 'mint') {
+      return 'minted'
     }
     const doc = nlp(task.verb)
     doc.verbs().toPastTense()
@@ -154,7 +155,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
         disabled={disabled}
         className={`shrink-0 capitalize overflow-hidden ${noInput ? 'text-black bg-yellow-400 hover:bg-yellow-400 hover:opacity-70' : ''}`}
         style={{ width: '135px', paddingLeft: 0, paddingRight: 0 }}
-        noInput={noInput} >
+        noInput={noInput}>
         {label.text}
       </Button>
     </div>
@@ -163,7 +164,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
         transition={springs.rollin}
         initial={mounted ? { x: 40, opacity: 0 } : false}
         animate={{ x: 0, opacity: 1 }}
-        exit={{ x: -40, opacity: 0 }} >
+        exit={{ x: -40, opacity: 0 }}>
         {subtext.text}
       </motion.div>
     </div>}
@@ -171,7 +172,7 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
 }
 
 export function JustExecute({ task, className }: { task: Task, className?: string }) {
-  return <Provider task={task}><Provided noInput className={className}/></Provider>
+  return <Provider task={task}><Provided noInput className={className} /></Provider>
 }
 
 export default function InputExecute({ task, className }: { task: Task, className?: string }) {

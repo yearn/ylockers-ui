@@ -1,8 +1,7 @@
 'use client'
 
-import Button from "./Button";
-import Link from "next/link";
-import { ReactNode } from "react";
+import Button from './Button'
+import Link from 'next/link'
 
 type Item = { text: string, link: string, notification?: boolean }
 type Items = Array<Item>
@@ -15,27 +14,27 @@ type HeaderProps = {
   onClickLaunch?: () => void,
 }
 
-const Header = ({ items, selected="", launchApp=true, launchText='Launch App', className="", onClickLaunch }: HeaderProps) => (
+const Header = ({ items, selected='', launchApp=true, launchText='Launch App', className='', onClickLaunch }: HeaderProps) => (
   <header className={`flex flex-wrap justify-between items-start md:items-center z-50 ${
     launchApp ? 'xl:w-[1200px] w-full px-4 xl:p-0 h-[72px]' : ''
   } ${className}`}>
     <div className={`flex ${launchApp ? 'flex-col pt-2 ' : 'md:space-x-4 flex-col items-start'} md:flex-row md:space-x-4 md:md:pt-0`}>
-      {(!launchApp ? items.slice(0, -1) : items).map((item:Item, index:Number) => (
-          <Link
-            href={item.link}
-            key={item.text}
-            className={`py-2 border-b-2 border-transparent hover:border-white flex ${launchApp ? 'px-2' : 'py-[18px]'} ${
-              selected === item.text
-                ? 'border-b-2 border-white font-bold'
-                : (launchApp
-                  ? 'font-thin '
-                  : 'border-b-2 border-transparent')} ${
-                (!launchApp && !(selected === item.text))
-                  ? 'text-soft-blue'
-                  : ''
-            }`}>
-            {item.text} {item.notification && <div className="w-2 h-2 bg-light-blue rounded-full" />}
-          </Link>
+      {(!launchApp ? items.slice(0, -1) : items).map((item: Item) => (
+        <Link
+          href={item.link}
+          key={item.text}
+          className={`py-2 border-b-2 border-transparent hover:border-white flex ${launchApp ? 'px-2' : 'py-[18px]'} ${
+            selected === item.text
+              ? 'border-b-2 border-white font-bold'
+              : (launchApp
+                ? 'font-thin '
+                : 'border-b-2 border-transparent')} ${
+            (!launchApp && !(selected === item.text))
+              ? 'text-soft-blue'
+              : ''
+          }`}>
+          {item.text} {item.notification && <div className="w-2 h-2 bg-light-blue rounded-full" />}
+        </Link>
       ))}
     </div>
     {!launchApp && items.length > 0 && (

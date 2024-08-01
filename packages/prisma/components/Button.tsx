@@ -29,7 +29,10 @@ const Button = forwardRef<HTMLButtonElement, Props>(({ className, theme, onClick
     return ''
   }, [theme, noInput])
 
-  return <button onClick={onClick} ref={ref} {...props} className={`
+  return <button onClick={onClick}
+    ref={ref}
+    {...props}
+    className={`
     px-12 py-2 font-bold rounded-lg
     disabled:bg-disabled-bg disabled:text-disabled-text
     ${border} ${bg} ${animate}

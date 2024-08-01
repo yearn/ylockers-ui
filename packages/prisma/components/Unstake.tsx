@@ -7,15 +7,16 @@ import abis from '../app/abis'
 
 export default function Unstake({ className }: { className?: string }) {
   const { data } = useData()
-  return <InputExecute className={className} task={{
-    verb: 'unstake',
-    token: TokenSchema.parse(data.staker),
-    needsApproval: false,
-    parameters: {
-      address: env.YPRISMA_BOOSTED_STAKER,
-      abi: abis.YearnBoostedStaker,
-      functionName: 'unstake',
-      args: (amount: bigint) => [amount, data.account]
-    }
-  }} />
+  return <InputExecute className={className}
+    task={{
+      verb: 'unstake',
+      token: TokenSchema.parse(data.staker),
+      needsApproval: false,
+      parameters: {
+        address: env.YPRISMA_BOOSTED_STAKER,
+        abi: abis.YearnBoostedStaker,
+        functionName: 'unstake',
+        args: (amount: bigint) => [amount, data.account]
+      }
+    }} />
 }
