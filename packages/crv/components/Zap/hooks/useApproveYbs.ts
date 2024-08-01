@@ -1,9 +1,8 @@
-import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt } from 'wagmi'
+import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { useParameters } from '../Parameters'
 import { zeroAddress } from 'viem'
 import ybsAbi from '../abis/ybs'
 import { useMemo } from 'react'
-import { useWriteContract } from './useWriteContract'
 import env from '@/lib/env'
 
 export function useApproveYbsAsInput() {
@@ -27,7 +26,7 @@ export function useApproveYbsAsInput() {
   }), [isConnected, inputToken, inputIsYbs])
 
   const simulation = useSimulateContract(parameters)
-  const { write } = useWriteContract()
+  const write = useWriteContract()
   const confirmation = useWaitForTransactionReceipt({ hash: write.data })
 
   return { approvedCaller, simulation, write, confirmation }
@@ -54,7 +53,7 @@ export function useApproveYbsAsOutput() {
   }), [isConnected, outputToken, outputIsYbs])
 
   const simulation = useSimulateContract(parameters)
-  const { write } = useWriteContract()
+  const write = useWriteContract()
   const confirmation = useWaitForTransactionReceipt({ hash: write.data })
 
   return { approvedCaller, simulation, write, confirmation }

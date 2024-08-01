@@ -1,7 +1,6 @@
-import { useAccount, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt } from 'wagmi'
+import { useAccount, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { useParameters } from '../Parameters'
 import { useMemo } from 'react'
-import { useWriteContract } from './useWriteContract'
 import zapAbi from '../abis/zap'
 import { parseUnits, zeroAddress } from 'viem'
 import { useMinOut } from './useMinOut'
@@ -34,7 +33,7 @@ export function useZap({ needsApproval }: { needsApproval: boolean }) {
   }), [inputToken, outputToken, amount, minOut, enabled])
 
   const simulation = useSimulateContract(parameters)
-  const { write } = useWriteContract()
+  const write = useWriteContract()
   const confirmation = useWaitForTransactionReceipt({ hash: write.data })
 
   return { simulation, write, confirmation }

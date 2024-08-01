@@ -1,8 +1,7 @@
-import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt } from 'wagmi'
+import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { useParameters } from '../Parameters'
 import { erc20Abi, maxUint256, zeroAddress } from 'viem'
 import { useMemo } from 'react'
-import { useWriteContract } from './useWriteContract'
 import env from '@/lib/env'
 
 export function useApproveErc20() {
@@ -30,7 +29,7 @@ export function useApproveErc20() {
   }), [isConnected, inputToken, inputIsYbs, allowance])
 
   const simulation = useSimulateContract(parameters)
-  const { write } = useWriteContract()
+  const write = useWriteContract()
   const confirmation = useWaitForTransactionReceipt({ hash: write.data })
 
   return { allowance, simulation, write, confirmation }
