@@ -165,7 +165,7 @@ export default function Home() {
                   <span className="text-light-blue text-6xl font-mono font-bold mb-[26px]">
                     {(vaultApy > 0) ? fPercent(vaultApy) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                   <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
-                    <span className="font-semibold pb-4 text-lg">MY DEPOSITS</span>
+                    <span className="font-semibold pb-4 text-lg">YOUR DEPOSITS</span>
                     <div className="flex justify-between">
                       <span className="font-thin opacity-70	">yPRISMA Deposited</span>
                       <span className="font-mono font-bold">{data.strategy.balance
