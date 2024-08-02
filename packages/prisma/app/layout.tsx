@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next'
 import localFont from 'next/font/local'
-import "./globals.css";
-import '@rainbow-me/rainbowkit/styles.css';
+import './globals.css'
+import '@rainbow-me/rainbowkit/styles.css'
 
-import Providers from '--lib/context/Providers';
+import Providers from '--lib/context/Providers'
 
 const sans = localFont({
   variable: '--font-aeonik-sans',
@@ -32,9 +32,9 @@ const mono = localFont({
   ]})
 
 export const metadata: Metadata = {
-  title: "yPrisma",
-  description: "Put your yPRISMA to work",
-};
+  title: 'yPrisma',
+  description: 'Put your yPRISMA to work',
+}
 
 export default function RootLayout({
   children,
@@ -45,9 +45,9 @@ export default function RootLayout({
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <Providers>
-         {children}
+          {children}
         </Providers>
       </body>
     </html>
-  );
+  )
 }

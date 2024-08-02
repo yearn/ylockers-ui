@@ -1,12 +1,12 @@
-import Header, { headerItems } from "../components/Header";
-import Link from "next/link";
-import Background from "../components/Background";
+import Header, { headerItems } from '../../components/Header'
+import Link from 'next/link'
+import Background from '../../components/Background'
 
 export default function Home() {
   return (
     <main className="relative flex flex-col items-center min-h-screen text-white">
       <Background />
-      <Header items={headerItems} selected="About"/>
+      <Header items={headerItems} selected="About" />
       <section className="xl:w-[1200px] px-8 xl:p-0 z-10">
         <div className="w-full">
           <div className="relative mx-auto mb-0 flex w-full flex-col bg-neutral-0">
@@ -15,7 +15,7 @@ export default function Home() {
                 <div className="col-span-12 md:col-span-6 md:mb-0 md:pr-20">
                   <div className="mb-10 flex flex-col justify-center">
                     <h1 className="mt-28 md:mt-6 block font-black text-5xl"> 
-                      {"Let's get your CRV "} 
+                      {'Let\'s get your CRV '} 
                       <br />
                       <span className="bg-clip-text bg-gradient-text text-transparent" style={{color: 'transparent'}}>
                         unlocked
@@ -32,10 +32,10 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin white">
                         <p>
-                          {`Each week, Yearn's veCRV position earns revenue from protocol fees and bribes. This is converted to crvUSD stablecoin and distributed to yCRV stakers at the start of the week.`}
+                          {'Each week, Yearn\'s veCRV position earns revenue from protocol fees and vote incentives. This is converted to crvUSD stablecoin and distributed to yCRV stakers at the start of the week.'}
                         </p>
                         <p>
-                          {`To begin earning your share, all you need to do is stake your yCRV tokens in the staking contract. You're free to unstake them at any time with no lock-ups or penalties.`}
+                          {'To begin earning your share, all you need to do is stake your yCRV tokens in the staking contract. You\'re free to unstake them at any time with no lock-ups or penalties.'}
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-6">
@@ -43,10 +43,10 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          {`The longer you stake, the greater your boost! Yearn's yCRV staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x).`}
+                          {'The longer you stake, the greater your boost! Yearn\'s yCRV staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x).'}
                         </p>
                         <p>
-                          {`You'll reach max boost and achieve the maximum staking APR less than four weeks after depositing your yCRV.`}
+                          {'You\'ll reach max boost and achieve the maximum staking APR less than four weeks after depositing your yCRV.'}
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-6">
@@ -54,10 +54,10 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          {`To calculate your boost, the staking contract maintains a weight for every deposit (which is a function of the amount of yCRV you have staked and the duration since it was staked).`}
+                          {'To calculate your boost, the staking contract maintains a weight for every deposit (which is a function of the amount of yCRV you have staked and the duration since it was staked).'}
                         </p>
                         <p>
-                          {`For example, stake 100 yCRV and your initial weight will be 50 yCRV. At 00:00:00 UTC the following Thursday, your weight will increase to 100, then 150, then 200, and finally 250 (on the fourth Thursday following your deposit).`}
+                          {'For example, stake 100 yCRV and your initial weight will be 50 yCRV. At 00:00:00 UTC the following Thursday, your weight will increase to 100, then 150, then 200, and finally 250 (on the fourth Thursday following your deposit).'}
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-2">
@@ -65,10 +65,10 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          {`Each week, Yearn claims its share of protocol fees and vote-maximized bribes. These are swapped for crvUSD and deposited directly into the reward distributor contract.`}
+                          {'Each week, Yearn claims its share of protocol fees and optimized vote incentives. These are swapped for crvUSD and deposited directly into the reward distributor contract.'}
                         </p>
                         <p>
-                          {`Your rewards accrue week over week and are never lost if unclaimed. In fact, they begin earning yield from the moment we receive them! Earned vault tokens will be received directly to your wallet.`}
+                          {'Your rewards accrue week over week and are never lost if unclaimed. In fact, they begin earning yield from the moment we receive them! Earned vault tokens will be received directly to your wallet.'}
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-6">
@@ -76,13 +76,13 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          {`Not interested in staking, weights, and manual claims? Just want more yCRV and the highest APYs? Then our yCRV auto-compounding vault is for you!`}
+                          {'Not interested in staking, weights, and manual claims? Just want more yCRV and the highest APYs? Then our yCRV auto-compounding vault is for you!'}
                         </p>
                         <p>
-                          {`Once a week, the vault claims from the yCRV staker contract, swaps it for more yCRV, and deposits it back into the staker. On top of that, the vault is whitelisted - allowing it to earn max boost immediately on all reinvested yCRV.`}
+                          {'Once a week, the vault claims from the yCRV staker contract, swaps it for more yCRV, and deposits it back into the staker. On top of that, the vault is whitelisted - allowing it to earn max boost immediately on all reinvested yCRV.'}
                         </p>
                         <p>
-                          {`For more information on yCRV and the yLockers ecosystem, read our `}<Link className="underline" href="https://docs.yearn.fi/getting-started/products/ylockers/overview">docs</Link>.
+                          {'For more information on yCRV and the yLockers ecosystem, read our '}<Link className="underline" href="https://docs.yearn.fi/getting-started/products/ylockers/overview">docs</Link>.
                         </p>
                       </div>
                     </div>
@@ -130,7 +130,7 @@ export default function Home() {
                       <dd className="font-mono">0xD533a949740bb3306d119CC777fa900bA034cd52</dd>
                     </a>
                   </div>
-                   <div className="flex flex-col justify-between md:flex-row">
+                  <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">yCRV Token</dt>
                     <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xFCc5c47bE19d06BF83eB04298b026F81069ff65b">
                       <dd className="font-mono">0xFCc5c47bE19d06BF83eB04298b026F81069ff65b</dd>
@@ -143,5 +143,5 @@ export default function Home() {
         </div>
       </section>
     </main>
-  );
+  )
 }

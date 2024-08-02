@@ -1,10 +1,10 @@
 import { formatUnits } from 'viem'
 
 export function fPercent(amount: number, fixed?: number) {
-  const formattedAmount = (amount * 100).toFixed(isNaN(fixed as number) ? 2 : fixed);
-  const parts = formattedAmount.split('.');
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  return `${parts.join('.')}%`;
+  const formattedAmount = (amount * 100).toFixed(isNaN(fixed as number) ? 2 : fixed)
+  const parts = formattedAmount.split('.')
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  return `${parts.join('.')}%`
 }
 
 export function fAddress(address: `0x${string}`) {
