@@ -141,7 +141,7 @@ export default function Home() {
                         <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
                         <div>2.5x</div>
                       </span>
-                      <span className="w-7/12 font-bold flex items-end md:items-center md:justify-end space-x-2">
+                      <span className="border font-bold flex items-end md:items-center md:justify-end space-x-2">
                         <span className="font-mono">{data.utilities && bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
                         <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
                         <span className="font-mono">{data.utilities && bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>                     </span>
