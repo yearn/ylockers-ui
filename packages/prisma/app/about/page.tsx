@@ -35,7 +35,7 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin white">
                         <p>
-                          {'Each week, Yearn\'s vePRISMA position earns revenue from protocol fees and bribes. This is converted to mkUSD stablecoin and distributed to yPRISMA stakers at the start of the week.'}
+                          {'Each week, Yearn\'s vePRISMA position earns revenue from protocol fees and vote incentives. This is converted to mkUSD stablecoin and distributed to yPRISMA stakers at the start of the week.'}
                         </p>
                         <p>
                           {'To begin earning your share, all you need to do is stake your yPRISMA tokens in the staking contract. You\'re free to unstake them at any time with no lock-ups or penalties.'}
@@ -68,7 +68,7 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          {'Each week, Yearn claims its share of protocol fees and vote-maximized bribes. These are swapped for yield-bearing mkUSD yVault tokens (yvmkUSD-A) and deposited directly into the reward distributor contract.'}
+                          {'Each week, Yearn claims its share of protocol fees and optimized vote incentives. These are swapped for yield-bearing mkUSD yVault tokens (yvmkUSD-A) and deposited directly into the reward distributor contract.'}
                         </p>
                         <p>
                           {'Your rewards accrue week over week and are never lost if unclaimed. In fact, they begin earning you additional mkUSD yield from the moment we receive them! When claimed, yvmkUSD-A vault tokens will be received directly to your wallet.'}

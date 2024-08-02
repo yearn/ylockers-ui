@@ -20,7 +20,7 @@ export default function Home() {
         <div className="w-full px-12 md:px-0">
           <h1 className="text-6xl font-bold">Put your<br /><span className="flex flex-wrap mt-[6px]"><Image className="mr-[10px]" alt="ycrv logo" src="/ycrv-logo.svg" width={80} height={80} /> yCRV to work</span></h1>
           <p className="my-8 xl:w-[670px] font-thin sm:whitespace-nowrap">
-            {'Each week, Yearn\'s veCRV position earns revenue from protocol fees and vote-maximized bribes.'}<br />
+            {'Each week, Yearn\'s veCRV position earns revenue from protocol fees and optimized vote incentives.'}<br />
             {'This is converted to crvUSD stablecoin and distributed to yCRV stakers.'}
           </p>
           <div className="flex flex-wrap items-center space-x-4 flex-col md:flex-row space-y-8 md:space-y-0">

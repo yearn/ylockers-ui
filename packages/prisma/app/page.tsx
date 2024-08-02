@@ -19,7 +19,7 @@ export default function Home() {
         <div className="w-full px-12 md:px-0">
           <h1 className="text-6xl font-bold">Put your<br />yPRISMA to work</h1>
           <p className="my-8 xl:w-[670px] font-thin sm:whitespace-nowrap">
-            {'Each week, Yearn\'s vePRISMA position earns revenue from protocol fees and vote-maximized bribes.'}<br />
+            {'Each week, Yearn\'s vePRISMA position earns revenue from protocol fees and optimized vote incentives.'}<br />
             {'This is converted to mkUSD stablecoin and distributed to yPRISMA stakers.'}
           </p>
           <div className="flex flex-wrap items-center space-x-4 flex-col md:flex-row space-y-8 md:space-y-0">
