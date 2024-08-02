@@ -32,7 +32,7 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin white">
                         <p>
-                          {'Each week, Yearn\'s veCRV position earns revenue from protocol fees and vote incentives. This is converted to crvUSD stablecoin and distributed to yCRV stakers at the start of the week.'}
+                          {'Each week, Yearn\'s veCRV position earns revenue from protocol fees and optimized vote incentives. This is converted to crvUSD stablecoin and distributed to yCRV stakers at the start of the week.'}
                         </p>
                         <p>
                           {'To begin earning your share, all you need to do is stake your yCRV tokens in the staking contract. You\'re free to unstake them at any time with no lock-ups or penalties.'}
