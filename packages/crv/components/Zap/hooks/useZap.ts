@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import zapAbi from '../abis/zap'
 import { parseUnits, zeroAddress } from 'viem'
 import { useMinOut } from './useMinOut'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
 
 export function useZap({ needsApproval }: { needsApproval: boolean }) {
   const { isConnected } = useAccount()

@@ -1,7 +1,7 @@
 import Header, { headerItems } from '../../components/Header'
 import Link from 'next/link'
 import Background from '../../components/Background'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
 
 export default function Home() {
   return (

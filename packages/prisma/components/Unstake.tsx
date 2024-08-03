@@ -1,8 +1,8 @@
 'use client'
 
-import useData, { TokenSchema } from '@/hooks/useData'
+import useData, { TokenSchema } from '--lib/hooks/useData'
 import InputExecute from './InputExecute'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
 import abis from '../app/abis'
 
 export default function Unstake({ className }: { className?: string }) {

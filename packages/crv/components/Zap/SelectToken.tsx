@@ -1,12 +1,12 @@
 'use client'
 
 import Button from '../Button'
-import { ScrollArea } from '../shadcn/scroll-area'
+import { ScrollArea } from '--lib/components/shadcn/scroll-area'
 import { INPUTS, OUTPUTS, Token, TOKEN_ROUTES, TOKENS } from './tokens'
 import useBalances from './hooks/useBalances'
 import { useCallback, useMemo } from 'react'
-import { fTokens, fUSD } from '@/lib/format'
-import { priced } from '@/lib/bmath'
+import { fTokens, fUSD } from '--lib/tools/format'
+import { priced } from '--lib/tools/bmath'
 import { useParameters } from './Parameters'
 import ImageOrBg from './ImageOrBg'
 

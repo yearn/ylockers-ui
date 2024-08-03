@@ -1,8 +1,8 @@
 'use client'
 
-import useData from '@/hooks/useData'
+import useData from '--lib/hooks/useData'
 import { JustExecute } from './InputExecute'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
 import abis from '../app/abis'
 
 export default function WithdrawAllFromOldStaker({ className }: { className?: string }) {

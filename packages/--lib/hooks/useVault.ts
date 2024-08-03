@@ -1,4 +1,4 @@
-import env from '@/lib/env'
+import env from '../tools/env'
 import useSWR from 'swr'
 
 export default function useVault(vault: `0x${string}`) {

@@ -1,3 +1,5 @@
+import { formatUnits } from 'viem'
+
 export function div(a: bigint, b: bigint, precision: number = 18) {
   if(b === 0n) return Number.NaN
 
@@ -35,5 +37,10 @@ export function priced(amount: bigint, decimals: bigint|number, priceUsd: number
   return priceUsd * Number(amount * BigInt(precision) / BigInt(10 ** Number(decimals))) / precision
 }
 
-const bmath = { div, mul, min, max, priced }
+export function toApy(apr: bigint) {
+  const aprFloat = parseFloat(formatUnits(apr, 18))
+  return (1 + (aprFloat / 52)) ** 52 - 1
+}
+
+const bmath = { div, mul, min, max, priced, toApy }
 export default bmath

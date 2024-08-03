@@ -1,4 +1,4 @@
-import { cn } from '@/lib/shadcn'
+import { cn } from '--lib/tools/tailwind'
 import { useCallback, useMemo } from 'react'
 import { BsFillLightningFill } from 'react-icons/bs'
 import { useParameters } from './Parameters'

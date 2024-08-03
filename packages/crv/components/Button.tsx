@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@/lib/shadcn'
+import { cn } from '--lib/tools/tailwind'
 import React, { forwardRef, ButtonHTMLAttributes, useMemo } from 'react'
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {

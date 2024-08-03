@@ -3,7 +3,7 @@
 import { useAccount } from 'wagmi'
 import Button from '../../Button'
 import { Suspense, useMemo } from 'react'
-import { cn } from '@/lib/shadcn'
+import { cn } from '--lib/tools/tailwind'
 import { useParameters } from '../Parameters'
 import { Input, InputDisplay } from './Input'
 import { AmountUsd, AmountUsdDisplay } from './AmountUsd'

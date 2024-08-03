@@ -9,9 +9,9 @@ import Button from '../Button'
 import { motion } from 'framer-motion'
 import { TfiReceipt } from 'react-icons/tfi'
 import A from '../A'
-import { fTokens } from '@/lib/format'
+import { fTokens } from '--lib/tools/format'
 import nlp from 'compromise'
-import { springs } from '@/lib/motion'
+import { springs } from '--lib/tools/motion'
 
 function GreatSuccess({ hash, message }: { hash: `0x${string}`, message: string }) {
   const config = useConfig()

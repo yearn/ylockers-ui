@@ -2,15 +2,15 @@ import { z } from 'zod'
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { UseSimulateContractParameters, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { erc20Abi, maxUint256, zeroAddress } from 'viem'
-import { zhexstringSchema } from '@/lib/types'
-import useData, { TokenSchema } from '@/hooks/useData'
+import { HexStringSchema } from '--lib/tools/types'
+import useData, { TokenSchema } from '--lib/hooks/useData'
 
 export const TaskSchema = z.object({
   verb: z.string().default(''),
   token: TokenSchema.default({}),
   needsApproval: z.boolean().default(false),
   parameters: z.object({
-    address: zhexstringSchema.default(zeroAddress),
+    address: HexStringSchema.default(zeroAddress),
     abi: z.any().default([]),
     functionName: z.string().default(''),
     args: z.function().args(z.bigint()).returns(z.any().array())
@@ -46,7 +46,7 @@ export const ContractReceiptStatusSchema = z.enum(contractReceiptStatuses)
 const ContractClientSchema = z.object({
   status: ContractStatusSchema.default('idle'),
   write: z.function().default(() => {}),
-  hash: zhexstringSchema.optional(),
+  hash: HexStringSchema.optional(),
   disabled: z.boolean().default(true),
   isIdle: z.boolean().default(true),
   isPending: z.boolean().default(false),

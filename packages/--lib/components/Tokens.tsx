@@ -1,16 +1,16 @@
-'use client'
-
 import { formatUnits } from 'viem'
 
 export default function Tokens({
   amount,
   decimals,
   accuracy,
+  suffix,
   className
 }: {
   amount: bigint
   decimals: number
-  accuracy?: number 
+  accuracy?: number
+  suffix?: string
   className?: string 
 }) {
   const formatted = (() => {
@@ -24,6 +24,6 @@ export default function Tokens({
   })()
 
   return <span className={`font-mono ${className}`}>
-    {formatted}
+    {formatted}{suffix ? ` ${suffix}` : ''}
   </span>
 }

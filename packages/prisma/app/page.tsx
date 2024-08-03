@@ -3,9 +3,9 @@
 import Button from '../components/Button'
 import Header, { headerItems } from '../components/Header'
 import Link from 'next/link'
-import useData from '@/hooks/useData'
-import { fPercent } from '@/lib/format'
-import bmath from '@/lib/bmath'
+import useData from '--lib/hooks/useData'
+import { fPercent } from '--lib/tools/format'
+import bmath from '--lib/tools/bmath'
 import Background from '../components/Background'
 
 export default function Home() {

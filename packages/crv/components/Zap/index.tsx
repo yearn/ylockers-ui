@@ -9,7 +9,7 @@ import SelectToken from './SelectToken'
 import Parameters from './Parameters'
 import { useMounted } from '../../hooks/useMounted'
 import Notification from './Notification'
-import { springs } from '@/lib/motion'
+import { springs } from '--lib/tools/motion'
 import Contracts from './Contracts'
 import { Token } from './tokens'
 

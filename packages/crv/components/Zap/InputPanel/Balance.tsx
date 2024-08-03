@@ -3,7 +3,7 @@
 import { ReactNode, useMemo } from 'react'
 import { Token, TOKENS } from '../tokens'
 import useBalances from '../hooks/useBalances'
-import { fTokens } from '@/lib/format'
+import { fTokens } from '--lib/tools/format'
 
 export function BalanceDisplay({ children }: { children?: ReactNode }) {
   return <div>Balance: <span className="font-mono">{children ?? '...'}</span></div>

@@ -1,5 +1,6 @@
 import { z } from 'zod'
-import { zhexstringSchema } from './types'
+import { EvmAddressSchema, HexStringSchema } from './types'
+import { zeroAddress } from 'viem'
 
 class DotEnvError extends Error {
   constructor(message: string) {
@@ -9,20 +10,27 @@ class DotEnvError extends Error {
 }
 
 const EnvSchema = z.object({
-  PRISMA: zhexstringSchema,
-  YPRISMA: zhexstringSchema,
-  YPRISMA_BOOSTED_STAKER: zhexstringSchema,
-  YPRISMA_BOOSTED_STAKER_UTILITIES: zhexstringSchema,
-  YPRISMA_OLD_STAKER: zhexstringSchema,
-  YPRISMA_REWARDS_DISTRIBUTOR: zhexstringSchema,
-  YPRISMA_STRATEGY: zhexstringSchema,
-  YVMKUSD: zhexstringSchema,
-  MKUSD: zhexstringSchema,
+  LOCKER_NAME: z.string(),
+  STABLE_NAME: z.string(),
+  PRISMA: EvmAddressSchema,
+  YPRISMA: EvmAddressSchema,
+  YPRISMA_BOOSTED_STAKER: EvmAddressSchema,
+  YPRISMA_BOOSTED_STAKER_UTILITIES: EvmAddressSchema,
+  YPRISMA_OLD_STAKER: EvmAddressSchema,
+  YPRISMA_REWARDS_DISTRIBUTOR: EvmAddressSchema,
+  YPRISMA_STRATEGY: EvmAddressSchema,
+  YPRISMA_STRATEGY_STRATEGY: EvmAddressSchema,
+  YVMKUSD: EvmAddressSchema,
+  MKUSD: EvmAddressSchema,
   YDAEMON: z.string(),
+  ZAP: EvmAddressSchema,
+  USE_UTILITY_VAULT_APR: z.boolean(),
   DEV: z.boolean()
 })
 
 const result = EnvSchema.safeParse({
+  LOCKER_NAME: process.env.NEXT_PUBLIC_LOCKER_NAME,
+  STABLE_NAME: process.env.NEXT_PUBLIC_STABLE_NAME,
   PRISMA: process.env.NEXT_PUBLIC_PRISMA,
   YPRISMA: process.env.NEXT_PUBLIC_YPRISMA,
   YPRISMA_BOOSTED_STAKER: process.env.NEXT_PUBLIC_YPRISMA_BOOSTED_STAKER,
@@ -30,9 +38,12 @@ const result = EnvSchema.safeParse({
   YPRISMA_OLD_STAKER: process.env.NEXT_PUBLIC_YPRISMA_OLD_STAKER,
   YPRISMA_REWARDS_DISTRIBUTOR: process.env.NEXT_PUBLIC_YPRISMA_REWARDS_DISTRIBUTOR,
   YPRISMA_STRATEGY: process.env.NEXT_PUBLIC_YPRISMA_STRATEGY,
+  YPRISMA_STRATEGY_STRATEGY: process.env.NEXT_PUBLIC_YPRISMA_STRATEGY_STRATEGY,
   YVMKUSD: process.env.NEXT_PUBLIC_YVMKUSD,
   MKUSD: process.env.NEXT_PUBLIC_MKUSD,
   YDAEMON: process.env.NEXT_PUBLIC_YDAEMON,
+  ZAP: process.env.NEXT_PUBLIC_ZAP ?? zeroAddress,
+  USE_UTILITY_VAULT_APR: process.env.NEXT_PUBLIC_USE_UTILITY_VAULT_APR === 'true',
   DEV: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 })
 

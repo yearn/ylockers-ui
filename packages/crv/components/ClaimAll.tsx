@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Button from './Button'
 import { useAccount, useConfig, useReadContract, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import useData from '@/hooks/useData'
+import useData from '--lib/hooks/useData'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
 import abis from '@/app/abis'
 import { zeroAddress } from 'viem'
 import A from './A'
 import { TfiReceipt } from 'react-icons/tfi'
 import { motion, AnimatePresence } from 'framer-motion'
-import { springs } from '@/lib/motion'
+import { springs } from '--lib/tools/motion'
 
 function GreatSuccess({ hash }: { hash: `0x${string}`}) {
   const config = useConfig()
