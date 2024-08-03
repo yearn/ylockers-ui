@@ -15,7 +15,8 @@ export default function VaultDataBox({
   const { data: prices } = usePrices([env.YPRISMA])
   const { data } = useData()
   const vaultApy = useVaultApy()
-  const balanceUsd = useMemo(() => bmath.priced(data.strategy.balance, data.strategy.decimals, prices[env.YPRISMA]), [data, prices])
+  const balanceInAssets = useMemo(() => data.strategy.balance * data.strategy.pricePerShare, [data])
+  const balanceInAssetsUsd = useMemo(() => bmath.priced(balanceInAssets, data.strategy.decimals, prices[env.YPRISMA]), [balanceInAssets, data, prices])
   const vaultTotalAssetsUsd = useMemo(() => bmath.priced(data.strategy.totalAssets, data.strategy.decimals, prices[env.YPRISMA]), [data, prices])
 
   return <div className={className}>
@@ -26,11 +27,11 @@ export default function VaultDataBox({
       <span className="font-semibold py-4 text-lg">YOUR DEPOSITS</span>
       <div className="flex justify-between">
         <span className="font-thin opacity-70">{env.LOCKER_NAME} Deposited</span>
-        <Tokens className="font-bold" amount={data.strategy.balance} decimals={data.strategy.decimals} />
+        <Tokens className="font-bold" amount={balanceInAssets} decimals={data.strategy.decimals} />
       </div>
       <div className="flex justify-between">
         <span className="font-thin opacity-70 mb-4">USD Value</span>
-        <span className="font-bold font-mono">{fUSD(balanceUsd)}</span>
+        <span className="font-bold font-mono">{fUSD(balanceInAssetsUsd)}</span>
       </div>
       <div className="font-semibold py-4 text-lg border-t-2 border-darker-blue/60">TOTAL DEPOSITS</div>
       <div className="flex justify-between">
