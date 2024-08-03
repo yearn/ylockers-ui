@@ -2,8 +2,8 @@ import { z } from 'zod'
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { UseSimulateContractParameters, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { erc20Abi, maxUint256, zeroAddress } from 'viem'
-import { HexStringSchema } from '--lib/tools/types'
-import useData, { TokenSchema } from '--lib/hooks/useData'
+import { HexStringSchema } from '../../tools/types'
+import useData, { TokenSchema } from '../../hooks/useData'
 
 export const TaskSchema = z.object({
   verb: z.string().default(''),
@@ -126,7 +126,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
       ...task.parameters, 
       args: task.parameters.args(amount ?? 0n),
       query: { enabled: 
-        amount !== undefined 
+        amount !== undefined
         && amount > 0n && (!needsApproval || allowance >= amount) 
       }
     }), 
@@ -182,7 +182,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
     abi: erc20Abi,
     functionName: 'approve',
     args: [task.parameters.address!, maxUint256],
-    query: { enabled: amount !== undefined && needsApproval && amount > 0n }
+    query: { enabled: needsApproval && amount !== undefined && amount > 0n }
   })
 
   const _approve = useWriteContract()
@@ -248,7 +248,7 @@ export default function Provider({ task, children }: { task: Task, children: Rea
   }, [approve, execute, error])
 
   const reset = useCallback(() => {
-    setAmount(0n)
+    setAmount(undefined)
     setAmountApproved(0n)
     setAmountExecuted(0n)
     _approve.reset()

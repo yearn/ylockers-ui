@@ -1,6 +1,6 @@
 'use client'
 
-import Button from './Button'
+import Button from '--lib/components/Button'
 import Link from 'next/link'
 
 type Item = { text: string, link: string, notification?: boolean }

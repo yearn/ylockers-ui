@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useContracts } from './Contracts'
 import { fAddress } from '--lib/tools/format'
 import { useConfig } from 'wagmi'
-import A from '../A'
+import A from '--lib/components/A'
 import { useParameters } from './Parameters'
 
 function makeNotificationWithExplorerLink({ 

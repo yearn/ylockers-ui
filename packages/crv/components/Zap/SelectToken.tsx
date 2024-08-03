@@ -1,6 +1,6 @@
 'use client'
 
-import Button from '../Button'
+import Button from '--lib/components/Button'
 import { ScrollArea } from '--lib/components/shadcn/scroll-area'
 import { INPUTS, OUTPUTS, Token, TOKEN_ROUTES, TOKENS } from './tokens'
 import useBalances from './hooks/useBalances'

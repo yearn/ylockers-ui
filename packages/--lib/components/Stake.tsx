@@ -1,9 +1,9 @@
 'use client'
 
-import useData from '--lib/hooks/useData'
+import useData from '../hooks/useData'
 import InputExecute from './InputExecute'
-import env from '--lib/tools/env'
-import abis from '../app/abis'
+import env from '../tools/env'
+import abis from '../abis'
 
 export default function Stake({ className }: { className?: string }) {
   const { data } = useData()

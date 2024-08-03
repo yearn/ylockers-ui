@@ -1,7 +1,7 @@
 'use client'
 
 import { useAccount } from 'wagmi'
-import Button from '../../Button'
+import Button from '--lib/components/Button'
 import { Suspense, useMemo } from 'react'
 import { cn } from '--lib/tools/tailwind'
 import { useParameters } from '../Parameters'

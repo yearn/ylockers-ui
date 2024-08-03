@@ -1,7 +1,7 @@
 'use client'
 
 import { useAccount } from 'wagmi'
-import Button from '../Button'
+import Button from '--lib/components/Button'
 import { ReactNode, useCallback, useEffect, useMemo } from 'react'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useParameters } from './Parameters'

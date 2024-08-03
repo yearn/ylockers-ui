@@ -1,9 +1,9 @@
 'use client'
 
 import useData from '--lib/hooks/useData'
-import { JustExecute } from './InputExecute'
+import { JustExecute } from '--lib/components/InputExecute'
 import env from '--lib/tools/env'
-import abis from '../app/abis'
+import abi from './OldStaker'
 
 export default function WithdrawAllFromOldStaker({ className }: { className?: string }) {
   const { data } = useData()
@@ -14,8 +14,7 @@ export default function WithdrawAllFromOldStaker({ className }: { className?: st
       needsApproval: false,
       parameters: {
         address: env.YPRISMA_OLD_STAKER,
-        abi: abis.OldStaker,
-        functionName: 'exit',
+        abi, functionName: 'exit',
         args: () => [],
       }
     }} />

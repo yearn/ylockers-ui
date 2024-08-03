@@ -1,11 +1,11 @@
 'use client'
 
-import useData from '--lib/hooks/useData'
+import useData from '../hooks/useData'
 import InputExecute from './InputExecute'
-import env from '--lib/tools/env'
-import abis from '../app/abis'
+import env from '../tools/env'
+import abis from '../abis'
 
-export default function Deposit({ className }: { className?: string }) {
+export default function DepositV3({ className }: { className?: string }) {
   const { data } = useData()
   return <InputExecute className={className}
     task={{
@@ -14,9 +14,9 @@ export default function Deposit({ className }: { className?: string }) {
       needsApproval: true,
       parameters: {
         address: env.YPRISMA_STRATEGY,
-        abi: abis.Strategy,
+        abi: abis.VaultV3,
         functionName: 'deposit',
-        args: (amount: bigint) => [amount]
+        args: (amount: bigint) => [amount, data.account]
       }
     }} />
 }
