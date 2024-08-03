@@ -1,6 +1,5 @@
 'use client'
 
-import { z } from 'zod'
 import Image from 'next/image'
 import Link from 'next/link'
 import InputBox from '../../../components/InputBox'
@@ -10,9 +9,8 @@ import { useConnectModal, useAccountModal } from '--lib/hooks/rainbowkit'
 import { useVaultContext } from '--lib/context/VaultContext'
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react'
-import { fAddress, fPercent, fTokens, fUSD } from '--lib/tools/format'
+import { fAddress, fTokens, fUSD } from '--lib/tools/format'
 import useData from '--lib/hooks/useData'
-import useVault from '--lib/hooks/useVault'
 import Tokens from '--lib/components/Tokens'
 import ExperienceToggle from '--lib/components/ExperienceToggle'
 
@@ -53,15 +51,10 @@ export default function Home() {
   const { openAccountModal } = useAccountModal()
   const { data } = useData()
 
-  const { data: yprismaVault } = useVault(env.YPRISMA_STRATEGY)
-  const vaultApr: number = z.number({ coerce: true }).parse(yprismaVault?.apr?.forwardAPR.netAPR ?? 0)
-  const vaultApy: number = (1 + (vaultApr / 52)) ** 52 - 1
-
   const tab = useTab()
   const account = useAccount()
 
   const leftActive = (tab === 'stake' || tab === 'unstake' || tab === 'claim' || tab === 'get' || tab === 'learn_more_stake')
-  const rightActive = !leftActive
 
   return (
     <main className="flex flex-col items-center min-h-screen text-white">
