@@ -15,8 +15,9 @@ export default function VaultDataBox({
   const { data: prices } = usePrices([env.YPRISMA])
   const { data } = useData()
   const vaultApy = useVaultApy()
-  const balanceInAssets = useMemo(() => data.strategy.balance * data.strategy.pricePerShare, [data])
-  const balanceInAssetsUsd = useMemo(() => bmath.priced(balanceInAssets, data.strategy.decimals, prices[env.YPRISMA]), [balanceInAssets, data, prices])
+  const balanceInAssets = useMemo(() => BigInt(bmath.div(data.strategy.balance * data.strategy.pricePerShare, 10n ** BigInt(data.strategy.decimals))), [data])
+  const balanceInAssetsHumanized = useMemo(() => bmath.div(balanceInAssets, 10n ** BigInt(data.strategy.decimals)), [balanceInAssets, data])
+  const balanceInAssetsUsd = useMemo(() => balanceInAssetsHumanized * prices[env.YPRISMA], [balanceInAssetsHumanized, prices])
   const vaultTotalAssetsUsd = useMemo(() => bmath.priced(data.strategy.totalAssets, data.strategy.decimals, prices[env.YPRISMA]), [data, prices])
 
   return <div className={className}>
