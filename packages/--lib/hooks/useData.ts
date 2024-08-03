@@ -74,7 +74,6 @@ export const DataSchema = z.object({
     weeklyRewardAmount: z.bigint({ coerce: true }).default(0n),
     userProjectedBoostMultiplier: z.bigint({ coerce: true }).default(0n),
     userActiveBoostMultiplier: z.bigint({ coerce: true }).default(0n),
-    oldStakerBalance: z.bigint({ coerce: true }).default(0n),
     vaultAPR: z.bigint({ coerce: true }).default(0n)
   }).default({})
 })
@@ -137,10 +136,10 @@ export default function useData() {
       functionName: 'getClaimable', args: [account.address ?? zeroAddress]
     },
 
-    { index: 14, key: 'vault.symbol', address: env.YPRISMA_STRATEGY, abi: abis.Vault, functionName: 'symbol' },
-    { index: 15, key: 'vault.decimals', address: env.YPRISMA_STRATEGY, abi: abis.Vault, functionName: 'decimals' },
+    { index: 14, key: 'vault.symbol', address: env.YPRISMA_STRATEGY, abi: erc20Abi, functionName: 'symbol' },
+    { index: 15, key: 'vault.decimals', address: env.YPRISMA_STRATEGY, abi: erc20Abi, functionName: 'decimals' },
     {
-      index: 16, key: 'vault.balance', address: env.YPRISMA_STRATEGY, abi: abis.Vault, 
+      index: 16, key: 'vault.balance', address: env.YPRISMA_STRATEGY, abi: erc20Abi, 
       functionName: 'balanceOf', args: [account.address ?? zeroAddress]
     },
 
@@ -190,17 +189,13 @@ export default function useData() {
       index: 24, key: 'utilities.getUserProjectedBoostMultiplier', address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, abi: abis.Utilities, 
       functionName: 'getUserProjectedBoostMultiplier', args: [account.address ?? zeroAddress]
     },
-    {
-      index: 25, key: 'oldstaker.balance', address: env.YPRISMA_OLD_STAKER, abi: abis.OldStaker, 
-      functionName: 'balanceOf', args: [account.address || zeroAddress]
-    },
 
-    { index: 26, key: 'vault.totalAssets', address: env.YPRISMA_STRATEGY, abi: abis.Vault, functionName: 'totalAssets' },
-    { index: 27, key: 'stableVault.balance', address: env.YVMKUSD, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
-    { index: 28, key: 'vault.pps', address: env.YPRISMA_STRATEGY, abi: abis.Vault, functionName: 'pricePerShare' },
+    { index: 25, key: 'vault.totalAssets', address: env.YPRISMA_STRATEGY, abi: abis.VaultV3, functionName: 'totalAssets' },
+    { index: 26, key: 'stableVault.balance', address: env.YVMKUSD, abi: erc20Abi, functionName: 'balanceOf', args: [account.address || zeroAddress] },
+    { index: 27, key: 'vault.pps', address: env.YPRISMA_STRATEGY, abi: abis.VaultV3, functionName: 'pricePerShare' },
 
     { 
-      index: 29, key: 'utilities.getGlobalProjectedApr', address: env.YPRISMA_BOOSTED_STAKER_UTILITIES,
+      index: 28, key: 'utilities.getGlobalProjectedApr', address: env.YPRISMA_BOOSTED_STAKER_UTILITIES,
       abi: abis.Utilities, functionName: 'getGlobalProjectedApr',
       args: [
         parseUnits((prices?.[env.YPRISMA] ?? 0).toString(), 18).toString(),
@@ -208,8 +203,8 @@ export default function useData() {
       ]
     },
 
-    { 
-      index: 30, key: 'utilties.getUserActiveAprWithFee', address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, 
+    {
+      index: 29, key: 'utilties.getUserActiveAprWithFee', address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, 
       abi: abis.Utilities, functionName: 'getUserActiveAprWithFee', 
       args: [
         env.YPRISMA_STRATEGY_STRATEGY,
@@ -219,7 +214,7 @@ export default function useData() {
       optional: true
     },
 
-    { index: 31, key: 'utilities.getUserProjectedApr', address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, 
+    { index: 30, key: 'utilities.getUserProjectedApr', address: env.YPRISMA_BOOSTED_STAKER_UTILITIES, 
       abi: abis.Utilities, functionName: 'getUserProjectedApr', 
       args: [
         account.address || zeroAddress, 
@@ -341,7 +336,6 @@ export default function useData() {
       weeklyRewardAmount: get<bigint>('utilities.activeRewardAmount'),
       userProjectedBoostMultiplier: get<bigint>('utilities.getUserProjectedBoostMultiplier'),
       userActiveBoostMultiplier: get<bigint>('utilities.getUserActiveBoostMultiplier'),
-      oldStakerBalance: get<bigint>('oldstaker.balance'),
       vaultAPR: get<bigint>('utilties.getUserActiveAprWithFee')
     },
   })}

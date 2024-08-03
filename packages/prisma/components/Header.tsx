@@ -2,6 +2,7 @@
 
 import Button from '--lib/components/Button'
 import Link from 'next/link'
+import { hasLegacyStaker } from './LegacyStaker/useBalance'
 
 type Item = { text: string, link: string, notification?: boolean }
 type Items = Array<Item>
@@ -58,11 +59,17 @@ const Header = ({ items, selected='', launchApp=true, launchText='Launch App', c
   </header>
 )
 
-export const headerItems = [
-  { text: 'Home', link: '/' },
-  { text: 'Earn', link: '/app/stake' },
-  { text: 'About', link: '/about' },
-  { text: 'Expired farms', link: '/expired' },
-]
+export const headerItems = hasLegacyStaker
+  ? [
+    { text: 'Home', link: '/' },
+    { text: 'Earn', link: '/app/stake' },
+    { text: 'About', link: '/about' },
+    { text: 'Expired farms', link: '/expired' },
+  ]
+  : [
+    { text: 'Home', link: '/' },
+    { text: 'Earn', link: '/app/stake' },
+    { text: 'About', link: '/about' }
+  ]
 
 export default Header

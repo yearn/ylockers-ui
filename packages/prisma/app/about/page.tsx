@@ -2,6 +2,7 @@ import Header, { headerItems } from '../../components/Header'
 import Link from 'next/link'
 import Background from '../../components/Background'
 import env from '--lib/tools/env'
+import { hasLegacyStaker, LEGACY_STAKER_ADDRESS } from '@/components/LegacyStaker/useBalance'
 
 export default function Home() {
   return (
@@ -139,12 +140,12 @@ export default function Home() {
                       <dd className="font-mono">0xe3668873D944E4A949DA05fc8bDE419eFF543882</dd>
                     </a>
                   </div>
-                  <div className="flex flex-col justify-between opacity-40 md:flex-row">
+                  {hasLegacyStaker && <div className="flex flex-col justify-between opacity-40 md:flex-row">
                     <dt className="text-white">Legacy yPrisma Staking Contract</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xE3EE395C9067dD15C492Ca950B101a7d6c85b5Fc">
-                      <dd className="font-mono">0xE3EE395C9067dD15C492Ca950B101a7d6c85b5Fc</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${LEGACY_STAKER_ADDRESS}`}>
+                      <dd className="font-mono">{LEGACY_STAKER_ADDRESS}</dd>
                     </a>
-                  </div>
+                  </div>}
                 </dl>
               </div>
             </div>

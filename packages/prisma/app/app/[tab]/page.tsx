@@ -9,7 +9,7 @@ import { useConnectModal, useAccountModal } from '--lib/hooks/rainbowkit'
 import { useVaultContext } from '--lib/context/VaultContext'
 import { useAccount } from 'wagmi'
 import { useState, useMemo } from 'react'
-import { fAddress, fTokens, fUSD } from '--lib/tools/format'
+import { fAddress, fUSD } from '--lib/tools/format'
 import useData from '--lib/hooks/useData'
 import Tokens from '--lib/components/Tokens'
 import ExperienceToggle from '--lib/components/ExperienceToggle'
@@ -20,7 +20,6 @@ import Unstake from '--lib/components/Unstake'
 import Mint from '--lib/components/Mint'
 import Deposit from '--lib/components/DepositV3'
 import Withdraw from '--lib/components/WithdrawV3'
-import WithdrawAllFromOldStaker from '../../../components/WithdrawAllFromOldStaker'
 
 import { useContractReads } from 'wagmi'
 import { PiVaultLight } from 'react-icons/pi'
@@ -33,6 +32,7 @@ import A from '--lib/components/A'
 import YbsDataBox from '--lib/components/YbsDataBox'
 import VaultDataBox from '--lib/components/VaultDataBox'
 import { useTab } from '--lib/hooks/useTab'
+import LegacyStakerBanner from '@/components/LegacyStaker/Banner'
 
 function isVersionGte(version: string, compareVersion: string) {
   const versionParts = version.split('.').map(Number)
@@ -49,7 +49,6 @@ function isVersionGte(version: string, compareVersion: string) {
 export default function Home() {
   const { openConnectModal  } = useConnectModal()
   const { openAccountModal } = useAccountModal()
-  const { data } = useData()
 
   const tab = useTab()
   const account = useAccount()
@@ -58,13 +57,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center min-h-screen text-white">
-      {data.utilities.oldStakerBalance > 0n && (
-        <div className="w-full bg-yellow-200 text-black text-center p-2 z-20">
-          <b>⚠️ Warning: </b>Your wallet has balance of {fTokens(data.utilities.oldStakerBalance, data.staker.decimals)} yPRISMA in the deprecated yPRISMA staker.
-          <WithdrawAllFromOldStaker className="mt-2" />
-          Use the above button to withdraw + claim pending rewards so that you can begin your migration! <Link className="underline" href="https://blog.yearn.fi/ybs-yprisma-launch" target="_blank">Read more.</Link>
-        </div>
-      )}
+      <LegacyStakerBanner />
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : 'Connect Wallet'} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
