@@ -22,7 +22,7 @@ export default function VaultDataBox({
     <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APY</span>
     <span className="text-light-blue text-6xl font-bold font-mono mb-[26px]">
       {(vaultApy > 0) ? fPercent(vaultApy) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
-    <div className="border-t-2 border-soft-blue my-4 flex flex-col space-y-2">
+    <div className="border-t-2 border-darker-blue/60 my-4 flex flex-col space-y-2">
       <span className="font-semibold py-4 text-lg">YOUR DEPOSITS</span>
       <div className="flex justify-between">
         <span className="font-thin opacity-70">{env.LOCKER_NAME} Deposited</span>
@@ -32,7 +32,7 @@ export default function VaultDataBox({
         <span className="font-thin opacity-70 mb-4">USD Value</span>
         <span className="font-bold font-mono">{fUSD(balanceUsd)}</span>
       </div>
-      <div className="font-semibold py-4 text-lg border-t-2 border-soft-blue">TOTAL DEPOSITS</div>
+      <div className="font-semibold py-4 text-lg border-t-2 border-darker-blue/60">TOTAL DEPOSITS</div>
       <div className="flex justify-between">
         <span className="font-thin opacity-70">{env.LOCKER_NAME} Deposited</span>
         <Tokens className="font-bold" amount={data.strategy.totalAssets} decimals={data.strategy.decimals} />

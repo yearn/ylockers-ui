@@ -103,7 +103,7 @@ export default function YbsDataBox({
     </div>
 
     <div className="my-4 flex flex-col space-y-2">
-      <div className="border-t-2 border-soft-blue flex justify-between items-center py-4">
+      <div className="border-t-2 border-darker-blue/60 flex justify-between items-center py-4">
         <span className="font-semibold text-lg">YOUR POSITION</span>
         <span className="font-bold font-mono px-2 py-1 bg-disabled-bg rounded-lg text-boost-blue">
           {formatUnits(data.utilities.userActiveBoostMultiplier, 18)}x BOOST
@@ -132,7 +132,7 @@ export default function YbsDataBox({
       </div>
 
     </div>
-    <div className="border-t-2 border-soft-blue flex flex-col space-y-2">
+    <div className="border-t-2 border-darker-blue/60 flex flex-col space-y-2">
       <span className="font-semibold py-4 text-lg">YEARN BOOSTED STAKER</span>
       <div className="flex justify-between">
         <span className="font-thin opacity-70	">{env.LOCKER_NAME} Staked</span>
