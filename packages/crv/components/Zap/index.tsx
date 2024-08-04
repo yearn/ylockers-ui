@@ -35,7 +35,7 @@ function Layout() {
         animate={{ y: 0 }}
         className={`
         relative h-[22rem] flex flex-col gap-2
-        bg-transparent rounded-primary`}>
+        bg-transparent rounded-xl`}>
         <InputPanel mode="in" onSelectToken={() => setSelectTokenMode('in')} />
         <InputPanel mode="out" onSelectToken={() => setSelectTokenMode('out')} />
         <div className={`pt-1

@@ -27,20 +27,20 @@ export default function ExperienceToggle() {
 
   return <div className="w-full flex flex-wrap justify-center items-center mb-12 md:mb-8 space-y-4 md:space-x-8 md:space-y-0 flex-col md:flex-row">
     <Link href="/app/stake">
-      <div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
+      <div className={`${(leftActive) ? 'bg-bright-primary' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
         <div className="flex justify-between items-center text-lg pl-4">
           EARN {env.STABLE_NAME}
-          <div className={`rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>
+          <div className={`rounded-full ${leftActive ? 'bg-light-primary' : 'bg-tab-inactive-inner'} p-1 px-4`}>
             {stakerApr}
           </div>
         </div>
       </div>
     </Link>
     <Link href="/app/deposit">
-      <div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
+      <div className={`${(rightActive) ? 'bg-bright-primary' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
         <div className="flex justify-between items-center text-lg pl-4">
           EARN {env.LOCKER_NAME}
-          <div className={`rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>
+          <div className={`rounded-full ${rightActive ? 'bg-light-primary' : 'bg-tab-inactive-inner'} p-1 px-4`}>
             {vaultApy}
           </div>
         </div>

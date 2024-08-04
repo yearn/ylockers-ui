@@ -46,6 +46,14 @@ bun dev:{assetName}
 - Add `"--lib": "0.1.0"` to the new project's package.json dependencies.
 - Add `../--lib/components/**/*.{js,ts,jsx,tsx,mdx}` to the `content` array in the project's `tailwind.config.js`.
 
+### tailwind
+import libConfig from "--lib/tailwind.config"
+import { deepMerge } from "--lib/tools/object"
+...
+config.theme = deepMerge(libConfig.theme, config.theme);
+export default config;
+
+
 ## Deployment
 
 Push to `main` branch to deploy a new version. Pull requests have independent preview links created when open.

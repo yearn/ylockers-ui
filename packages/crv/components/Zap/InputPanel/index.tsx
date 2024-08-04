@@ -37,9 +37,9 @@ export default function InputPanel({
   const setAmount = useMemo(() => isModeIn ? setInputAmount : setOutputAmount, [isModeIn, setInputAmount, setOutputAmount])
 
   return <div className={`group
-    px-4 py-6 bg-input-bg rounded-primary
+    px-4 py-6 bg-input-bg rounded-xl
     flex flex-col justify-center gap-3
-    border border-transparent focus-within:border-light-blue`}>
+    border border-transparent focus-within:border-bright-primary`}>
     <div className={labelClassName}>{label}</div>
     <div className="flex items-center gap-4">
       <Suspense fallback={<InputDisplay />}>

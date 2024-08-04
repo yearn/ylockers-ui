@@ -8,7 +8,7 @@ const A = forwardRef<HTMLAnchorElement, AnchorProps>(({ className, children, ...
   <a ref={ref}
     {...props}
     className={`
-  hover:underline hover:text-light-blue hover:decoration-light-blue
+  hover:underline hover:text-bright-primary hover:decoration-bright-primary
   active:underline active:text-charge-yellow active:decoration-charge-yellow
   ${className}`}>
     {children}

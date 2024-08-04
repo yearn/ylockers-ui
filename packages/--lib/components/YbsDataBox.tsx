@@ -62,7 +62,7 @@ export default function YbsDataBox({
   }, [data])
 
   return <div className={className}>
-    <div className="flex items-center justify-between pb-2 text-light-blue font-bold">
+    <div className="flex items-center justify-between pb-2 text-bright-primary font-bold">
       <span>ACTIVE APR</span>
       <span>
         <HoverCard>
@@ -87,15 +87,15 @@ export default function YbsDataBox({
         </HoverCard>
       </span>
     </div>
-    <span className="flex items-center justify-between gap-3 whitespace-nowrap mb-[26px] text-light-blue text-4xl font-bold">
+    <span className="flex items-center justify-between gap-3 whitespace-nowrap mb-[26px] text-bright-primary text-4xl font-bold">
       <span className="font-mono">{activeApr.min}</span>
       <MdArrowRightAlt />
       <span className="font-mono">{activeApr.max}</span>
     </span>
 
     <div className="flex items-end justify-between gap-2">
-      <span className="text-light-blue">Projected APR</span>
-      <span className="flex items-center gap-2 whitespace-nowrap text-light-blue">
+      <span className="text-bright-primary">Projected APR</span>
+      <span className="flex items-center gap-2 whitespace-nowrap text-bright-primary">
         <span className="font-mono">{projectedApr.min}</span>
         <MdArrowRightAlt />
         <span className="font-mono">{projectedApr.max}</span>
@@ -103,9 +103,9 @@ export default function YbsDataBox({
     </div>
 
     <div className="my-4 flex flex-col space-y-2">
-      <div className="border-t-2 border-darker-blue/60 flex justify-between items-center py-4">
+      <div className="border-t-2 border-deeper-primary/60 flex justify-between items-center py-4">
         <span className="font-semibold text-lg">YOUR POSITION</span>
-        <span className="font-bold font-mono px-2 py-1 bg-disabled-bg rounded-lg text-boost-blue">
+        <span className="font-bold font-mono px-2 py-1 bg-disabled-bg rounded-lg text-boost-primary">
           {formatUnits(data.utilities.userActiveBoostMultiplier, 18)}x BOOST
         </span>
       </div>
@@ -132,7 +132,7 @@ export default function YbsDataBox({
       </div>
 
     </div>
-    <div className="border-t-2 border-darker-blue/60 flex flex-col space-y-2">
+    <div className="border-t-2 border-deeper-primary/60 flex flex-col space-y-2">
       <span className="font-semibold py-4 text-lg">YEARN BOOSTED STAKER</span>
       <div className="flex justify-between">
         <span className="font-thin opacity-70	">{env.LOCKER_NAME} Staked</span>

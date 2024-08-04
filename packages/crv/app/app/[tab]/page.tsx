@@ -17,7 +17,6 @@ import Deposit from '--lib/components/DepositV2'
 import Withdraw from '--lib/components/WithdrawV2'
 
 import { PiVaultLight } from 'react-icons/pi'
-import bmath from '--lib/tools/bmath'
 import env from '--lib/tools/env'
 import Background from '../../../components/Background'
 import A from '--lib/components/A'
@@ -45,23 +44,24 @@ export default function Home() {
           <ExperienceToggle />
 
           <div className="flex flex-col lg:flex-row justify-center ">
-            <div className="flex-1 bg-darker-blue lg:rounded-bl-lg lg:rounded-tl-lg">
+            <div className="flex-1 bg-deeper-primary lg:rounded-bl-lg lg:rounded-tl-lg">
               <TabContent leftActive={leftActive} />
             </div>
 
             {leftActive 
-              ? <YbsDataBox className="lg:w-[408px] bg-blue flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" /> 
-              : <VaultDataBox className="lg:w-[408px] bg-blue flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" />
+              ? <YbsDataBox className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" /> 
+              : <VaultDataBox className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" />
             }
 
           </div>
           <div className="mt-8">
-            <Vaults title="Curve vaults" filter={(vault: any) => {
-              return vault.category === 'Curve'
-              && vault.endorsed
-              && !vault.details.isRetired
-              && !vault.details.isHidden
-            }} />
+            <Vaults title="Curve vaults"
+              filter={(vault: { category: string, endorsed: boolean, details: { isRetired: boolean, isHidden: boolean }}) => {
+                return vault.category === 'Curve'
+                && vault.endorsed
+                && !vault.details.isRetired
+                && !vault.details.isHidden
+              }} />
           </div>
         </section>
       </div>

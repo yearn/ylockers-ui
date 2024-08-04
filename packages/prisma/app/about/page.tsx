@@ -26,7 +26,7 @@ export default function Home() {
                       </span>
                     </h1>
                   </div>
-                  <div className="mb-8 border-white-200 py-2 text-white-700 md:border-l-4 border-blue md:pl-6">
+                  <div className="mb-8 border-white-200 py-2 text-white-700 md:border-l-4 border-primary md:pl-6">
                     <div>
                       <h2 className="text-3xl font-bold mb-6 mt-2">
                         How does it work?
@@ -93,7 +93,7 @@ export default function Home() {
                   </div>
                 </div>
               </section>
-              <div className="flex flex-col col-span-3 mt-6 rounded-lg bg-darker-blue">
+              <div className="flex flex-col col-span-3 mt-6 rounded-lg bg-deeper-primary">
                 <div className="mb-4 border-b p-4 md:p-6"><b className="text-2xl">
                   yPrisma deployment addresses
                 </b></div>

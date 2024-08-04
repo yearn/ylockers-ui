@@ -14,13 +14,13 @@ const Button = forwardRef<HTMLButtonElement, Props>(({ className, theme, onClick
   const bg = useMemo(() => {
     if (noInput) return 'bg-yellow-100'
     if (theme === 'transparent') return 'bg-transparent'
-    if (theme === 'onit') return 'bg-transparent hover:bg-lighter-blue'
-    return 'bg-light-blue hover:bg-lighter-blue'
+    if (theme === 'onit') return 'bg-transparent hover:bg-light-primary'
+    return 'bg-bright-primary hover:bg-light-primary'
   }, [theme, noInput])
 
   const border = useMemo(() => {
-    if (theme === 'transparent') return 'border-2 border-light-blue hover:border-lighter-blue'
-    if (theme === 'onit') return 'border-2 border-darker-blue'
+    if (theme === 'transparent') return 'border-2 border-bright-primary hover:border-light-primary'
+    if (theme === 'onit') return 'border-2 border-deeper-primary'
     return 'border-2 border-transparent'
   }, [theme])
 

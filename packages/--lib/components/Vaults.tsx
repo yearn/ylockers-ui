@@ -142,7 +142,7 @@ export default function Vaults({
   }, [sortedData, searchTerm])
 
   return (
-    <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
+    <div className="w-full rounded-lg overflow-hidden bg-deeper-primary text-white mb-8">
       <div className="flex flex-col md:flex-row items-center justify-between w-full">
         <h1 className="text-4xl md:text-5xl p-6 pt-8 md:p-8 font-[700] pb-0">
           {title}
@@ -199,7 +199,7 @@ export default function Vaults({
               const holdings = getHoldings(item)
               const available = getAvailable(item)
               return (
-                <tr onClick={() => window.open(`https://yearn.fi/${isVersionGte(item.version, '3.0.0') ? 'v3/1' : 'vaults/1'}/${item.address}`, '_blank')} key={item.address} className="hover:bg-blue">
+                <tr onClick={() => window.open(`https://yearn.fi/${isVersionGte(item.version, '3.0.0') ? 'v3/1' : 'vaults/1'}/${item.address}`, '_blank')} key={item.address} className="hover:bg-primary">
                   <td className="text-sm md:text-base py-2 cursor-pointer px-4 md:pl-8 flex items-center space-x-2">
                     <ImageOrFallback
                       alt={item.name}

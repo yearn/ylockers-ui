@@ -19,7 +19,6 @@ import Deposit from '--lib/components/DepositV3'
 import Withdraw from '--lib/components/WithdrawV3'
 
 import { PiVaultLight } from 'react-icons/pi'
-import bmath from '--lib/tools/bmath'
 import env from '--lib/tools/env'
 import Background from '../../../components/Background'
 import A from '--lib/components/A'
@@ -48,23 +47,23 @@ export default function Home() {
           <ExperienceToggle />
 
           <div className="flex flex-col lg:flex-row justify-center ">
-            <div className="flex-1 bg-darker-blue lg:rounded-bl-lg lg:rounded-tl-lg">
+            <div className="flex-1 bg-deeper-primary lg:rounded-bl-lg lg:rounded-tl-lg">
               <Suspense fallback={<div>Loading...</div>}>
                 <TabContent leftActive={leftActive} />
               </Suspense>
             </div>
 
             {leftActive 
-              ? <YbsDataBox className="lg:w-[408px] bg-blue flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" /> 
-              : <VaultDataBox className="lg:w-[408px] bg-blue flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" />
+              ? <YbsDataBox className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" /> 
+              : <VaultDataBox className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" />
             }
 
           </div>
           <div className="mt-8">
-            <Vaults title="Prisma vaults" filter={(vault: any) => {
-              /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-              return vault.strategies.some((strategy: any) => strategy.name.toLowerCase().includes('prisma'))
-            }} />
+            <Vaults title="Prisma vaults" 
+              filter={(vault: { strategies: { name: string }[] }) => {
+                return vault.strategies.some(strategy => strategy.name.toLowerCase().includes('prisma'))
+              }} />
           </div>
         </section>
       </div>

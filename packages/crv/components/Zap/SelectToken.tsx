@@ -95,7 +95,7 @@ export default function SelectToken({
     computeOutputTokens
   ])
 
-  return <div className="px-4 py-6 flex flex-col gap-3 bg-input-bg rounded-primary">
+  return <div className="px-4 py-6 flex flex-col gap-3 bg-input-bg rounded-xl">
     <div className="flex items-center justify-between">
       <div className="text-sm text-neutral-400">Select an {mode === 'in' ? 'input' : 'output'} token</div>
       <div className="text-sm">
@@ -109,12 +109,12 @@ export default function SelectToken({
         pl-4 pr-12 py-4
         flex items-center justify-between
         border border-transparent
-        hover:bg-darker-blue 
-        rounded-primary cursor-pointer`}>
+        hover:bg-deeper-primary 
+        rounded-xl cursor-pointer`}>
         <div className="flex items-center gap-4">
           <div className="size-[32px]">
             <ImageOrBg
-              bgClassName="bg-darker-blue-bg rounded-full"
+              bgClassName="bg-deeper-primary-bg rounded-full"
               src={token.icon}
               alt={token.symbol}
               width={32}
