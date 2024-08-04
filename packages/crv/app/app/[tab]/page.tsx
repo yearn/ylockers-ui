@@ -24,7 +24,9 @@ import Zap from '@/components/Zap'
 import YbsDataBox from '--lib/components/YbsDataBox'
 import VaultDataBox from '--lib/components/VaultDataBox'
 import Vaults from '--lib/components/Vaults'
+import Ticker from '--lib/components/Ticker'
 import { useTab } from '--lib/hooks/useTab'
+
 
 export default function Home() {
   const { openConnectModal  } = useConnectModal()
@@ -40,6 +42,7 @@ export default function Home() {
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : 'Connect Wallet'} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
+        <Ticker />
         <section className="mt-32 md:mt-[5vh] sm:mx-4 lg:mx-0">
           <ExperienceToggle />
 

@@ -27,6 +27,7 @@ import VaultDataBox from '--lib/components/VaultDataBox'
 import { useTab } from '--lib/hooks/useTab'
 import Vaults from '--lib/components/Vaults'
 import LegacyStakerBanner from '@/components/LegacyStaker/Banner'
+import Ticker from '--lib/components/Ticker'
 
 export default function Home() {
   const { openConnectModal  } = useConnectModal()
@@ -43,6 +44,7 @@ export default function Home() {
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : 'Connect Wallet'} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
+        <Ticker />
         <section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0">
           <ExperienceToggle />
 

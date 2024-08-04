@@ -7,6 +7,7 @@ import useData from '--lib/hooks/useData'
 import { fPercent } from '--lib/tools/format'
 import bmath from '--lib/tools/bmath'
 import Background from '../components/Background'
+import Ticker from '--lib/components/Ticker'
 
 export default function Home() {
   const { data } = useData()
@@ -15,6 +16,7 @@ export default function Home() {
     <main className="flex flex-col items-center min-h-screen text-white">
       <Background />
       <Header items={headerItems} selected="Home" />
+      <Ticker />
       <section className="px-8 xl:px-0 xl:w-[1200px] mt-[15vh] md:mt-[27vh] z-10">
         <div className="w-full px-12 md:px-0">
           <h1 className="text-6xl font-bold">Put your<br />yPRISMA to work</h1>

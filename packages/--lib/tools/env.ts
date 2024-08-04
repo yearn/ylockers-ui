@@ -10,6 +10,7 @@ class DotEnvError extends Error {
 }
 
 const EnvSchema = z.object({
+  ASSET_NAME: z.string(),
   LOCKER_NAME: z.string(),
   STABLE_NAME: z.string(),
   PRISMA: EvmAddressSchema,
@@ -23,11 +24,13 @@ const EnvSchema = z.object({
   MKUSD: EvmAddressSchema,
   YDAEMON: z.string(),
   ZAP: EvmAddressSchema,
+  EXIT_POOL: EvmAddressSchema,
   USE_UTILITY_VAULT_APR: z.boolean(),
   DEV: z.boolean()
 })
 
 const result = EnvSchema.safeParse({
+  ASSET_NAME: process.env.NEXT_PUBLIC_ASSET_NAME,
   LOCKER_NAME: process.env.NEXT_PUBLIC_LOCKER_NAME,
   STABLE_NAME: process.env.NEXT_PUBLIC_STABLE_NAME,
   PRISMA: process.env.NEXT_PUBLIC_PRISMA,
@@ -41,6 +44,7 @@ const result = EnvSchema.safeParse({
   MKUSD: process.env.NEXT_PUBLIC_MKUSD,
   YDAEMON: process.env.NEXT_PUBLIC_YDAEMON,
   ZAP: process.env.NEXT_PUBLIC_ZAP ?? zeroAddress,
+  EXIT_POOL: process.env.NEXT_PUBLIC_EXIT_POOL,
   USE_UTILITY_VAULT_APR: process.env.NEXT_PUBLIC_USE_UTILITY_VAULT_APR === 'true',
   DEV: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 })
