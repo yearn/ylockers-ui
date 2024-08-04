@@ -2,13 +2,10 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import InputBox from '--lib/components/InputBox'
 import Header, { headerItems } from '../../../components/Header'
 import { Suspense } from 'react'
 import { useConnectModal, useAccountModal } from '--lib/hooks/rainbowkit'
-import { useVaultContext } from '--lib/context/VaultContext'
 import { useAccount } from 'wagmi'
-import { useState, useMemo } from 'react'
 import { fAddress, fUSD } from '--lib/tools/format'
 import useData from '--lib/hooks/useData'
 import Tokens from '--lib/components/Tokens'
@@ -21,10 +18,7 @@ import Mint from '--lib/components/Mint'
 import Deposit from '--lib/components/DepositV3'
 import Withdraw from '--lib/components/WithdrawV3'
 
-import { useContractReads } from 'wagmi'
 import { PiVaultLight } from 'react-icons/pi'
-import { erc20Abi } from 'viem'
-import { formatUnits } from 'viem'
 import bmath from '--lib/tools/bmath'
 import env from '--lib/tools/env'
 import Background from '../../../components/Background'
@@ -32,19 +26,8 @@ import A from '--lib/components/A'
 import YbsDataBox from '--lib/components/YbsDataBox'
 import VaultDataBox from '--lib/components/VaultDataBox'
 import { useTab } from '--lib/hooks/useTab'
+import Vaults from '--lib/components/Vaults'
 import LegacyStakerBanner from '@/components/LegacyStaker/Banner'
-
-function isVersionGte(version: string, compareVersion: string) {
-  const versionParts = version.split('.').map(Number)
-  const compareVersionParts = compareVersion.split('.').map(Number)
-  for (let i = 0; i < Math.max(versionParts.length, compareVersionParts.length); i++) {
-    const v = versionParts[i] || 0
-    const cv = compareVersionParts[i] || 0
-    if (v > cv) return true
-    if (v < cv) return false
-  }
-  return true 
-}
 
 export default function Home() {
   const { openConnectModal  } = useConnectModal()
@@ -78,7 +61,10 @@ export default function Home() {
 
           </div>
           <div className="mt-8">
-            <TableComponent />
+            <Vaults title="Prisma vaults" filter={(vault: any) => {
+              /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+              return vault.strategies.some((strategy: any) => strategy.name.toLowerCase().includes('prisma'))
+            }} />
           </div>
         </section>
       </div>
@@ -257,235 +243,6 @@ function TabContent(props: { leftActive: boolean }) {
             </div>
           </div>
         )}
-      </div>
-    </div>
-  )
-}
-
-const TableComponent = () => {
-  const { address } = useAccount()
-  
-  const { vaultData } = useVaultContext()
-  const [searchTerm, setSearchTerm] = useState('')
-  
-  const [sortColumn, setSortColumn] = useState('estApr')
-  const [sortDirection, setSortDirection] = useState('desc')
-
-  const handleSort = (column: string) => {
-    if (column === sortColumn) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
-    } else {
-      setSortColumn(column)
-      setSortDirection('asc')
-    }
-  }
-
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  const filteredVaultData = useMemo(() => vaultData ? vaultData.filter((vault:any) =>
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    vault.strategies.some((strategy:any) => strategy.name.toLowerCase().includes('prisma'))
-  ) : [], [vaultData])
-
-  const contractReads = useContractReads({
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    contracts: address ? filteredVaultData.flatMap((vault: any) => [
-      {
-        address: vault.address,
-        abi: erc20Abi,
-        functionName: 'balanceOf',
-        args: [address],
-      },
-      {
-        address: vault.token.address,
-        abi: erc20Abi,
-        functionName: 'balanceOf',
-        args: [address],
-      },
-    ]) : [],
-  })
-
-  const getHoldings = useMemo(() => {
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return (vault: any) => {
-      const index = filteredVaultData.indexOf(vault)
-      if (contractReads.data && contractReads.data[index * 2]) {
-        const vaultBalance = BigInt(contractReads.data[index * 2].result ?? 0n)
-        return {
-          balance: Number(formatUnits(vaultBalance, vault.decimals)),
-          usdValue: Number(formatUnits(vaultBalance, vault.decimals)) * vault.tvl.price,
-        }
-      }
-      return null
-    }
-  }, [contractReads.data, filteredVaultData])
-
-  const getAvailable = useMemo(() => {
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return (vault: any) => {
-      const index = filteredVaultData.indexOf(vault)
-      if (contractReads.data && contractReads.data[index * 2 + 1]) {
-        const tokenBalance = BigInt(contractReads.data[index * 2 + 1].result ?? 0n)
-        return {
-          balance: Number(formatUnits(tokenBalance, vault.token.decimals)),
-          usdValue: Number(formatUnits(tokenBalance, vault.token.decimals)) * vault.tvl.price,
-        }
-      }
-      return null
-    }
-  }, [contractReads.data, filteredVaultData])
-
-  const sortedData = useMemo(() => {
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return [...filteredVaultData].sort((a: any, b: any) => {
-      if (sortColumn === 'token') {
-        const nameA = a.name.toLowerCase()
-        const nameB = b.name.toLowerCase()
-        if (nameA < nameB) return sortDirection === 'asc' ? -1 : 1
-        if (nameA > nameB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'estApr') {
-        const aprA = a.apr.forwardAPR.netAPR
-        const aprB = b.apr.forwardAPR.netAPR
-        if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1
-        if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'histApr') {
-        const aprA = a.apr.netAPR ?? a.apr.points.weekAgo ?? a.apr.points.monthAgo
-        const aprB = b.apr.netAPR ?? b.apr.points.weekAgo ?? b.apr.points.monthAgo
-        if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1
-        if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'available') {
-        const availableA = getAvailable(a)?.usdValue || 0
-        const availableB = getAvailable(b)?.usdValue || 0
-        if (availableA < availableB) return sortDirection === 'asc' ? -1 : 1
-        if (availableA > availableB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'holdings') {
-        const holdingsA = getHoldings(a)?.usdValue || 0
-        const holdingsB = getHoldings(b)?.usdValue || 0
-        if (holdingsA < holdingsB) return sortDirection === 'asc' ? -1 : 1
-        if (holdingsA > holdingsB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'deposits') {
-        const depositsA = a.tvl.tvl
-        const depositsB = b.tvl.tvl
-        if (depositsA < depositsB) return sortDirection === 'asc' ? -1 : 1
-        if (depositsA > depositsB) return sortDirection === 'asc' ? 1 : -1
-      }
-      return 0
-    })
-  }, [filteredVaultData, sortColumn, sortDirection, getHoldings, getAvailable])
-
-  const filteredData = useMemo(() => {
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return sortedData.filter((vault:any) =>
-      vault.token.display_name.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.token.name.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.token.address.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.token.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.token.display_symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.address.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.name.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.display_name.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.display_symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.formated_symbol.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  }, [sortedData, searchTerm])
-  
-  return (
-    <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
-      <div className="flex flex-col md:flex-row items-center justify-between w-full">
-        <h1 className="text-4xl md:text-5xl p-6 pt-8 md:p-8 font-[700] pb-0">
-          Prisma Vaults
-        </h1>
-        <div className="p-4 md:p-8 w-full md:w-2/3">
-          <InputBox
-            // type="text"
-            subtitle=""
-            title="Search"
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            noButton
-            inputType="text"
-            placeholder="Vault or strategy name..." />
-        </div>
-      </div>
-      <div className="pb-2">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="">
-              <th
-                className="text-sm font-thin py-2 hover:underline cursor-pointer pl-4 md:pl-8"
-                onClick={() => handleSort('token')}>
-                Token {sortColumn === 'token' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer"
-                onClick={() => handleSort('estApr')}>
-                Est. APR {sortColumn === 'estApr' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
-                onClick={() => handleSort('histApr')}>
-                Hist. APR {sortColumn === 'histApr' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
-                onClick={() => handleSort('available')}>
-                Available {sortColumn === 'available' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
-                onClick={() => handleSort('holdings')}>
-                Holdings {sortColumn === 'holdings' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer pr-8 hidden md:table-cell"
-                onClick={() => handleSort('deposits')}>
-                Deposits {sortColumn === 'deposits' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map(item => {
-              const holdings = getHoldings(item)
-              const available = getAvailable(item)
-              return (
-                <tr onClick={() => window.open(`https://yearn.fi/${isVersionGte(item.version, '3.0.0') ? 'v3/1' : 'vaults/1'}/${item.address}`, '_blank')} key={item.address} className="hover:bg-blue">
-                  <td className="text-sm md:text-base py-2 cursor-pointer px-4 md:pl-8 flex items-center space-x-2"><Image alt={item.name} src={item.token.icon} width="40" height="40" /><span>{item.name}</span></td>
-                  <td className="text-base font-mono py-2 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">{(((item.apr.netAPR || item.apr.points.weekAgo || item.apr.points.monthAgo) ?? 0) * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
-                    {available ? (
-                      <>
-                        {available.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      </>
-                    ) : (
-                      '-'
-                    )}
-                  </td>
-                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
-                    {holdings ? (
-                      <>
-                        {holdings.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      </>
-                    ) : (
-                      '-'
-                    )}
-                  </td>
-                  <td className="text-base font-mono py-2 cursor-pointer pr-8 hidden md:table-cell">
-                    {item.tvl.totalAssets ? (
-                      <>
-                        {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                      </>
-                    ) : (
-                      '-'
-                    )}
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-        {!(vaultData?.length > 0) && <span className="p-4 md:p-8">Loading...</span>}
       </div>
     </div>
   )
