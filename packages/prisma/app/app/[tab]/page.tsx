@@ -151,7 +151,9 @@ function TabContent(props: { leftActive: boolean }) {
               <span className="font-semibold">YOUR REWARD</span>
               <span className="font-semibold font-mono text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
               <span className="flex items-end gap-1">
-                <span className="font-mono opacity-50">{bmath.div(data.rewards.claimable, 10n ** BigInt(data.rewards.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span className="font-mono opacity-50">
+                  <Tokens amount={data.rewards.claimable} decimals={data.rewards.decimals} />
+                </span>
                 <span className="font-thin opacity-70">yvmkUSD-A</span>
               </span>
               <div>

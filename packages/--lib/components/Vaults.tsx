@@ -209,12 +209,12 @@ export default function Vaults({
                       fallback="https://yearn.fi/_next/image?url=%2Fplaceholder.png&w=32&q=75" />
                     <span>{item.name}</span>
                   </td>
-                  <td className="text-base font-mono py-2 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-base font-mono py-2 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
+                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">{(item.apr.netAPR * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
                   <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
                     {available ? (
                       <>
-                        {available.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {available.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </>
                     ) : (
                       '-'
@@ -223,7 +223,7 @@ export default function Vaults({
                   <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
                     {holdings ? (
                       <>
-                        {holdings.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {holdings.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </>
                     ) : (
                       '-'
@@ -232,8 +232,8 @@ export default function Vaults({
                   <td className="text-base font-mono py-2 cursor-pointer pr-8 hidden md:table-cell">
                     {item.tvl.totalAssets ? (
                       <>
-                        {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                       </>
                     ) : (
                       '-'

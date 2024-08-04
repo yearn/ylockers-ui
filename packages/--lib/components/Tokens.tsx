@@ -15,7 +15,7 @@ export default function Tokens({
 }) {
   const formatted = (() => {
     const n = Number(formatUnits(amount, decimals))
-    const formatter = new Intl.NumberFormat('en-US', {
+    const formatter = new Intl.NumberFormat(undefined, {
       style: 'decimal',
       minimumFractionDigits: accuracy || 2,
       maximumFractionDigits: accuracy || 2
