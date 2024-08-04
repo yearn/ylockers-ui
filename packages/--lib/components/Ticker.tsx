@@ -47,7 +47,7 @@ export default function Ticker() {
   const peg = usePeg()
 
   const pegDisplay = useMemo(() => {
-    if (peg === 0) return '-:1'
+    if (peg === 0) return '-.--:1'
     return `${fNumber(peg)}:1`
   }, [peg])
 
