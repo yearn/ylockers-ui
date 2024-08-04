@@ -4,10 +4,11 @@ import './globals.css'
 import '@rainbow-me/rainbowkit/styles.css'
 
 import Providers from '--lib/context/Providers'
+import env from '--lib/tools/env'
 
 export const metadata: Metadata = {
-  title: 'yPrisma',
-  description: 'Put your yPRISMA to work',
+  title: env.LOCKER_NAME,
+  description: `Put your ${env.LOCKER_NAME} to work`,
 }
 
 export default function RootLayout({

@@ -76,15 +76,15 @@ function TabContent(props: { leftActive: boolean }) {
   return (
     <div className="flex flex-col">
       <h1 className="text-5xl p-8 font-[700]">
-        {tab === 'stake' && 'Stake yCRV'}
-        {tab === 'unstake' && 'Stake yCRV'}
-        {tab === 'claim' && 'Stake yCRV'}
-        {tab === 'get' && 'Stake yCRV'}
-        {tab === 'learn_more_stake' && 'Stake yCRV'}
-        {tab === 'deposit' && 'Auto-Compound yCRV'}
-        {tab === 'withdraw' && 'Auto-Compound yCRV'}
-        {tab === 'get2' && 'Auto-Compound yCRV'}
-        {tab === 'learn_more_deposit' && 'Auto-Compound yCRV'}
+        {tab === 'stake' && `Stake ${env.LOCKER_NAME}`}
+        {tab === 'unstake' && `Stake ${env.LOCKER_NAME}`}
+        {tab === 'claim' && `Stake ${env.LOCKER_NAME}`}
+        {tab === 'get' && `Stake ${env.LOCKER_NAME}`}
+        {tab === 'learn_more_stake' && `Stake ${env.LOCKER_NAME}`}
+        {tab === 'deposit' && `Auto-Compound ${env.LOCKER_NAME}`}
+        {tab === 'withdraw' && `Auto-Compound ${env.LOCKER_NAME}`}
+        {tab === 'get2' && `Auto-Compound ${env.LOCKER_NAME}`}
+        {tab === 'learn_more_deposit' && `Auto-Compound ${env.LOCKER_NAME}`}
         
       </h1>
       {props.leftActive ? (
