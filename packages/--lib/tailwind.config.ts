@@ -23,7 +23,7 @@ const config: Config = {
       colors: {
         alert: colors.yellow,
         'dark-primary': '#000107',
-        'deep-primary': '#000A3D',
+        'deep-primary': '#0039A8',
         'white': '#FFFFFF',
         'offwhite': '#F4F4F4',
         'primary': '#001170',
