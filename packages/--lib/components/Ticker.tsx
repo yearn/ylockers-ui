@@ -47,8 +47,8 @@ export default function Ticker() {
   const peg = usePeg()
 
   const pegDisplay = useMemo(() => {
-    if (peg === 0) return '-.--:1'
-    return `${fNumber(peg)}:1`
+    if (peg === 0) return '-.---:1'
+    return `${fNumber(peg, { fixed: 3 })}:1`
   }, [peg])
 
   return <div className={`
@@ -60,8 +60,8 @@ export default function Ticker() {
     <div className={`
       flex flex-col items-end justify-end gap-3 text-sm
       sm:flex-row sm:items-center sm:justify-center sm:gap-8 sm:text-base`}>
-      <Price name={env.LOCKER_NAME} price={fUSD(prices[env.YPRISMA] ?? 0)} />
-      <Price name={env.ASSET_NAME} price={fUSD(prices[env.PRISMA] ?? 0)} />
+      <Price name={env.LOCKER_NAME} price={fUSD(prices[env.YPRISMA] ?? 0, { fixed: 3 })} />
+      <Price name={env.ASSET_NAME} price={fUSD(prices[env.PRISMA] ?? 0, { fixed: 3 })} />
       <Price name="PEG" price={pegDisplay} />
     </div>
   </div>
