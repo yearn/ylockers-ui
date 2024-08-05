@@ -125,7 +125,7 @@ function TabContent(props: { leftActive: boolean }) {
             <div className="flex flex-col space-y-6 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">STAKE {env.LOCKER_TOKEN_NAME} - EARN STABLES</span>
               <span className="font-thin opacity-70">
-                Stake your {env.LOCKER_TOKEN_NAME} and start earning a share of Yearn's ve{env.BASE_TOKEN_NAME} stablecoin revenue today. You'll reach max boost and hit the maximum staking APR after just 4 weeks.
+                Stake your {env.LOCKER_TOKEN_NAME} and start earning a share of Yearn&apos;s ve{env.BASE_TOKEN_NAME} stablecoin revenue today. You&apos;ll reach max boost and hit the maximum staking APR after just 4 weeks.
               </span>
               <Image alt="charge multiplier" className="" src="/charge.png" width={370} height={136} />
             </div>
@@ -140,7 +140,7 @@ function TabContent(props: { leftActive: boolean }) {
             <div className="flex flex-col space-y-6 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">UNSTAKE {env.LOCKER_TOKEN_NAME}</span>
               <span className="font-thin opacity-70">
-                Unstake your {env.LOCKER_TOKEN_NAME}. You're free to unstake at any time with no lock-ups or penalties. Unstaked {env.LOCKER_TOKEN_NAME} doesn't earn any yield. Withdrawals pull from the least boosted position.
+                Unstake your {env.LOCKER_TOKEN_NAME}. You&apos;re free to unstake at any time with no lock-ups or penalties. Unstaked {env.LOCKER_TOKEN_NAME} doesn&apos;t earn any yield. Withdrawals pull from the least boosted position.
               </span>
               <Image alt="charge multiplier" className="" src="/charge.png" width={370} height={136} />
             </div>
@@ -204,7 +204,7 @@ function TabContent(props: { leftActive: boolean }) {
             <div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-2/3">
               <span className="font-semibold">HOW IT WORKS</span>
               <p className="font-thin opacity-70">
-                The longer you stake, the greater your boost! Yearn's {env.LOCKER_TOKEN_NAME} staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x). You'll reach max boost and achieve the maximum staking APR less than four weeks after depositing your {env.LOCKER_TOKEN_NAME}.
+                The longer you stake, the greater your boost! Yearn&apos;s {env.LOCKER_TOKEN_NAME} staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x). You&apos;ll reach max boost and achieve the maximum staking APR less than four weeks after depositing your {env.LOCKER_TOKEN_NAME}.
               </p>
               <p className="font-thin opacity-70">
                 For more information on {env.LOCKER_TOKEN_NAME} and the yLockers ecosystem, read our <Link className="underline" href="https://docs.yearn.fi/getting-started/products/ylockers/overview">docs</Link>.
@@ -218,7 +218,7 @@ function TabContent(props: { leftActive: boolean }) {
               <span className="font-thin pb-1 text-md">Deposit</span>
               <Deposit />
               <span className="mt-4 font-thin opacity-70">
-                Deposit your {env.LOCKER_TOKEN_NAME} into Yearn's auto-compounding vault and start earning the maximum APY immediately. The vault will handle staking, claiming and swapping rewards, and reinvesting your {env.LOCKER_TOKEN_NAME} for you.
+                Deposit your {env.LOCKER_TOKEN_NAME} into Yearn&apos;s auto-compounding vault and start earning the maximum APY immediately. The vault will handle staking, claiming and swapping rewards, and reinvesting your {env.LOCKER_TOKEN_NAME} for you.
               </span>
             </div>
           </div>
@@ -229,7 +229,7 @@ function TabContent(props: { leftActive: boolean }) {
               <span className="font-thin pb-1 text-md">Withdraw</span>
               <Withdraw />
               <span className="mt-4 font-thin opacity-70">
-                Withdraw your {env.LOCKER_TOKEN_NAME} from Yearn's auto-compounding vault. Please note that this will unstake your {env.LOCKER_TOKEN_NAME} (and unstaked {env.LOCKER_TOKEN_NAME} doesn't earn any yield).
+                Withdraw your {env.LOCKER_TOKEN_NAME} from Yearn&apos;s auto-compounding vault. Please note that this will unstake your {env.LOCKER_TOKEN_NAME} (and unstaked {env.LOCKER_TOKEN_NAME} doesn&apos;t earn any yield).
               </span>
             </div>
           </div>

@@ -22,7 +22,7 @@ export default function Home() {
         <div className="w-full px-12 md:px-0">
           <h1 className="text-6xl font-bold">Put your<br />{env.LOCKER_TOKEN_NAME} to work</h1>
           <p className="my-8 xl:w-[670px] font-thin sm:whitespace-nowrap">
-            Each week, Yearn's ve{env.BASE_TOKEN_NAME} position earns revenue from protocol fees and optimized vote incentives.
+            Each week, Yearn&apos;s ve{env.BASE_TOKEN_NAME} position earns revenue from protocol fees and optimized vote incentives.
             <br />
             This is converted to {env.STABLE_TOKEN_NAME} stablecoin and distributed to {env.LOCKER_TOKEN_NAME} stakers.
           </p>

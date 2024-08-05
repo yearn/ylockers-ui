@@ -21,7 +21,7 @@ export default function Home() {
                     <h1 className="mt-28 md:mt-6 block font-black text-5xl">
                       {env.BASE_TOKEN_NAME}  has been unleashed
                       <br />
-                      Now let\'s get it 
+                      Now let&apos;s get it 
                       <span className="bg-clip-text bg-gradient-text text-transparent" style={{color: 'transparent'}}>
                         unlocked
                       </span>
@@ -37,10 +37,10 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin white">
                         <p>
-                          Each week, Yearn\'s ve{env.BASE_TOKEN_NAME} position earns revenue from protocol fees and optimized vote incentives. This is converted to {env.STABLE_TOKEN_NAME} stablecoin and distributed to {env.LOCKER_TOKEN_NAME} stakers at the start of the week.
+                          Each week, Yearn&apos;s ve{env.BASE_TOKEN_NAME} position earns revenue from protocol fees and optimized vote incentives. This is converted to {env.STABLE_TOKEN_NAME} stablecoin and distributed to {env.LOCKER_TOKEN_NAME} stakers at the start of the week.
                         </p>
                         <p>
-                          To begin earning your share, all you need to do is stake your {env.LOCKER_TOKEN_NAME} tokens in the staking contract. You\'re free to unstake them at any time with no lock-ups or penalties.
+                          To begin earning your share, all you need to do is stake your {env.LOCKER_TOKEN_NAME} tokens in the staking contract. You&apos;re free to unstake them at any time with no lock-ups or penalties.
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-6">
@@ -48,10 +48,10 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          The longer you stake, the greater your boost! Yearn's {env.LOCKER_TOKEN_NAME} staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x).
+                          The longer you stake, the greater your boost! Yearn&apos;s {env.LOCKER_TOKEN_NAME} staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x).
                         </p>
                         <p>
-                          You\'ll reach max boost and achieve the maximum staking APR less than four weeks after depositing your {env.LOCKER_TOKEN_NAME}.
+                          You&apos;ll reach max boost and achieve the maximum staking APR less than four weeks after depositing your {env.LOCKER_TOKEN_NAME}.
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-6">
