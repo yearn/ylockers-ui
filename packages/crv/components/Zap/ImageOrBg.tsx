@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@/lib/shadcn'
+import { cn } from '--lib/tools/tailwind'
 import Image, { ImageProps } from 'next/image'
 import { useMemo, useState } from 'react'
 

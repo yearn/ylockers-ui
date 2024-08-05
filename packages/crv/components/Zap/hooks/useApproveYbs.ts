@@ -3,7 +3,7 @@ import { useParameters } from '../Parameters'
 import { zeroAddress } from 'viem'
 import ybsAbi from '../abis/ybs'
 import { useMemo } from 'react'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
 
 export function useApproveYbsAsInput() {
   const { isConnected, address } = useAccount()

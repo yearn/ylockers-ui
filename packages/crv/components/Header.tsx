@@ -1,6 +1,6 @@
 'use client'
 
-import Button from './Button'
+import Button from '--lib/components/Button'
 import Link from 'next/link'
 
 type Item = { text: string, link: string, notification?: boolean }
@@ -30,10 +30,10 @@ const Header = ({ items, selected='', launchApp=true, launchText='Launch App', c
                 ? 'font-thin '
                 : 'border-b-2 border-transparent')} ${
             (!launchApp && !(selected === item.text))
-              ? 'text-soft-blue'
+              ? 'text-soft-primary'
               : ''
           }`}>
-          {item.text} {item.notification && <div className="w-2 h-2 bg-light-blue rounded-full" />}
+          {item.text} {item.notification && <div className="w-2 h-2 bg-bright-primary rounded-full" />}
         </Link>
       ))}
     </div>
@@ -44,7 +44,7 @@ const Header = ({ items, selected='', launchApp=true, launchText='Launch App', c
           className={`py-2 hover:border-b-2 py-[20px] ${
             selected === items[items.length - 1].text
               ? 'border-b-2 font-bold'
-              : 'text-soft-blue'
+              : 'text-soft-primary'
           }`}>
           {items[items.length - 1].text}
         </Link>

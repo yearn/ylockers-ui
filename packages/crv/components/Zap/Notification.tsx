@@ -1,14 +1,14 @@
 'use client'
 
 import { useMounted } from '../../hooks/useMounted'
-import { springs } from '@/lib/motion'
-import { cn } from '@/lib/shadcn'
+import { springs } from '--lib/tools/motion'
+import { cn } from '--lib/tools/tailwind'
 import { motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 import { useContracts } from './Contracts'
-import { fAddress } from '../../lib/format'
+import { fAddress } from '--lib/tools/format'
 import { useConfig } from 'wagmi'
-import A from '../A'
+import A from '--lib/components/A'
 import { useParameters } from './Parameters'
 
 function makeNotificationWithExplorerLink({ 

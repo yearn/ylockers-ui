@@ -3,8 +3,8 @@
 import { ReactNode, useMemo } from 'react'
 import useBalances from '../hooks/useBalances'
 import { Token, TOKENS } from '../tokens'
-import { priced } from '@/lib/bmath'
-import { fUSD } from '@/lib/format'
+import { priced } from '--lib/tools/bmath'
+import { fUSD } from '--lib/tools/format'
 
 export function AmountUsdDisplay({ children }: { children?: ReactNode }) {
   return <div className="font-mono">{children ?? '...'}</div>

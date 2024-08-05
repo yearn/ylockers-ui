@@ -3,9 +3,9 @@ import { useParameters } from '../Parameters'
 import { useAccount, useReadContract } from 'wagmi'
 import zapAbi from '../abis/zap'
 import { compareEvmAddresses, NO_DEX_NO_SLIPPAGE, TOKENS_MAP } from '../tokens'
-import bmath from '@/lib/bmath'
+import bmath from '--lib/tools/bmath'
 import { DEFAULT_SLIPPAGE } from '../constants'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
 import { zeroAddress } from 'viem'
 
 export function useMinOut() {
