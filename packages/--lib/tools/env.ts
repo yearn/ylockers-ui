@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { EvmAddressSchema, HexStringSchema } from './types'
+import { EvmAddressSchema } from './types'
 import { zeroAddress } from 'viem'
 
 class DotEnvError extends Error {
@@ -22,10 +22,11 @@ const EnvSchema = z.object({
   YPRISMA_STRATEGY_STRATEGY: EvmAddressSchema,
   YVMKUSD: EvmAddressSchema,
   MKUSD: EvmAddressSchema,
-  YDAEMON: z.string(),
   ZAP: EvmAddressSchema,
   EXIT_POOL: EvmAddressSchema,
   USE_UTILITY_VAULT_APR: z.boolean(),
+  YDAEMON: z.string(),
+  SMOL_ASSETS_URL: z.string(),
   DEV: z.boolean()
 })
 
@@ -42,10 +43,11 @@ const result = EnvSchema.safeParse({
   YPRISMA_STRATEGY_STRATEGY: process.env.NEXT_PUBLIC_YPRISMA_STRATEGY_STRATEGY,
   YVMKUSD: process.env.NEXT_PUBLIC_YVMKUSD,
   MKUSD: process.env.NEXT_PUBLIC_MKUSD,
-  YDAEMON: process.env.NEXT_PUBLIC_YDAEMON,
   ZAP: process.env.NEXT_PUBLIC_ZAP ?? zeroAddress,
   EXIT_POOL: process.env.NEXT_PUBLIC_EXIT_POOL,
   USE_UTILITY_VAULT_APR: process.env.NEXT_PUBLIC_USE_UTILITY_VAULT_APR === 'true',
+  YDAEMON: process.env.NEXT_PUBLIC_YDAEMON,
+  SMOL_ASSETS_URL: process.env.NEXT_PUBLIC_SMOL_ASSETS_URL,
   DEV: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 })
 
