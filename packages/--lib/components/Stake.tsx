@@ -13,7 +13,7 @@ export default function Stake({ className }: { className?: string }) {
       token: data.locker,
       needsApproval: true,
       parameters: {
-        address: env.YPRISMA_BOOSTED_STAKER,
+        address: env.BOOSTED_STAKER,
         abi: abis.YearnBoostedStaker,
         functionName: 'stake',
         args: (amount: bigint) => [amount]

@@ -6,7 +6,7 @@ import useVault from './useVault'
 
 export function useVaultApy() {
   const { data } = useData()
-  const { data: vault } = useVault(env.YPRISMA_STRATEGY)
+  const { data: vault } = useVault(env.LOCKER_TOKEN_VAULT)
 
   const result = useMemo(() => {
     if (env.USE_UTILITY_VAULT_APR) {

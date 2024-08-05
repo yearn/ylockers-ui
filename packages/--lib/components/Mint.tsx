@@ -13,7 +13,7 @@ export default function Mint({ className }: { className?: string }) {
       token: data.asset,
       needsApproval: true,
       parameters: {
-        address: env.YPRISMA,
+        address: env.LOCKER_TOKEN,
         abi: abis.yPrisma,
         functionName: 'mint',
         args: (amount: bigint) => [amount, data.account]

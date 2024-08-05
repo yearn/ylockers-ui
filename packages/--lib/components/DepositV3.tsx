@@ -13,7 +13,7 @@ export default function DepositV3({ className }: { className?: string }) {
       token: data.locker,
       needsApproval: true,
       parameters: {
-        address: env.YPRISMA_STRATEGY,
+        address: env.LOCKER_TOKEN_VAULT,
         abi: abis.VaultV3,
         functionName: 'deposit',
         args: (amount: bigint) => [amount, data.account]

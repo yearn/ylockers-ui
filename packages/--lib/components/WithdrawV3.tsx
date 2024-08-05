@@ -13,7 +13,7 @@ export default function WithdrawV3({ className }: { className?: string }) {
       token: data.strategy,
       needsApproval: false,
       parameters: {
-        address: env.YPRISMA_STRATEGY,
+        address: env.LOCKER_TOKEN_VAULT,
         abi: abis.VaultV3,
         functionName: 'redeem',
         args: (amount: bigint) => [amount, data.account, data.account]

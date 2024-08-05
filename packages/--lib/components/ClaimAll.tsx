@@ -36,7 +36,7 @@ export default function ClaimAll({ className }: { className?: string }) {
   }, [account])
 
   const range = useReadContract({
-    address: env.YPRISMA_REWARDS_DISTRIBUTOR,
+    address: env.REWARDS_DISTRIBUTOR,
     abi: abis.SingleTokenRewardDistributor,
     functionName: 'getSuggestedClaimRange',
     args: [account.address ?? zeroAddress],
@@ -44,7 +44,7 @@ export default function ClaimAll({ className }: { className?: string }) {
   })
 
   const simulation = useSimulateContract({
-    address: env.YPRISMA_REWARDS_DISTRIBUTOR,
+    address: env.REWARDS_DISTRIBUTOR,
     abi: abis.SingleTokenRewardDistributor,
     functionName: 'claimWithRange',
     args: [range.data?.[0] ?? 0n, range.data?.[1] ?? 0n],

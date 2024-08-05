@@ -110,7 +110,7 @@ export default function YbsDataBox({
         </span>
       </div>
       <div className="flex justify-between w-full">
-        <span className="font-thin opacity-70	w">{env.LOCKER_NAME} Staked</span>
+        <span className="font-thin opacity-70	w">{env.LOCKER_TOKEN_NAME} Staked</span>
         <Tokens className="font-bold" amount={data.staker.balance} decimals={data.staker.decimals} />
       </div>
       <div className="flex justify-between">
@@ -119,7 +119,7 @@ export default function YbsDataBox({
       </div>
       <div className="flex justify-between">
         <span className="font-thin opacity-70	">Claimable Rewards</span>
-        <Tokens className="font-bold" amount={data.rewards.claimable} decimals={data.rewards.decimals} suffix={env.STABLE_NAME} />
+        <Tokens className="font-bold" amount={data.rewards.claimable} decimals={data.rewards.decimals} suffix={env.STABLE_TOKEN_NAME} />
       </div>
 
       <div className="flex justify-between">
@@ -135,12 +135,12 @@ export default function YbsDataBox({
     <div className="border-t-2 border-deeper-primary/60 flex flex-col space-y-2">
       <span className="font-semibold py-4 text-lg">YEARN BOOSTED STAKER</span>
       <div className="flex justify-between">
-        <span className="font-thin opacity-70	">{env.LOCKER_NAME} Staked</span>
+        <span className="font-thin opacity-70	">{env.LOCKER_TOKEN_NAME} Staked</span>
         <Tokens className="font-bold" amount={data.staker.totalSupply} decimals={data.staker.decimals} />
       </div>
       <div className="flex justify-between">
         <span className="font-thin opacity-70	">Rewards this week</span>
-        <Tokens className="font-bold" amount={data.utilities.weeklyRewardAmount} decimals={18} suffix={env.STABLE_NAME} />
+        <Tokens className="font-bold" amount={data.utilities.weeklyRewardAmount} decimals={18} suffix={env.STABLE_TOKEN_NAME} />
       </div>
       <div className="flex justify-between">
         <span className="font-thin opacity-70">Average APR</span>

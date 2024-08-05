@@ -29,7 +29,7 @@ export default function ExperienceToggle() {
     <Link href="/app/stake">
       <div className={`${(leftActive) ? 'bg-bright-primary' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
         <div className="flex justify-between items-center text-lg pl-4">
-          EARN {env.STABLE_NAME}
+          EARN {env.STABLE_TOKEN_NAME}
           <div className={`rounded-full ${leftActive ? 'bg-light-primary' : 'bg-tab-inactive-inner'} p-1 px-4`}>
             {stakerApr}
           </div>
@@ -39,7 +39,7 @@ export default function ExperienceToggle() {
     <Link href="/app/deposit">
       <div className={`${(rightActive) ? 'bg-bright-primary' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
         <div className="flex justify-between items-center text-lg pl-4">
-          EARN {env.LOCKER_NAME}
+          EARN {env.LOCKER_TOKEN_NAME}
           <div className={`rounded-full ${rightActive ? 'bg-light-primary' : 'bg-tab-inactive-inner'} p-1 px-4`}>
             {vaultApy}
           </div>

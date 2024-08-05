@@ -43,7 +43,7 @@ function usePeg() {
 }
 
 export default function Ticker() {
-  const { data: prices } = usePrices([env.YPRISMA, env.PRISMA])
+  const { data: prices } = usePrices([env.LOCKER_TOKEN, env.BASE_TOKEN])
   const peg = usePeg()
 
   const pegDisplay = useMemo(() => {
@@ -60,8 +60,8 @@ export default function Ticker() {
     <div className={`
       flex flex-col items-end justify-end gap-3 text-sm
       sm:flex-row sm:items-center sm:justify-center sm:gap-8 sm:text-base`}>
-      <Price name={env.LOCKER_NAME} price={fUSD(prices[env.YPRISMA] ?? 0, { fixed: 3 })} />
-      <Price name={env.ASSET_NAME} price={fUSD(prices[env.PRISMA] ?? 0, { fixed: 3 })} />
+      <Price name={env.LOCKER_TOKEN_NAME} price={fUSD(prices[env.LOCKER_TOKEN] ?? 0, { fixed: 3 })} />
+      <Price name={env.BASE_TOKEN_NAME} price={fUSD(prices[env.BASE_TOKEN] ?? 0, { fixed: 3 })} />
       <Price name="PEG" price={pegDisplay} />
     </div>
   </div>

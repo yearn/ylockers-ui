@@ -7,8 +7,8 @@ import Providers from '--lib/context/Providers'
 import env from '--lib/tools/env'
 
 export const metadata: Metadata = {
-  title: env.LOCKER_NAME,
-  description: `Put your ${env.LOCKER_NAME} to work`,
+  title: env.LOCKER_TOKEN_NAME,
+  description: `Put your ${env.LOCKER_TOKEN_NAME} to work`,
 }
 
 export default function RootLayout({
