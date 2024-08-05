@@ -24,7 +24,7 @@ bun dev:{BASE_TOKEN_NAME}
 ## How to add a new locker ui app
 1 - Run the create app script passing in the name of the your locker's base token.
 ```bash
-bun create-ylockers-ui-app {BASE_TOKEN_NAME}
+bun create-ylockers-ui-app.ts {BASE_TOKEN_NAME}
 ```
 Your app will be initialized at `packages/{BASE_TOKEN_NAME}` and can be run with `bun dev:{BASE_TOKEN_NAME}`.
 
@@ -34,7 +34,7 @@ Your app will be initialized at `packages/{BASE_TOKEN_NAME}` and can be run with
 
 4 - To update your app's vault list and filter, see `packages/{BASE_TOKEN_NAME}/app/app/[tab]/page.tsx#L65`
 
-5 - You can also customize your app's colors by overriding the lockers pallete. The base pallete can be found in `packages/--lib/tailwind.config.ts`. To override a color, simply copy it to your app's tailwind config and change it, `packages/{BASE_TOKEN_NAME}/tailwind.config.ts`.
+5 - You can also customize your app's colors by overriding the base pallete. The base pallete can be found in `packages/--lib/tailwind.config.ts`. To override a color, just copy it to your app's tailwind config located here, `packages/{BASE_TOKEN_NAME}/tailwind.config.ts`.
 
 
 ## Support
