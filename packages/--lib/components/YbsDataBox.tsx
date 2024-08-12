@@ -73,14 +73,14 @@ export default function YbsDataBox({
           </HoverCardTrigger>
           <HoverCardContent>
             <div className="flex flex-col gap-2">
+              <p>
+                Displayed APR ranges represent expected values for users with minimum (1x) through maximum (2.5x) staking boost.
+              </p>
               <div>
-                <span className="text-white">Active APR</span> - The min through max active apr copy here
+                <span className="text-white">Active APR:</span> based on rewards distributed in current week.
               </div>
               <div>
-                <span className="text-white">Projected APR</span> - The min through max projected apr copy here
-              </div>
-              <div>
-                <span className="text-white">And so on</span> - The and so on copy here
+                <span className="text-white">Projected APR:</span> based on rewards to be distributed in upcoming week.
               </div>
             </div>
           </HoverCardContent>
