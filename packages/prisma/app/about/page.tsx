@@ -1,13 +1,16 @@
 import Header, { headerItems } from '../../components/Header'
 import Link from 'next/link'
 import Background from '../../components/Background'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
+import { hasLegacyStaker, LEGACY_STAKER } from '@/components/LegacyStaker/useBalance'
+import Ticker from '--lib/components/Ticker'
 
 export default function Home() {
   return (
     <main className="flex flex-col items-center min-h-screen text-white">
       <Background />
       <Header items={headerItems} selected="About" />
+      <Ticker />
       <section className="xl:w-[1200px] px-8 xl:p-0 z-10">
         <div className="w-full">
           <div className="relative mx-auto mb-0 flex w-full flex-col bg-neutral-0">
@@ -16,16 +19,15 @@ export default function Home() {
                 <div className="col-span-12 md:col-span-8 md:mb-0 md:pr-20">
                   <div className="mb-10 flex flex-col justify-center">
                     <h1 className="mt-28 md:mt-6 block font-black text-5xl">
-                      Prisma 
-                      {' has been unleashed '}
+                      {env.BASE_TOKEN_NAME}  has been unleashed
                       <br />
-                      {'Now let\'s get it '}
+                      Now let&apos;s get it 
                       <span className="bg-clip-text bg-gradient-text text-transparent" style={{color: 'transparent'}}>
                         unlocked
                       </span>
                     </h1>
                   </div>
-                  <div className="mb-8 border-white-200 py-2 text-white-700 md:border-l-4 border-blue md:pl-6">
+                  <div className="mb-8 border-white-200 py-2 text-white-700 md:border-l-4 border-primary md:pl-6">
                     <div>
                       <h2 className="text-3xl font-bold mb-6 mt-2">
                         How does it work?
@@ -35,10 +37,10 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin white">
                         <p>
-                          {'Each week, Yearn\'s vePRISMA position earns revenue from protocol fees and optimized vote incentives. This is converted to mkUSD stablecoin and distributed to yPRISMA stakers at the start of the week.'}
+                          Each week, Yearn&apos;s ve{env.BASE_TOKEN_NAME} position earns revenue from protocol fees and optimized vote incentives. This is converted to {env.STABLE_TOKEN_NAME} stablecoin and distributed to {env.LOCKER_TOKEN_NAME} stakers at the start of the week.
                         </p>
                         <p>
-                          {'To begin earning your share, all you need to do is stake your yPRISMA tokens in the staking contract. You\'re free to unstake them at any time with no lock-ups or penalties.'}
+                          To begin earning your share, all you need to do is stake your {env.LOCKER_TOKEN_NAME} tokens in the staking contract. You&apos;re free to unstake them at any time with no lock-ups or penalties.
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-6">
@@ -46,10 +48,10 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          {'The longer you stake, the greater your boost! Yearn\'s yPRISMA staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x).'}
+                          The longer you stake, the greater your boost! Yearn&apos;s {env.LOCKER_TOKEN_NAME} staking contract incentivizes long-term users by boosting their yield (up to a maximum of 2.5x).
                         </p>
                         <p>
-                          {'You\'ll reach max boost and achieve the maximum staking APR less than four weeks after depositing your yPRISMA.'}
+                          You&apos;ll reach max boost and achieve the maximum staking APR less than four weeks after depositing your {env.LOCKER_TOKEN_NAME}.
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-6">
@@ -57,10 +59,10 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          {'To calculate your boost, the staking contract maintains a weight for every deposit (which is a function of the amount of yPRISMA you have staked and the duration since it was staked).'}
+                          To calculate your boost, the staking contract maintains a weight for every deposit (which is a function of the amount of {env.LOCKER_TOKEN_NAME} you have staked and the duration since it was staked).
                         </p>
                         <p>
-                          {'For example, stake 100 yPRISMA and your initial weight will be 50 yPRISMA. At 00:00:00 UTC the following Thursday, your weight will increase to 100, then 150, then 200, and finally 250 (on the fourth Thursday following your deposit).'}
+                          For example, stake 100 {env.LOCKER_TOKEN_NAME} and your initial weight will be 50 {env.LOCKER_TOKEN_NAME}. At 00:00:00 UTC the following Thursday, your weight will increase to 100, then 150, then 200, and finally 250 (on the fourth Thursday following your deposit).
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-2">
@@ -68,83 +70,83 @@ export default function Home() {
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          {'Each week, Yearn claims its share of protocol fees and optimized vote incentives. These are swapped for yield-bearing mkUSD yVault tokens (yvmkUSD-A) and deposited directly into the reward distributor contract.'}
+                          Each week, Yearn claims its share of protocol fees and optimized vote incentives. These are swapped for yield-bearing {env.STABLE_TOKEN_NAME} yVault tokens ({env.STABLE_TOKEN_VAULT_NAME}) and deposited directly into the reward distributor contract.
                         </p>
                         <p>
-                          {'Your rewards accrue week over week and are never lost if unclaimed. In fact, they begin earning you additional mkUSD yield from the moment we receive them! When claimed, yvmkUSD-A vault tokens will be received directly to your wallet.'}
+                          Your rewards accrue week over week and are never lost if unclaimed. In fact, they begin earning you additional {env.STABLE_TOKEN_NAME} yield from the moment we receive them! When claimed, {env.STABLE_TOKEN_VAULT_NAME} vault tokens will be received directly to your wallet.
                         </p>
                       </div>
                       <h3 className="text-xl font-bold mt-6">
-                        And for the yPRISMA maxis…
+                        And for the {env.LOCKER_TOKEN_NAME} maxis…
                       </h3>
                       <div className="mt-2 flex flex-col space-y-2 text-white font-thin">
                         <p>
-                          {'Not interested in staking, weights, and manual claims? Just want more yPRISMA and the highest APYs? Then our yPRISMA auto-compounding vault is for you!'}
+                          Not interested in staking, weights, and manual claims? Just want more {env.LOCKER_TOKEN_NAME} and the highest APYs? Then our {env.LOCKER_TOKEN_NAME} auto-compounding vault is for you!
                         </p>
                         <p>
-                          {'Once a week, the vault claims its boosted share of mkUSD from the yPRISMA staker contract, swaps it for more yPRISMA, and deposits it back into the staker. On top of that, the vault is whitelisted - allowing it to earn max boost immediately on all reinvested yPRISMA.'}
+                          Once a week, the vault claims its boosted share of {env.STABLE_TOKEN_NAME} from the {env.LOCKER_TOKEN_NAME} staker contract, swaps it for more ${env.LOCKER_TOKEN_NAME}, and deposits it back into the staker. On top of that, the vault is whitelisted - allowing it to earn max boost immediately on all reinvested {env.LOCKER_TOKEN_NAME}.
                         </p>
                         <p>
-                          {'For more information on yPRISMA and the yLockers ecosystem, read our '}<Link className="underline" href="https://docs.yearn.fi/getting-started/products/ylockers/overview">docs</Link>.
+                          For more information on {env.LOCKER_TOKEN_NAME} and the yLockers ecosystem, read our <Link className="underline" href="https://docs.yearn.fi/getting-started/products/ylockers/overview">docs</Link>.
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
               </section>
-              <div className="flex flex-col col-span-3 mt-6 rounded-lg bg-darker-blue">
+              <div className="flex flex-col col-span-3 mt-6 rounded-lg bg-deeper-primary">
                 <div className="mb-4 border-b p-4 md:p-6"><b className="text-2xl">
-                  yPrisma deployment addresses
+                  {env.LOCKER_TOKEN_NAME} Deployment addresses
                 </b></div>
                 <dl className="flex flex-col gap-2 p-4 md:p-6 ">
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Yearn Boosted Staker</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xF4C6e0E006F164535508787873d86b84fe901975">
-                      <dd className="font-mono">0xF4C6e0E006F164535508787873d86b84fe901975</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.BOOSTED_STAKER}`}>
+                      <dd className="font-mono">{env.BOOSTED_STAKER}</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Rewards Distributor</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x2667BA23c782a8DDc31174Ef472a676eb5C709b3">
-                      <dd className="font-mono">0x2667BA23c782a8DDc31174Ef472a676eb5C709b3</dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.REWARDS_DISTRIBUTOR}`}>
+                      <dd className="font-mono">{env.REWARDS_DISTRIBUTOR}</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
                     <dt className="text-white">Boosted Staker Utilities</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xC4B4CeAF8bF4f2dAD1502457d53D084f20291fAE ">
-                      <dd className="font-mono">0xC4B4CeAF8bF4f2dAD1502457d53D084f20291fAE </dd>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.BOOSTED_STAKER_UTILITIES}`}>
+                      <dd className="font-mono">{env.BOOSTED_STAKER_UTILITIES} </dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
-                    <dt className="text-white">yvyPRISMA</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.YPRISMA_STRATEGY}`}>
-                      <dd className="font-mono">{env.YPRISMA_STRATEGY}</dd>
+                    <dt className="text-white">{env.LOCKER_TOKEN_VAULT_NAME}</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.LOCKER_TOKEN_VAULT}`}>
+                      <dd className="font-mono">{env.LOCKER_TOKEN_VAULT}</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
-                    <dt className="text-white">yvmkUSD-A</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13">
-                      <dd className="font-mono">0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13</dd>
+                    <dt className="text-white">{env.STABLE_TOKEN_VAULT_NAME}</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.STABLE_TOKEN_VAULT}`}>
+                      <dd className="font-mono">{env.STABLE_TOKEN_VAULT}</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
-                    <dt className="text-white">Prisma Token</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xdA47862a83dac0c112BA89c6abC2159b95afd71C">
-                      <dd className="font-mono">0xdA47862a83dac0c112BA89c6abC2159b95afd71C</dd>
+                    <dt className="text-white">{env.BASE_TOKEN_NAME} Token</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.BASE_TOKEN}`}>
+                      <dd className="font-mono">{env.BASE_TOKEN}</dd>
                     </a>
                   </div>
                   <div className="flex flex-col justify-between md:flex-row">
-                    <dt className="text-white">yPrisma Token</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xe3668873D944E4A949DA05fc8bDE419eFF543882">
-                      <dd className="font-mono">0xe3668873D944E4A949DA05fc8bDE419eFF543882</dd>
+                    <dt className="text-white">{env.LOCKER_TOKEN_NAME} Token</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${env.LOCKER_TOKEN_VAULT}`}>
+                      <dd className="font-mono">{env.LOCKER_TOKEN_VAULT}</dd>
                     </a>
                   </div>
-                  <div className="flex flex-col justify-between opacity-40 md:flex-row">
-                    <dt className="text-white">Legacy yPrisma Staking Contract</dt>
-                    <a className="cursor-pointer text-xs hover:underline md:text-base" href="https://etherscan.io/address/0xE3EE395C9067dD15C492Ca950B101a7d6c85b5Fc">
-                      <dd className="font-mono">0xE3EE395C9067dD15C492Ca950B101a7d6c85b5Fc</dd>
+                  {hasLegacyStaker && <div className="flex flex-col justify-between opacity-40 md:flex-row">
+                    <dt className="text-white">Legacy Staking Contract</dt>
+                    <a className="cursor-pointer text-xs hover:underline md:text-base" href={`https://etherscan.io/address/${LEGACY_STAKER}`}>
+                      <dd className="font-mono">{LEGACY_STAKER}</dd>
                     </a>
-                  </div>
+                  </div>}
                 </dl>
               </div>
             </div>

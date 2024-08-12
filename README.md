@@ -16,39 +16,26 @@ Install bun, https://bun.sh/docs/installation
 
 ```bash
 git clone git@github.com:yearn/ylockers-ui.git
-
 cd ylockers-ui
-
-cp .env.example .env
-
-# configure .env
-
 bun i
-
-bun dev:{assetName}
+bun dev:{BASE_TOKEN_NAME}
 ```
 
-## How to add a new locker frontend
-
-
-### setup
+## How to add a new locker ui app
+1 - Run the create app script passing in the name of the your locker's base token.
 ```bash
-bunx create-next-app@14.1.3 packages/{assetName}
-cd {assetName}
-bun add {TODO}
-cd ..
-# add dev:{assetName} script to packages.json
-bun dev:{assetName}
+bun create-ylockers-ui-app.ts {BASE_TOKEN_NAME}
 ```
-{maybe les write a copy paste script for this instead}
+Your app will be initialized at `packages/{BASE_TOKEN_NAME}` and can be run with `bun dev:{BASE_TOKEN_NAME}`.
 
-### packages/--lib integration
-- Add `"--lib": "0.1.0"` to the new project's package.json dependencies.
-- Add `../--lib/components/**/*.{js,ts,jsx,tsx,mdx}` to the `content` array in the project's `tailwind.config.js`.
+2 - Open your app's .env at `packages/{BASE_TOKEN_NAME}/.env` and configure with appropriate values. Copy those to `packages/{BASE_TOKEN_NAME}/.env.example` too.
 
-## Deployment
+3 - To update your app's background start with `packages/{BASE_TOKEN_NAME}/components/Background.tsx`
 
-Push to `main` branch to deploy a new version. Pull requests have independent preview links created when open.
+4 - To update your app's vault list and filter, see `packages/{BASE_TOKEN_NAME}/app/app/[tab]/page.tsx#L65`
+
+5 - You can also customize your app's colors by overriding the base pallete. The base pallete can be found in `packages/--lib/tailwind.config.ts`. To override a color, just copy it to your app's tailwind config located here, `packages/{BASE_TOKEN_NAME}/tailwind.config.ts`.
+
 
 ## Support
 

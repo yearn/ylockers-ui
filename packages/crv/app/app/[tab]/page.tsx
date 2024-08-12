@@ -1,206 +1,70 @@
 'use client'
 
-import { z } from 'zod'
 import Image from 'next/image'
 import Link from 'next/link'
-import InputBox from '../../../components/InputBox'
 import Header, { headerItems } from '../../../components/Header'
-import { useParams } from 'next/navigation'
 import { useConnectModal, useAccountModal } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
-import { useState, useMemo } from 'react'
-import { fAddress, fPercent, fUSD } from '@/lib/format'
-import useData from '@/hooks/useData'
-import Tokens from '../../../components/Tokens'
+import { fAddress, fUSD } from '--lib/tools/format'
+import useData from '--lib/hooks/useData'
+import Tokens from '--lib/components/Tokens'
+import ExperienceToggle from '--lib/components/ExperienceToggle'
 
-import ClaimAll from '../../../components/ClaimAll'
-import Stake from '../../../components/Stake'
-import Unstake from '../../../components/Unstake'
-import Deposit from '../../../components/Deposit'
-import Withdraw from '../../../components/Withdraw'
+import ClaimAll from '--lib/components/ClaimAll'
+import Stake from '--lib/components/Stake'
+import Unstake from '--lib/components/Unstake'
+import Deposit from '--lib/components/DepositV2'
+import Withdraw from '--lib/components/WithdrawV2'
 
-import { useContractReads } from 'wagmi'
 import { PiVaultLight } from 'react-icons/pi'
-import { erc20Abi } from 'viem'
-import { formatUnits } from 'viem'
-import usePrices from '@/hooks/usePrices'
-import bmath from '@/lib/bmath'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
 import Background from '../../../components/Background'
-import A from '@/components/A'
-import ImageOrFallback from '@/components/ImageOrFallback'
+import A from '--lib/components/A'
 import Zap from '@/components/Zap'
-import { useVaultContext } from '--lib/context/VaultContext'
+import YbsDataBox from '--lib/components/YbsDataBox'
+import VaultDataBox from '--lib/components/VaultDataBox'
+import Vaults from '--lib/components/Vaults'
+import Ticker from '--lib/components/Ticker'
+import { useTab } from '--lib/hooks/useTab'
 
-function isVersionGte(version: string, compareVersion: string) {
-  const versionParts = version.split('.').map(Number)
-  const compareVersionParts = compareVersion.split('.').map(Number)
-  for (let i = 0; i < Math.max(versionParts.length, compareVersionParts.length); i++) {
-    const v = versionParts[i] || 0
-    const cv = compareVersionParts[i] || 0
-    if (v > cv) return true
-    if (v < cv) return false
-  }
-  return true 
-}
-
-function useTab() {
-  const params = useParams()
-  return params.tab as string
-}
 
 export default function Home() {
   const { openConnectModal  } = useConnectModal()
   const { openAccountModal } = useAccountModal()
-  const { data } = useData()
-
-  const vaultApr: number = z.number({ coerce: true }).parse(bmath.div(data.utilities.vaultAPR, 10n**18n) ?? 0)
-  const vaultApy: number = (1 + (vaultApr / 52)) ** 52 - 1
 
   const tab = useTab()
-
   const account = useAccount()
 
   const leftActive = (tab === 'stake' || tab === 'unstake' || tab === 'claim' || tab === 'get' || tab === 'learn_more_stake')
-  const rightActive = !leftActive
-
-  const { data: prices } = usePrices([env.YPRISMA])
 
   return (
     <main className="flex flex-col items-center min-h-screen text-white">
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : 'Connect Wallet'} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
+        <Ticker />
         <section className="mt-32 md:mt-[5vh] sm:mx-4 lg:mx-0">
-          <div className="w-full flex flex-wrap justify-center items-center mb-12 md:mb-8 space-y-4 md:space-x-8 md:space-y-0 flex-col md:flex-row">
-            <Link href="/app/stake"><div className={`${(leftActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">EARN crvUSD <div className={`font-mono rounded-full ${leftActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</div></div>
-            </div></Link>
-            <Link href="/app/deposit"><div className={`${(rightActive) ? 'bg-light-blue' : 'bg-tab-inactive'} rounded-full w-[328px] px-2 py-2`}>
-              <div className="flex justify-between items-center text-lg pl-4">
-                EARN yCRV <div className={`font-mono rounded-full ${rightActive ? 'bg-lighter-blue' : 'bg-tab-inactive-inner'} p-1 px-4`}>
-                  {vaultApy > 0 ? fPercent(vaultApy) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}
-                </div></div>
-            </div></Link>
-          </div>
+          <ExperienceToggle />
+
           <div className="flex flex-col lg:flex-row justify-center ">
-            <div className="flex-1 bg-darker-blue lg:rounded-bl-lg lg:rounded-tl-lg">
+            <div className="flex-1 bg-deeper-primary lg:rounded-bl-lg lg:rounded-tl-lg">
               <TabContent leftActive={leftActive} />
             </div>
 
-            <div className="lg:w-[408px] bg-blue flex flex-col p-10 lg:rounded-br-lg lg:rounded-tr-lg">
-              {leftActive ? (
-                <>
-                  <span className="text-light-white font-bold pb-2">ACTIVE APR</span>
-                  <span className="text-light-blue text-6xl font-bold font-mono mb-[26px]">{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalAverageApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
+            {leftActive 
+              ? <YbsDataBox className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" /> 
+              : <VaultDataBox className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" />
+            }
 
-                  <div className="flex items-end gap-2">
-                    <span className="font-normal text-light-blue">Projected APR:</span>
-                    <span className="font-normal font-mono text-light-blue">{data.utilities && data.utilities.globalProjectedApr.toString() !== '0' ? fPercent(bmath.div(data.utilities.globalProjectedApr, 10n**18n)) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
-                  </div>
-
-                  <div className="border-t-2 border-b-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
-                    <div className="flex justify-between items-center pb-4">
-                      <span className="font-semibold text-lg">YOUR POSITION</span>
-                      <span className="font-bold font-mono px-2 py-1 bg-disabled-bg rounded-lg text-boost-blue">{bmath.div(data.utilities.userBoostMultiplier, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}x BOOST</span>
-                    </div>
-                    <div className="flex justify-between w-full">
-                      <span className="font-thin opacity-70	w">yCRV Staked</span>
-                      <span className="font-bold font-mono">
-                        <Tokens amount={data.staker.balance} decimals={data.staker.decimals} />
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Your APR</span>
-                      <span className="font-bold font-mono">{data.utilities && fPercent(bmath.div(data.utilities.userApr, 10n**18n))}</span>
-                    </div>
-                    {/* <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Boost Multiplier</span>
-                      <span className="font-bold">2x</span>
-                    </div> */}
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Claimable Rewards</span>
-                      <span className="font-bold">
-                        <Tokens amount={data.rewards.claimable} decimals={data.rewards.decimals} /> crvUSD
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col space-y-2 pt-2">
-                    <span className="font-semibold pb-4 text-lg">YEARN BOOSTED STAKER</span>
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">yCRV Staked</span>
-                      <span className="font-bold font-mono">{bmath.div(data.staker.totalSupply, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Rewards this week</span>
-                      <span className="font-bold font-mono">{bmath.div(data.utilities.weeklyRewardAmount, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} crvUSD</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70	flex items-center gap-2 whitespace-nowrap">
-                        <div>APR 1x</div>
-                        <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
-                        <div>2.5x</div>
-                      </span>
-                      <span className="font-bold flex items-end md:items-center md:justify-end space-x-2">
-                        <span className="font-mono">{data.utilities && bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.min, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
-                        <Image width={20} height={10} alt="right arrow" src="/right-arrow.svg" />
-                        <span className="font-mono">{data.utilities && bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n) ? fPercent(bmath.div(data.utilities.globalMinMaxApr.max, 10n**18n), 2) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>                     </span>
-                    </div>
-                    {/* <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">Average Boost Multiplier</span>
-                      <span className="font-bold">1.7x</span>
-                    </div> */}
-
-                  </div>
-                </>
-              ) :(
-                <>
-                  <span className="text-light-blue font-bold pb-2">ESTIMATED AUTO-COMPOUND APY</span>
-                  <span className="text-light-blue text-6xl font-bold mb-[26px]">
-                    {(vaultApy > 0) ? fPercent(vaultApy) : <span title="APR will show when migration period ends after first week.">🌈✨%</span>}</span>
-                  <div className="border-t-2 border-soft-blue my-4 py-6 flex flex-col space-y-2">
-                    <span className="font-semibold pb-4 text-lg">MY DEPOSITS</span>
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">yCRV Deposited</span>
-                      <span className="font-bold font-mono">{data.strategy.balance
-                        ? (bmath.div(data.strategy.balance, 10n**18n) * bmath.div(data.strategy.pricePerShare, 10n**18n)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-                        : '-'
-                      }
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70 mb-4">USD Value</span>
-                      <span className="font-bold font-mono">
-                        ${data.strategy.balance && prices[env.YPRISMA]
-                          ? (Number(bmath.div(data.strategy.balance, 10n**18n) * bmath.div(data.strategy.pricePerShare, 10n**18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-                          : '0.00'}
-                      </span>
-                    </div>
-                    <span className="font-semibold pb-4 pt-6 text-lg border-t-2 border-soft-blue">TOTAL DEPOSITS</span>
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70	">yCRV Deposited</span>
-                      <span className="font-bold font-mono">{data.strategy.totalAssets
-                        ? bmath.div(data.strategy.totalAssets, 10n**18n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-                        : '-'
-                      }
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-thin opacity-70">USD Value</span>
-                      <span className="font-bold font-mono">
-                        ${data.strategy.totalAssets && prices[env.YPRISMA]
-                          ? (Number(bmath.div(data.strategy.totalAssets, 10n ** 18n)) * prices[env.YPRISMA]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-                          : '-'}
-                      </span>
-                    </div>
-                  </div>
-                </>
-              )}
-              
-            </div>
           </div>
           <div className="mt-8">
-            <TableComponent />
+            <Vaults title="Curve vaults"
+              filter={(vault: { category: string, endorsed: boolean, details: { isRetired: boolean, isHidden: boolean }}) => {
+                return vault.category === 'Curve'
+                && vault.endorsed
+                && !vault.details.isRetired
+                && !vault.details.isHidden
+              }} />
           </div>
         </section>
       </div>
@@ -215,15 +79,15 @@ function TabContent(props: { leftActive: boolean }) {
   return (
     <div className="flex flex-col">
       <h1 className="text-5xl p-8 font-[700]">
-        {tab === 'stake' && 'Stake yCRV'}
-        {tab === 'unstake' && 'Stake yCRV'}
-        {tab === 'claim' && 'Stake yCRV'}
-        {tab === 'get' && 'Stake yCRV'}
-        {tab === 'learn_more_stake' && 'Stake yCRV'}
-        {tab === 'deposit' && 'Auto-Compound yCRV'}
-        {tab === 'withdraw' && 'Auto-Compound yCRV'}
-        {tab === 'get2' && 'Auto-Compound yCRV'}
-        {tab === 'learn_more_deposit' && 'Auto-Compound yCRV'}
+        {tab === 'stake' && `Stake ${env.LOCKER_TOKEN_NAME}`}
+        {tab === 'unstake' && `Stake ${env.LOCKER_TOKEN_NAME}`}
+        {tab === 'claim' && `Stake ${env.LOCKER_TOKEN_NAME}`}
+        {tab === 'get' && `Stake ${env.LOCKER_TOKEN_NAME}`}
+        {tab === 'learn_more_stake' && `Stake ${env.LOCKER_TOKEN_NAME}`}
+        {tab === 'deposit' && `Auto-Compound ${env.LOCKER_TOKEN_NAME}`}
+        {tab === 'withdraw' && `Auto-Compound ${env.LOCKER_TOKEN_NAME}`}
+        {tab === 'get2' && `Auto-Compound ${env.LOCKER_TOKEN_NAME}`}
+        {tab === 'learn_more_deposit' && `Auto-Compound ${env.LOCKER_TOKEN_NAME}`}
         
       </h1>
       {props.leftActive ? (
@@ -289,7 +153,9 @@ function TabContent(props: { leftActive: boolean }) {
               <span className="font-semibold">YOUR REWARD</span>
               <span className="font-semibold font-mono text-5xl">{fUSD(data.rewards.claimableUsd)}</span>
               <span className="flex items-end gap-1">
-                <span className="font-mono opacity-50">{bmath.div(data.rewards.claimable, 10n ** BigInt(data.rewards.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span className="font-mono opacity-50">
+                  <Tokens amount={data.rewards.claimable} decimals={data.rewards.decimals} />
+                </span>
                 <span className="font-thin opacity-70">yvcrvUSD</span>
               </span>
               <div>
@@ -300,7 +166,7 @@ function TabContent(props: { leftActive: boolean }) {
               <span className="font-semibold">DESCRIPTION</span>
               <p className="font-thin opacity-70">
                 {'Claim your crvUSD rewards. We already deposited your crvUSD into our auto-compounding crvUSD vault ('}
-                <A target="_blank" rel="noreferrer" className="underline" href={`https://yearn.fi/v3/1/${env.YVMKUSD}`}>yvcrvUSD</A>
+                <A target="_blank" rel="noreferrer" className="underline" href={`https://yearn.fi/v3/1/${env.STABLE_TOKEN}`}>yvcrvUSD</A>
                 {').'}
               </p>
               <p className="font-thin opacity-70">
@@ -308,7 +174,7 @@ function TabContent(props: { leftActive: boolean }) {
               </p>
               <div>
                 <div className="font-thin opacity-70">Your yvcrvUSD balance</div>
-                <A className="flex items-center gap-2 font-mono" href={`https://yearn.fi/v3/1/${env.YVMKUSD}`} target="_blank" rel="noreferrer">
+                <A className="flex items-center gap-2 font-mono" href={`https://yearn.fi/v3/1/${env.STABLE_TOKEN}`} target="_blank" rel="noreferrer">
                   <PiVaultLight />
                   <Tokens amount={data.rewards.vaultBalance} decimals={data.rewards.decimals} />
                   ({fUSD(data.rewards.vaultBalanceUsd)})
@@ -378,245 +244,6 @@ function TabContent(props: { leftActive: boolean }) {
             </div>
           </div>
         )}
-      </div>
-    </div>
-  )
-}
-
-const TableComponent = () => {
-  const { address } = useAccount()
-  const { vaultData } = useVaultContext()
-  const [searchTerm, setSearchTerm] = useState('')
-  const [sortColumn, setSortColumn] = useState('estApr')
-  const [sortDirection, setSortDirection] = useState('desc')
-
-  const handleSort = (column: string) => {
-    if (column === sortColumn) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
-    } else {
-      setSortColumn(column)
-      setSortDirection('asc')
-    }
-  }
-
-  const filteredVaultData = useMemo(() => {
-    if (!vaultData) return []
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return vaultData.filter((vault:any) =>
-      vault.category === 'Curve'
-      && vault.endorsed
-      && !vault.details.isRetired
-      && !vault.details.isHidden
-    )
-  }, [vaultData])
-
-  const contractReads = useContractReads({
-    contracts: address ? filteredVaultData.flatMap(vault => [
-      {
-        address: vault.address,
-        abi: erc20Abi,
-        functionName: 'balanceOf',
-        args: [address],
-      },
-      {
-        address: vault.token.address,
-        abi: erc20Abi,
-        functionName: 'balanceOf',
-        args: [address],
-      },
-    ]) : [],
-  })
-
-  const getHoldings = useMemo(() => {
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return (vault: any) => {
-      const index = filteredVaultData.indexOf(vault)
-      if (contractReads.data && contractReads.data[index * 2]) {
-        const vaultBalance = BigInt(contractReads.data[index * 2].result ?? 0n)
-        return {
-          balance: vaultBalance ? Number(formatUnits(vaultBalance, vault.decimals)) : 0,
-          usdValue: vaultBalance ? Number(formatUnits(vaultBalance, vault.decimals)) * vault.tvl.price : 0,
-        }
-      }
-      return null
-    }
-  }, [contractReads.data, filteredVaultData])
-
-  const getAvailable = useMemo(() => {
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return (vault: any) => {
-      const index = filteredVaultData.indexOf(vault)
-      if (contractReads.data && contractReads.data[index * 2 + 1]) {
-        const tokenBalance = BigInt(contractReads.data[index * 2 + 1].result ?? 0n)
-        return {
-          balance: Number(formatUnits(tokenBalance, vault.token.decimals)),
-          usdValue: Number(formatUnits(tokenBalance, vault.token.decimals)) * vault.tvl.price,
-        }
-      }
-      return null
-    }
-  }, [contractReads.data, filteredVaultData])
-
-  const sortedData = useMemo(() => {
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return [...filteredVaultData].sort((a: any, b: any) => {
-      if (sortColumn === 'token') {
-        const nameA = a.name.toLowerCase()
-        const nameB = b.name.toLowerCase()
-        if (nameA < nameB) return sortDirection === 'asc' ? -1 : 1
-        if (nameA > nameB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'estApr') {
-        const aprA = a.apr.forwardAPR.netAPR
-        const aprB = b.apr.forwardAPR.netAPR
-        if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1
-        if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'histApr') {
-        const aprA = a.apr.netAPR
-        const aprB = b.apr.netAPR
-        if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1
-        if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'available') {
-        const availableA = getAvailable(a)?.usdValue || 0
-        const availableB = getAvailable(b)?.usdValue || 0
-        if (availableA < availableB) return sortDirection === 'asc' ? -1 : 1
-        if (availableA > availableB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'holdings') {
-        const holdingsA = getHoldings(a)?.usdValue || 0
-        const holdingsB = getHoldings(b)?.usdValue || 0
-        if (holdingsA < holdingsB) return sortDirection === 'asc' ? -1 : 1
-        if (holdingsA > holdingsB) return sortDirection === 'asc' ? 1 : -1
-      } else if (sortColumn === 'deposits') {
-        const depositsA = a.tvl.tvl
-        const depositsB = b.tvl.tvl
-        if (depositsA < depositsB) return sortDirection === 'asc' ? -1 : 1
-        if (depositsA > depositsB) return sortDirection === 'asc' ? 1 : -1
-      }
-      return 0
-    })
-  }, [filteredVaultData, sortColumn, sortDirection, getHoldings, getAvailable])
-
-  const filteredData = useMemo(() => {
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return sortedData.filter((vault:any) =>
-      vault.token.display_name.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.token.name.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.token.address.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.token.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.token.display_symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.address.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.name.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.display_name.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.display_symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      || vault.formated_symbol.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  }, [sortedData, searchTerm])
-
-  return (
-    <div className="w-full rounded-lg overflow-hidden bg-darker-blue text-white mb-8">
-      <div className="flex flex-col md:flex-row items-center justify-between w-full">
-        <h1 className="text-4xl md:text-5xl p-6 pt-8 md:p-8 font-[700] pb-0">
-          Curve Vaults
-        </h1>
-        <div className="p-4 md:p-8 w-full md:w-2/3">
-          <InputBox
-            // type="text"
-            subtitle=""
-            title="Search"
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            noButton
-            inputType="text"
-            placeholder="Vault or strategy name..." />
-        </div>
-      </div>
-      <div className="pb-2">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="">
-              <th
-                className="text-sm font-thin py-2 hover:underline cursor-pointer pl-4 md:pl-8"
-                onClick={() => handleSort('token')}>
-                Token {sortColumn === 'token' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer"
-                onClick={() => handleSort('estApr')}>
-                Est. APR {sortColumn === 'estApr' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
-                onClick={() => handleSort('histApr')}>
-                Hist. APR {sortColumn === 'histApr' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
-                onClick={() => handleSort('available')}>
-                Available {sortColumn === 'available' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer hidden md:table-cell"
-                onClick={() => handleSort('holdings')}>
-                Holdings {sortColumn === 'holdings' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-              <th
-                className="text-sm font-thin hover:underline py-2 cursor-pointer pr-8 hidden md:table-cell"
-                onClick={() => handleSort('deposits')}>
-                Deposits {sortColumn === 'deposits' && (sortDirection === 'asc' ? '▲' : '▼')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map(item => {
-              const holdings = getHoldings(item)
-              const available = getAvailable(item)
-              return (
-                <tr onClick={() => window.open(`https://yearn.fi/${isVersionGte(item.version, '3.0.0') ? 'v3/1' : 'vaults/1'}/${item.address}`, '_blank')} key={item.address} className="hover:bg-blue">
-                  <td className="text-sm md:text-base py-2 cursor-pointer px-4 md:pl-8 flex items-center space-x-2">
-                    <ImageOrFallback
-                      alt={item.name}
-                      src={item.token.icon}
-                      width={40}
-                      height={40}
-                      fallback="https://yearn.fi/_next/image?url=%2Fplaceholder.png&w=32&q=75" />
-                    <span>{item.name}</span>
-                  </td>
-                  <td className="text-base font-mono py-2 cursor-pointer pr-4 md:pr-0">{(item.apr.forwardAPR.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">{(item.apr.netAPR * 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%</td>
-                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
-                    {available ? (
-                      <>
-                        {available.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      </>
-                    ) : (
-                      '-'
-                    )}
-                  </td>
-                  <td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
-                    {holdings ? (
-                      <>
-                        {holdings.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      </>
-                    ) : (
-                      '-'
-                    )}
-                  </td>
-                  <td className="text-base font-mono py-2 cursor-pointer pr-8 hidden md:table-cell">
-                    {item.tvl.totalAssets ? (
-                      <>
-                        {Number(formatUnits(BigInt(item.tvl.totalAssets), item.decimals)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        <p className="text-sm opacity-40">${item.tvl.tvl.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                      </>
-                    ) : (
-                      '-'
-                    )}
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-        {!(vaultData?.length > 0) && <span className="p-4 md:p-8">Loading...</span>}
       </div>
     </div>
   )

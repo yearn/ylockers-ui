@@ -1,4 +1,4 @@
-import { cn } from '@/lib/shadcn'
+import { cn } from '--lib/tools/tailwind'
 import { useCallback, useMemo } from 'react'
 import { BsFillLightningFill } from 'react-icons/bs'
 import { useParameters } from './Parameters'
@@ -22,7 +22,7 @@ export default function Bolt() {
 
   const fill = useMemo(() => {
     if (theme === 'onit') return 'fill-neutral-200'
-    return 'fill-darker-blue'
+    return 'fill-deeper-primary'
   }, [theme])
 
   const divHover = useMemo(() => {
@@ -31,7 +31,7 @@ export default function Bolt() {
   }, [enabled])
 
   const iconHover = useMemo(() => {
-    if (enabled) return 'group-hover:fill-lighter-blue'
+    if (enabled) return 'group-hover:fill-light-primary'
     return ''
   }, [enabled])
 
@@ -41,8 +41,8 @@ export default function Bolt() {
 
   return <div onClick={onClick}
     className={cn(`group
-    p-1 border-8 border-darker-blue
-    bg-input-bg rounded-primary pointer-events-auto`, bg, cursor, divHover)}>
+    p-1 border-8 border-deeper-primary
+    bg-input-bg rounded-xl pointer-events-auto`, bg, cursor, divHover)}>
     <BsFillLightningFill size={24} className={cn(fill, iconHover)} />
   </div>
 }

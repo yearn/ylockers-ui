@@ -2,7 +2,7 @@ import { useAccount, useReadContract, useSimulateContract, UseSimulateContractPa
 import { useParameters } from '../Parameters'
 import { erc20Abi, maxUint256, zeroAddress } from 'viem'
 import { useMemo } from 'react'
-import env from '@/lib/env'
+import env from '--lib/tools/env'
 
 export function useApproveErc20() {
   const { isConnected, address } = useAccount()

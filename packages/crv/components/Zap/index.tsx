@@ -9,7 +9,7 @@ import SelectToken from './SelectToken'
 import Parameters from './Parameters'
 import { useMounted } from '../../hooks/useMounted'
 import Notification from './Notification'
-import { springs } from '@/lib/motion'
+import { springs } from '--lib/tools/motion'
 import Contracts from './Contracts'
 import { Token } from './tokens'
 
@@ -35,7 +35,7 @@ function Layout() {
         animate={{ y: 0 }}
         className={`
         relative h-[22rem] flex flex-col gap-2
-        bg-transparent rounded-primary`}>
+        bg-transparent rounded-xl`}>
         <InputPanel mode="in" onSelectToken={() => setSelectTokenMode('in')} />
         <InputPanel mode="out" onSelectToken={() => setSelectTokenMode('out')} />
         <div className={`pt-1

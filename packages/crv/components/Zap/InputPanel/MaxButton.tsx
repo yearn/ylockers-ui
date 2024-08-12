@@ -1,6 +1,6 @@
 'use client'
 
-import Button from '../../Button'
+import Button from '--lib/components/Button'
 import useBalances from '../hooks/useBalances'
 import { Token, TOKENS } from '../tokens'
 import { useCallback, useMemo } from 'react'

@@ -1,9 +1,9 @@
 'use client'
 
 import { useAccount } from 'wagmi'
-import Button from '../../Button'
+import Button from '--lib/components/Button'
 import { Suspense, useMemo } from 'react'
-import { cn } from '@/lib/shadcn'
+import { cn } from '--lib/tools/tailwind'
 import { useParameters } from '../Parameters'
 import { Input, InputDisplay } from './Input'
 import { AmountUsd, AmountUsdDisplay } from './AmountUsd'
@@ -37,9 +37,9 @@ export default function InputPanel({
   const setAmount = useMemo(() => isModeIn ? setInputAmount : setOutputAmount, [isModeIn, setInputAmount, setOutputAmount])
 
   return <div className={`group
-    px-4 py-6 bg-input-bg rounded-primary
+    px-4 py-6 bg-input-bg rounded-xl
     flex flex-col justify-center gap-3
-    border border-transparent focus-within:border-light-blue`}>
+    border border-transparent focus-within:border-bright-primary`}>
     <div className={labelClassName}>{label}</div>
     <div className="flex items-center gap-4">
       <Suspense fallback={<InputDisplay />}>
