@@ -43,13 +43,17 @@ function usePeg() {
 }
 
 export default function Ticker() {
-  const { data: prices } = usePrices([env.LOCKER_TOKEN, env.BASE_TOKEN])
+  const { data: prices } = usePrices([env.BASE_TOKEN])
   const peg = usePeg()
 
   const pegDisplay = useMemo(() => {
     if (peg === 0) return '-.---:1'
     return `${fNumber(peg, { fixed: 3 })}:1`
   }, [peg])
+
+  const lockerTokenPrice = useMemo(() => {
+    return (prices[env.BASE_TOKEN] ?? 0) * peg
+  }, [prices, peg])
 
   return <div className={`
     absolute z-[100] top-[82px] sm:top-0 left-0 w-full sm:h-[70px]
@@ -60,7 +64,7 @@ export default function Ticker() {
     <div className={`
       flex flex-col items-end justify-end gap-3 text-sm
       sm:flex-row sm:items-center sm:justify-center sm:gap-8 sm:text-base`}>
-      <Price name={env.LOCKER_TOKEN_NAME} price={fUSD(prices[env.LOCKER_TOKEN] ?? 0, { fixed: 3 })} />
+      <Price name={env.LOCKER_TOKEN_NAME} price={fUSD(lockerTokenPrice, { fixed: 3 })} />
       <Price name={env.BASE_TOKEN_NAME} price={fUSD(prices[env.BASE_TOKEN] ?? 0, { fixed: 3 })} />
       <Price name="PEG" price={pegDisplay} />
     </div>
