@@ -2,11 +2,9 @@
 
 import { fNumber, fUSD } from '../tools/format'
 import env from '../tools/env'
+import { usePeg } from '../hooks/usePeg'
 import usePrices from '../hooks/usePrices'
 import { useMemo } from 'react'
-import { useReadContract } from 'wagmi'
-import { parseAbiItem } from 'viem'
-import bmath from '../tools/bmath'
 
 function Price({
   name,
@@ -26,34 +24,14 @@ function Price({
   </div>
 }
 
-function usePeg() {
-  const read = useReadContract({
-    address: env.EXIT_POOL,
-    abi: [parseAbiItem('function get_dy(int128, int128, uint256) view returns (uint256)')],
-    functionName: 'get_dy',
-    args: [1n, 0n, 100n * (10n ** 18n)]
-  })
-
-  const result = useMemo(() => {
-    if (!read.isSuccess) return 0
-    return bmath.div(read.data, 100n * (10n ** 18n))
-  }, [read])
-
-  return result
-}
-
 export default function Ticker() {
-  const { data: prices } = usePrices([env.BASE_TOKEN])
+  const { data: prices } = usePrices([env.BASE_TOKEN, env.LOCKER_TOKEN])
   const peg = usePeg()
 
   const pegDisplay = useMemo(() => {
     if (peg === 0) return '-.---:1'
     return `${fNumber(peg, { fixed: 3 })}:1`
   }, [peg])
-
-  const lockerTokenPrice = useMemo(() => {
-    return (prices[env.BASE_TOKEN] ?? 0) * peg
-  }, [prices, peg])
 
   return <div className={`
     absolute z-[100] top-[82px] sm:top-0 left-0 w-full sm:h-[70px]
@@ -64,7 +42,7 @@ export default function Ticker() {
     <div className={`
       flex flex-col items-end justify-end gap-3 text-sm
       sm:flex-row sm:items-center sm:justify-center sm:gap-8 sm:text-base`}>
-      <Price name={env.LOCKER_TOKEN_NAME} price={fUSD(lockerTokenPrice, { fixed: 3 })} />
+      <Price name={env.LOCKER_TOKEN_NAME} price={fUSD(prices[env.LOCKER_TOKEN], { fixed: 3 })} />
       <Price name={env.BASE_TOKEN_NAME} price={fUSD(prices[env.BASE_TOKEN] ?? 0, { fixed: 3 })} />
       <Price name="PEG" price={pegDisplay} />
     </div>
