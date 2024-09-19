@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import zapAbi from '../abis/zap'
 import { parseUnits, zeroAddress } from 'viem'
 import { useMinOut } from './useMinOut'
-import env from '--lib/tools/env'
+import { ZAP } from '@/constants'
 
 export function useZap({ needsApproval }: { needsApproval: boolean }) {
   const { isConnected } = useAccount()
@@ -22,7 +22,7 @@ export function useZap({ needsApproval }: { needsApproval: boolean }) {
   )
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
-    abi: zapAbi, address: env.ZAP, functionName: 'zap',
+    abi: zapAbi, address: ZAP, functionName: 'zap',
     args: [
       inputToken?.address ?? zeroAddress,
       outputToken?.address ?? zeroAddress,

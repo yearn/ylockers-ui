@@ -17,7 +17,6 @@ import Deposit from '--lib/components/DepositV2'
 import Withdraw from '--lib/components/WithdrawV2'
 
 import { PiVaultLight } from 'react-icons/pi'
-import env from '--lib/tools/env'
 import Background from '../../../components/Background'
 import A from '--lib/components/A'
 import Zap from '@/components/Zap'
@@ -26,6 +25,7 @@ import VaultDataBox from '--lib/components/VaultDataBox'
 import Vaults from '--lib/components/Vaults'
 import Ticker from '--lib/components/Ticker'
 import { useTab } from '--lib/hooks/useTab'
+import { LOCKER_TOKEN_NAME, STABLE_TOKEN_VAULT } from '@/constants'
 
 
 export default function Home() {
@@ -79,15 +79,15 @@ function TabContent(props: { leftActive: boolean }) {
   return (
     <div className="flex flex-col">
       <h1 className="text-5xl p-8 font-[700]">
-        {tab === 'stake' && `Stake ${env.LOCKER_TOKEN_NAME}`}
-        {tab === 'unstake' && `Stake ${env.LOCKER_TOKEN_NAME}`}
-        {tab === 'claim' && `Stake ${env.LOCKER_TOKEN_NAME}`}
-        {tab === 'get' && `Stake ${env.LOCKER_TOKEN_NAME}`}
-        {tab === 'learn_more_stake' && `Stake ${env.LOCKER_TOKEN_NAME}`}
-        {tab === 'deposit' && `Auto-Compound ${env.LOCKER_TOKEN_NAME}`}
-        {tab === 'withdraw' && `Auto-Compound ${env.LOCKER_TOKEN_NAME}`}
-        {tab === 'get2' && `Auto-Compound ${env.LOCKER_TOKEN_NAME}`}
-        {tab === 'learn_more_deposit' && `Auto-Compound ${env.LOCKER_TOKEN_NAME}`}
+        {tab === 'stake' && `Stake ${LOCKER_TOKEN_NAME}`}
+        {tab === 'unstake' && `Stake ${LOCKER_TOKEN_NAME}`}
+        {tab === 'claim' && `Stake ${LOCKER_TOKEN_NAME}`}
+        {tab === 'get' && `Stake ${LOCKER_TOKEN_NAME}`}
+        {tab === 'learn_more_stake' && `Stake ${LOCKER_TOKEN_NAME}`}
+        {tab === 'deposit' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
+        {tab === 'withdraw' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
+        {tab === 'get2' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
+        {tab === 'learn_more_deposit' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
         
       </h1>
       {props.leftActive ? (
@@ -166,7 +166,7 @@ function TabContent(props: { leftActive: boolean }) {
               <span className="font-semibold">DESCRIPTION</span>
               <p className="font-thin opacity-70">
                 {'Claim your crvUSD rewards. We already deposited your crvUSD into our auto-compounding crvUSD vault ('}
-                <A target="_blank" rel="noreferrer" className="underline" href={`https://yearn.fi/v3/1/${env.STABLE_TOKEN}`}>yvcrvUSD</A>
+                <A target="_blank" rel="noreferrer" className="underline" href={`https://yearn.fi/v3/1/${STABLE_TOKEN_VAULT}`}>yvcrvUSD</A>
                 {').'}
               </p>
               <p className="font-thin opacity-70">
@@ -174,7 +174,7 @@ function TabContent(props: { leftActive: boolean }) {
               </p>
               <div>
                 <div className="font-thin opacity-70">Your yvcrvUSD balance</div>
-                <A className="flex items-center gap-2 font-mono" href={`https://yearn.fi/v3/1/${env.STABLE_TOKEN}`} target="_blank" rel="noreferrer">
+                <A className="flex items-center gap-2 font-mono" href={`https://yearn.fi/v3/1/${STABLE_TOKEN_VAULT}`} target="_blank" rel="noreferrer">
                   <PiVaultLight />
                   <Tokens amount={data.rewards.vaultBalance} decimals={data.rewards.decimals} />
                   ({fUSD(data.rewards.vaultBalanceUsd)})

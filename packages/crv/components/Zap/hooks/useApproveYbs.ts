@@ -3,7 +3,7 @@ import { useParameters } from '../Parameters'
 import { zeroAddress } from 'viem'
 import ybsAbi from '../abis/ybs'
 import { useMemo } from 'react'
-import env from '--lib/tools/env'
+import { ZAP } from '@/constants'
 
 export function useApproveYbsAsInput() {
   const { isConnected, address } = useAccount()
@@ -11,7 +11,7 @@ export function useApproveYbsAsInput() {
 
   const approvedCaller = useReadContract({
     abi: ybsAbi, address: inputToken?.address ?? zeroAddress, functionName: 'approvedCaller', 
-    args: [address ?? zeroAddress, env.ZAP],
+    args: [address ?? zeroAddress, ZAP],
     query: {
       enabled: isConnected && inputToken !== undefined && inputIsYbs
     }
@@ -19,7 +19,7 @@ export function useApproveYbsAsInput() {
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
     abi: ybsAbi, address: inputToken?.address ?? zeroAddress, functionName: 'setApprovedCaller',
-    args: [env.ZAP, 3],
+    args: [ZAP, 3],
     query: { 
       enabled: isConnected && inputToken !== undefined && inputIsYbs 
     }
@@ -38,7 +38,7 @@ export function useApproveYbsAsOutput() {
 
   const approvedCaller = useReadContract({
     abi: ybsAbi, address: outputToken?.address ?? zeroAddress, functionName: 'approvedCaller', 
-    args: [address ?? zeroAddress, env.ZAP],
+    args: [address ?? zeroAddress, ZAP],
     query: {
       enabled: isConnected && outputToken !== undefined && outputIsYbs
     }
@@ -46,7 +46,7 @@ export function useApproveYbsAsOutput() {
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
     abi: ybsAbi, address: outputToken?.address ?? zeroAddress, functionName: 'setApprovedCaller',
-    args: [env.ZAP, 3],
+    args: [ZAP, 3],
     query: { 
       enabled: isConnected && outputToken !== undefined && outputIsYbs
     }
