@@ -4,11 +4,11 @@ import './globals.css'
 import '@rainbow-me/rainbowkit/styles.css'
 
 import Providers from '--lib/context/Providers'
-import env from '--lib/tools/env'
+import { LOCKER_TOKEN_NAME } from '@/constants'
 
 export const metadata: Metadata = {
-  title: env.LOCKER_TOKEN_NAME,
-  description: `Put your ${env.LOCKER_TOKEN_NAME} to work`,
+  title: LOCKER_TOKEN_NAME,
+  description: `Put your ${LOCKER_TOKEN_NAME} to work`,
 }
 
 export default function RootLayout({

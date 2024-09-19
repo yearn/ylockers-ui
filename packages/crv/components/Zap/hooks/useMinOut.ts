@@ -5,15 +5,15 @@ import zapAbi from '../abis/zap'
 import { compareEvmAddresses, NO_DEX_NO_SLIPPAGE, TOKENS_MAP } from '../tokens'
 import bmath from '--lib/tools/bmath'
 import { DEFAULT_SLIPPAGE } from '../constants'
-import env from '--lib/tools/env'
 import { zeroAddress } from 'viem'
+import { ZAP } from '@/constants'
 
 export function useMinOut() {
   const { isConnected } = useAccount()
   const { inputToken, inputAmountExpanded, outputToken } = useParameters()
 
   const expectedOut = useReadContract({
-    abi: zapAbi, address: env.ZAP, functionName: 'calc_expected_out', 
+    abi: zapAbi, address: ZAP, functionName: 'calc_expected_out', 
     args: [
       inputToken?.address ?? zeroAddress, 
       outputToken?.address ?? zeroAddress, 

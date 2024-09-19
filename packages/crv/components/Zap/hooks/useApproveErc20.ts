@@ -2,7 +2,7 @@ import { useAccount, useReadContract, useSimulateContract, UseSimulateContractPa
 import { useParameters } from '../Parameters'
 import { erc20Abi, maxUint256, zeroAddress } from 'viem'
 import { useMemo } from 'react'
-import env from '--lib/tools/env'
+import { ZAP } from '@/constants'
 
 export function useApproveErc20() {
   const { isConnected, address } = useAccount()
@@ -10,7 +10,7 @@ export function useApproveErc20() {
 
   const allowance = useReadContract({
     abi: erc20Abi, address: inputToken?.address ?? zeroAddress, functionName: 'allowance', 
-    args: [address ?? zeroAddress, env.ZAP],
+    args: [address ?? zeroAddress, ZAP],
     query: {
       enabled: isConnected && inputToken !== undefined && !inputIsYbs
     }
@@ -18,7 +18,7 @@ export function useApproveErc20() {
 
   const parameters = useMemo<UseSimulateContractParameters>(() => ({
     abi: erc20Abi, address: inputToken?.address ?? zeroAddress, functionName: 'approve',
-    args: [env.ZAP, maxUint256],
+    args: [ZAP, maxUint256],
     query: { enabled:
       isConnected
       && inputToken !== undefined
