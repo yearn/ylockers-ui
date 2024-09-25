@@ -114,7 +114,7 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string, 
       </div>
       <div className="flex justify-between">
         <span className="font-thin opacity-70	">Claimable Rewards</span>
-        <Tokens className="font-bold" amount={data.rewards.claimable} decimals={data.rewards.decimals} suffix={env.stableTokenName} />
+        <Tokens className="font-bold" amount={data.rewards.claimable} decimals={data.rewards.decimals} suffix={env.stableTokenVaultName} />
       </div>
 
       <div className="flex justify-between">

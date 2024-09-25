@@ -4,9 +4,6 @@ export type TEnv = {
 	exitPool: EvmAddress
     baseToken: EvmAddress
     lockerToken: EvmAddress
-    baseTokenName: string
-    lockerTokenName: string
-	stableTokenName: string
     stableTokenVault: EvmAddress
     stableToken: EvmAddress
     lockerTokenVault: EvmAddress
@@ -14,5 +11,9 @@ export type TEnv = {
     boostedStaker: EvmAddress
     rewardsDistributor: EvmAddress
     boostedStakerUtilities: EvmAddress
+    baseTokenName: string
+    lockerTokenName: string
+	stableTokenName: string
+    stableTokenVaultName: string
     useUtilityVaultApr: boolean
 }

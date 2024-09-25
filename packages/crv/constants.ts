@@ -7,6 +7,7 @@ export const STABLE_TOKEN = '0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E'
 export const STABLE_TOKEN_VAULT = '0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F'
 export const BASE_TOKEN = '0xD533a949740bb3306d119CC777fa900bA034cd52'
 export const BASE_TOKEN_NAME = 'CRV'
+export const STABLE_TOKEN_VAULT_NAME = 'yvcrvUSD'
 export const EXIT_POOL = '0x99f5acc8ec2da2bc0771c32814eff52b712de1e5'
 export const ZAP = '0x78ada385b15D89a9B845D2Cac0698663F0c69e3C'
 export const REWARDS_DISTRIBUTOR = '0xB226c52EB411326CdB54824a88aBaFDAAfF16D3d'
@@ -30,5 +31,6 @@ export const ENV: TEnv = {
   baseTokenName: BASE_TOKEN_NAME,
   lockerTokenName: LOCKER_TOKEN_NAME,
   stableTokenName: STABLE_TOKEN_NAME,
+  stableTokenVaultName: STABLE_TOKEN_VAULT_NAME,
   useUtilityVaultApr: true
 }
