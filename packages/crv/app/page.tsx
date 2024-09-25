@@ -9,15 +9,16 @@ import { fPercent } from '--lib/tools/format'
 import bmath from '--lib/tools/bmath'
 import Background from '../components/Background'
 import Ticker from '--lib/components/Ticker'
+import { TEnv } from '--lib/tools/envType'
 
-export default function Home() {
-  const { data } = useData()
+export default function Home({yDaemon, env}: {yDaemon: string, env: TEnv}) {
+  const { data } = useData(yDaemon, env)
 
   return (
     <main className="flex flex-col items-center min-h-screen text-white">
       <Background />
       <Header items={headerItems} selected="Home" />
-      <Ticker />
+      <Ticker yDaemon={yDaemon} env={env} />
       <section className="px-8 xl:px-0 xl:w-[1200px] mt-[15vh] md:mt-[27vh] z-10">
         <div className="w-full px-12 md:px-0">
           <h1 className="text-6xl font-bold">Put your<br /><span className="flex flex-wrap mt-[6px]"><Image className="mr-[10px]" alt="ycrv logo" src="/ycrv-logo.svg" width={80} height={80} /> yCRV to work</span></h1>
