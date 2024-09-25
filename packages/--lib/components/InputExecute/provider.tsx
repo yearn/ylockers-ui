@@ -4,6 +4,7 @@ import { UseSimulateContractParameters, useSimulateContract, useWaitForTransacti
 import { erc20Abi, maxUint256, zeroAddress } from 'viem'
 import { HexStringSchema } from '../../tools/types'
 import useData, { TokenSchema } from '../../hooks/useData'
+import { TEnv } from '../../tools/envType'
 
 export const TaskSchema = z.object({
   verb: z.string().default(''),
@@ -100,8 +101,8 @@ export const context = createContext<Context>(ContextSchema.parse({
 
 export const useProvider = () => useContext(context)
 
-export default function Provider({ task, children }: { task: Task, children: ReactNode }) {
-  const { refetch } = useData()
+export default function Provider({ task, children, yDaemon, env }: { task: Task, children: ReactNode, yDaemon: string, env: TEnv }) {
+  const { refetch } = useData(yDaemon, env)
   const [amount, setAmount] = useState<bigint | undefined>(undefined)
   const [amountApproved, setAmountApproved] = useState(0n)
   const [amountExecuted, setAmountExecuted] = useState(0n)

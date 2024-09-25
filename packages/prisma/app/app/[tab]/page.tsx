@@ -27,7 +27,7 @@ import { useTab } from '--lib/hooks/useTab'
 import Vaults from '--lib/components/Vaults'
 import LegacyStakerBanner from '@/components/LegacyStaker/Banner'
 import Ticker from '--lib/components/Ticker'
-import { BASE_TOKEN_NAME, ENV, LOCKER_TOKEN_NAME, REWARDS_DISTRIBUTOR, STABLE_TOKEN_NAME, STABLE_TOKEN_VAULT, STABLE_TOKEN_VAULT_NAME, YDAEMON } from '@/constants'
+import { BASE_TOKEN_NAME, ENV, LOCKER_TOKEN_NAME, STABLE_TOKEN_NAME, STABLE_TOKEN_VAULT, STABLE_TOKEN_VAULT_NAME, YDAEMON } from '@/constants'
 
 export default function Home() {
   const { openConnectModal  } = useConnectModal()

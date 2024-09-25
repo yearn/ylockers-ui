@@ -25,7 +25,7 @@ import VaultDataBox from '--lib/components/VaultDataBox'
 import Vaults from '--lib/components/Vaults'
 import Ticker from '--lib/components/Ticker'
 import { useTab } from '--lib/hooks/useTab'
-import { ENV, LOCKER_TOKEN_NAME, REWARDS_DISTRIBUTOR, STABLE_TOKEN_VAULT, YDAEMON } from '@/constants'
+import { ENV, LOCKER_TOKEN_NAME, STABLE_TOKEN_VAULT, YDAEMON } from '@/constants'
 
 
 export default function Home() {

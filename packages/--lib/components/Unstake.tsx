@@ -11,7 +11,10 @@ export default function Unstake({ yDaemon, env, className }: {
   className?: string
 }) {
   const { data } = useData(yDaemon, env)
-  return <InputExecute className={className}
+  return <InputExecute 
+    className={className}
+    yDaemon={yDaemon}
+    env={env}
     task={{
       verb: 'unstake',
       token: TokenSchema.parse(data.staker),

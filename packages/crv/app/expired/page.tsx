@@ -1,6 +1,7 @@
 import Header, { headerItems } from '../../components/Header'
 import Background from '../../components/Background'
 import Ticker from '--lib/components/Ticker'
+import { ENV, YDAEMON } from '@/constants'
 
 export default function Home() {
   return (
@@ -8,7 +9,7 @@ export default function Home() {
       <div className="w-full shadow-lg z-10"></div>
       <Background />
       <Header items={headerItems} selected="Expired farms" />
-      <Ticker />
+      <Ticker yDaemon={YDAEMON} env={ENV} />
       <section className="xl:w-[1200px] px-8 xl:p-0 z-10">
         <div className="w-full">
           <div className="relative mx-auto mb-0 flex w-full flex-col bg-neutral-0">

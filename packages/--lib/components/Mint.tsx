@@ -11,7 +11,10 @@ export default function Mint({ yDaemon, env, className }: {
   className?: string
 }) {
   const { data } = useData(yDaemon, env)
-  return <InputExecute className={className}
+  return <InputExecute
+    className={className}
+    yDaemon={yDaemon}
+    env={env}
     task={{
       verb: 'mint',
       token: data.asset,

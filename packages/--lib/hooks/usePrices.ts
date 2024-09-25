@@ -1,21 +1,9 @@
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import { usePeg } from './usePeg'
-import { EvmAddress } from '@/tools/types'
+import { TEnv } from '../tools/envType'
 
-function useLockerTokenPriceBasedOnPeg(env: {
-  exitPool: EvmAddress
-  baseToken: EvmAddress
-  lockerToken: EvmAddress
-  lockerTokenName: string
-  stableTokenVault: EvmAddress
-  stableToken: EvmAddress
-  lockerTokenVault: EvmAddress
-  lockerTokenVaultStrategy: EvmAddress
-  boostedStaker: EvmAddress
-  rewardsDistributor: EvmAddress
-  boostedStakerUtilities: EvmAddress
-}, baseTokenPrice: number | undefined) {
+function useLockerTokenPriceBasedOnPeg(env: TEnv, baseTokenPrice: number | undefined) {
   const peg = usePeg({ exitPool: env.exitPool })
   const result = useMemo(() => {
     if (baseTokenPrice === undefined) return undefined
@@ -24,19 +12,7 @@ function useLockerTokenPriceBasedOnPeg(env: {
   return result
 }
 
-export default function usePrices(yDaemon: string, env: {
-  exitPool: EvmAddress
-  baseToken: EvmAddress
-  lockerToken: EvmAddress
-  lockerTokenName: string
-  stableTokenVault: EvmAddress
-  stableToken: EvmAddress
-  lockerTokenVault: EvmAddress
-  lockerTokenVaultStrategy: EvmAddress
-  boostedStaker: EvmAddress
-  rewardsDistributor: EvmAddress
-  boostedStakerUtilities: EvmAddress
-}, tokens: `0x${string}`[]) {
+export default function usePrices(yDaemon: string, env: TEnv, tokens: `0x${string}`[]) {
   const _tokens = useMemo(() => {
     const result: `0x${string}`[] = [...tokens]
     if (tokens.includes(env.lockerToken) && !tokens.includes(env.baseToken)) {
