@@ -3,7 +3,7 @@
 import useData from '../hooks/useData'
 import InputExecute from './InputExecute'
 import abis from '../abis'
-import { TEnv } from '@/tools/envType'
+import { TEnv } from '../tools/envType'
 
 export default function DepositV3({ yDaemon, env, className }: {
   yDaemon: string,

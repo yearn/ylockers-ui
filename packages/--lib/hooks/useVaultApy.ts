@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import bmath from '../tools/bmath'
 import useData from './useData'
 import useVault from './useVault'
-import { TEnv } from '@/tools/envType'
+import { TEnv } from '../tools/envType'
 
 export function useVaultApy(yDaemon: string, env: TEnv) {
   const { data } = useData(yDaemon, env)

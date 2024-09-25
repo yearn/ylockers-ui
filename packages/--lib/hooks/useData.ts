@@ -8,7 +8,7 @@ import abis from '../abis'
 import usePrices from '../hooks/usePrices'
 import { priced } from '../tools/bmath'
 import { useCallback, useMemo } from 'react'
-import { TEnv } from '@/tools/envType'
+import { TEnv } from '../tools/envType'
 
 const BalanceSchema = z.object({
   address: HexStringSchema.default(zeroAddress),

@@ -9,8 +9,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '../components/shadcn/hover-card'
-import { TEnv } from '@/tools/envType'
-
+import { TEnv } from '../tools/envType'
 
 export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string, env: TEnv, className?: string}) {
   const { data } = useData(yDaemon, env)

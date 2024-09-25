@@ -9,7 +9,7 @@ import A from './A'
 import { TfiReceipt } from 'react-icons/tfi'
 import { motion, AnimatePresence } from 'framer-motion'
 import { springs } from '../tools/motion'
-import { TEnv } from '@/tools/envType'
+import { TEnv } from '../tools/envType'
 
 function GreatSuccess({ hash }: { hash: `0x${string}`}) {
   const config = useConfig()

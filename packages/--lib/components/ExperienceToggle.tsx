@@ -5,7 +5,7 @@ import { fPercent } from '../tools/format'
 import useData from '../hooks/useData'
 import { useMemo } from 'react'
 import { formatUnits } from 'viem'
-import { TEnv } from '@/tools/envType'
+import { TEnv } from '../tools/envType'
 
 export default function ExperienceToggle({ yDaemon, env }: { yDaemon: string, env: TEnv }) {
   const tab = useTab()

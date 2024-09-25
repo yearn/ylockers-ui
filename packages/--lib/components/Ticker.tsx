@@ -4,7 +4,7 @@ import { fNumber, fUSD } from '../tools/format'
 import { usePeg } from '../hooks/usePeg'
 import usePrices from '../hooks/usePrices'
 import { useMemo } from 'react'
-import { TEnv } from '@/tools/envType'
+import { TEnv } from '../tools/envType'
 
 function Price({
   name,

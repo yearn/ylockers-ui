@@ -3,7 +3,7 @@
 import useData, { TokenSchema } from '../hooks/useData'
 import InputExecute from '--lib/components/InputExecute'
 import abis from '../abis'
-import { TEnv } from '@/tools/envType'
+import { TEnv } from '../tools/envType'
 
 export default function Unstake({ yDaemon, env, className }: {
   yDaemon: string,
