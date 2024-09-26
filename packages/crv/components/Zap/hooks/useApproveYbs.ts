@@ -1,60 +1,81 @@
-import { useAccount, useReadContract, useSimulateContract, UseSimulateContractParameters, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import { useParameters } from '../Parameters'
-import { zeroAddress } from 'viem'
-import ybsAbi from '../abis/ybs'
-import { useMemo } from 'react'
-import { ZAP } from '@/constants'
+import {
+	useAccount,
+	useReadContract,
+	useSimulateContract,
+	UseSimulateContractParameters,
+	useWaitForTransactionReceipt,
+	useWriteContract
+} from 'wagmi';
+import {useParameters} from '../Parameters';
+import {zeroAddress} from 'viem';
+import ybsAbi from '../abis/ybs';
+import {useMemo} from 'react';
+import {ZAP} from '@/constants';
 
 export function useApproveYbsAsInput() {
-  const { isConnected, address } = useAccount()
-  const { inputToken, inputIsYbs } = useParameters()
+	const {isConnected, address} = useAccount();
+	const {inputToken, inputIsYbs} = useParameters();
 
-  const approvedCaller = useReadContract({
-    abi: ybsAbi, address: inputToken?.address ?? zeroAddress, functionName: 'approvedCaller', 
-    args: [address ?? zeroAddress, ZAP],
-    query: {
-      enabled: isConnected && inputToken !== undefined && inputIsYbs
-    }
-  })
+	const approvedCaller = useReadContract({
+		abi: ybsAbi,
+		address: inputToken?.address ?? zeroAddress,
+		functionName: 'approvedCaller',
+		args: [address ?? zeroAddress, ZAP],
+		query: {
+			enabled: isConnected && inputToken !== undefined && inputIsYbs
+		}
+	});
 
-  const parameters = useMemo<UseSimulateContractParameters>(() => ({
-    abi: ybsAbi, address: inputToken?.address ?? zeroAddress, functionName: 'setApprovedCaller',
-    args: [ZAP, 3],
-    query: { 
-      enabled: isConnected && inputToken !== undefined && inputIsYbs 
-    }
-  }), [isConnected, inputToken, inputIsYbs])
+	const parameters = useMemo<UseSimulateContractParameters>(
+		() => ({
+			abi: ybsAbi,
+			address: inputToken?.address ?? zeroAddress,
+			functionName: 'setApprovedCaller',
+			args: [ZAP, 3],
+			query: {
+				enabled: isConnected && inputToken !== undefined && inputIsYbs
+			}
+		}),
+		[isConnected, inputToken, inputIsYbs]
+	);
 
-  const simulation = useSimulateContract(parameters)
-  const write = useWriteContract()
-  const confirmation = useWaitForTransactionReceipt({ hash: write.data })
+	const simulation = useSimulateContract(parameters);
+	const write = useWriteContract();
+	const confirmation = useWaitForTransactionReceipt({hash: write.data});
 
-  return { approvedCaller, simulation, write, confirmation }
+	return {approvedCaller, simulation, write, confirmation};
 }
 
 export function useApproveYbsAsOutput() {
-  const { isConnected, address } = useAccount()
-  const { outputToken, outputIsYbs } = useParameters()
+	const {isConnected, address} = useAccount();
+	const {outputToken, outputIsYbs} = useParameters();
 
-  const approvedCaller = useReadContract({
-    abi: ybsAbi, address: outputToken?.address ?? zeroAddress, functionName: 'approvedCaller', 
-    args: [address ?? zeroAddress, ZAP],
-    query: {
-      enabled: isConnected && outputToken !== undefined && outputIsYbs
-    }
-  })
+	const approvedCaller = useReadContract({
+		abi: ybsAbi,
+		address: outputToken?.address ?? zeroAddress,
+		functionName: 'approvedCaller',
+		args: [address ?? zeroAddress, ZAP],
+		query: {
+			enabled: isConnected && outputToken !== undefined && outputIsYbs
+		}
+	});
 
-  const parameters = useMemo<UseSimulateContractParameters>(() => ({
-    abi: ybsAbi, address: outputToken?.address ?? zeroAddress, functionName: 'setApprovedCaller',
-    args: [ZAP, 3],
-    query: { 
-      enabled: isConnected && outputToken !== undefined && outputIsYbs
-    }
-  }), [isConnected, outputToken, outputIsYbs])
+	const parameters = useMemo<UseSimulateContractParameters>(
+		() => ({
+			abi: ybsAbi,
+			address: outputToken?.address ?? zeroAddress,
+			functionName: 'setApprovedCaller',
+			args: [ZAP, 3],
+			query: {
+				enabled: isConnected && outputToken !== undefined && outputIsYbs
+			}
+		}),
+		[isConnected, outputToken, outputIsYbs]
+	);
 
-  const simulation = useSimulateContract(parameters)
-  const write = useWriteContract()
-  const confirmation = useWaitForTransactionReceipt({ hash: write.data })
+	const simulation = useSimulateContract(parameters);
+	const write = useWriteContract();
+	const confirmation = useWaitForTransactionReceipt({hash: write.data});
 
-  return { approvedCaller, simulation, write, confirmation }
+	return {approvedCaller, simulation, write, confirmation};
 }
