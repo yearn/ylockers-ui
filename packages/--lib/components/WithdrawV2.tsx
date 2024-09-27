@@ -2,18 +2,25 @@
 
 import useData from '../hooks/useData'
 import InputExecute from './InputExecute'
-import env from '../tools/env'
 import abis from '../abis'
+import { TEnv } from '../tools/envType'
 
-export default function WithdrawV2({ className }: { className?: string }) {
-  const { data } = useData()
-  return <InputExecute className={className}
+export default function WithdrawV2({ yDaemon, env, className }: {
+  yDaemon: string,
+  env: TEnv,
+  className?: string
+}) {
+  const { data } = useData(yDaemon, env)
+  return <InputExecute
+    className={className}
+    yDaemon={yDaemon}
+    env={env}
     task={{
       verb: 'withdraw',
       token: data.strategy,
       needsApproval: false,
       parameters: {
-        address: env.LOCKER_TOKEN_VAULT,
+        address: env.lockerTokenVault,
         abi: abis.VaultV2,
         functionName: 'withdraw',
         args: (amount: bigint) => [amount]

@@ -3,21 +3,16 @@ import { fPercent } from '../tools/format'
 import Tokens from './Tokens'
 import useData from '../hooks/useData'
 import { useMemo } from 'react'
-import env from '../tools/env'
 import { MdInfo, MdArrowRightAlt } from 'react-icons/md'
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "../components/shadcn/hover-card"
+} from '../components/shadcn/hover-card'
+import { TEnv } from '../tools/envType'
 
-
-export default function YbsDataBox({
-  className
-}: {
-  className?: string
-}) {
-  const { data } = useData()
+export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string, env: TEnv, className?: string}) {
+  const { data } = useData(yDaemon, env)
 
   const ybsGlobalAverageApr = useMemo(() => {
     const result = data.utilities.globalAverageApr
@@ -37,12 +32,12 @@ export default function YbsDataBox({
     const result = data.utilities.globalMinMaxActiveApr
 
     const min = result.min === 0n 
-    ? <span title="APR will show when migration period ends after first week.">🌈✨%</span> 
-    : fPercent(parseFloat(formatUnits(result.min, 18)))
+      ? <span title="APR will show when migration period ends after first week.">🌈✨%</span> 
+      : fPercent(parseFloat(formatUnits(result.min, 18)))
 
     const max = result.max === 0n
-    ? <span title="APR will show when migration period ends after first week.">🌈✨%</span>
-    : fPercent(parseFloat(formatUnits(result.max, 18)))
+      ? <span title="APR will show when migration period ends after first week.">🌈✨%</span>
+      : fPercent(parseFloat(formatUnits(result.max, 18)))
 
     return { min, max }
   }, [data])
@@ -51,12 +46,12 @@ export default function YbsDataBox({
     const result = data.utilities.globalMinMaxProjectedApr
 
     const min = result.min === 0n
-    ? <span title="APR will show when migration period ends after first week.">🌈✨%</span> 
-    : fPercent(parseFloat(formatUnits(result.min, 18)))
+      ? <span title="APR will show when migration period ends after first week.">🌈✨%</span> 
+      : fPercent(parseFloat(formatUnits(result.min, 18)))
 
     const max = result.max === 0n
-    ? <span title="APR will show when migration period ends after first week.">🌈✨%</span>
-    : fPercent(parseFloat(formatUnits(result.max, 18)))
+      ? <span title="APR will show when migration period ends after first week.">🌈✨%</span>
+      : fPercent(parseFloat(formatUnits(result.max, 18)))
 
     return { min, max }
   }, [data])
@@ -110,7 +105,7 @@ export default function YbsDataBox({
         </span>
       </div>
       <div className="flex justify-between w-full">
-        <span className="font-thin opacity-70	w">{env.LOCKER_TOKEN_NAME} Staked</span>
+        <span className="font-thin opacity-70	w">{env.lockerTokenName} Staked</span>
         <Tokens className="font-bold" amount={data.staker.balance} decimals={data.staker.decimals} />
       </div>
       <div className="flex justify-between">
@@ -119,7 +114,7 @@ export default function YbsDataBox({
       </div>
       <div className="flex justify-between">
         <span className="font-thin opacity-70	">Claimable Rewards</span>
-        <Tokens className="font-bold" amount={data.rewards.claimable} decimals={data.rewards.decimals} suffix={env.STABLE_TOKEN_NAME} />
+        <Tokens className="font-bold" amount={data.rewards.claimable} decimals={data.rewards.decimals} suffix={env.stableTokenVaultName} />
       </div>
 
       <div className="flex justify-between">
@@ -135,12 +130,12 @@ export default function YbsDataBox({
     <div className="border-t-2 border-deeper-primary/60 flex flex-col space-y-2">
       <span className="font-semibold py-4 text-lg">YEARN BOOSTED STAKER</span>
       <div className="flex justify-between">
-        <span className="font-thin opacity-70	">{env.LOCKER_TOKEN_NAME} Staked</span>
+        <span className="font-thin opacity-70	">{env.lockerTokenName} Staked</span>
         <Tokens className="font-bold" amount={data.staker.totalSupply} decimals={data.staker.decimals} />
       </div>
       <div className="flex justify-between">
         <span className="font-thin opacity-70	">Rewards this week</span>
-        <Tokens className="font-bold" amount={data.utilities.weeklyRewardAmount} decimals={18} suffix={env.STABLE_TOKEN_NAME} />
+        <Tokens className="font-bold" amount={data.utilities.weeklyRewardAmount} decimals={18} suffix={env.stableTokenName} />
       </div>
       <div className="flex justify-between">
         <span className="font-thin opacity-70">Average APR</span>

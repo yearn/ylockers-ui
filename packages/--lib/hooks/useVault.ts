@@ -1,8 +1,7 @@
-import env from '../tools/env'
 import useSWR from 'swr'
 
-export default function useVault(vault: `0x${string}`) {
-  const request = `${env.YDAEMON}/1/vault/${vault}`
+export default function useVault(ydaemon: string, vault: `0x${string}`) {
+  const request = `${ydaemon}/1/vault/${vault}`
 
   const { data, isLoading, isValidating, error, mutate } = useSWR(request, async () => {
     const response = await fetch(request)

@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
-import env from '../tools/env'
 import useSWR from 'swr'
 import { usePeg } from './usePeg'
+import { TEnv } from '../tools/envType'
 
-function useLockerTokenPriceBasedOnPeg(baseTokenPrice: number | undefined) {
-  const peg = usePeg()
+function useLockerTokenPriceBasedOnPeg(env: TEnv, baseTokenPrice: number | undefined) {
+  const peg = usePeg({ exitPool: env.exitPool })
   const result = useMemo(() => {
     if (baseTokenPrice === undefined) return undefined
     return baseTokenPrice * peg
@@ -12,17 +12,16 @@ function useLockerTokenPriceBasedOnPeg(baseTokenPrice: number | undefined) {
   return result
 }
 
-export default function usePrices(tokens: `0x${string}`[]) {
+export default function usePrices(yDaemon: string, env: TEnv, tokens: `0x${string}`[]) {
   const _tokens = useMemo(() => {
     const result: `0x${string}`[] = [...tokens]
-    if (tokens.includes(env.LOCKER_TOKEN) && !tokens.includes(env.BASE_TOKEN)) {
-      result.push(env.BASE_TOKEN)
+    if (tokens.includes(env.lockerToken) && !tokens.includes(env.baseToken)) {
+      result.push(env.baseToken)
     }
     return result
-  }, [tokens])
+  }, [env.baseToken, env.lockerToken, tokens])
 
-  const request = `${env.YDAEMON}/1/prices/some/${_tokens.join(',')}?humanized=true`
-
+  const request = `${yDaemon}/1/prices/some/${_tokens.join(',')}?humanized=true`
   const fallbackData = _tokens.reduce((acc: { [key: `0x${string}`]: number }, token) => {
     acc[token] = 0
     return acc
@@ -36,11 +35,11 @@ export default function usePrices(tokens: `0x${string}`[]) {
     refreshInterval: 30_000
   })
 
-  const lockerTokenPrice = useLockerTokenPriceBasedOnPeg(data[env.BASE_TOKEN])
+  const lockerTokenPrice = useLockerTokenPriceBasedOnPeg(env, data[env.baseToken])
 
   const _data = useMemo(() => {
-    return { ...data, [env.LOCKER_TOKEN]: lockerTokenPrice ?? 0 }
-  }, [data, lockerTokenPrice])
+    return { ...data, [env.lockerToken]: lockerTokenPrice ?? 0 }
+  }, [data, env.lockerToken, lockerTokenPrice])
 
   return {
     data: _data as { [key: `0x${string}`]: number },

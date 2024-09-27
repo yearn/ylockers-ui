@@ -2,18 +2,25 @@
 
 import useData from '../hooks/useData'
 import InputExecute from './InputExecute'
-import env from '../tools/env'
 import abis from '../abis'
+import { TEnv } from '../tools/envType'
 
-export default function Stake({ className }: { className?: string }) {
-  const { data } = useData()
-  return <InputExecute className={className}
+export default function Stake({ yDaemon, env, className }: {
+  yDaemon: string,
+  env: TEnv,
+  className?: string
+}) {
+  const { data } = useData(yDaemon, env)
+  return <InputExecute
+    className={className}
+    yDaemon={yDaemon}
+    env={env}
     task={{
       verb: 'stake',
       token: data.locker,
       needsApproval: true,
       parameters: {
-        address: env.BOOSTED_STAKER,
+        address: env.boostedStaker,
         abi: abis.YearnBoostedStaker,
         functionName: 'stake',
         args: (amount: bigint) => [amount]

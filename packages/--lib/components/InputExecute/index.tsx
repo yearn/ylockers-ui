@@ -12,6 +12,7 @@ import A from '../A'
 import { fTokens } from '../../tools/format'
 import nlp from 'compromise'
 import { springs } from '../../tools/motion'
+import { TEnv } from '../../tools/envType'
 
 function GreatSuccess({ hash, message }: { hash: `0x${string}`, message: string }) {
   const config = useConfig()
@@ -171,10 +172,10 @@ function Provided({ className, noInput=false }: { className?: string, noInput?: 
   </div>
 }
 
-export function JustExecute({ task, className }: { task: Task, className?: string }) {
-  return <Provider task={task}><Provided noInput className={className} /></Provider>
+export function JustExecute({ task, className, yDaemon, env }: { task: Task, className?: string, yDaemon: string, env: TEnv }) {
+  return <Provider task={task} yDaemon={yDaemon} env={env}><Provided noInput className={className} /></Provider>
 }
 
-export default function InputExecute({ task, className }: { task: Task, className?: string }) {
-  return <Provider task={task}><Provided className={className} /></Provider>
+export default function InputExecute({ task, className, yDaemon, env }: { task: Task, className?: string, yDaemon: string, env: TEnv }) {
+  return <Provider task={task} yDaemon={yDaemon} env={env}><Provided className={className} /></Provider>
 }

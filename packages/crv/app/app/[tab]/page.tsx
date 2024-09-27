@@ -25,7 +25,7 @@ import VaultDataBox from '--lib/components/VaultDataBox'
 import Vaults from '--lib/components/Vaults'
 import Ticker from '--lib/components/Ticker'
 import { useTab } from '--lib/hooks/useTab'
-import { LOCKER_TOKEN_NAME, STABLE_TOKEN_VAULT } from '@/constants'
+import { ENV, LOCKER_TOKEN_NAME, STABLE_TOKEN_VAULT, STABLE_TOKEN_VAULT_NAME, YDAEMON } from '@/constants'
 
 
 export default function Home() {
@@ -42,9 +42,9 @@ export default function Home() {
       <Background className="opacity-20" />
       <div className="max-w-[1200px] w-full z-10">
         <Header items={headerItems} selected="Earn" launchText={account.address ? `${fAddress(account.address)}` : 'Connect Wallet'} onClickLaunch={account.address ? openAccountModal : openConnectModal} />
-        <Ticker />
+        <Ticker yDaemon={YDAEMON} env={ENV} />
         <section className="mt-32 md:mt-[5vh] sm:mx-4 lg:mx-0">
-          <ExperienceToggle />
+          <ExperienceToggle yDaemon={YDAEMON} env={ENV} />
 
           <div className="flex flex-col lg:flex-row justify-center ">
             <div className="flex-1 bg-deeper-primary lg:rounded-bl-lg lg:rounded-tl-lg">
@@ -52,8 +52,8 @@ export default function Home() {
             </div>
 
             {leftActive 
-              ? <YbsDataBox className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" /> 
-              : <VaultDataBox className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" />
+              ? <YbsDataBox yDaemon={YDAEMON} env={ENV} className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" /> 
+              : <VaultDataBox yDaemon={YDAEMON} env={ENV} className="lg:w-[408px] bg-primary flex flex-col gap-2 p-10 lg:rounded-br-lg lg:rounded-tr-lg" />
             }
 
           </div>
@@ -74,7 +74,7 @@ export default function Home() {
 
 function TabContent(props: { leftActive: boolean }) {
   const tab = useTab()
-  const { data, refetch } = useData()
+  const { data, refetch } = useData(YDAEMON, ENV)
 
   return (
     <div className="flex flex-col">
@@ -121,7 +121,7 @@ function TabContent(props: { leftActive: boolean }) {
           <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
             <div className="flex flex-col p-4 md:p-8 w-full md:w-1/2">
               <span className="font-thin pb-1 text-md">Stake yCRV</span>
-              <Stake />
+              <Stake yDaemon={YDAEMON} env={ENV} />
             </div>
             <div className="flex flex-col space-y-6 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">STAKE yCRV - EARN STABLES</span>
@@ -136,7 +136,7 @@ function TabContent(props: { leftActive: boolean }) {
           <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 w-full pt-0"> 
             <div className="flex flex-col p-4 md:p-8 w-full md:w-1/2">
               <span className="font-thin pb-1 text-md">Unstake yCRV</span>
-              <Unstake />
+              <Unstake yDaemon={YDAEMON} env={ENV} />
             </div>
             <div className="flex flex-col space-y-6 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">UNSTAKE yCRV</span>
@@ -156,24 +156,24 @@ function TabContent(props: { leftActive: boolean }) {
                 <span className="font-mono opacity-50">
                   <Tokens amount={data.rewards.claimable} decimals={data.rewards.decimals} />
                 </span>
-                <span className="font-thin opacity-70">yvcrvUSD</span>
+                <span className="font-thin opacity-70">{STABLE_TOKEN_VAULT_NAME}</span>
               </span>
               <div>
-                <ClaimAll />
+                <ClaimAll yDaemon={YDAEMON} env={ENV} />
               </div>
             </div>
             <div className="flex flex-col space-y-4 w-full md:w-1/2 p-4 md:p-8 pt-0">
               <span className="font-semibold">DESCRIPTION</span>
               <p className="font-thin opacity-70">
                 {'Claim your crvUSD rewards. We already deposited your crvUSD into our auto-compounding crvUSD vault ('}
-                <A target="_blank" rel="noreferrer" className="underline" href={`https://yearn.fi/v3/1/${STABLE_TOKEN_VAULT}`}>yvcrvUSD</A>
+                <A target="_blank" rel="noreferrer" className="underline" href={`https://yearn.fi/v3/1/${STABLE_TOKEN_VAULT}`}>{STABLE_TOKEN_VAULT_NAME}</A>
                 {').'}
               </p>
               <p className="font-thin opacity-70">
                 {'That means your yield has been earning you additional yield from the moment we received it. Once claimed, your crvUSD vault holdings will appear below.'}
               </p>
               <div>
-                <div className="font-thin opacity-70">Your yvcrvUSD balance</div>
+                <div className="font-thin opacity-70">{`Your ${STABLE_TOKEN_VAULT_NAME} balance`}</div>
                 <A className="flex items-center gap-2 font-mono" href={`https://yearn.fi/v3/1/${STABLE_TOKEN_VAULT}`} target="_blank" rel="noreferrer">
                   <PiVaultLight />
                   <Tokens amount={data.rewards.vaultBalance} decimals={data.rewards.decimals} />
@@ -213,7 +213,7 @@ function TabContent(props: { leftActive: boolean }) {
           <div className="flex">
             <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
               <span className="font-thin pb-1 text-md">Deposit</span>
-              <Deposit />
+              <Deposit yDaemon={YDAEMON} env={ENV} />
               <span className="mt-4 font-thin opacity-70">
                 {'Deposit your yCRV into Yearn\'s auto-compounding vault and start earning the maximum APY immediately. The vault will handle staking, claiming and swapping rewards, and reinvesting your yCRV for you.'}
               </span>
@@ -224,7 +224,7 @@ function TabContent(props: { leftActive: boolean }) {
           <div className="flex">
             <div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
               <span className="font-thin pb-1 text-md">Withdraw</span>
-              <Withdraw />
+              <Withdraw yDaemon={YDAEMON} env={ENV} />
               <span className="mt-4 font-thin opacity-70">
                 {'Withdraw your yCRV from Yearn\'s auto-compounding vault. Please note that this will unstake your yCRV (and unstaked yCRV doesn’t earn any yield).'}
               </span>

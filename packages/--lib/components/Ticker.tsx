@@ -1,10 +1,10 @@
 'use client'
 
 import { fNumber, fUSD } from '../tools/format'
-import env from '../tools/env'
 import { usePeg } from '../hooks/usePeg'
 import usePrices from '../hooks/usePrices'
 import { useMemo } from 'react'
+import { TEnv } from '../tools/envType'
 
 function Price({
   name,
@@ -24,9 +24,16 @@ function Price({
   </div>
 }
 
-export default function Ticker() {
-  const { data: prices } = usePrices([env.BASE_TOKEN, env.LOCKER_TOKEN])
-  const peg = usePeg()
+export default function Ticker({ yDaemon, env }: {
+  yDaemon: string,
+  env: TEnv,
+}) {
+  const { data: prices } = usePrices(
+    yDaemon,
+    env,
+    [env.baseToken, env.lockerToken]
+  )
+  const peg = usePeg(env)
 
   const pegDisplay = useMemo(() => {
     if (peg === 0) return '-.---:1'
@@ -42,8 +49,8 @@ export default function Ticker() {
     <div className={`
       flex flex-col items-end justify-end gap-3 text-sm
       sm:flex-row sm:items-center sm:justify-center sm:gap-8 sm:text-base`}>
-      <Price name={env.LOCKER_TOKEN_NAME} price={fUSD(prices[env.LOCKER_TOKEN], { fixed: 3 })} />
-      <Price name={env.BASE_TOKEN_NAME} price={fUSD(prices[env.BASE_TOKEN] ?? 0, { fixed: 3 })} />
+      <Price name={env.lockerTokenName} price={fUSD(prices[env.lockerToken], { fixed: 3 })} />
+      <Price name={env.baseTokenName} price={fUSD(prices[env.baseToken] ?? 0, { fixed: 3 })} />
       <Price name="PEG" price={pegDisplay} />
     </div>
   </div>

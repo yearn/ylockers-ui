@@ -1,12 +1,11 @@
-import env from '../tools/env'
 import { useMemo } from 'react'
 import { useReadContract } from 'wagmi'
 import { parseAbiItem } from 'viem'
 import bmath from '../tools/bmath'
 
-export function usePeg() {
+export function usePeg({ exitPool }: { exitPool: `0x${string}` }) {
   const read = useReadContract({
-    address: env.EXIT_POOL,
+    address: exitPool,
     abi: [parseAbiItem('function get_dy(int128, int128, uint256) view returns (uint256)')],
     functionName: 'get_dy',
     args: [1n, 0n, 100n * (10n ** 18n)]

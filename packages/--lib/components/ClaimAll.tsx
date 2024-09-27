@@ -3,13 +3,13 @@ import Button from './Button'
 import { useAccount, useConfig, useReadContract, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import useData from '../hooks/useData'
 import { useConnectModal } from '../hooks/rainbowkit'
-import env from '../tools/env'
 import abis from '../abis'
 import { zeroAddress } from 'viem'
 import A from './A'
 import { TfiReceipt } from 'react-icons/tfi'
 import { motion, AnimatePresence } from 'framer-motion'
 import { springs } from '../tools/motion'
+import { TEnv } from '../tools/envType'
 
 function GreatSuccess({ hash }: { hash: `0x${string}`}) {
   const config = useConfig()
@@ -23,10 +23,14 @@ function GreatSuccess({ hash }: { hash: `0x${string}`}) {
   </A>
 }
 
-export default function ClaimAll({ className }: { className?: string }) {
+export default function ClaimAll({ yDaemon, className, env }: {
+  yDaemon: string,
+  className?: string,
+  env: TEnv
+}) {
   const { openConnectModal } = useConnectModal()
   const account = useAccount()
-  const { data, refetch } = useData()
+  const { data, refetch } = useData(yDaemon, env)
   const hasClaims = useMemo(() => data.rewards.claimable > 0n, [data])
   const disabled = useMemo(() => account.isConnected && !hasClaims, [account, hasClaims])
   const [success, setSuccess] = useState(false)
@@ -36,7 +40,7 @@ export default function ClaimAll({ className }: { className?: string }) {
   }, [account])
 
   const range = useReadContract({
-    address: env.REWARDS_DISTRIBUTOR,
+    address: env.rewardsDistributor,
     abi: abis.SingleTokenRewardDistributor,
     functionName: 'getSuggestedClaimRange',
     args: [account.address ?? zeroAddress],
@@ -44,7 +48,7 @@ export default function ClaimAll({ className }: { className?: string }) {
   })
 
   const simulation = useSimulateContract({
-    address: env.REWARDS_DISTRIBUTOR,
+    address: env.rewardsDistributor,
     abi: abis.SingleTokenRewardDistributor,
     functionName: 'claimWithRange',
     args: [range.data?.[0] ?? 0n, range.data?.[1] ?? 0n],
