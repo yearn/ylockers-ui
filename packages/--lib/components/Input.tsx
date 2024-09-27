@@ -1,17 +1,21 @@
-import React, { forwardRef, InputHTMLAttributes } from 'react'
+import React, {forwardRef, InputHTMLAttributes} from 'react';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  className?: string
-}
+	className?: string;
+};
 
-const Input = forwardRef<HTMLInputElement, InputProps>(({ className, ...props }, ref) => {
-  return <input ref={ref}
-    {...props}
-    className={`
+const Input = forwardRef<HTMLInputElement, InputProps>(({className, ...props}, ref) => {
+	return (
+		<input
+			ref={ref}
+			{...props}
+			className={`
   w-full p-2 bg-input-bg rounded-lg
-  ${className}`} />
-})
+  ${className}`}
+		/>
+	);
+});
 
-Input.displayName = 'Input'
+Input.displayName = 'Input';
 
-export default Input
+export default Input;

@@ -1,6 +1,6 @@
-import { useParams } from 'next/navigation'
+import {useParams} from 'next/navigation';
 
 export function useTab() {
-  const params = useParams()
-  return params.tab as string
+	const params = useParams();
+	return params.tab as string;
 }
