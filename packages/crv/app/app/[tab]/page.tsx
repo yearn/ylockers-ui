@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Header, {headerItems} from '../../../components/Header';
 import {useConnectModal, useAccountModal} from '@rainbow-me/rainbowkit';
-import {useAccount} from 'wagmi';
+import {useAccount, useReadContract} from 'wagmi';
 import {fAddress, fUSD} from '--lib/tools/format';
 import useData from '--lib/hooks/useData';
 import Tokens from '--lib/components/Tokens';
@@ -26,6 +26,85 @@ import Vaults from '--lib/components/Vaults';
 import Ticker from '--lib/components/Ticker';
 import {useTab} from '--lib/hooks/useTab';
 import {ENV, LOCKER_TOKEN_NAME, STABLE_TOKEN_VAULT, STABLE_TOKEN_VAULT_NAME, YDAEMON} from '@/constants';
+
+import {useState, useEffect} from 'react';
+import {erc20Abi} from 'viem';
+
+/************************************************************************************************
+ ** VEYFIStatus Component
+ **
+ ** This component displays information about staking crvUSD in the veYFI gauge.
+ ** It fetches the current APR for the crvUSD vault and displays a message encouraging users
+ ** to stake their crvUSD tokens for potentially higher yields.
+ **
+ ** Key features:
+ ** 1. Fetches vault data from Yearn's API to get current APR
+ ** 2. Reads user's crvUSD balance using wagmi's useReadContract hook
+ ** 3. Displays a call-to-action message if the user has a non-zero crvUSD balance
+ ** 4. Provides a link to the veYFI staking page
+ **
+ ** The component is conditionally rendered based on the user's crvUSD balance.
+ ************************************************************************************************/
+function VEYFIStatus() {
+	const account = useAccount();
+	const [apr, setApr] = useState<number>(0);
+
+	useEffect(() => {
+		async function fetchVaultData() {
+			try {
+				const response = await fetch(
+					'https://ydaemon.yearn.finance/1/vaults/0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F'
+				);
+				const data = await response.json();
+				const stakingApr = data.staking?.rewards[0]?.apr;
+				if (stakingApr) {
+					setApr(stakingApr * 100); // Convert to percentage
+				}
+			} catch (error) {
+				console.error('Error fetching vault data:', error);
+			}
+		}
+
+		fetchVaultData();
+	}, []);
+
+	const {data: crvUSDBalance} = useReadContract({
+		address: '0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F',
+		abi: erc20Abi,
+		functionName: 'balanceOf',
+		args: [account.address as `0x${string}`]
+	});
+
+	if (crvUSDBalance === undefined || crvUSDBalance === 0n) {
+		return null;
+	}
+
+	return (
+		<div className="mt-8">
+			<div className="w-full rounded-lg overflow-hidden bg-primary text-white mb-8 p-6">
+				<div className="flex flex-col md:flex-row items-center justify-between w-full pb-2">
+					<h2 className="text-2xl font-[700]">{`Yield is good, but more yield is good-er!`}</h2>
+				</div>
+				<div className="flex flex-col md:flex-row items-center justify-between w-full">
+					<p>
+						{`You can stake your ${STABLE_TOKEN_VAULT_NAME} into the veYFI gauge which boosts your APY from `}
+						<strong>{`${(apr / 10).toFixed(2)}% to ${apr.toFixed(2)}%`}</strong>
+						{` depending on the veYFI you have locked. Simply deposit and stake to start earning.`}
+					</p>
+				</div>
+				<div className="mt-4">
+					<A
+						href="https://veyfi.yearn.fi/?search=crvUSD&tab=gauges"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="inline-block px-6 py-3 bg-boost-primary text-white font-bold rounded-lg hover:bg-boost-primary/80 transition-colors">
+						Deposit in Gauge
+					</A>
+				</div>
+			</div>
+		</div>
+	);
+}
 
 export default function Home() {
 	const {openConnectModal} = useConnectModal();
@@ -76,6 +155,9 @@ export default function Home() {
 							/>
 						)}
 					</div>
+
+					<VEYFIStatus />
+
 					<div className="mt-8">
 						<Vaults
 							title="Curve vaults"

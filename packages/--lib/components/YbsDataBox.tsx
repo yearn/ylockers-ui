@@ -115,7 +115,10 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 				<div className="border-t-2 border-deeper-primary/60 flex justify-between items-center py-4">
 					<span className="font-semibold text-lg">YOUR POSITION</span>
 					<span className="font-bold font-mono px-2 py-1 bg-disabled-bg rounded-lg text-boost-primary">
-						{formatUnits(data.utilities.userActiveBoostMultiplier, 18)}x BOOST
+						{Number(formatUnits(data.utilities.userActiveBoostMultiplier, 18)) > 0
+							? Number(formatUnits(data.utilities.userActiveBoostMultiplier, 18)).toFixed(6)
+							: formatUnits(data.utilities.userActiveBoostMultiplier, 18)}
+						x BOOST
 					</span>
 				</div>
 				<div className="flex justify-between w-full">
@@ -142,7 +145,12 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 
 				<div className="flex justify-between">
 					<span className="font-thin opacity-70	">Projected boost</span>
-					<span className="font-mono">{formatUnits(data.utilities.userProjectedBoostMultiplier, 18)}x</span>
+					<span className="font-mono">
+						{Number(formatUnits(data.utilities.userProjectedBoostMultiplier, 18)) > 0
+							? Number(formatUnits(data.utilities.userProjectedBoostMultiplier, 18)).toFixed(6)
+							: formatUnits(data.utilities.userProjectedBoostMultiplier, 18)}
+						x BOOST
+					</span>
 				</div>
 				<div className="flex justify-between">
 					<span className="font-thin opacity-70	">Projected APR</span>
