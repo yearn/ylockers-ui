@@ -25,7 +25,7 @@ export const ENV: TEnv = {
 	stableTokenVault: STABLE_TOKEN_VAULT,
 	stableToken: STABLE_TOKEN,
 	lockerTokenVault: LOCKER_TOKEN_VAULT,
-	lockerTokenVaultStrategy: LOCKER_TOKEN_VAULT,
+	lockerTokenVaultStrategy: LOCKER_TOKEN_VAULT_STRATEGY,
 	boostedStaker: BOOSTED_STAKER,
 	rewardsDistributor: REWARDS_DISTRIBUTOR,
 	boostedStakerUtilities: BOOSTED_STAKER_UTILITIES,
