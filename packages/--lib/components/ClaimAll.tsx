@@ -50,7 +50,8 @@ export default function ClaimAll({yDaemon, className, env}: {yDaemon: string; cl
 		abi: abis.SingleTokenRewardDistributor,
 		functionName: 'getSuggestedClaimRange',
 		args: [account.address ?? zeroAddress],
-		query: {enabled: account.isConnected}
+		query: {enabled: account.isConnected},
+		chainId: 1
 	});
 
 	const simulation = useSimulateContract({
@@ -58,7 +59,8 @@ export default function ClaimAll({yDaemon, className, env}: {yDaemon: string; cl
 		abi: abis.SingleTokenRewardDistributor,
 		functionName: 'claimWithRange',
 		args: [range.data?.[0] ?? 0n, range.data?.[1] ?? 0n],
-		query: {enabled: account.isConnected && range.isSuccess && hasClaims}
+		query: {enabled: account.isConnected && range.isSuccess && hasClaims},
+		chainId: 1
 	});
 
 	const write = useWriteContract();

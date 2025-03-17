@@ -144,7 +144,8 @@ export default function Provider({
 		() => ({
 			...task.parameters,
 			args: task.parameters.args(amount ?? 0n),
-			query: {enabled: amount !== undefined && amount > 0n && (!needsApproval || allowance >= amount)}
+			query: {enabled: amount !== undefined && amount > 0n && (!needsApproval || allowance >= amount)},
+			chainId: 1
 		}),
 		[amount, task, needsApproval, allowance]
 	);
@@ -202,7 +203,8 @@ export default function Provider({
 		abi: erc20Abi,
 		functionName: 'approve',
 		args: [task.parameters.address!, maxUint256],
-		query: {enabled: needsApproval && amount !== undefined && amount > 0n}
+		query: {enabled: needsApproval && amount !== undefined && amount > 0n},
+		chainId: 1
 	});
 
 	const _approve = useWriteContract();

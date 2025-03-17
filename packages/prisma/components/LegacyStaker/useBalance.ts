@@ -13,7 +13,8 @@ export function useBalance() {
 		abi,
 		functionName: 'balanceOf',
 		args: [address || zeroAddress],
-		query: {enabled: hasLegacyStaker && isConnected}
+		query: {enabled: hasLegacyStaker && isConnected},
+		chainId: 1
 	});
 	return (data ?? 0n) as bigint;
 }

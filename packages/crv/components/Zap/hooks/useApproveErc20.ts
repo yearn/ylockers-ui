@@ -20,6 +20,7 @@ export function useApproveErc20() {
 		address: inputToken?.address ?? zeroAddress,
 		functionName: 'allowance',
 		args: [address ?? zeroAddress, ZAP],
+		chainId: 1,
 		query: {
 			enabled: isConnected && inputToken !== undefined && !inputIsYbs
 		}
@@ -31,6 +32,7 @@ export function useApproveErc20() {
 			address: inputToken?.address ?? zeroAddress,
 			functionName: 'approve',
 			args: [ZAP, maxUint256],
+			chainId: 1,
 			query: {
 				enabled:
 					isConnected &&

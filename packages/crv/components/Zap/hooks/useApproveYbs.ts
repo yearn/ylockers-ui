@@ -21,6 +21,7 @@ export function useApproveYbsAsInput() {
 		address: inputToken?.address ?? zeroAddress,
 		functionName: 'approvedCaller',
 		args: [address ?? zeroAddress, ZAP],
+		chainId: 1,
 		query: {
 			enabled: isConnected && inputToken !== undefined && inputIsYbs
 		}
@@ -32,6 +33,7 @@ export function useApproveYbsAsInput() {
 			address: inputToken?.address ?? zeroAddress,
 			functionName: 'setApprovedCaller',
 			args: [ZAP, 3],
+			chainId: 1,
 			query: {
 				enabled: isConnected && inputToken !== undefined && inputIsYbs
 			}
@@ -55,6 +57,7 @@ export function useApproveYbsAsOutput() {
 		address: outputToken?.address ?? zeroAddress,
 		functionName: 'approvedCaller',
 		args: [address ?? zeroAddress, ZAP],
+		chainId: 1,
 		query: {
 			enabled: isConnected && outputToken !== undefined && outputIsYbs
 		}
@@ -66,6 +69,7 @@ export function useApproveYbsAsOutput() {
 			address: outputToken?.address ?? zeroAddress,
 			functionName: 'setApprovedCaller',
 			args: [ZAP, 3],
+			chainId: 1,
 			query: {
 				enabled: isConnected && outputToken !== undefined && outputIsYbs
 			}

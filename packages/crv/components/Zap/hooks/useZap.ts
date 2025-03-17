@@ -36,6 +36,7 @@ export function useZap({needsApproval}: {needsApproval: boolean}) {
 			address: ZAP,
 			functionName: 'zap',
 			args: [inputToken?.address ?? zeroAddress, outputToken?.address ?? zeroAddress, amount, minOut ?? 1n],
+			chainId: 1,
 			query: {enabled}
 		}),
 		[inputToken, outputToken, amount, minOut, enabled]

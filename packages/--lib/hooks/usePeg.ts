@@ -8,7 +8,8 @@ export function usePeg({exitPool}: {exitPool: `0x${string}`}) {
 		address: exitPool,
 		abi: [parseAbiItem('function get_dy(int128, int128, uint256) view returns (uint256)')],
 		functionName: 'get_dy',
-		args: [1n, 0n, 100n * 10n ** 18n]
+		args: [1n, 0n, 100n * 10n ** 18n],
+		chainId: 1
 	});
 
 	const result = useMemo(() => {

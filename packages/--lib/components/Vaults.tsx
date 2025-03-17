@@ -44,13 +44,15 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 			address: vault.address,
 			abi: erc20Abi,
 			functionName: 'balanceOf',
-			args: [address]
+			args: [address],
+			chainId: 1
 		},
 		{
 			address: vault.token.address,
 			abi: erc20Abi,
 			functionName: 'balanceOf',
-			args: [address]
+			args: [address],
+			chainId: 1
 		}
 	]);
 

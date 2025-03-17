@@ -72,7 +72,8 @@ function VEYFIStatus() {
 		address: '0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F',
 		abi: erc20Abi,
 		functionName: 'balanceOf',
-		args: [account.address as `0x${string}`]
+		args: [account.address as `0x${string}`],
+		chainId: 1
 	});
 
 	if (crvUSDBalance === undefined || crvUSDBalance === 0n) {

@@ -17,6 +17,7 @@ export function useMinOut() {
 		address: ZAP,
 		functionName: 'calc_expected_out',
 		args: [inputToken?.address ?? zeroAddress, outputToken?.address ?? zeroAddress, inputAmountExpanded],
+		chainId: 1,
 		query: {
 			enabled: isConnected && inputToken !== undefined && outputToken !== undefined && inputAmountExpanded > 0,
 			refetchInterval: 10_000
