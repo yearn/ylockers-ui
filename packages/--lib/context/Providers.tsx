@@ -32,7 +32,7 @@ const testnet = Object.assign({}, mainnet, {
 const chain = useTestnet ? testnet : mainnet;
 const rpc = useTestnet ? testnetRpc : process.env.NEXT_PUBLIC_RPC_1;
 
-const config = getDefaultConfig({
+export const Config = getDefaultConfig({
 	appName: process.env.NEXT_PUBLIC_RAINBOWKIT_APPNAME ?? 'NEXT_PUBLIC_RAINBOWKIT_APPNAME',
 	projectId: process.env.NEXT_PUBLIC_RAINBOWKIT_PROJECTID ?? 'NEXT_PUBLIC_RAINBOWKIT_PROJECTID',
 	chains: [chain],
@@ -60,7 +60,7 @@ export default function Providers({
 	children: React.ReactNode;
 }>) {
 	return (
-		<WagmiProvider config={config}>
+		<WagmiProvider config={Config}>
 			<QueryClientProvider client={queryClient}>
 				<RainbowKitProvider>
 					<VaultProvider>{children}</VaultProvider>
