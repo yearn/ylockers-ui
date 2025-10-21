@@ -15,6 +15,7 @@ export const LOCKER_TOKEN_VAULT = '0x27B5739e22ad9033bcBf192059122d163b60349D';
 export const LOCKER_TOKEN_VAULT_STRATEGY = '0xe3974E44bc08f435da2c6DB7D01e1758496dA119';
 export const BOOSTED_STAKER = '0xE9A115b77A1057C918F997c32663FdcE24FB873f';
 export const BOOSTED_STAKER_UTILITIES = '0x499099832153c7D3Cd88F9B8B5d6cA59FaC505c3';
+export const Y_LOCKER_DROPS = '0xfF9eCd7e63c7d0a3b1401f86f65B15488C2C46c8';
 export const SMOL_ASSETS_URL = 'https://assets.smold.app/api';
 export const YDAEMON = 'https://ydaemon.yearn.fi';
 
@@ -29,6 +30,7 @@ export const ENV: TEnv = {
 	boostedStaker: BOOSTED_STAKER,
 	rewardsDistributor: REWARDS_DISTRIBUTOR,
 	boostedStakerUtilities: BOOSTED_STAKER_UTILITIES,
+	yLockerDrops: Y_LOCKER_DROPS,
 	baseTokenName: BASE_TOKEN_NAME,
 	lockerTokenName: LOCKER_TOKEN_NAME,
 	stableTokenName: STABLE_TOKEN_NAME,

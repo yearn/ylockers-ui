@@ -11,6 +11,7 @@ export type TEnv = {
 	boostedStaker: EvmAddress;
 	rewardsDistributor: EvmAddress;
 	boostedStakerUtilities: EvmAddress;
+	yLockerDrops: EvmAddress;
 	baseTokenName: string;
 	lockerTokenName: string;
 	stableTokenName: string;

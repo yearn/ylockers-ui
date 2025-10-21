@@ -1,6 +1,4 @@
-import {zeroAddress} from 'viem';
 import {Config} from 'wagmi';
-import {readContract, readContracts} from 'wagmi/actions';
 
 interface Claim {
 	index: number;
@@ -22,35 +20,41 @@ export class Merkle {
 		}[]
 	> {
 		// Fetch drop count
-		// const dropCount = await readContract(this.wagmiConfig, {
-		// 	address: zeroAddress, // TODO: - change
-		// 	abi: [], // TODO: - change
-		// 	functionName: 'dropCount'
-		// })?.then(res => res as any as number);
-		const dropCount = 1;
+		// try {
+		// 	const dropCount = await readContract(this.wagmiConfig, {
+		// 		address: ENV.yLockerDrops,
+		// 		abi: YLockerDrops,
+		// 		functionName: 'dropCount'
+		// 	});
+		// 	console.log('dropCount', dropCount);
+		// } catch (e) {
+		// 	console.error(e);
+		// 	return [];
+		// }
+
+		const dropCount = 2;
 
 		// Fetch available claims for user
 		const claimStatuses = await this.fetchClaimStatuses(acc, dropCount);
 		const unclaimedIds = Object.keys(claimStatuses).filter(id => !claimStatuses[id]);
 
 		// Fetch drop info for available claims
-		// const contracts = unclaimedIds
-		// 	.map((epoch, i) => {
-		// 		return {
-		// 			address: zeroAddress, // TODO: - change
-		// 			abi: [], // TODO: - change
-		// 			args: [epoch],
-		// 			functionName: 'drops'
-		// 		};
-		// 	})
-		// 	.filter(c => !!c);
+		// const contracts = unclaimedIds.map(epoch => ({
+		// 	address: ENV.yLockerDrops,
+		// 	abi: YLockerDrops,
+		// 	args: [epoch],
+		// 	functionName: 'drops' as ContractFunctionName<typeof YLockerDrops, 'view'>
+		// }));
 
 		// Available merkle roots to claim
 		// const hashesResponse = await readContracts(this.wagmiConfig, {
 		// 	contracts: contracts as any
 		// });
 
-		const hashesResponse = ['0x8e56b36683fcd93fd5cdec440e1f18ed4cafb48e86bc7bd31f7c540c38c447b6'];
+		const hashesResponse = [
+			'0x8e56b36683fcd93fd5cdec440e1f18ed4cafb48e86bc7bd31f7c540c38c447b6',
+			'0x8e56b36683fcd93fd5cdec440e1f18ed4cafb48e86bc7bd31f7c540c38c447b7'
+		];
 
 		// TODO: - change to fetch merkle roots in order rather than importing here.
 		// const _hashes = hashesResponse.map(res => (res as any)?.result[5]) as `0x${string}`[];
@@ -64,14 +68,30 @@ export class Merkle {
 	}
 
 	public async getUserAirdrops(account: `0x${string}`) {
-		const drops = {} as Record<`0x${string}`, {amount: bigint; proof: string[]; hasClaimed: boolean}>;
+		const drops = {} as Record<
+			`0x${string}`,
+			{amount: bigint; proof: string[]; hasClaimed: boolean; tokenSymbol: string; expiresAt: number}
+		>;
 		const dropData = await this.getMerkleProofs(account);
 
-		dropData?.forEach(drop => {
+		// Mock data for multiple drops with different statuses
+		const mockDropMetadata = [
+			{tokenSymbol: 'CRV', expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000}, // Expires in 7 days
+			{tokenSymbol: 'YCRV', expiresAt: Date.now() + 24 * 60 * 60 * 1000} // Expired yesterday
+		];
+
+		dropData?.forEach((drop, index) => {
 			const amount = this.getUserAmount(drop.claims, account);
 			if (!amount) return {amount: 0n, proof: []};
 			const proof = this.getUserProof(account, drop.claims);
-			drops[drop.epoch] = {amount, proof, hasClaimed: false};
+			const metadata = mockDropMetadata[index % mockDropMetadata.length];
+			drops[drop.epoch] = {
+				amount,
+				proof,
+				hasClaimed: false,
+				tokenSymbol: metadata.tokenSymbol,
+				expiresAt: metadata.expiresAt
+			};
 		});
 
 		return drops;
@@ -81,14 +101,14 @@ export class Merkle {
 		const drops = Array.from({length: Number(dropCount)}, (_, i) => i);
 		const claimedDrops: Record<string, boolean> = {};
 		// try {
-		// 	const hasClaimed = await readContracts(this.wagmiConfig, {
-		// 		contracts: drops.map(dropId => ({
-		// 			address: zeroAddress, // TODO: - change
-		// 			abi: [], // TODO: - change
-		// 			args: [acc, dropId],
-		// 			functionName: 'hasClaimed'
-		// 		}))
-		// 	});
+		// const hasClaimed = await readContracts(this.wagmiConfig, {
+		// 	contracts: drops.map(dropId => ({
+		// 		address: ENV.yLockerDrops,
+		// 		abi: YLockerDrops,
+		// 		args: [acc, dropId],
+		// 		functionName: 'hasClaimed' as ContractFunctionName<typeof YLockerDrops, 'view'>
+		// 	}))
+		// });
 		// 	hasClaimed.forEach((r, i) => {
 		// 		claimedDrops[drops[i].toString()] = (r.result || false) as boolean;
 		// 	});
@@ -97,7 +117,7 @@ export class Merkle {
 		// 	console.error(e);
 		// 	return {};
 		// }
-		return {'0': false};
+		return {'0': false, '1': false};
 	}
 
 	private getUserProof(account: `0x${string}`, drop: Record<`0x${string}`, Claim>) {
