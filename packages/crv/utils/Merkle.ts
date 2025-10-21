@@ -1,9 +1,25 @@
+import YLockerDrops from '--lib/abis/YLockerDrops';
+import {ENV} from '@/constants';
+import {ContractFunctionName, erc20Abi} from 'viem';
 import {Config} from 'wagmi';
+import {readContract, readContracts} from 'wagmi/actions';
+import {exactToSimple} from '.';
+import _ from './chain';
 
 interface Claim {
 	index: number;
 	amount: bigint;
 	proof: string[];
+}
+
+interface Drop {
+	token: `0x${string}`;
+	startsAt: number;
+	expiresAt: number;
+	totalAmount: bigint;
+	claimedAmount: bigint;
+	merkleRoot: `0x${string}`;
+	description: string;
 }
 
 export class Merkle {
@@ -15,109 +31,161 @@ export class Merkle {
 
 	public async getMerkleProofs(acc: `0x${string}`): Promise<
 		{
-			epoch: `0x${string}`;
+			root: `0x${string}`;
 			claims: Record<`0x${string}`, Claim>;
+			info: Drop;
 		}[]
 	> {
 		// Fetch drop count
-		// try {
-		// 	const dropCount = await readContract(this.wagmiConfig, {
-		// 		address: ENV.yLockerDrops,
-		// 		abi: YLockerDrops,
-		// 		functionName: 'dropCount'
-		// 	});
-		// 	console.log('dropCount', dropCount);
-		// } catch (e) {
-		// 	console.error(e);
-		// 	return [];
-		// }
-
-		const dropCount = 2;
+		const dropCount = await (async () => {
+			try {
+				const dropCount = await readContract(this.wagmiConfig, {
+					address: ENV.yLockerDrops,
+					abi: YLockerDrops,
+					functionName: 'dropCount'
+				});
+				return exactToSimple(dropCount, 0);
+			} catch (e) {
+				console.error(e);
+				return 0;
+			}
+		})();
 
 		// Fetch available claims for user
 		const claimStatuses = await this.fetchClaimStatuses(acc, dropCount);
 		const unclaimedIds = Object.keys(claimStatuses).filter(id => !claimStatuses[id]);
 
-		// Fetch drop info for available claims
-		// const contracts = unclaimedIds.map(epoch => ({
-		// 	address: ENV.yLockerDrops,
-		// 	abi: YLockerDrops,
-		// 	args: [epoch],
-		// 	functionName: 'drops' as ContractFunctionName<typeof YLockerDrops, 'view'>
-		// }));
+		const dropsResponse = await (async () => {
+			try {
+				// Fetch drop info for available claims
+				const contracts = unclaimedIds.map(epoch => ({
+					address: ENV.yLockerDrops,
+					abi: YLockerDrops,
+					args: [epoch],
+					functionName: 'drops' as ContractFunctionName<typeof YLockerDrops, 'view'>
+				}));
 
-		// Available merkle roots to claim
-		// const hashesResponse = await readContracts(this.wagmiConfig, {
-		// 	contracts: contracts as any
-		// });
+				// Available merkle roots to claim
+				const dropsResponse = (await readContracts(this.wagmiConfig, {
+					contracts
+				}).then(res => res.map(r => r.result))) as [
+					`0x${string}`, // token
+					number, // startsAt
+					number, // expiresAt
+					bigint, // totalAmount
+					bigint, // claimedAmount
+					`0x${string}`, // merkleRoot
+					string // description
+				][];
 
-		const hashesResponse = [
-			'0x8e56b36683fcd93fd5cdec440e1f18ed4cafb48e86bc7bd31f7c540c38c447b6',
-			'0x8e56b36683fcd93fd5cdec440e1f18ed4cafb48e86bc7bd31f7c540c38c447b7'
-		];
+				return dropsResponse.map(res => {
+					const [token, startsAt, expiresAt, totalAmount, claimedAmount, merkleRoot, description] = res;
+					return {token, startsAt, expiresAt, totalAmount, claimedAmount, merkleRoot, description};
+				});
+			} catch (e) {
+				console.error(e);
+				return [];
+			}
+		})();
 
-		// TODO: - change to fetch merkle roots in order rather than importing here.
-		// const _hashes = hashesResponse.map(res => (res as any)?.result[5]) as `0x${string}`[];
-		// const url = `https://ipfs.io/ipfs/${getIpfsHashFromBytes32(_hashes[0])}`;
-
+		// claims w/ proofs fetched from github/self ... tbc
 		const claims = await Promise.all(
-			hashesResponse.map(hash => fetch(`http://localhost:3000/proofs/${hash}.json`).then(res => res.json()))
+			dropsResponse.map(res =>
+				fetch(`http://localhost:3000/proofs/${res.merkleRoot}.json`).then(res => res.json())
+			)
 		);
 
-		return unclaimedIds.map((id, i) => ({epoch: id as `0x${string}`, claims: claims[i] as any}));
+		return dropsResponse.map((drop, i) => ({
+			root: drop.merkleRoot,
+			claims: claims[i] as any,
+			info: drop
+		}));
 	}
 
-	public async getUserAirdrops(account: `0x${string}`) {
-		const drops = {} as Record<
-			`0x${string}`,
-			{amount: bigint; proof: string[]; hasClaimed: boolean; tokenSymbol: string; expiresAt: number}
-		>;
-		const dropData = await this.getMerkleProofs(account);
+	public async getUserAirdrops(account: `0x${string}`): Promise<
+		{
+			amount: bigint;
+			proof: string[];
+			info: Omit<Drop, 'token'> & {token: {symbol: string; decimals: number; name: string}};
+			hasClaimed: boolean;
+		}[]
+	> {
+		const drops = await this.getMerkleProofs(account);
+		const userDrops = await Promise.all(
+			drops.map(async drop => {
+				const amount = this.getUserAmount(drop.claims, account);
+				const proof = this.getUserProof(account, drop.claims);
+				const tokenDetails = await this.getTokenDetails([drop.info.token]);
+				return {
+					amount,
+					proof,
+					hasClaimed: false,
+					info: {
+						...drop.info,
+						startsAt: drop.info.startsAt * 1000,
+						expiresAt: drop.info.expiresAt * 1000,
+						token: tokenDetails?.[drop.info.token]
+					}
+				};
+			})
+		);
+		return userDrops;
+	}
 
-		// Mock data for multiple drops with different statuses
-		const mockDropMetadata = [
-			{tokenSymbol: 'CRV', expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000}, // Expires in 7 days
-			{tokenSymbol: 'YCRV', expiresAt: Date.now() + 24 * 60 * 60 * 1000} // Expired yesterday
-		];
+	private async getTokenDetails(
+		addresses: `0x${string}`[]
+	): Promise<Record<`0x${string}`, {symbol: string; decimals: number; name: string}>> {
+		const readContractsWantContracts = addresses
+			.map(address => [
+				{address, abi: erc20Abi, functionName: 'symbol'},
+				{address, abi: erc20Abi, functionName: 'decimals'},
+				{address, abi: erc20Abi, functionName: 'name'}
+			])
+			.flat();
 
-		dropData?.forEach((drop, index) => {
-			const amount = this.getUserAmount(drop.claims, account);
-			if (!amount) return {amount: 0n, proof: []};
-			const proof = this.getUserProof(account, drop.claims);
-			const metadata = mockDropMetadata[index % mockDropMetadata.length];
-			drops[drop.epoch] = {
-				amount,
-				proof,
-				hasClaimed: false,
-				tokenSymbol: metadata.tokenSymbol,
-				expiresAt: metadata.expiresAt
-			};
-		});
+		const readContractsWantResult = await readContracts(this.wagmiConfig, {
+			contracts: readContractsWantContracts
+		}).then(res => res.map(r => r.result));
 
-		return drops;
+		// symbol, decimals, name
+		const results = _.chunk(readContractsWantResult, 3);
+
+		const wantTokens = _.chain(results || [])
+			.map(([symbol, decimals, name], i) => [
+				addresses[i as number],
+				{
+					address: addresses[i as number],
+					symbol: symbol as string,
+					decimals: decimals as number,
+					name: name as string
+				}
+			])
+			.fromPairs()
+			.value();
+
+		return wantTokens;
 	}
 
 	private async fetchClaimStatuses(acc: `0x${string}`, dropCount: number): Promise<Record<string, boolean>> {
 		const drops = Array.from({length: Number(dropCount)}, (_, i) => i);
 		const claimedDrops: Record<string, boolean> = {};
-		// try {
-		// const hasClaimed = await readContracts(this.wagmiConfig, {
-		// 	contracts: drops.map(dropId => ({
-		// 		address: ENV.yLockerDrops,
-		// 		abi: YLockerDrops,
-		// 		args: [acc, dropId],
-		// 		functionName: 'hasClaimed' as ContractFunctionName<typeof YLockerDrops, 'view'>
-		// 	}))
-		// });
-		// 	hasClaimed.forEach((r, i) => {
-		// 		claimedDrops[drops[i].toString()] = (r.result || false) as boolean;
-		// 	});
-		// 	return claimedDrops;
-		// } catch (e) {
-		// 	console.error(e);
-		// 	return {};
-		// }
-		return {'0': false, '1': false};
+		try {
+			const hasClaimed = await readContracts(this.wagmiConfig, {
+				contracts: drops.map(dropId => ({
+					address: ENV.yLockerDrops,
+					abi: YLockerDrops,
+					args: [acc, dropId],
+					functionName: 'hasClaimed' as ContractFunctionName<typeof YLockerDrops, 'view'>
+				}))
+			});
+			hasClaimed.forEach((r, i) => {
+				claimedDrops[drops[i].toString()] = (r.result || false) as boolean;
+			});
+			return claimedDrops;
+		} catch (e) {
+			console.error(e);
+			return {};
+		}
 	}
 
 	private getUserProof(account: `0x${string}`, drop: Record<`0x${string}`, Claim>) {

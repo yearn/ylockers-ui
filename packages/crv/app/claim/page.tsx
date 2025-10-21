@@ -15,8 +15,8 @@ export default function Claim() {
 
 	const drops = airdrops.data ? Object.entries(airdrops.data) : [];
 
-	const isEligible = (drop: any) => {
-		return drop.amount > 0n && !drop.hasClaimed && drop.expiresAt > Date.now();
+	const isEligible = (drop: (typeof drops)[number][1]) => {
+		return drop.amount > 0n && !drop.hasClaimed && drop.info.expiresAt > Date.now();
 	};
 
 	const getDropStatus = (expiresAt: number) => {
@@ -50,21 +50,24 @@ export default function Claim() {
 											<div className="flex justify-between items-center">
 												<div className="flex-1">
 													<div className="flex items-center gap-4 mb-2">
-														<h3 className="text-xl font-semibold">{drop.tokenSymbol}</h3>
+														<h3 className="text-xl font-semibold">
+															{drop.info.token.name} (${drop.info.token.symbol})
+														</h3>
 														<span
 															className={`px-3 py-1 rounded-full text-sm font-medium ${
-																getDropStatus(drop.expiresAt) === 'Active'
+																getDropStatus(drop.info.expiresAt) === 'Active'
 																	? 'bg-green-900 text-green-400'
 																	: 'bg-neutral-800 text-neutral-400'
 															}`}>
-															{getDropStatus(drop.expiresAt)}
+															{getDropStatus(drop.info.expiresAt)}
 														</span>
 													</div>
 													<p className="text-neutral-400">
-														Amount: {formatUnits(drop.amount, 18)} {drop.tokenSymbol}
+														Amount: {(drop.amount, drop.info.token.decimals)} $
+														{drop.info.token.symbol}
 													</p>
 													<p className="text-sm text-neutral-500 mt-1">
-														Expires: {new Date(drop.expiresAt).toLocaleDateString()}
+														Expires: {new Date(drop.info.expiresAt).toLocaleDateString()}
 													</p>
 												</div>
 
