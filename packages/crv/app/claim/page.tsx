@@ -42,7 +42,7 @@ export default function Claim() {
 							<h1 className="text-3xl font-bold mb-8">Available Drops</h1>
 							{drops.length === 0 ? (
 								<div className="bg-neutral-900 rounded-lg p-8 text-center">
-									<p className="text-neutral-400">No drops found</p>
+									<p className="text-neutral-400">No claims found for user</p>
 								</div>
 							) : (
 								<div className="space-y-4">

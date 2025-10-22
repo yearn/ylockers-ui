@@ -1,4 +1,4 @@
-import {TEnv} from '--lib/tools/envType';
+import {TCrvEnv} from '--lib/tools/envType';
 
 export const LOCKER_TOKEN_NAME = 'yCRV';
 export const LOCKER_TOKEN = '0xFCc5c47bE19d06BF83eB04298b026F81069ff65b';
@@ -19,7 +19,7 @@ export const Y_LOCKER_DROPS = '0xfF9eCd7e63c7d0a3b1401f86f65B15488C2C46c8';
 export const SMOL_ASSETS_URL = 'https://assets.smold.app/api';
 export const YDAEMON = 'https://ydaemon.yearn.fi';
 
-export const ENV: TEnv = {
+export const ENV: TCrvEnv = {
 	exitPool: EXIT_POOL,
 	baseToken: BASE_TOKEN,
 	lockerToken: LOCKER_TOKEN,
