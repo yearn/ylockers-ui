@@ -29,11 +29,45 @@ export class Merkle {
 		this.wagmiConfig = wagmiConfig;
 	}
 
-	public async getMerkleProofs(acc: `0x${string}`): Promise<
+	public async getUserAirdrops(account?: `0x${string}`): Promise<
+		{
+			dropId: string;
+			amount: bigint;
+			proof: string[];
+			index: number;
+			info: Omit<Drop, 'token'> & {token: {symbol: string; decimals: number; name: string}};
+			hasClaimed: boolean;
+		}[]
+	> {
+		if (!account) return [];
+		const drops = await this.getMerkleProofs(account);
+		const userDrops = await Promise.all(
+			drops.map(async drop => {
+				const {amount, proof, index} = drop.claims[account];
+				const tokenDetails = await this.getTokenDetails([drop.info.token]);
+				return {
+					amount,
+					proof,
+					index,
+					dropId: drop.info.dropId,
+					hasClaimed: drop.info.hasClaimed,
+					info: {
+						...drop.info,
+						startsAt: drop.info.startsAt * 1000,
+						expiresAt: drop.info.expiresAt * 1000,
+						token: tokenDetails?.[drop.info.token]
+					}
+				};
+			})
+		);
+		return userDrops;
+	}
+
+	private async getMerkleProofs(acc: `0x${string}`): Promise<
 		{
 			root: `0x${string}`;
 			claims: Record<`0x${string}`, Claim>;
-			info: Drop;
+			info: Drop & {dropId: string; hasClaimed: boolean};
 		}[]
 	> {
 		// Fetch drop count
@@ -53,12 +87,12 @@ export class Merkle {
 
 		// Fetch available claims for user
 		const claimStatuses = await this.fetchClaimStatuses(acc, dropCount);
-		const unclaimedIds = Object.keys(claimStatuses).filter(id => !claimStatuses[id]);
+		const dropIds = Object.keys(claimStatuses);
 
 		const dropsResponse = await (async () => {
 			try {
 				// Fetch drop info for available claims
-				const contracts = unclaimedIds.map(epoch => ({
+				const contracts = dropIds.map(epoch => ({
 					address: ENV.yLockerDrops,
 					abi: YLockerDrops,
 					args: [epoch],
@@ -70,17 +104,28 @@ export class Merkle {
 					contracts
 				}).then(res => res.map(r => r.result))) as [
 					`0x${string}`, // token
-					number, // startsAt
-					number, // expiresAt
-					bigint, // totalAmount
-					bigint, // claimedAmount
+					number, // ------ startsAt
+					number, // ------ expiresAt
+					bigint, // ------ totalAmount
+					bigint, // ------ claimedAmount
 					`0x${string}`, // merkleRoot
-					string // description
+					string // ------- description
 				][];
 
-				return dropsResponse.map(res => {
+				return dropsResponse.map((res, index) => {
 					const [token, startsAt, expiresAt, totalAmount, claimedAmount, merkleRoot, description] = res;
-					return {token, startsAt, expiresAt, totalAmount, claimedAmount, merkleRoot, description};
+					const dropId = dropIds[index];
+					return {
+						token,
+						startsAt,
+						expiresAt,
+						totalAmount,
+						claimedAmount,
+						merkleRoot,
+						description,
+						dropId,
+						hasClaimed: claimStatuses[dropId]
+					};
 				});
 			} catch (e) {
 				console.error(e);
@@ -100,36 +145,6 @@ export class Merkle {
 			claims: claims[i] as any,
 			info: drop
 		}));
-	}
-
-	public async getUserAirdrops(account: `0x${string}`): Promise<
-		{
-			amount: bigint;
-			proof: string[];
-			info: Omit<Drop, 'token'> & {token: {symbol: string; decimals: number; name: string}};
-			hasClaimed: boolean;
-		}[]
-	> {
-		const drops = await this.getMerkleProofs(account);
-		const userDrops = await Promise.all(
-			drops.map(async drop => {
-				const amount = this.getUserAmount(drop.claims, account);
-				const proof = this.getUserProof(account, drop.claims);
-				const tokenDetails = await this.getTokenDetails([drop.info.token]);
-				return {
-					amount,
-					proof,
-					hasClaimed: false,
-					info: {
-						...drop.info,
-						startsAt: drop.info.startsAt * 1000,
-						expiresAt: drop.info.expiresAt * 1000,
-						token: tokenDetails?.[drop.info.token]
-					}
-				};
-			})
-		);
-		return userDrops;
 	}
 
 	private async getTokenDetails(
@@ -186,16 +201,5 @@ export class Merkle {
 			console.error(e);
 			return {};
 		}
-	}
-
-	private getUserProof(account: `0x${string}`, drop: Record<`0x${string}`, Claim>) {
-		return drop[account].proof;
-	}
-
-	private getUserAmount(data: Record<`0x${string}`, Claim>, _account: `0x${string}`): bigint {
-		return (
-			Object.entries(data).find(([account]) => account?.toLowerCase() === _account?.toLowerCase())?.[1]?.amount ??
-			0n
-		);
 	}
 }

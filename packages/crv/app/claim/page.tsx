@@ -6,6 +6,9 @@ import {formatUnits} from 'viem';
 import {useAccount} from 'wagmi';
 import Background from '../../components/Background';
 import Header, {headerItems} from '../../components/Header';
+import {ClaimButton} from '../../components/Claim/ClaimButton';
+import {exactToSimple} from '@/utils';
+import Tokens from '--lib/components/Tokens';
 
 export default function Claim() {
 	const account = useAccount();
@@ -13,9 +16,9 @@ export default function Claim() {
 	const {openAccountModal} = useAccountModal();
 	const airdrops = useMerkleDrops(account.address);
 
-	const drops = airdrops.data ? Object.entries(airdrops.data) : [];
+	const drops = airdrops.data || [];
 
-	const isEligible = (drop: (typeof drops)[number][1]) => {
+	const isEligible = (drop: (typeof drops)[number]) => {
 		return drop.amount > 0n && !drop.hasClaimed && drop.info.expiresAt > Date.now();
 	};
 
@@ -43,77 +46,113 @@ export default function Claim() {
 								</div>
 							) : (
 								<div className="space-y-4">
-									{drops.map(([dropId, drop]) => (
+									{drops.map(drop => (
 										<div
-											key={dropId}
+											key={drop.dropId}
 											className="bg-neutral-900 rounded-lg p-6 border border-neutral-800">
 											<div className="flex justify-between items-center">
 												<div className="flex-1">
 													<div className="flex items-center gap-4 mb-2">
 														<h3 className="text-xl font-semibold">
-															{drop.info.token.name} (${drop.info.token.symbol})
+															{drop.info.description}
 														</h3>
-														<span
-															className={`px-3 py-1 rounded-full text-sm font-medium ${
-																getDropStatus(drop.info.expiresAt) === 'Active'
-																	? 'bg-green-900 text-green-400'
-																	: 'bg-neutral-800 text-neutral-400'
-															}`}>
-															{getDropStatus(drop.info.expiresAt)}
-														</span>
+														{!drop.hasClaimed && (
+															<span
+																className={`px-3 py-1 rounded-full text-sm font-medium ${
+																	getDropStatus(drop.info.expiresAt) === 'Active'
+																		? 'bg-green-900 text-green-400'
+																		: 'bg-neutral-800 text-neutral-400'
+																}`}>
+																{getDropStatus(drop.info.expiresAt)}
+															</span>
+														)}
 													</div>
-													<p className="text-neutral-400">
-														Amount: {(drop.amount, drop.info.token.decimals)} $
-														{drop.info.token.symbol}
-													</p>
-													<p className="text-sm text-neutral-500 mt-1">
-														Expires: {new Date(drop.info.expiresAt).toLocaleDateString()}
-													</p>
+													{!drop.hasClaimed && (
+														<>
+															<p className="text-neutral-400">
+																Claimable:{' '}
+																<Tokens
+																	className={'text-[15px]'}
+																	amount={drop.amount}
+																	decimals={drop.info.token.decimals}
+																	suffix={` ${drop.info.token.symbol}`}
+																/>
+															</p>
+															<p className="text-sm text-neutral-500 mt-1">
+																Expires:{' '}
+																{new Date(drop.info.expiresAt).toLocaleDateString()}
+															</p>
+														</>
+													)}
 												</div>
 
 												<div className="flex items-center gap-2">
-													{account.address && (
-														<div
-															className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
-																isEligible(drop)
-																	? 'bg-green-900 text-green-400'
-																	: 'bg-neutral-800 text-neutral-500'
-															}`}>
-															{isEligible(drop) ? (
-																<>
-																	<svg
-																		className="w-5 h-5"
-																		fill="none"
-																		stroke="currentColor"
-																		viewBox="0 0 24 24">
-																		<path
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																			strokeWidth={2}
-																			d="M5 13l4 4L19 7"
-																		/>
-																	</svg>
-																	<span className="font-medium">Eligible</span>
-																</>
-															) : (
-																<>
-																	<svg
-																		className="w-5 h-5"
-																		fill="none"
-																		stroke="currentColor"
-																		viewBox="0 0 24 24">
-																		<path
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																			strokeWidth={2}
-																			d="M6 18L18 6M6 6l12 12"
-																		/>
-																	</svg>
-																	<span className="font-medium">Not Eligible</span>
-																</>
-															)}
-														</div>
-													)}
+													{account.address ? (
+														isEligible(drop) ? (
+															<ClaimButton
+																text={`Claim $${drop.info.token.symbol}`}
+																dropId={Number(drop.dropId)}
+																amount={drop.amount}
+																proof={drop.proof}
+																index={drop.index}
+																onSuccess={() => airdrops.refetch()}
+															/>
+														) : (
+															<div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-800 text-neutral-500">
+																{drop.hasClaimed ? (
+																	<>
+																		<svg
+																			className="w-5 h-5"
+																			fill="none"
+																			stroke="currentColor"
+																			viewBox="0 0 24 24">
+																			<path
+																				strokeLinecap="round"
+																				strokeLinejoin="round"
+																				strokeWidth={2}
+																				d="M5 13l4 4L19 7"
+																			/>
+																		</svg>
+																		<span className="font-medium">Claimed</span>
+																	</>
+																) : drop.info.expiresAt < Date.now() ? (
+																	<>
+																		<svg
+																			className="w-5 h-5"
+																			fill="none"
+																			stroke="currentColor"
+																			viewBox="0 0 24 24">
+																			<path
+																				strokeLinecap="round"
+																				strokeLinejoin="round"
+																				strokeWidth={2}
+																				d="M6 18L18 6M6 6l12 12"
+																			/>
+																		</svg>
+																		<span className="font-medium">Expired</span>
+																	</>
+																) : (
+																	<>
+																		<svg
+																			className="w-5 h-5"
+																			fill="none"
+																			stroke="currentColor"
+																			viewBox="0 0 24 24">
+																			<path
+																				strokeLinecap="round"
+																				strokeLinejoin="round"
+																				strokeWidth={2}
+																				d="M6 18L18 6M6 6l12 12"
+																			/>
+																		</svg>
+																		<span className="font-medium">
+																			No Allocation
+																		</span>
+																	</>
+																)}
+															</div>
+														)
+													) : null}
 												</div>
 											</div>
 										</div>
