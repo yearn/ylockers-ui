@@ -134,15 +134,18 @@ export class Merkle {
 		})();
 
 		// claims w/ proofs fetched from github/self ... tbc
-		const claims = await Promise.all(
-			dropsResponse.map(res =>
-				fetch(`http://localhost:3000/proofs/${res.merkleRoot}.json`).then(res => res.json())
+		const merkles = await Promise.all(
+			dropsResponse.map(
+				res =>
+					fetch(`./proofs/${res.merkleRoot}.json`).then(res => res.json()) as Promise<
+						Record<'claims', Record<`0x${string}`, Claim>>
+					>
 			)
 		);
 
 		return dropsResponse.map((drop, i) => ({
 			root: drop.merkleRoot,
-			claims: claims[i] as any,
+			claims: merkles[i].claims,
 			info: drop
 		}));
 	}
