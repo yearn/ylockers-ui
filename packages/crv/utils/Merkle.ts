@@ -22,6 +22,7 @@ interface Drop {
 	description: string;
 }
 
+//
 export class Merkle {
 	private wagmiConfig: Config;
 
