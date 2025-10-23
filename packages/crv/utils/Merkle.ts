@@ -22,12 +22,13 @@ interface Drop {
 	description: string;
 }
 
-//
 export class Merkle {
 	private wagmiConfig: Config;
+	private dropsUri: string;
 
 	constructor(wagmiConfig: Config) {
 		this.wagmiConfig = wagmiConfig;
+		this.dropsUri = 'https://raw.githubusercontent.com/wavey0x/ylockers-merkle-drop/refs/heads/master';
 	}
 
 	public async getUserAirdrops(account?: `0x${string}`): Promise<
@@ -42,9 +43,10 @@ export class Merkle {
 	> {
 		if (!account) return [];
 		const drops = await this.getMerkleProofs(account);
+
 		const userDrops = await Promise.all(
 			drops.map(async drop => {
-				const {amount, proof, index} = drop.claims[account];
+				const {amount, proof, index} = drop.claims?.[account] ?? {amount: 0n, proof: [], index: 0};
 				const tokenDetails = await this.getTokenDetails([drop.info.token]);
 				return {
 					amount,
@@ -67,7 +69,7 @@ export class Merkle {
 	private async getMerkleProofs(acc: `0x${string}`): Promise<
 		{
 			root: `0x${string}`;
-			claims: Record<`0x${string}`, Claim>;
+			claims?: Record<`0x${string}`, Claim>;
 			info: Drop & {dropId: string; hasClaimed: boolean};
 		}[]
 	> {
@@ -134,19 +136,25 @@ export class Merkle {
 			}
 		})();
 
-		// claims w/ proofs fetched from github/self ... tbc
-		const merkles = await Promise.all(
-			dropsResponse.map(
-				res =>
-					fetch(`./proofs/${res.merkleRoot}.json`).then(res => res.json()) as Promise<
-						Record<'claims', Record<`0x${string}`, Claim>>
-					>
-			)
-		);
+		const merkles = await (async () => {
+			return Promise.all(
+				dropsResponse.map(async res => {
+					const id = res.dropId.toString().padStart(2, '0');
+					try {
+						const response = await fetch(`${this.dropsUri}/data/merkle/drop-${id}.json`);
+						if (!response.ok) throw new Error('Fetch failed');
+						return (await response.json()) as Record<'claims', Record<`0x${string}`, Claim>>;
+					} catch (e) {
+						console.error(`Failed to fetch for dropId ${res.dropId}:`, e);
+						return undefined;
+					}
+				})
+			);
+		})();
 
 		return dropsResponse.map((drop, i) => ({
 			root: drop.merkleRoot,
-			claims: merkles[i].claims,
+			claims: merkles?.[i]?.claims,
 			info: drop
 		}));
 	}
