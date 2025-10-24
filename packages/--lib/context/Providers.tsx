@@ -2,17 +2,18 @@
 
 import {getDefaultConfig, RainbowKitProvider} from '@rainbow-me/rainbowkit';
 import {
-	injectedWallet,
-	frameWallet,
-	metaMaskWallet,
-	walletConnectWallet,
-	rainbowWallet,
 	coinbaseWallet,
-	safeWallet
+	frameWallet,
+	injectedWallet,
+	metaMaskWallet,
+	rainbowWallet,
+	safeWallet,
+	walletConnectWallet
 } from '@rainbow-me/rainbowkit/wallets';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {ModalProvider} from 'react-modal-hook';
 import {http, WagmiProvider} from 'wagmi';
 import {mainnet} from 'wagmi/chains';
-import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
 import {VaultProvider} from './VaultContext';
 
 const queryClient = new QueryClient();
@@ -63,7 +64,9 @@ export default function Providers({
 		<WagmiProvider config={Config}>
 			<QueryClientProvider client={queryClient}>
 				<RainbowKitProvider>
-					<VaultProvider>{children}</VaultProvider>
+					<VaultProvider>
+						<ModalProvider>{children}</ModalProvider>
+					</VaultProvider>
 				</RainbowKitProvider>
 			</QueryClientProvider>
 		</WagmiProvider>
