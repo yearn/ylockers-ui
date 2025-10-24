@@ -47,11 +47,14 @@ export const Modal: FC<PropsWithChildren<Props>> = ({
 				<div className="fixed inset-0 flex items-center justify-center z-[9999] p-4 pointer-events-none">
 					<div
 						className={`bg-black/70 rounded-2xl shadow-xl ${maxWidth} w-full max-h-[80vh] overflow-hidden pointer-events-auto`}
+						role="dialog"
+						aria-modal="true"
+						aria-labelledby="modal-title"
 						onClick={e => e.stopPropagation()}>
 						{/* Header */}
 						{hasHeader && (
 							<div className="flex items-center justify-between p-6 border-b border-gray-200">
-								<h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+								<h2 id="modal-title" className="text-xl font-semibold text-gray-900">{title}</h2>
 								<button
 									type="button"
 									onClick={() => {
