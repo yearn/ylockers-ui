@@ -2,17 +2,18 @@
 
 import {getDefaultConfig, RainbowKitProvider} from '@rainbow-me/rainbowkit';
 import {
-	injectedWallet,
-	frameWallet,
-	metaMaskWallet,
-	walletConnectWallet,
-	rainbowWallet,
 	coinbaseWallet,
-	safeWallet
+	frameWallet,
+	injectedWallet,
+	metaMaskWallet,
+	rainbowWallet,
+	safeWallet,
+	walletConnectWallet
 } from '@rainbow-me/rainbowkit/wallets';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {ModalProvider} from 'react-modal-hook';
 import {http, WagmiProvider} from 'wagmi';
 import {mainnet} from 'wagmi/chains';
-import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
 import {VaultProvider} from './VaultContext';
 
 const queryClient = new QueryClient();
@@ -32,7 +33,7 @@ const testnet = Object.assign({}, mainnet, {
 const chain = useTestnet ? testnet : mainnet;
 const rpc = useTestnet ? testnetRpc : process.env.NEXT_PUBLIC_RPC_1;
 
-const config = getDefaultConfig({
+export const Config = getDefaultConfig({
 	appName: process.env.NEXT_PUBLIC_RAINBOWKIT_APPNAME ?? 'NEXT_PUBLIC_RAINBOWKIT_APPNAME',
 	projectId: process.env.NEXT_PUBLIC_RAINBOWKIT_PROJECTID ?? 'NEXT_PUBLIC_RAINBOWKIT_PROJECTID',
 	chains: [chain],
@@ -60,10 +61,12 @@ export default function Providers({
 	children: React.ReactNode;
 }>) {
 	return (
-		<WagmiProvider config={config}>
+		<WagmiProvider config={Config}>
 			<QueryClientProvider client={queryClient}>
 				<RainbowKitProvider>
-					<VaultProvider>{children}</VaultProvider>
+					<VaultProvider>
+						<ModalProvider>{children}</ModalProvider>
+					</VaultProvider>
 				</RainbowKitProvider>
 			</QueryClientProvider>
 		</WagmiProvider>

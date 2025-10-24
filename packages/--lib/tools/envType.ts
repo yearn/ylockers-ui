@@ -17,3 +17,7 @@ export type TEnv = {
 	stableTokenVaultName: string;
 	useUtilityVaultApr: boolean;
 };
+
+export type TCrvEnv = TEnv & {
+	yLockerDrops: EvmAddress;
+};
