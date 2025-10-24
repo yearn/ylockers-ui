@@ -7,6 +7,7 @@ export const useMerkleDrops = (account?: `0x${string}`) => {
 	return useQuery({
 		queryKey: ['useMerkleDrop', account],
 		queryFn: () => merkle.getUserAirdrops(account),
-		enabled: !!account
+		enabled: !!account,
+		select: data => data.filter((_, i) => i > 0)
 	});
 };
