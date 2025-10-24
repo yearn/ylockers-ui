@@ -1,13 +1,13 @@
 'use client';
 
-import {useAccount} from 'wagmi';
 import Button from '--lib/components/Button';
-import {useCallback, useEffect, useMemo} from 'react';
-import {useConnectModal} from '@rainbow-me/rainbowkit';
 import {useClaim} from '@/hooks/useClaim';
+import {useConnectModal} from '@rainbow-me/rainbowkit';
+import {useCallback, useEffect, useMemo} from 'react';
+import {useAccount, useSwitchChain} from 'wagmi';
 
 interface ClaimButtonProps {
-	text?: string;
+	tokenSymbol?: string;
 	dropId: number;
 	amount: bigint;
 	proof: string[];
@@ -23,10 +23,11 @@ export function ClaimButton({
 	index,
 	disabled: externalDisabled,
 	onSuccess,
-	text
+	tokenSymbol
 }: ClaimButtonProps) {
 	const {openConnectModal} = useConnectModal();
-	const {address, isConnected} = useAccount();
+	const {address, isConnected, chainId} = useAccount();
+	const {switchChain} = useSwitchChain();
 
 	const claim = useClaim({
 		dropId,
@@ -50,19 +51,22 @@ export function ClaimButton({
 
 	const label = useMemo(() => {
 		if (!isConnected) return 'Connect';
+		if (isConnected && chainId !== 1) return 'Switch to Mainnet';
 		if (claim.confirmation.isLoading) return 'Claiming...';
 		if (claim.write.isPending) return 'Confirm...';
 		if (externalDisabled) return 'Not Eligible';
 		return 'Claim';
-	}, [isConnected, claim.confirmation.isLoading, claim.write.isPending, externalDisabled]);
+	}, [isConnected, chainId, claim.confirmation.isLoading, claim.write.isPending, externalDisabled]);
 
 	const onClick = useCallback(() => {
 		if (!isConnected) {
 			openConnectModal?.();
+		} else if (chainId !== 1) {
+			switchChain?.({chainId: 1});
 		} else if (claim.simulation.isSuccess) {
 			claim.write.writeContract(claim.simulation.data!.request);
 		}
-	}, [isConnected, openConnectModal, claim.simulation, claim.write]);
+	}, [isConnected, chainId, openConnectModal, switchChain, claim.simulation, claim.write]);
 
 	useEffect(() => {
 		if (claim.confirmation.isSuccess && onSuccess) {
@@ -75,7 +79,7 @@ export function ClaimButton({
 			disabled={disabled}
 			onClick={onClick}
 			className="bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:text-neutral-400">
-			{text || label}
+			{label} {tokenSymbol ? `$${tokenSymbol}` : ''}
 		</Button>
 	);
 }

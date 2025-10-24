@@ -103,7 +103,7 @@ export default function Claim() {
 														{account.address ? (
 															isEligible(drop) ? (
 																<ClaimButton
-																	text={`Claim $${drop.info.token.symbol}`}
+																	tokenSymbol={drop.info.token.symbol}
 																	dropId={Number(drop.dropId)}
 																	amount={drop.amount}
 																	proof={drop.proof}
