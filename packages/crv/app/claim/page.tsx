@@ -42,19 +42,19 @@ export default function Claim() {
 							<div className="relative mt-6 pb-40 w-full">
 								<h1 className="text-3xl font-bold mb-8">Available Claims</h1>
 								{airdrops.isFetching ? (
-									<div className="bg-neutral-900 rounded-lg p-8 text-center">
+									<div className="bg-[#000b49] rounded-lg p-8 text-center">
 										<div className="flex justify-center items-center">
 											<span className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-neutral-400"></span>
 										</div>
 									</div>
 								) : !account.address ? (
-									<div className="bg-neutral-900 rounded-lg p-8 text-center space-y-4">
+									<div className="bg-[#000b49] rounded-lg p-8 text-center space-y-4">
 										<p className="text-neutral-400 ">
 											Connect your wallet to view your available claims.
 										</p>
 									</div>
 								) : drops.length === 0 ? (
-									<div className="bg-neutral-900 rounded-lg p-8 text-center">
+									<div className="bg-[#000b49] rounded-lg p-8 text-center">
 										<p className="text-neutral-400">No claims found for user.</p>
 									</div>
 								) : (
@@ -62,7 +62,7 @@ export default function Claim() {
 										{drops.map(drop => (
 											<div
 												key={drop.dropId}
-												className="bg-neutral-900 rounded-lg p-6 border border-neutral-800">
+												className="bg-[#000b49] rounded-lg p-6 border border-neutral-800">
 												<div className="flex justify-between items-center">
 													<div className="flex-1">
 														<div className="flex items-center gap-4 mb-2">

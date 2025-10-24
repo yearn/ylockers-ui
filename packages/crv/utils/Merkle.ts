@@ -28,7 +28,7 @@ export class Merkle {
 
 	constructor(wagmiConfig: Config) {
 		this.wagmiConfig = wagmiConfig;
-		this.dropsUri = 'https://raw.githubusercontent.com/wavey0x/ylockers-merkle-drop/refs/heads/master';
+		this.dropsUri = 'https://raw.githubusercontent.com/yearn/ylockers-merkle-drop/refs/heads/master';
 	}
 
 	public async getUserAirdrops(account?: `0x${string}`): Promise<
