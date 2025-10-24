@@ -64,7 +64,7 @@ export function ClaimButton({
 		} else if (chainId !== 1) {
 			switchChain?.({chainId: 1});
 		} else if (claim.simulation.isSuccess) {
-			claim.write.writeContract(claim.simulation.data!.request);
+			claim.write.writeContract(claim.simulation.data?.request);
 		}
 	}, [isConnected, chainId, openConnectModal, switchChain, claim.simulation, claim.write]);
 
