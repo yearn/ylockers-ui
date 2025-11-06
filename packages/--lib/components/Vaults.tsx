@@ -220,7 +220,7 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 											src={item.token.icon}
 											width={40}
 											height={40}
-											fallback="https://yearn.fi/_next/image?url=%2Fplaceholder.png&w=32&q=75"
+											fallback="/placeholder.png"
 										/>
 										<span>{item.name}</span>
 									</td>
