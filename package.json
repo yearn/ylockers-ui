@@ -2,7 +2,9 @@
   "name": "ylockers-monorepo",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "clean": "rm -R node_modules && rm -R packages/**/.next",
     "dev:--lib": "cd packages/--lib && NEXT_TELEMETRY_DISABLED=1 next dev",
@@ -16,6 +18,10 @@
     "dev:crv": "cd packages/crv && NEXT_TELEMETRY_DISABLED=1 next dev",
     "build:crv": "cd packages/crv && next build",
     "lint:crv": "cd packages/crv && NEXT_TELEMETRY_DISABLED=1 next lint",
-    "lint:fix:crv": "cd packages/crv && NEXT_TELEMETRY_DISABLED=1 next lint --fix"
+    "lint:fix:crv": "cd packages/crv && NEXT_TELEMETRY_DISABLED=1 next lint --fix",
+    "dev:yb": "cd packages/yb && NEXT_TELEMETRY_DISABLED=1 next dev",
+    "build:yb": "cd packages/yb && next build",
+    "lint:yb": "cd packages/yb && NEXT_TELEMETRY_DISABLED=1 next lint",
+    "lint:fix:yb": "cd packages/yb && NEXT_TELEMETRY_DISABLED=1 next lint --fix"
   }
 }
