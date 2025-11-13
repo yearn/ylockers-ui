@@ -274,6 +274,7 @@ function TabContent(props: {leftActive: boolean}) {
 							<Mint
 								yDaemon={YDAEMON}
 								env={ENV}
+								contract={'yYB'}
 							/>
 							<div className="mt-4 flex flex-col space-y-4">
 								<p className="font-thin opacity-70">

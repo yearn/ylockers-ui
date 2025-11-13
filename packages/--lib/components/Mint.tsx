@@ -5,8 +5,29 @@ import InputExecute from '../components/InputExecute';
 import abis from '../abis';
 import {TEnv} from '../tools/envType';
 
-export default function Mint({yDaemon, env, className}: {yDaemon: string; env: TEnv; className?: string}) {
+const abi = {
+	yPrisma: abis.yPrisma,
+	yYB: abis.yYB
+};
+
+export default function Mint({
+	yDaemon,
+	env,
+	className,
+	contract = 'yPrisma'
+}: {
+	yDaemon: string;
+	env: TEnv;
+	className?: string;
+	contract?: 'yPrisma' | 'yYB';
+}) {
 	const {data} = useData(yDaemon, env);
+
+	const params = (amount: bigint) => ({
+		yPrisma: [amount, data.account],
+		yYB: [data.account, amount]
+	});
+
 	return (
 		<InputExecute
 			className={className}
@@ -18,9 +39,9 @@ export default function Mint({yDaemon, env, className}: {yDaemon: string; env: T
 				needsApproval: true,
 				parameters: {
 					address: env.lockerToken,
-					abi: abis.yPrisma,
+					abi: abi[contract],
 					functionName: 'mint',
-					args: (amount: bigint) => [amount, data.account]
+					args: (amount: bigint) => params(amount)[contract]
 				}
 			}}
 		/>
