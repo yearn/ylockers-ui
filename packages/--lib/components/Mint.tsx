@@ -23,10 +23,10 @@ export default function Mint({
 }) {
 	const {data} = useData(yDaemon, env);
 
-	const params = (amount: bigint) => ({
-		yPrisma: [amount, data.account],
-		yYB: [data.account, amount]
-	});
+	const functionName = {
+		yPrisma: 'mint',
+		yYB: 'lock'
+	}[contract];
 
 	return (
 		<InputExecute
@@ -40,8 +40,8 @@ export default function Mint({
 				parameters: {
 					address: env.lockerToken,
 					abi: abi[contract],
-					functionName: 'mint',
-					args: (amount: bigint) => params(amount)[contract]
+					functionName,
+					args: (amount: bigint) => [amount, data.account]
 				}
 			}}
 		/>
