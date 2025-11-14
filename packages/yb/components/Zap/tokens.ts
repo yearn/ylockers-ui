@@ -1,6 +1,6 @@
 import {getAddress} from 'viem';
 import {z} from 'zod';
-import {SMOL_ASSETS_URL} from '../../constants';
+import {BASE_TOKEN, BOOSTED_STAKER, LOCKER_TOKEN, LP_YYB, SMOL_ASSETS_URL, YVY_YB} from '../../constants';
 
 export const zevmaddressstring = z.custom<`0x${string}`>((val: string) => /^0x[a-fA-F0-9]{40}$/.test(val));
 export const EvmAddressSchema = zevmaddressstring.transform(s => getAddress(s));
@@ -27,53 +27,55 @@ export const TokenSchema = z.object({
 
 export type Token = z.infer<typeof TokenSchema>;
 
+const placeholderIconUrl = '/placeholder.jpg';
+
 // YB, yYB, st-yYB, lp-yYB, or ybs-yYB
 export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token> = {
 	YB: {
 		// TODO: - adjust
 		chainId: 1,
-		address: '0xD533a949740bb3306d119CC777fa900bA034cd52',
+		address: BASE_TOKEN,
 		symbol: 'YB',
 		decimals: 18,
-		icon: `${SMOL_ASSETS_URL}/token/1/0xD533a949740bb3306d119CC777fa900bA034cd52/logo-128.png`,
+		icon: placeholderIconUrl,
 		legacy: false
 	},
 	yYB: {
 		// TODO: - adjust
 		chainId: 1,
-		address: '0xFCc5c47bE19d06BF83eB04298b026F81069ff65b',
+		address: LOCKER_TOKEN,
 		symbol: 'yYB',
 		decimals: 18,
-		icon: `${SMOL_ASSETS_URL}/token/1/0xFCc5c47bE19d06BF83eB04298b026F81069ff65b/logo-128.png`,
+		icon: placeholderIconUrl,
 		legacy: false
 	},
 	yvyYB: {
 		// st-yyb
 		// TODO: - adjust
 		chainId: 1,
-		address: '0xD533a949740bb3306d119CC777fa900bA034cd52',
+		address: YVY_YB,
 		symbol: 'yvyYB',
 		decimals: 18,
-		icon: `${SMOL_ASSETS_URL}/token/1/0xD533a949740bb3306d119CC777fa900bA034cd52/logo-128.png`,
+		icon: placeholderIconUrl,
 		legacy: false
 	},
 	'lp-yYB': {
 		// TODO: - adjust
 		chainId: 1,
-		address: '0xD533a949740bb3306d119CC777fa900bA034cd52',
+		address: LP_YYB,
 		symbol: 'lp-yYB',
 		decimals: 18,
-		icon: `${SMOL_ASSETS_URL}/token/1/0xD533a949740bb3306d119CC777fa900bA034cd52/logo-128.png`,
+		icon: placeholderIconUrl,
 		legacy: false
 	},
 	YBS: {
 		// ybs-yYB
 		// TODO: - adjust
 		chainId: 1,
-		address: '0xD533a949740bb3306d119CC777fa900bA034cd52',
+		address: BOOSTED_STAKER,
 		symbol: 'YBS',
 		decimals: 18,
-		icon: `${SMOL_ASSETS_URL}/token/1/0xD533a949740bb3306d119CC777fa900bA034cd52/logo-128.png`,
+		icon: placeholderIconUrl,
 		legacy: false
 	}
 } as const;

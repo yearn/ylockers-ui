@@ -13,7 +13,7 @@ import {useMinOut} from './useMinOut';
 import {ZAP} from '@/constants';
 
 export function useZap({needsApproval}: {needsApproval: boolean}) {
-	const {isConnected} = useAccount();
+	const {isConnected, address} = useAccount();
 	const {inputAmount, inputToken, outputToken} = useParameters();
 	const {minOut} = useMinOut();
 
@@ -22,6 +22,7 @@ export function useZap({needsApproval}: {needsApproval: boolean}) {
 	const enabled = useMemo(
 		() =>
 			isConnected &&
+			!!address &&
 			inputToken !== undefined &&
 			outputToken !== undefined &&
 			!needsApproval &&
@@ -35,7 +36,13 @@ export function useZap({needsApproval}: {needsApproval: boolean}) {
 			abi: zapAbi,
 			address: ZAP,
 			functionName: 'zap',
-			args: [inputToken?.address ?? zeroAddress, outputToken?.address ?? zeroAddress, amount, minOut ?? 1n],
+			args: [
+				inputToken?.address ?? zeroAddress,
+				outputToken?.address ?? zeroAddress,
+				amount,
+				minOut ?? 1n,
+				address
+			],
 			chainId: 1,
 			query: {enabled}
 		}),
