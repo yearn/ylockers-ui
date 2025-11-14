@@ -15,7 +15,7 @@ export function useMinOut() {
 	const expectedOut = useReadContract({
 		abi: zapAbi,
 		address: ZAP,
-		functionName: 'calc_expected_out',
+		functionName: 'calcExpectedOut',
 		args: [inputToken?.address ?? zeroAddress, outputToken?.address ?? zeroAddress, inputAmountExpanded],
 		chainId: 1,
 		query: {

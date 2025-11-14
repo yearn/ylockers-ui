@@ -111,9 +111,9 @@ export default function SelectToken({mode, onClose}: {mode: 'in' | 'out'; onClos
         hover:bg-deeper-primary
         rounded-xl cursor-pointer`}>
 						<div className="flex items-center gap-4">
-							<div className="size-[32px]">
+							<div className="size-[32px] rounded-full overflow-hidden">
 								<ImageOrBg
-									bgClassName="bg-deeper-primary-bg rounded-full"
+									bgClassName="bg-deeper-primary-bg"
 									src={token.icon}
 									alt={token.symbol}
 									width={32}
