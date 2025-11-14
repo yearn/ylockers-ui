@@ -3,7 +3,7 @@ import {zeroAddress} from 'viem';
 
 export const LOCKER_TOKEN_NAME = 'yYB';
 export const BASE_TOKEN_NAME = 'YB';
-export const STABLE_TOKEN_NAME = 'crvUSD';
+export const STABLE_TOKEN_NAME = 'yvcrvUSD-2';
 export const STABLE_TOKEN_VAULT_NAME = 'XXX';
 export const LOCKER_TOKEN_VAULT_NAME = 'yvyYB';
 
@@ -12,6 +12,7 @@ export const LOCKER_TOKEN = '0x22222222aEA0076fCA927a3f44dc0B4FdF9479D6'; // yyb
 export const BOOSTED_STAKER = '0x5D2eA33449A60a70E8FCdc5251FDd86a030fAD91'; // ybs
 export const REWARDS_DISTRIBUTOR = '0x1d02F6A86Ed5650f93E40FCD62fa5727c32ad746'; // yearn boosted rewards
 export const BOOSTED_STAKER_UTILITIES = '0xb70E1CBFf4DFf345b3Aa832CC1C03cA26766AD55'; // utilities
+export const ZAP = '0x1863e6086f3E6d5A57ed696C101349Be30A4598E'; // TODO: - adjust
 
 // TODO: Add the actual addresses
 export const LOCKER_TOKEN_VAULT = '0x11AaE8beE9b1Da827C641540D20e4e664677e06F';
