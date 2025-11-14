@@ -34,6 +34,7 @@ import {
 	STABLE_TOKEN_VAULT_NAME,
 	YDAEMON
 } from '@/constants';
+import Zap from '@/components/Zap';
 
 export default function Home() {
 	const {openConnectModal} = useConnectModal();
@@ -94,7 +95,7 @@ export default function Home() {
 
 function TabContent(props: {leftActive: boolean}) {
 	const tab = useTab();
-	const {data} = useData(YDAEMON, ENV);
+	const {data, refetch} = useData(YDAEMON, ENV);
 
 	return (
 		<div className="flex flex-col">
@@ -265,7 +266,21 @@ function TabContent(props: {leftActive: boolean}) {
 						</div>
 					</div>
 				)}
-				{tab === 'get' && (
+				{(tab === 'get' || tab === 'get2') && (
+					<div className="flex flex-col">
+						<div className="flex flex-col gap-4 p-4 md:p-8 w-full md:w-2/3">
+							<span className="text-xl font-bold">Supercharge your yield with yYB</span>
+							<p className="font-thin opacity-70">
+								Zap any token within the yYB ecosystem for any other, including staked positions. Maybe
+								you want to zap for a higher yield. Maybe you just like zapping.
+							</p>
+						</div>
+						<div className="w-full px-4 md:px-0 flex justify-center">
+							<Zap onZap={() => refetch()} />
+						</div>
+					</div>
+				)}
+				{/* {tab === 'get' && (
 					<div className="flex">
 						<div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
 							<span className="font-thin pb-1 text-md">
@@ -292,7 +307,7 @@ function TabContent(props: {leftActive: boolean}) {
 							</div>
 						</div>
 					</div>
-				)}
+				)} */}
 				{tab === 'learn_more_stake' && (
 					<div className="flex flex-row space-y-6 w-full pt-0">
 						<div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-2/3">
