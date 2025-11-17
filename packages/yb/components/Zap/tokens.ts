@@ -88,15 +88,22 @@ export const INPUTS = [
 	TOKENS_MAP['YBS']
 ];
 
-export const OUTPUTS = [TOKENS_MAP['yvyYB'], TOKENS_MAP['lp-yYB'], TOKENS_MAP['YB'], TOKENS_MAP['YBS']];
+export const OUTPUTS = [
+	//
+	TOKENS_MAP['yvyYB'], // st
+	TOKENS_MAP['YBS'],
+	TOKENS_MAP['lp-yYB'],
+	TOKENS_MAP['yYB']
+];
 
 export const NO_DEX_NO_SLIPPAGE = [TOKENS_MAP['yYB'].address];
 
-export const PRICE_PROXIES: {[key: string]: string} = {
-	'yveCRV-DAO': 'yYB',
-	YBS: 'yYB'
-};
-
-export const TOKEN_ROUTES: {[key: string]: string[] | undefined} = {
-	'yCRV-f v1': ['lp-yCRVv2']
+export const PRICE_PROXIES: Record<keyof typeof TOKENS_MAP, keyof typeof TOKENS_MAP> = {
+	// YBS: 'yYB',
+	// TODO: - adjust
+	YBS: 'YB',
+	YB: 'YB',
+	yYB: 'YB',
+	yvyYB: 'YB',
+	'lp-yYB': 'YB'
 };

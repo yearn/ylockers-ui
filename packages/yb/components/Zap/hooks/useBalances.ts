@@ -36,7 +36,7 @@ export default function useBalances({tokens}: {tokens: Token[]}) {
 		(token: Token) => {
 			if (!prices.isFetched) return 0;
 			const symbol = PRICE_PROXIES[token.symbol] ?? token.symbol;
-			return prices.data[TOKENS_MAP[symbol as keyof typeof TOKENS_MAP].address] as number;
+			return prices.data[TOKENS_MAP[symbol as keyof typeof TOKENS_MAP]?.address ?? ''] as number;
 		},
 		[prices]
 	);
