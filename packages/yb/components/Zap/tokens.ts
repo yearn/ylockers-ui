@@ -98,7 +98,9 @@ export const OUTPUTS = [
 
 export const NO_DEX_NO_SLIPPAGE = [TOKENS_MAP['yYB'].address];
 
-export const PRICE_PROXIES: Record<keyof typeof TOKENS_MAP, keyof typeof TOKENS_MAP> = {
+export const TOKEN_ROUTES: {[key: string]: string[] | undefined} = {};
+
+export const PRICE_PROXIES: Record<string, keyof typeof TOKENS_MAP> = {
 	// YBS: 'yYB',
 	// TODO: - adjust
 	YBS: 'YB',
