@@ -4,7 +4,7 @@ import {zeroAddress} from 'viem';
 export const LOCKER_TOKEN_NAME = 'yYB';
 export const BASE_TOKEN_NAME = 'YB';
 export const STABLE_TOKEN_NAME = 'yvcrvUSD-2';
-export const STABLE_TOKEN_VAULT_NAME = 'XXX';
+export const STABLE_TOKEN_VAULT_NAME = 'yvcrvUSD-2';
 export const LOCKER_TOKEN_VAULT_NAME = 'yvyYB';
 
 export const BASE_TOKEN = '0x01791F726B4103694969820be083196cC7c045fF'; // yb
