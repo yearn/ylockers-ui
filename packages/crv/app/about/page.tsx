@@ -154,7 +154,7 @@ export default function Home() {
 										</a>
 									</div>
 									<div className="flex flex-col justify-between md:flex-row">
-										<dt className="text-white">yvcrvUSD</dt>
+										<dt className="text-white">yvcrvUSD-2</dt>
 										<a
 											className="cursor-pointer text-xs hover:underline md:text-base"
 											href="https://etherscan.io/address/0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F">
