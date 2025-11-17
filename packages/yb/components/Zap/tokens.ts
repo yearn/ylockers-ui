@@ -27,8 +27,6 @@ export const TokenSchema = z.object({
 
 export type Token = z.infer<typeof TokenSchema>;
 
-const placeholderIconUrl = '/placeholder.jpg';
-
 // YB, yYB, st-yYB, lp-yYB, or ybs-yYB
 export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token> = {
 	YB: {
@@ -37,7 +35,7 @@ export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token
 		address: BASE_TOKEN,
 		symbol: 'YB',
 		decimals: 18,
-		icon: placeholderIconUrl,
+		icon: '/token/yb.png',
 		legacy: false
 	},
 	yYB: {
@@ -46,7 +44,7 @@ export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token
 		address: LOCKER_TOKEN,
 		symbol: 'yYB',
 		decimals: 18,
-		icon: placeholderIconUrl,
+		icon: '/token/yyb.png',
 		legacy: false
 	},
 	yvyYB: {
@@ -56,7 +54,7 @@ export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token
 		address: YVY_YB,
 		symbol: 'yvyYB',
 		decimals: 18,
-		icon: placeholderIconUrl,
+		icon: '/token/yvy-yb.png',
 		legacy: false
 	},
 	'lp-yYB': {
@@ -65,7 +63,7 @@ export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token
 		address: LP_YYB,
 		symbol: 'lp-yYB',
 		decimals: 18,
-		icon: placeholderIconUrl,
+		icon: '/token/lp-yyb.png',
 		legacy: false
 	},
 	YBS: {
@@ -75,7 +73,7 @@ export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token
 		address: BOOSTED_STAKER,
 		symbol: 'YBS',
 		decimals: 18,
-		icon: placeholderIconUrl,
+		icon: '/token/ybs-yyb.png',
 		legacy: false
 	}
 } as const;
