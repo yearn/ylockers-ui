@@ -35,6 +35,7 @@ import {
 	YDAEMON
 } from '@/constants';
 import Zap from '@/components/Zap';
+import {MigrateNft} from '@/components/MigrateNft';
 
 export default function Home() {
 	const {openConnectModal} = useConnectModal();
@@ -116,6 +117,7 @@ function TabContent(props: {leftActive: boolean}) {
 						{text: 'Unstake', link: '/app/unstake'},
 						{text: 'Claim Rewards', link: '/app/claim', notification: data.rewards.claimable > 0},
 						{text: `Get ${LOCKER_TOKEN_NAME}`, link: '/app/get'},
+						{text: 'Migrate', link: '/app/migrate'},
 						{text: 'Learn More', link: '/app/learn_more_stake'}
 					]}
 					launchApp={false}
@@ -273,6 +275,16 @@ function TabContent(props: {leftActive: boolean}) {
 						</div>
 						<div className="w-full px-4 md:px-0 flex justify-center">
 							<Zap onZap={() => refetch()} />
+						</div>
+					</div>
+				)}
+				{tab === 'migrate' && (
+					<div className="flex flex-col">
+						<div className="flex flex-col gap-4 p-4 md:p-8 w-full md:w-2/3">
+							<span className="text-xl font-bold">Migrate your veNFT to veYB</span>
+						</div>
+						<div className="w-full px-4 md:px-0 flex justify-center">
+							<MigrateNft />
 						</div>
 					</div>
 				)}

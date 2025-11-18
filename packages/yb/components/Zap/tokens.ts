@@ -83,17 +83,18 @@ export const TOKENS = Object.values(TOKENS_MAP);
 export const INPUTS = [
 	TOKENS_MAP['YB'],
 	TOKENS_MAP['yYB'],
-	TOKENS_MAP['lp-yYB'],
+	TOKENS_MAP['YBS'],
 	TOKENS_MAP['yvyYB'],
-	TOKENS_MAP['YBS']
+	TOKENS_MAP['lp-yYB']
+	// TODO: - add pool & veYB (veNFT)
 ];
 
 export const OUTPUTS = [
 	//
-	TOKENS_MAP['yvyYB'], // st
+	TOKENS_MAP['yYB'],
 	TOKENS_MAP['YBS'],
-	TOKENS_MAP['lp-yYB'],
-	TOKENS_MAP['yYB']
+	TOKENS_MAP['yvyYB'],
+	TOKENS_MAP['lp-yYB']
 ];
 
 export const NO_DEX_NO_SLIPPAGE = [TOKENS_MAP['yYB'].address];

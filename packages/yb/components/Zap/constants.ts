@@ -1,1 +1,1 @@
-export const DEFAULT_SLIPPAGE = 0.0003;
+export const DEFAULT_SLIPPAGE = 0.0002;
