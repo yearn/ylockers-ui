@@ -11,25 +11,22 @@ export class MigrateNft {
 	}
 
 	public async migrateNft(user?: `0x${string}`): Promise<{
-		lockedAmount: bigint;
 		isUserLocked: boolean;
-		votedGauges: readonly `0x${string}`[];
 		isVotePowerCleared: boolean;
 		isPermanentLock: boolean;
+		lockedAmount: bigint;
+		voteClearTime: bigint;
+		votedGauges: readonly `0x${string}`[];
 		tokenId: bigint;
 	}> {
 		const nftInfo = await this.getNftTransferInfoFor(user);
 		if (!nftInfo) {
 			throw new Error('Failed to fetch NFT info');
 		}
-		const {tokenId, lockedAmount, isVotePowerCleared, isPermanentLock, votedGauges} = nftInfo;
+		const isUserLocked = nftInfo.lockedAmount > 0n;
 		return {
-			votedGauges,
-			isVotePowerCleared,
-			isPermanentLock,
-			lockedAmount,
-			isUserLocked: lockedAmount > 0n,
-			tokenId
+			...nftInfo,
+			isUserLocked
 		};
 	}
 
@@ -39,6 +36,7 @@ export class MigrateNft {
 				lockedAmount: bigint;
 				isVotePowerCleared: boolean;
 				isPermanentLock: boolean;
+				voteClearTime: bigint;
 				votedGauges: readonly `0x${string}`[];
 		  }
 		| undefined
@@ -51,12 +49,14 @@ export class MigrateNft {
 				functionName: 'getNftTransferInfo',
 				args: [user]
 			});
-			const [tokenId, lockedAmount, isVotePowerCleared, isPermanentLock, votedGauges] = transferInfo;
+			const [tokenId, lockedAmount, isVotePowerCleared, isPermanentLock, voteClearTime, votedGauges] =
+				transferInfo;
 			return {
 				tokenId,
 				lockedAmount,
 				isVotePowerCleared,
 				isPermanentLock,
+				voteClearTime,
 				votedGauges
 			};
 		} catch (e) {

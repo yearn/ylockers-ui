@@ -6,6 +6,7 @@ import {useCallback} from 'react';
 import {useConnectModal} from '--lib/hooks/rainbowkit';
 import {useToggleInfiniteLock} from './hooks/useToggleInfiniteLock';
 import {useSafeTransferFrom} from './hooks/useSafeTransferFrom';
+import {formatUnits} from 'viem';
 
 export const MigrateNft = () => {
 	const {address, isConnected, chainId} = useAccount();
@@ -13,16 +14,19 @@ export const MigrateNft = () => {
 	const {switchChain} = useSwitchChain();
 	const {data: migrateNftData} = useMigrateNft(address);
 
-	const {lockedAmount, isUserLocked, votedGauges, isVotePowerCleared, isPermanentLock} = migrateNftData ?? {
-		lockedAmount: 0n,
-		votedGauges: [],
-		isVotePowerCleared: false,
-		isPermanentLock: false
-	};
+	const {lockedAmount, isUserLocked, votedGauges, isVotePowerCleared, voteClearTime, isPermanentLock} =
+		migrateNftData ?? {
+			lockedAmount: 0n,
+			votedGauges: [],
+			isVotePowerCleared: false,
+			isPermanentLock: false,
+			voteClearTime: 0n
+		};
 
-	const isClearVotesEnabled = !isVotePowerCleared;
-	const isMaxLockEnabled = !isPermanentLock && lockedAmount > 0n;
-	const isSafeTransferFromEnabled = !isClearVotesEnabled && !isMaxLockEnabled;
+	const isVotePowerClearable = voteClearTime === 0n;
+	const isClearVotesEnabled = isVotePowerClearable && !isVotePowerCleared;
+	const isMaxLockEnabled = !isPermanentLock && lockedAmount > 0n && !isClearVotesEnabled;
+	const isSafeTransferFromEnabled = !isClearVotesEnabled && !isMaxLockEnabled && isVotePowerClearable;
 
 	const clearVotes = useClearVotes({votedGauges, enabled: isClearVotesEnabled});
 	const maxLock = useToggleInfiniteLock({enabled: isMaxLockEnabled});
@@ -74,6 +78,13 @@ export const MigrateNft = () => {
 				convert them back to locked YB. Secondary markets, will soon be available to allow the exchange of yYB
 				for YB at varying market rates.
 			</p>
+
+			{voteClearTime > 0n && (
+				<p className="text-red-400 text-sm mb-6 leading-relaxed py-4">
+					You have voted too recently. You may clear your votes on{' '}
+					{new Date(Number(voteClearTime) * 1000).toDateString()}
+				</p>
+			)}
 
 			<div className="flex flex-col md:flex-row gap-4">
 				<Button
