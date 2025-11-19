@@ -17,6 +17,19 @@ const nftHelperAbi = [
 	},
 	{
 		type: 'function',
+		name: 'WEIGHT_VOTE_DELAY',
+		inputs: [],
+		outputs: [
+			{
+				name: '',
+				type: 'uint256',
+				internalType: 'uint256'
+			}
+		],
+		stateMutability: 'view'
+	},
+	{
+		type: 'function',
 		name: 'gaugeController',
 		inputs: [],
 		outputs: [
@@ -58,6 +71,11 @@ const nftHelperAbi = [
 				name: 'isPermanentLock',
 				type: 'bool',
 				internalType: 'bool'
+			},
+			{
+				name: 'voteClearTime',
+				type: 'uint256',
+				internalType: 'uint256'
 			},
 			{
 				name: 'votedGauges',
