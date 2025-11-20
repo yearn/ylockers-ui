@@ -45,7 +45,12 @@ export default function Home() {
 	const account = useAccount();
 
 	const leftActive =
-		tab === 'stake' || tab === 'unstake' || tab === 'claim' || tab === 'get' || tab === 'learn_more_stake';
+		tab === 'stake' ||
+		tab === 'unstake' ||
+		tab === 'claim' ||
+		tab === 'get' ||
+		tab === 'learn_more_stake' ||
+		tab === 'migrate';
 
 	return (
 		<main className="flex flex-col items-center min-h-screen text-white">
@@ -105,6 +110,7 @@ function TabContent(props: {leftActive: boolean}) {
 				{tab === 'unstake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'claim' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'get' && `Stake ${LOCKER_TOKEN_NAME}`}
+				{tab === 'migrate' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'learn_more_stake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'deposit' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
 				{tab === 'withdraw' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
@@ -280,10 +286,7 @@ function TabContent(props: {leftActive: boolean}) {
 				)}
 				{tab === 'migrate' && (
 					<div className="flex flex-col">
-						<div className="flex flex-col gap-4 p-4 md:p-8 w-full md:w-2/3">
-							<span className="text-xl font-bold">Migrate your veNFT to veYB</span>
-						</div>
-						<div className="w-full px-4 md:px-0 flex justify-center">
+						<div className="w-full p-4 flex justify-center">
 							<MigrateNft />
 						</div>
 					</div>
