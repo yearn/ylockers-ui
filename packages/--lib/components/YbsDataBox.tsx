@@ -116,7 +116,7 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 					<span className="font-semibold text-lg">YOUR POSITION</span>
 					<span className="font-bold font-mono px-2 py-1 bg-disabled-bg rounded-lg text-boost-primary">
 						{Number(formatUnits(data.utilities.userActiveBoostMultiplier, 18)) > 0
-							? Number(formatUnits(data.utilities.userActiveBoostMultiplier, 18)).toFixed(6)
+							? Number(formatUnits(data.utilities.userActiveBoostMultiplier, 18)).toFixed(2)
 							: formatUnits(data.utilities.userActiveBoostMultiplier, 18)}
 						x BOOST
 					</span>
