@@ -48,7 +48,7 @@ export default function Home() {
 		tab === 'stake' ||
 		tab === 'unstake' ||
 		tab === 'claim' ||
-		tab === 'get' ||
+		tab === 'zap' ||
 		tab === 'learn_more_stake' ||
 		tab === 'migrate';
 
@@ -109,7 +109,7 @@ function TabContent(props: {leftActive: boolean}) {
 				{tab === 'stake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'unstake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'claim' && `Stake ${LOCKER_TOKEN_NAME}`}
-				{tab === 'get' && `Stake ${LOCKER_TOKEN_NAME}`}
+				{tab === 'zap' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'migrate' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'learn_more_stake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'deposit' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
@@ -122,14 +122,16 @@ function TabContent(props: {leftActive: boolean}) {
 						{text: 'Stake', link: '/app/stake'},
 						{text: 'Unstake', link: '/app/unstake'},
 						{text: 'Claim Rewards', link: '/app/claim', notification: data.rewards.claimable > 0},
-						{text: `Get ${LOCKER_TOKEN_NAME}`, link: '/app/get'},
+						{text: `Zap`, link: '/app/zap'},
 						{text: 'Migrate', link: '/app/migrate'},
 						{text: 'Learn More', link: '/app/learn_more_stake'}
 					]}
 					launchApp={false}
 					selected={
-						tab === 'get'
-							? `Get ${LOCKER_TOKEN_NAME}`
+						tab === 'zap'
+							? `Zap`
+							: tab === 'migrate'
+							? 'Migrate'
 							: tab === 'stake'
 							? 'Stake'
 							: tab === 'learn_more_stake'
@@ -274,11 +276,8 @@ function TabContent(props: {leftActive: boolean}) {
 						</div>
 					</div>
 				)}
-				{(tab === 'get' || tab === 'get2') && (
+				{tab === 'zap' && (
 					<div className="flex flex-col">
-						<div className="flex flex-col gap-4 p-4 md:p-8 w-full md:w-2/3">
-							<span className="text-xl font-bold">Supercharge your yield with yYB</span>
-						</div>
 						<div className="w-full px-4 md:px-0 flex justify-center">
 							<Zap onZap={() => refetch()} />
 						</div>
@@ -291,34 +290,6 @@ function TabContent(props: {leftActive: boolean}) {
 						</div>
 					</div>
 				)}
-				{/* {tab === 'get' && (
-					<div className="flex">
-						<div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
-							<span className="font-thin pb-1 text-md">
-								Mint {LOCKER_TOKEN_NAME} from {BASE_TOKEN_NAME}
-							</span>
-							<Mint
-								yDaemon={YDAEMON}
-								env={ENV}
-								contract={'yYB'}
-							/>
-							<div className="mt-4 flex flex-col space-y-4">
-								<p className="font-thin opacity-70">
-									Convert your {BASE_TOKEN_NAME} to {LOCKER_TOKEN_NAME} using the {LOCKER_TOKEN_NAME}{' '}
-									contract. This mints {LOCKER_TOKEN_NAME} in a 1:1 ratio. ⚠️ Depending on peg it may
-									be more efficient to use a DEX and swap instead of minting.
-								</p>
-								<p className="font-thin opacity-70">
-									<b>⚠️ Important: </b>
-									yLocker tokens (such as {LOCKER_TOKEN_NAME}) can never be redeemed for the
-									underlying locked tokens ({BASE_TOKEN_NAME}). However, because they are liquid, they
-									can be traded on decentralized exchanges, and bought and sold at the current market
-									rate.
-								</p>
-							</div>
-						</div>
-					</div>
-				)} */}
 				{tab === 'learn_more_stake' && (
 					<div className="flex flex-row space-y-6 w-full pt-0">
 						<div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-2/3">

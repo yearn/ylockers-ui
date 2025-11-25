@@ -1,4 +1,4 @@
-import {TEnv} from '--lib/tools/envType';
+import {TYbEnv} from '--lib/tools/envType';
 import {zeroAddress} from 'viem';
 
 export const LOCKER_TOKEN_NAME = 'yYB';
@@ -20,20 +20,16 @@ export const VE_YB = '0x8235c179E9e84688FBd8B12295EfC26834dAC211'; // ve yb
 export const GAUGE_CONTROLLER = '0x1Be14811A3a06F6aF4fA64310a636e1Df04c1c21'; // gauge controller
 
 // TODO: Add the actual addresses
-export const LOCKER_TOKEN_VAULT = '0x11AaE8beE9b1Da827C641540D20e4e664677e06F';
-export const STABLE_TOKEN_VAULT = '0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13';
-export const STABLE_TOKEN = zeroAddress;
+export const LOCKER_TOKEN_VAULT = '0xA785dbbb48f6C42bE29DeA00Eb1347b341D681a5'; // same as YVY_YB ?
 export const EXIT_POOL = zeroAddress;
 
 export const SMOL_ASSETS_URL = 'https://assets.smold.app/api';
 export const YDAEMON = 'https://ydaemon.yearn.fi';
 
-export const ENV: TEnv = {
+export const ENV: TYbEnv = {
 	exitPool: EXIT_POOL,
 	baseToken: BASE_TOKEN,
 	lockerToken: LOCKER_TOKEN,
-	stableTokenVault: STABLE_TOKEN_VAULT,
-	stableToken: STABLE_TOKEN,
 	lockerTokenVault: LOCKER_TOKEN_VAULT,
 	lockerTokenVaultStrategy: LOCKER_TOKEN_VAULT,
 	boostedStaker: BOOSTED_STAKER,
@@ -41,7 +37,10 @@ export const ENV: TEnv = {
 	boostedStakerUtilities: BOOSTED_STAKER_UTILITIES,
 	baseTokenName: BASE_TOKEN_NAME,
 	lockerTokenName: LOCKER_TOKEN_NAME,
+	useUtilityVaultApr: false,
+	// TODO: - replace these too :
+	stableTokenVault: '0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13',
+	stableToken: zeroAddress,
 	stableTokenName: STABLE_TOKEN_NAME,
-	stableTokenVaultName: STABLE_TOKEN_VAULT_NAME,
-	useUtilityVaultApr: false
+	stableTokenVaultName: STABLE_TOKEN_VAULT_NAME
 };
