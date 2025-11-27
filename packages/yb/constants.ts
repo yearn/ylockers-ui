@@ -18,10 +18,12 @@ export const ZAP = '0x1863e6086f3E6d5A57ed696C101349Be30A4598E'; // zap
 export const NFT_HELPER = '0x99999990aAA1B07506Cb4eA501B46Ba03D526E95'; // nft helper
 export const VE_YB = '0x8235c179E9e84688FBd8B12295EfC26834dAC211'; // ve yb
 export const GAUGE_CONTROLLER = '0x1Be14811A3a06F6aF4fA64310a636e1Df04c1c21'; // gauge controller
+export const STABLE_TOKEN_VAULT = '0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13'; // same as YVY_YB ?
 
-// TODO: Add the actual addresses
-export const LOCKER_TOKEN_VAULT = '0xA785dbbb48f6C42bE29DeA00Eb1347b341D681a5'; // same as YVY_YB ?
-export const EXIT_POOL = zeroAddress;
+// TODO: Check these
+export const LOCKER_TOKEN_VAULT = YVY_YB;
+export const STABLE_TOKEN = STABLE_TOKEN_VAULT; // ?
+export const EXIT_POOL = zeroAddress; // ?
 
 export const SMOL_ASSETS_URL = 'https://assets.smold.app/api';
 export const YDAEMON = 'https://ydaemon.yearn.fi';
@@ -38,9 +40,8 @@ export const ENV: TYbEnv = {
 	baseTokenName: BASE_TOKEN_NAME,
 	lockerTokenName: LOCKER_TOKEN_NAME,
 	useUtilityVaultApr: false,
-	// TODO: - replace these too :
-	stableTokenVault: '0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13',
-	stableToken: zeroAddress,
+	stableToken: STABLE_TOKEN,
 	stableTokenName: STABLE_TOKEN_NAME,
+	stableTokenVault: STABLE_TOKEN_VAULT,
 	stableTokenVaultName: STABLE_TOKEN_VAULT_NAME
 };
