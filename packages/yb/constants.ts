@@ -1,5 +1,4 @@
 import {TYbEnv} from '--lib/tools/envType';
-import {zeroAddress} from 'viem';
 
 export const LOCKER_TOKEN_NAME = 'yYB';
 export const BASE_TOKEN_NAME = 'YB';
@@ -19,11 +18,9 @@ export const NFT_HELPER = '0x99999990aAA1B07506Cb4eA501B46Ba03D526E95'; // nft h
 export const VE_YB = '0x8235c179E9e84688FBd8B12295EfC26834dAC211'; // ve yb
 export const GAUGE_CONTROLLER = '0x1Be14811A3a06F6aF4fA64310a636e1Df04c1c21'; // gauge controller
 export const STABLE_TOKEN_VAULT = '0x04AeBe2e4301CdF5E9c57B01eBdfe4Ac4B48DD13'; // same as YVY_YB ?
-
-// TODO: Check these
+export const EXIT_POOL = '0x64c08F63De0D4AF43aE09d3E26737ED2A492F02B'; // curve pool
 export const LOCKER_TOKEN_VAULT = YVY_YB;
-export const STABLE_TOKEN = STABLE_TOKEN_VAULT; // ?
-export const EXIT_POOL = zeroAddress; // ?
+export const STABLE_TOKEN = STABLE_TOKEN_VAULT;
 
 export const SMOL_ASSETS_URL = 'https://assets.smold.app/api';
 export const YDAEMON = 'https://ydaemon.yearn.fi';
@@ -39,9 +36,9 @@ export const ENV: TYbEnv = {
 	boostedStakerUtilities: BOOSTED_STAKER_UTILITIES,
 	baseTokenName: BASE_TOKEN_NAME,
 	lockerTokenName: LOCKER_TOKEN_NAME,
-	useUtilityVaultApr: false,
 	stableToken: STABLE_TOKEN,
 	stableTokenName: STABLE_TOKEN_NAME,
 	stableTokenVault: STABLE_TOKEN_VAULT,
-	stableTokenVaultName: STABLE_TOKEN_VAULT_NAME
+	stableTokenVaultName: STABLE_TOKEN_VAULT_NAME,
+	useUtilityVaultApr: false
 };

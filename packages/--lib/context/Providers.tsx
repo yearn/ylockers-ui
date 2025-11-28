@@ -12,7 +12,7 @@ import {
 } from '@rainbow-me/rainbowkit/wallets';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {ModalProvider} from 'react-modal-hook';
-import {http, WagmiProvider} from 'wagmi';
+import {fallback, http, WagmiProvider} from 'wagmi';
 import {mainnet} from 'wagmi/chains';
 import {VaultProvider} from './VaultContext';
 
@@ -37,7 +37,7 @@ export const Config = getDefaultConfig({
 	appName: process.env.NEXT_PUBLIC_RAINBOWKIT_APPNAME ?? 'NEXT_PUBLIC_RAINBOWKIT_APPNAME',
 	projectId: process.env.NEXT_PUBLIC_RAINBOWKIT_PROJECTID ?? 'NEXT_PUBLIC_RAINBOWKIT_PROJECTID',
 	chains: [chain],
-	transports: {[chain.id]: http(rpc)},
+	transports: {[chain.id]: fallback([http(rpc)])},
 	wallets: [
 		{
 			groupName: 'Popular',
