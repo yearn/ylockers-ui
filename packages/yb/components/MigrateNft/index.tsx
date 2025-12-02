@@ -2,11 +2,102 @@ import {useAccount, UseSimulateContractReturnType, useSwitchChain, UseWriteContr
 import {useMigrateNft} from './hooks';
 import Button from '--lib/components/Button';
 import {useClearVotes} from './hooks/useClearVotes';
-import {useCallback} from 'react';
+import {useCallback, useMemo} from 'react';
 import {useConnectModal} from '--lib/hooks/rainbowkit';
 import {useToggleInfiniteLock} from './hooks/useToggleInfiniteLock';
 import {useSafeTransferFrom} from './hooks/useSafeTransferFrom';
 import {formatUnits} from 'viem';
+import {cn} from '--lib/tools/tailwind';
+
+type StepStatus = 'completed' | 'active' | 'pending' | 'blocked';
+
+function StepIndicator({step, status}: {step: number; status: StepStatus}) {
+	return (
+		<div
+			className={cn(
+				'flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shrink-0 transition-colors',
+				status === 'completed' && 'bg-green-500 text-white',
+				status === 'active' && 'bg-bright-primary text-white',
+				status === 'pending' && 'bg-neutral-600 text-neutral-400',
+				status === 'blocked' && 'bg-charge-red/20 text-charge-red'
+			)}>
+			{status === 'completed' ? (
+				<svg
+					className="w-4 h-4"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor">
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth={3}
+						d="M5 13l4 4L19 7"
+					/>
+				</svg>
+			) : (
+				step
+			)}
+		</div>
+	);
+}
+
+function StepCard({
+	step,
+	status,
+	title,
+	description,
+	disabled,
+	onClick
+}: {
+	step: number;
+	status: StepStatus;
+	title: string;
+	description?: string;
+	disabled: boolean;
+	onClick: () => void;
+}) {
+	return (
+		<div
+			className={cn(
+				'flex-1 p-4 rounded-xl border transition-all flex flex-col',
+				status === 'active' && 'bg-input-bg border-bright-primary',
+				status === 'completed' && 'bg-input-bg border-green-500/50',
+				status === 'pending' && 'bg-black/30 border-neutral-800',
+				status === 'blocked' && 'bg-charge-red/5 border-charge-red/30'
+			)}>
+			<div className="flex items-start gap-3 mb-3 flex-1">
+				<StepIndicator
+					step={step}
+					status={status}
+				/>
+				<div className="flex-1 min-w-0">
+					<h3 className={cn('font-semibold', status === 'pending' ? 'text-neutral-500' : 'text-white')}>
+						{title}
+					</h3>
+					{description && (
+						<p
+							className={cn(
+								'text-sm mt-1',
+								status === 'pending' ? 'text-neutral-600' : 'text-neutral-300'
+							)}>
+							{description}
+						</p>
+					)}
+				</div>
+			</div>
+			<Button
+				disabled={disabled}
+				onClick={onClick}
+				className={cn(
+					'w-full py-2 mt-auto',
+					status === 'completed' && 'opacity-50',
+					status === 'pending' && '!bg-black/20 !text-neutral-600 border-transparent'
+				)}>
+				{status === 'completed' ? 'Done' : title}
+			</Button>
+		</div>
+	);
+}
 
 export const MigrateNft = () => {
 	const {address, isConnected, chainId} = useAccount();
@@ -23,10 +114,34 @@ export const MigrateNft = () => {
 			voteClearTime: 0n
 		};
 
+	const formattedAmount = useMemo(() => {
+		const formatted = formatUnits(lockedAmount, 18);
+		const num = parseFloat(formatted);
+		return num.toLocaleString(undefined, {maximumFractionDigits: 4});
+	}, [lockedAmount]);
+
 	const isVotePowerClearable = voteClearTime === 0n;
 	const isClearVotesEnabled = isVotePowerClearable && !isVotePowerCleared;
 	const isMaxLockEnabled = !isPermanentLock && lockedAmount > 0n && !isClearVotesEnabled;
 	const isSafeTransferFromEnabled = !isClearVotesEnabled && !isMaxLockEnabled && isVotePowerClearable;
+
+	const step1Status: StepStatus = useMemo(() => {
+		if (isVotePowerCleared) return 'completed';
+		if (voteClearTime > 0n) return 'blocked';
+		return 'active';
+	}, [isVotePowerCleared, voteClearTime]);
+
+	const step2Status: StepStatus = useMemo(() => {
+		if (isPermanentLock) return 'completed';
+		if (!isVotePowerCleared) return 'pending';
+		return 'active';
+	}, [isPermanentLock, isVotePowerCleared]);
+
+	const step3Status: StepStatus = useMemo(() => {
+		if (!isVotePowerCleared) return 'pending';
+		if (!isPermanentLock) return 'pending';
+		return 'active';
+	}, [isVotePowerCleared, isPermanentLock]);
 
 	const clearVotes = useClearVotes({votedGauges, enabled: isClearVotesEnabled});
 	const maxLock = useToggleInfiniteLock({enabled: isMaxLockEnabled});
@@ -49,40 +164,65 @@ export const MigrateNft = () => {
 	);
 
 	return (
-		<div className="w-full max-w-[1200px] border-2 border-[#38bdb8] rounded-lg p-8 bg-deeper-primary">
-			{!isUserLocked ? (
-				<p className="text-white">No locks found.</p>
+		<div className="w-full max-w-[1200px]">
+			{!!isUserLocked ? (
+				<div className="p-8 bg-input-bg rounded-xl border border-neutral-700 text-center">
+					<p className="text-neutral-400">No veYB position found for this wallet.</p>
+				</div>
 			) : (
-				<>
-					<div className="mb-6">
-						<p className="text-white font-semibold mb-3">
-							Migrating your veYB position requires a few prerequisites:
+				<div className="flex flex-col gap-6">
+					<div className="p-6 bg-input-bg rounded-xl border border-neutral-700">
+						<div className="flex items-center justify-between mb-4">
+							<h2 className="text-lg font-semibold text-white">Migrate veYB to yYB</h2>
+							<div className="px-3 py-1 bg-deeper-primary rounded-full text-sm">
+								<span className="text-neutral-400">Locked: </span>
+								<span className="text-white font-medium">{formattedAmount} YB</span>
+							</div>
+						</div>
+						<p className="text-neutral-400 text-sm leading-relaxed">
+							Migrate your locked YB position to yYB tokens. Complete all three steps below to finish the
+							migration.
 						</p>
-						<ul className="list-disc list-inside text-white space-y-2 ml-2">
-							<li>You must not have any weight allocated to a YieldBasis gauge</li>
-							<li>
-								If you have allocated weight to a gauge, you must clear it (<i>i.e.</i> set it to 0).
-								You can clear it 10 days after your last allocation
-							</li>
-							<li>You must max lock your position</li>
-						</ul>
 					</div>
 
-					<p className="text-gray-400 text-sm mb-6 leading-relaxed">
-						Important: Migrating locked YB to yYB is irreversible. You may stake and unstake yYB tokens, but
-						not convert them back to locked YB. Secondary markets, will soon be available to allow the
-						exchange of yYB for YB at varying market rates.
-					</p>
-
 					{voteClearTime > 0n && (
-						<p className="text-red-400 text-sm mb-6 leading-relaxed py-4">
-							You have voted too recently. You may clear your votes on{' '}
-							{new Date(Number(voteClearTime) * 1000).toDateString()}
-						</p>
+						<div className="p-4 bg-charge-red/10 border border-charge-red/30 rounded-xl flex items-start gap-3">
+							<div className="w-5 h-5 shrink-0 mt-0.5 text-charge-red">
+								<svg
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor">
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={2}
+										d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+									/>
+								</svg>
+							</div>
+							<div>
+								<p className="text-charge-red font-medium">Votes cannot be cleared yet</p>
+								<p className="text-neutral-400 text-sm mt-1">
+									You voted recently. You can clear your votes on{' '}
+									<span className="text-white">
+										{new Date(Number(voteClearTime) * 1000).toLocaleDateString(undefined, {
+											weekday: 'long',
+											year: 'numeric',
+											month: 'long',
+											day: 'numeric'
+										})}
+									</span>
+								</p>
+							</div>
+						</div>
 					)}
 
-					<div className="flex flex-col md:flex-row gap-4">
-						<Button
+					<div className="flex flex-col lg:flex-row gap-2">
+						<StepCard
+							step={1}
+							status={step1Status}
+							title="Clear Votes"
+							description="Remove gauge weight allocations"
 							disabled={clearVotes.disabled}
 							onClick={() =>
 								handleTransaction(
@@ -90,14 +230,12 @@ export const MigrateNft = () => {
 									clearVotes.write
 								)
 							}
-							className="bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:text-neutral-400 relative w-full">
-							<span className="absolute -top-3 -left-3 bg-white text-black w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">
-								1
-							</span>
-							Clear votes
-						</Button>
-
-						<Button
+						/>
+						<StepCard
+							step={2}
+							status={step2Status}
+							title="Max Lock"
+							description="Lock your YB for maximum duration"
 							disabled={maxLock.disabled}
 							onClick={() =>
 								handleTransaction(
@@ -105,14 +243,12 @@ export const MigrateNft = () => {
 									maxLock.write
 								)
 							}
-							className="bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:text-neutral-400 relative w-full">
-							<span className="absolute -top-3 -left-3 bg-white text-black w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">
-								2
-							</span>
-							Max Lock your YB
-						</Button>
-
-						<Button
+						/>
+						<StepCard
+							step={3}
+							status={step3Status}
+							title="Migrate"
+							description={`Transfer ${formattedAmount} YB to yYB`}
 							disabled={safeTransferFrom.disabled}
 							onClick={() =>
 								handleTransaction(
@@ -120,14 +256,17 @@ export const MigrateNft = () => {
 									safeTransferFrom.write
 								)
 							}
-							className="bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:text-neutral-400 relative w-full">
-							<span className="absolute -top-3 -left-3 bg-white text-black w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">
-								3
-							</span>
-							Migrate {lockedAmount} YB
-						</Button>
+						/>
 					</div>
-				</>
+
+					<div className="p-4 bg-deeper-primary rounded-xl border border-neutral-700">
+						<p className="text-neutral-400 text-sm leading-relaxed">
+							<span className="text-neutral-300 font-medium">Note:</span> Migrating locked YB to yYB is
+							irreversible. You may stake and unstake yYB tokens, but not convert them back to locked YB.
+							Secondary markets will soon be available to exchange yYB for YB at market rates.
+						</p>
+					</div>
+				</div>
 			)}
 		</div>
 	);
