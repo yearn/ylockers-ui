@@ -61,7 +61,7 @@ function StepCard({
 			className={cn(
 				'flex-1 p-4 rounded-xl border transition-all flex flex-col',
 				status === 'active' && 'bg-input-bg border-bright-primary',
-				status === 'completed' && 'bg-input-bg border-green-500/50',
+				status === 'completed' && 'bg-black/30 border-green-500/50',
 				status === 'pending' && 'bg-black/30 border-neutral-800',
 				status === 'blocked' && 'bg-charge-red/5 border-charge-red/30'
 			)}>
@@ -71,14 +71,14 @@ function StepCard({
 					status={status}
 				/>
 				<div className="flex-1 min-w-0">
-					<h3 className={cn('font-semibold', status === 'pending' ? 'text-neutral-500' : 'text-white')}>
+					<h3 className={cn('font-semibold', status === 'active' ? 'text-white' : 'text-neutral-500')}>
 						{title}
 					</h3>
 					{description && (
 						<p
 							className={cn(
 								'text-sm mt-1',
-								status === 'pending' ? 'text-neutral-600' : 'text-neutral-300'
+								status === 'active' ? 'text-neutral-300' : 'text-neutral-600'
 							)}>
 							{description}
 						</p>
@@ -90,8 +90,7 @@ function StepCard({
 				onClick={onClick}
 				className={cn(
 					'w-full py-2 mt-auto',
-					status === 'completed' && 'opacity-50',
-					status === 'pending' && '!bg-black/20 !text-neutral-600 border-transparent'
+					status !== 'active' && '!bg-black/20 !text-neutral-600 border-transparent'
 				)}>
 				{status === 'completed' ? 'Done' : title}
 			</Button>
@@ -165,7 +164,7 @@ export const MigrateNft = () => {
 
 	return (
 		<div className="w-full max-w-[1200px]">
-			{!!isUserLocked ? (
+			{!isUserLocked ? (
 				<div className="p-8 bg-input-bg rounded-xl border border-neutral-700 text-center">
 					<p className="text-neutral-400">No veYB position found for this wallet.</p>
 				</div>
