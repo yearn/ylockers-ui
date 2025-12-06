@@ -183,13 +183,15 @@ function TabContent(props: {leftActive: boolean}) {
 								{BASE_TOKEN_NAME} stablecoin revenue today. You&apos;ll reach max boost and hit the
 								maximum staking APR after just 4 weeks.
 							</span>
-							<Image
-								alt="charge multiplier"
-								className=""
-								src="/charge.png"
-								width={370}
-								height={136}
-							/>
+							<div className="bg-primary overflow-hidden rounded-[12px] flex">
+								<Image
+									alt="charge multiplier"
+									className=""
+									src="/charge.png"
+									width={370}
+									height={136}
+								/>
+							</div>
 						</div>
 					</div>
 				)}

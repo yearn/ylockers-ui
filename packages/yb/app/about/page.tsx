@@ -40,12 +40,7 @@ export default function Home() {
 										<h1 className="mt-28 md:mt-6 block font-black text-5xl">
 											{BASE_TOKEN_NAME} has been unleashed
 											<br />
-											Now let&apos;s get it
-											<span
-												className="bg-clip-text bg-gradient-text text-transparent"
-												style={{color: 'transparent'}}>
-												unlocked
-											</span>
+											Now let&apos;s get it unlocked
 										</h1>
 									</div>
 									<div className="mb-8 border-white-200 py-2 text-white-700 md:border-l-4 border-primary md:pl-6">
@@ -200,7 +195,6 @@ export default function Home() {
 											<dd className="font-mono">{LOCKER_TOKEN_VAULT}</dd>
 										</a>
 									</div>
-
 								</dl>
 							</div>
 						</div>

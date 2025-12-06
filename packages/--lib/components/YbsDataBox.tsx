@@ -9,10 +9,13 @@ import {TEnv} from '../tools/envType';
 
 export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; env: TEnv; className?: string}) {
 	const {data} = useData(yDaemon, env);
+	const isYb = env.baseTokenName === 'YB';
+	const emojiPercentage = isYb ? '💎✨%' : '🌈✨%';
 
 	const ybsGlobalAverageApr = useMemo(() => {
 		const result = data.utilities.globalAverageApr;
-		if (result === 0n) return <span title="APR will show when migration period ends after first week.">🌈✨%</span>;
+		if (result === 0n)
+			return <span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>;
 		return <span className="font-mono">{fPercent(parseFloat(formatUnits(result, 18)))}</span>;
 	}, [data]);
 
@@ -31,14 +34,14 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 
 		const min =
 			result.min === 0n ? (
-				<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
 				fPercent(parseFloat(formatUnits(result.min, 18)))
 			);
 
 		const max =
 			result.max === 0n ? (
-				<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
 				fPercent(parseFloat(formatUnits(result.max, 18)))
 			);
@@ -51,14 +54,14 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 
 		const min =
 			result.min === 0n ? (
-				<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
 				fPercent(parseFloat(formatUnits(result.min, 18)))
 			);
 
 		const max =
 			result.max === 0n ? (
-				<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
 				fPercent(parseFloat(formatUnits(result.max, 18)))
 			);

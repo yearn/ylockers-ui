@@ -16,12 +16,10 @@ export default function Bolt() {
 	}, [enabled]);
 
 	const bg = useMemo(() => {
-		if (theme === 'onit') return 'rainbow-no-bg';
 		return '';
 	}, [theme]);
 
 	const fill = useMemo(() => {
-		if (theme === 'onit') return 'fill-neutral-200';
 		return 'fill-deeper-primary';
 	}, [theme]);
 

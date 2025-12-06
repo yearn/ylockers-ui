@@ -2,7 +2,7 @@ import {TYbEnv} from '--lib/tools/envType';
 
 export const LOCKER_TOKEN_NAME = 'yYB';
 export const BASE_TOKEN_NAME = 'YB';
-export const STABLE_TOKEN_NAME = 'yvcrvUSD-2';
+export const STABLE_TOKEN_NAME = 'crvUSD';
 export const STABLE_TOKEN_VAULT_NAME = 'yvcrvUSD-2';
 export const LOCKER_TOKEN_VAULT_NAME = 'yvyYB';
 

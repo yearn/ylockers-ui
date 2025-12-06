@@ -10,20 +10,29 @@ import {TEnv} from '../tools/envType';
 export default function ExperienceToggle({yDaemon, env}: {yDaemon: string; env: TEnv}) {
 	const tab = useTab();
 	const leftActive =
-		tab === 'stake' || tab === 'unstake' || tab === 'claim' || tab === 'get' || tab === 'learn_more_stake';
+		tab === 'stake' ||
+		tab === 'unstake' ||
+		tab === 'claim' ||
+		tab === 'get' ||
+		tab === 'learn_more_stake' ||
+		tab === 'migrate' ||
+		tab === 'zap';
 	const rightActive = !leftActive;
+	const isYb = env.baseTokenName === 'YB';
+	const emojiPercentage = isYb ? '💎✨%' : '🌈✨%';
 
 	const {data} = useData(yDaemon, env);
 	const stakerApr = useMemo(() => {
 		const result = data.utilities.globalMinMaxActiveApr.max;
-		if (result === 0n) return <span title="APY will show when migration period ends after first week.">🌈✨%</span>;
+		if (result === 0n)
+			return <span title="APY will show when migration period ends after first week.">{emojiPercentage}</span>;
 		return <span className="font-mono">{fPercent(parseFloat(formatUnits(result, 18)))}</span>;
 	}, [data]);
 
 	const _vaultApy = useVaultApy(yDaemon, env);
 	const vaultApy = useMemo(() => {
 		if (_vaultApy === 0)
-			return <span title="APR will show when migration period ends after first week.">🌈✨%</span>;
+			return <span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>;
 		return <span className="font-mono">{fPercent(_vaultApy)}</span>;
 	}, [_vaultApy]);
 

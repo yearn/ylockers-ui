@@ -12,6 +12,10 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
+				'light-primary': '#54D7DC',
+				'bright-primary': '#49C4C9',
+				'boost-primary': '#3082B8',
+				primary: '#444444',
 				'deeper-primary': 'rgba(255, 255, 255, 0.1)',
 				'deeper-primary-bg': 'rgba(255, 255, 255, 0.1)',
 				'input-bg': 'rgba(255, 255, 255, 0.1)',
