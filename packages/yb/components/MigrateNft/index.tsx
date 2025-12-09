@@ -61,8 +61,8 @@ function StepCard({
 			className={cn(
 				'flex-1 p-4 rounded-xl border transition-all flex flex-col',
 				status === 'active' && 'bg-input-bg border-bright-primary',
-				status === 'completed' && 'bg-black/30 border-green-500/50',
-				status === 'pending' && 'bg-black/30 border-neutral-800',
+				status === 'completed' && 'bg-black/20 border-green-500/30',
+				status === 'pending' && 'bg-black/20 border-neutral-800',
 				status === 'blocked' && 'bg-charge-red/5 border-charge-red/30'
 			)}>
 			<div className="flex items-start gap-3 mb-3 flex-1">

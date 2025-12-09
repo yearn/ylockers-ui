@@ -16,10 +16,9 @@ const config: Config = {
 				'bright-primary': '#49C4C9',
 				'boost-primary': '#3082B8',
 				primary: '#444444',
-				'deeper-primary': 'rgba(255, 255, 255, 0.1)',
-				'deeper-primary-bg': 'rgba(255, 255, 255, 0.1)',
-				'input-bg': 'rgba(255, 255, 255, 0.1)',
-				'soft-primary': 'rgba(255, 255, 255, 0.5)'
+				'deeper-primary': '#3E3E3E',
+				'input-bg': '#505050',
+				'soft-primary': '#808080'
 			}
 		}
 	},
