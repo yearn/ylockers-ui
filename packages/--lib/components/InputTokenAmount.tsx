@@ -45,7 +45,11 @@ export function InputTokenAmount({
 
 	const dehumanize = useCallback(
 		(input: string) => {
-			return BigInt(Number(input) * 10 ** decimals);
+			if (!input || input === '') return 0n;
+			const [whole, fraction = ''] = input.split('.');
+			const paddedFraction = fraction.padEnd(decimals, '0').slice(0, decimals);
+			const combined = whole + paddedFraction;
+			return BigInt(combined);
 		},
 		[decimals]
 	);
