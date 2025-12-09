@@ -114,6 +114,7 @@ function TabContent(props: {leftActive: boolean}) {
 				{tab === 'learn_more_stake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'deposit' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
 				{tab === 'withdraw' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
+				{tab === 'zap2' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
 				{tab === 'learn_more_deposit' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
 			</h1>
 			{props.leftActive ? (
@@ -150,6 +151,7 @@ function TabContent(props: {leftActive: boolean}) {
 					items={[
 						{text: 'Deposit', link: '/app/deposit'},
 						{text: 'Withdraw', link: '/app/withdraw'},
+						{text: 'Zap', link: '/app/zap2'},
 						{text: 'Learn More', link: '/app/learn_more_deposit'}
 					]}
 					launchApp={false}
@@ -160,6 +162,8 @@ function TabContent(props: {leftActive: boolean}) {
 							? 'Learn More'
 							: tab === 'withdraw'
 							? 'Withdraw'
+							: tab === 'zap2'
+							? 'Zap'
 							: ''
 					}
 					className="pl-4 mb-2 md:mb-0 md:pl-8"
@@ -343,6 +347,13 @@ function TabContent(props: {leftActive: boolean}) {
 								that this will unstake your {LOCKER_TOKEN_NAME} (and unstaked {LOCKER_TOKEN_NAME}{' '}
 								doesn&apos;t earn any yield).
 							</span>
+						</div>
+					</div>
+				)}
+				{tab === 'zap2' && (
+					<div className="flex flex-col">
+						<div className="w-full px-4 md:px-0 flex justify-center">
+							<Zap onZap={() => refetch()} />
 						</div>
 					</div>
 				)}
