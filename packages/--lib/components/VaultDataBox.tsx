@@ -11,6 +11,8 @@ export default function VaultDataBox({yDaemon, env, className}: {yDaemon: string
 	const {data: prices} = usePrices(yDaemon, env, [env.lockerToken]);
 	const {data} = useData(yDaemon, env);
 	const vaultApy = useVaultApy(yDaemon, env);
+	const isYb = env.baseTokenName === 'YB';
+	const emojiPercentage = isYb ? '💎✨%' : '🌈✨%';
 	const balanceInAssets = useMemo(
 		() =>
 			BigInt(
@@ -38,7 +40,7 @@ export default function VaultDataBox({yDaemon, env, className}: {yDaemon: string
 				{vaultApy > 0 ? (
 					fPercent(vaultApy)
 				) : (
-					<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+					<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 				)}
 			</span>
 			<div className="border-t-2 border-deeper-primary/60 my-4 flex flex-col space-y-2">
