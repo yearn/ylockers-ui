@@ -1,6 +1,6 @@
-import {getAddress} from 'viem';
-import {z} from 'zod';
-import {BASE_TOKEN, BOOSTED_STAKER, LOCKER_TOKEN, LP_YYB, SMOL_ASSETS_URL, YVY_YB} from '../../constants';
+import { getAddress } from 'viem';
+import { z } from 'zod';
+import { BASE_TOKEN, BOOSTED_STAKER, LOCKER_TOKEN, LP_YYB, YVY_YB } from '../../constants';
 
 export const zevmaddressstring = z.custom<`0x${string}`>((val: string) => /^0x[a-fA-F0-9]{40}$/.test(val));
 export const EvmAddressSchema = zevmaddressstring.transform(s => getAddress(s));
@@ -30,7 +30,6 @@ export type Token = z.infer<typeof TokenSchema>;
 // YB, yYB, st-yYB, lp-yYB, or ybs-yYB
 export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token> = {
 	YB: {
-		// TODO: - adjust
 		chainId: 1,
 		address: BASE_TOKEN,
 		symbol: 'YB',
@@ -39,7 +38,6 @@ export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token
 		legacy: false
 	},
 	yYB: {
-		// TODO: - adjust
 		chainId: 1,
 		address: LOCKER_TOKEN,
 		symbol: 'yYB',
@@ -48,8 +46,6 @@ export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token
 		legacy: false
 	},
 	yvyYB: {
-		// st-yyb
-		// TODO: - adjust
 		chainId: 1,
 		address: YVY_YB,
 		symbol: 'yvyYB',
@@ -58,7 +54,6 @@ export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token
 		legacy: false
 	},
 	'lp-yYB': {
-		// TODO: - adjust
 		chainId: 1,
 		address: LP_YYB,
 		symbol: 'lp-yYB',
@@ -67,8 +62,6 @@ export const TOKENS_MAP: Record<'YB' | 'yYB' | 'yvyYB' | 'lp-yYB' | 'YBS', Token
 		legacy: false
 	},
 	YBS: {
-		// ybs-yYB
-		// TODO: - adjust
 		chainId: 1,
 		address: BOOSTED_STAKER,
 		symbol: 'YBS',
