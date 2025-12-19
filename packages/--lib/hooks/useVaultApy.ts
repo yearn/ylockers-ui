@@ -3,19 +3,41 @@ import bmath from '../tools/bmath';
 import useData from './useData';
 import useVault from './useVault';
 import {TEnv} from '../tools/envType';
+import {useReadContract} from 'wagmi';
+import {formatUnits} from 'viem';
+import abis from '../abis';
+import {EvmAddress} from '@/tools/types';
 
-export function useVaultApy(yDaemon: string, env: TEnv) {
+// yyb vault apr logic
+const useStrategyOracleApr = (env: TEnv & {strategyOracle?: EvmAddress}) => {
+	const isYb = env.baseTokenName === 'YB' && !!env?.strategyOracle;
+	return useReadContract({
+		address: env?.strategyOracle ? env.strategyOracle : undefined,
+		abi: abis.StrategyOracle,
+		functionName: 'aprAfterDebtChange',
+		args: [env.lockerTokenVaultStrategy, 0n],
+		query: {
+			enabled: isYb,
+			select: data => parseFloat(formatUnits(data, 18))
+		}
+	});
+};
+
+export function useVaultApy(yDaemon: string, env: TEnv & {strategyOracle?: EvmAddress}) {
 	const {data} = useData(yDaemon, env);
 	const {data: vault} = useVault(yDaemon, env.lockerTokenVault);
+	const {data: strategyOracleApr} = useStrategyOracleApr(env);
 
 	const result = useMemo(() => {
-		if (env.useUtilityVaultApr) {
+		if (!!strategyOracleApr) {
+			return strategyOracleApr;
+		} else if (env.useUtilityVaultApr) {
 			return bmath.toApy(data.utilities.vaultAPR);
 		} else {
 			const apr = parseFloat(vault?.apr?.forwardAPR.netAPR ?? 0);
 			return (1 + apr / 52) ** 52 - 1;
 		}
-	}, [data.utilities.vaultAPR, env.useUtilityVaultApr, vault?.apr?.forwardAPR.netAPR]);
+	}, [data.utilities.vaultAPR, env.useUtilityVaultApr, vault?.apr?.forwardAPR.netAPR, strategyOracleApr]);
 
 	return result;
 }

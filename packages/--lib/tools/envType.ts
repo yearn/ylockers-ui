@@ -22,4 +22,6 @@ export type TCrvEnv = TEnv & {
 	yLockerDrops: EvmAddress;
 };
 
-export type TYbEnv = TEnv;
+export type TYbEnv = TEnv & {
+	strategyOracle: EvmAddress;
+};
