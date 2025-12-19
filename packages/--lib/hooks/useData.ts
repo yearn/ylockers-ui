@@ -328,7 +328,7 @@ export default function useData(yDaemon: string, env: TEnv) {
 
 			{
 				index: 29,
-				key: 'utilties.getUserActiveAprWithFee',
+				key: 'utilities.getUserActiveAprWithFee',
 				address: env.boostedStakerUtilities,
 				abi: abis.Utilities,
 				functionName: 'getUserActiveAprWithFee',
@@ -494,7 +494,7 @@ export default function useData(yDaemon: string, env: TEnv) {
 				weeklyRewardAmount: get<bigint>('utilities.activeRewardAmount'),
 				userProjectedBoostMultiplier: get<bigint>('utilities.getUserProjectedBoostMultiplier'),
 				userActiveBoostMultiplier: get<bigint>('utilities.getUserActiveBoostMultiplier'),
-				vaultAPR: get<bigint>('utilties.getUserActiveAprWithFee')
+				vaultAPR: get<bigint>('utilities.getUserActiveAprWithFee')
 			}
 		})
 	};
