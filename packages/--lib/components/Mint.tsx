@@ -7,6 +7,7 @@ import {TEnv} from '../tools/envType';
 
 export default function Mint({yDaemon, env, className}: {yDaemon: string; env: TEnv; className?: string}) {
 	const {data} = useData(yDaemon, env);
+	const isYb = env.baseTokenName === 'YB';
 
 	return (
 		<InputExecute
@@ -19,7 +20,7 @@ export default function Mint({yDaemon, env, className}: {yDaemon: string; env: T
 				needsApproval: true,
 				parameters: {
 					address: env.lockerToken,
-					abi: abis.yPrisma,
+					abi: isYb ? abis.yYB : abis.yPrisma,
 					functionName: 'mint',
 					args: (amount: bigint) => [amount, data.account]
 				}
