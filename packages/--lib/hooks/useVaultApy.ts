@@ -6,10 +6,9 @@ import {TEnv} from '../tools/envType';
 import {useReadContract} from 'wagmi';
 import {formatUnits} from 'viem';
 import abis from '../abis';
-import {EvmAddress} from '@/tools/types';
 
 // yyb vault apr logic
-const useStrategyOracleApr = (env: TEnv & {strategyOracle?: EvmAddress}) => {
+const useStrategyOracleApr = (env: TEnv & {strategyOracle?: `0x${string}`}) => {
 	const isYb = env.baseTokenName === 'YB' && !!env?.strategyOracle;
 	return useReadContract({
 		address: env?.strategyOracle ? env.strategyOracle : undefined,
@@ -23,7 +22,7 @@ const useStrategyOracleApr = (env: TEnv & {strategyOracle?: EvmAddress}) => {
 	});
 };
 
-export function useVaultApy(yDaemon: string, env: TEnv & {strategyOracle?: EvmAddress}) {
+export function useVaultApy(yDaemon: string, env: TEnv & {strategyOracle?: `0x${string}`}) {
 	const {data} = useData(yDaemon, env);
 	const {data: vault} = useVault(yDaemon, env.lockerTokenVault);
 	const {data: strategyOracleApr} = useStrategyOracleApr(env);
