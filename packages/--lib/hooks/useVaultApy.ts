@@ -24,11 +24,12 @@ const useStrategyOracleApr = (env: TEnv & {strategyOracle?: `0x${string}`}) => {
 
 export function useVaultApy(yDaemon: string, env: TEnv & {strategyOracle?: `0x${string}`}) {
 	const {data} = useData(yDaemon, env);
-	const {data: vault} = useVault(yDaemon, env.lockerTokenVault);
+	const hasStrategyOracle = !!env?.strategyOracle;
+	const {data: vault} = useVault(yDaemon, hasStrategyOracle ? undefined : env.lockerTokenVault);
 	const {data: strategyOracleApr} = useStrategyOracleApr(env);
 
 	const result = useMemo(() => {
-		if (!!strategyOracleApr) {
+		if (hasStrategyOracle && strategyOracleApr !== undefined) {
 			return (1 + strategyOracleApr / 52) ** 52 - 1;
 		} else if (env.useUtilityVaultApr) {
 			return bmath.toApy(data.utilities.vaultAPR);
@@ -36,7 +37,7 @@ export function useVaultApy(yDaemon: string, env: TEnv & {strategyOracle?: `0x${
 			const apr = parseFloat(vault?.apr?.forwardAPR.netAPR ?? 0);
 			return (1 + apr / 52) ** 52 - 1;
 		}
-	}, [data.utilities.vaultAPR, env.useUtilityVaultApr, vault?.apr?.forwardAPR.netAPR, strategyOracleApr]);
+	}, [data.utilities.vaultAPR, env.useUtilityVaultApr, vault?.apr?.forwardAPR.netAPR, strategyOracleApr, hasStrategyOracle]);
 
 	return result;
 }
