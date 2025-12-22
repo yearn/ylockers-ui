@@ -22,13 +22,13 @@ export const EXIT_POOL = '0x5Ee9606e5611Fd6CE14BD2BC12db70BD53dC9daA'; // curve 
 export const LOCKER_TOKEN_VAULT = YVY_YB;
 export const LOCKER_TOKEN_VAULT_STRATEGY = '0xe046E2A2cbD54d9F9B83eA5f0cDf4B6d00430215'; // strategy
 export const STABLE_TOKEN = STABLE_TOKEN_VAULT;
-export const STRATEGY_ORACLE = '0xb024e83ab3f0bE06f8b01081fF490b1f94f8c69C'; // strategy oracle
+export const ORACLE_REGISTRY = '0x1981AD9F44F2EA9aDd2dC4AD7D075c102C70aF92'; // oracle registry
 
 export const SMOL_ASSETS_URL = 'https://assets.smold.app/api';
 export const YDAEMON = 'https://ydaemon.yearn.fi';
 
 export const ENV: TYbEnv = {
-	strategyOracle: STRATEGY_ORACLE,
+	oracleRegistry: ORACLE_REGISTRY,
 	exitPool: EXIT_POOL,
 	baseToken: BASE_TOKEN,
 	lockerToken: LOCKER_TOKEN,
@@ -43,5 +43,5 @@ export const ENV: TYbEnv = {
 	stableTokenName: STABLE_TOKEN_NAME,
 	stableTokenVault: STABLE_TOKEN_VAULT,
 	stableTokenVaultName: STABLE_TOKEN_VAULT_NAME,
-	useUtilityVaultApr: false
+	useUtilityVaultApr: true
 };

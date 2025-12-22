@@ -7,8 +7,8 @@ import VaultV3 from './VaultV3';
 import Utilities from './Utilities';
 import YLockerDrops from './YLockerDrops';
 import StrategyOracle from './StrategyOracle';
+import OracleRegistry from './OracleRegistry';
 
-//
 const abis = {
 	SingleTokenRewardDistributor,
 	YearnBoostedStaker,
@@ -18,7 +18,8 @@ const abis = {
 	VaultV3,
 	Utilities,
 	YLockerDrops,
-	StrategyOracle
+	StrategyOracle,
+	OracleRegistry
 };
 
 export default abis;

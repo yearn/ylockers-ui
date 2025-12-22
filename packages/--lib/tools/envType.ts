@@ -23,5 +23,5 @@ export type TCrvEnv = TEnv & {
 };
 
 export type TYbEnv = TEnv & {
-	strategyOracle: EvmAddress;
+	oracleRegistry?: EvmAddress;
 };
