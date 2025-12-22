@@ -30,7 +30,7 @@ export function useVaultApy(yDaemon: string, env: TEnv & {strategyOracle?: EvmAd
 
 	const result = useMemo(() => {
 		if (!!strategyOracleApr) {
-			return strategyOracleApr;
+			return (1 + strategyOracleApr / 52) ** 52 - 1;
 		} else if (env.useUtilityVaultApr) {
 			return bmath.toApy(data.utilities.vaultAPR);
 		} else {
