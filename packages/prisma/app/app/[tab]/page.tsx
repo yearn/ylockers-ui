@@ -298,8 +298,7 @@ function TabContent(props: {leftActive: boolean}) {
 									minting.
 								</p>
 								<p className="font-thin opacity-70">
-									<b>⚠️ Important: </b>
-									yLocker tokens (such as {LOCKER_TOKEN_NAME}) can never be redeemed for the
+									⚠️ yLocker tokens (such as {LOCKER_TOKEN_NAME}) can never be redeemed for the
 									underlying locked tokens ({BASE_TOKEN_NAME}). However, because they are liquid, they
 									can be traded on decentralized exchanges, and bought and sold at the current market
 									rate.

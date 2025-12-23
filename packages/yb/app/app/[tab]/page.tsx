@@ -112,9 +112,10 @@ function TabContent(props: {leftActive: boolean}) {
 				{tab === 'unstake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'claim' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'learn_more_stake' && `Stake ${LOCKER_TOKEN_NAME}`}
+				{tab === 'get' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'deposit' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
 				{tab === 'withdraw' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
-				{tab === 'get' && `Get ${LOCKER_TOKEN_NAME}`}
+				{tab === 'get2' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
 				{/* // TODO: - restore once zap available */}
 				{/* {tab === 'zap' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'zap2' && `Auto-Compound ${LOCKER_TOKEN_NAME}`} */}
@@ -154,7 +155,7 @@ function TabContent(props: {leftActive: boolean}) {
 					items={[
 						{text: 'Deposit', link: '/app/deposit'},
 						{text: 'Withdraw', link: '/app/withdraw'},
-						{text: `Get ${LOCKER_TOKEN_NAME}`, link: '/app/get'},
+						{text: `Get ${LOCKER_TOKEN_NAME}`, link: '/app/get2'},
 						// {text: 'Zap', link: '/app/zap2'}, // TODO: - restore once zap available
 						{text: 'Learn More', link: '/app/learn_more_deposit'}
 					]}
@@ -168,7 +169,7 @@ function TabContent(props: {leftActive: boolean}) {
 							? 'Withdraw'
 							: tab === 'zap2'
 							? 'Zap'
-							: tab === 'get'
+							: tab === 'get2'
 							? `Get ${LOCKER_TOKEN_NAME}`
 							: ''
 					}
@@ -288,7 +289,7 @@ function TabContent(props: {leftActive: boolean}) {
 						</div>
 					</div>
 				)}
-				{tab === 'get' && (
+				{(tab === 'get' || tab === 'get2') && (
 					<div className="flex">
 						<div className="flex flex-col p-4 md:p-8 w-full md:w-2/3">
 							<span className="font-thin pb-1 text-md">
@@ -308,8 +309,7 @@ function TabContent(props: {leftActive: boolean}) {
 									minting.
 								</p>
 								<p className="font-thin opacity-70">
-									<b>⚠️ Important: </b>
-									yLocker tokens (such as {LOCKER_TOKEN_NAME}) can never be redeemed for the
+									⚠️ yLocker tokens (such as {LOCKER_TOKEN_NAME}) can never be redeemed for the
 									underlying locked tokens ({BASE_TOKEN_NAME}). However, because they are liquid, they
 									can be traded on decentralized exchanges, and bought and sold at the current market
 									rate.
