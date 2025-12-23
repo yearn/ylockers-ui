@@ -1,4 +1,4 @@
-import {LOCKER_TOKEN, VE_YB} from '@/constants';
+import {LOCKER_MIGRATION, VE_YB} from '@/constants';
 import {useMemo} from 'react';
 import {ContractFunctionParameters} from 'viem';
 import {useAccount, useSimulateContract, useWaitForTransactionReceipt, useWriteContract} from 'wagmi';
@@ -24,7 +24,7 @@ export function useSafeTransferFrom({tokenId, enabled = true}: UseParams) {
 			abi: veYBAbi,
 			address: VE_YB as `0x${string}`,
 			functionName: 'safeTransferFrom',
-			args: [address as `0x${string}`, LOCKER_TOKEN as `0x${string}`, tokenId as bigint],
+			args: [address as `0x${string}`, LOCKER_MIGRATION as `0x${string}`, tokenId as bigint],
 			chainId: 1,
 			query: {enabled: simulationEnabled}
 		}),

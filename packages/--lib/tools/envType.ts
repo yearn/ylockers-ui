@@ -24,4 +24,5 @@ export type TCrvEnv = TEnv & {
 
 export type TYbEnv = TEnv & {
 	oracleRegistry?: EvmAddress;
+	lockerMigration?: EvmAddress;
 };

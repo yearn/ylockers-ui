@@ -2,10 +2,11 @@ import {useAccount, UseSimulateContractReturnType, useSwitchChain, UseWriteContr
 import {useMigrateNft} from './hooks';
 import Button from '--lib/components/Button';
 import {useClearVotes} from './hooks/useClearVotes';
-import {useCallback, useMemo} from 'react';
+import {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useConnectModal} from '--lib/hooks/rainbowkit';
 import {useToggleInfiniteLock} from './hooks/useToggleInfiniteLock';
 import {useSafeTransferFrom} from './hooks/useSafeTransferFrom';
+import {useMigrationRecord} from './hooks/useMigrationRecord';
 import {formatUnits} from 'viem';
 import {cn} from '--lib/tools/tailwind';
 
@@ -113,9 +114,28 @@ export const MigrateNft = () => {
 			voteClearTime: 0n
 		};
 
+	const isLoading = !migrateNftData;
+
+	// Track migration completion
+	const prevLockedAmount = useRef<bigint | null>(null);
+	const {record: migrationComplete, saveMigration} = useMigrationRecord(address);
+
+	// Detect when lockedAmount goes from > 0 to 0 (migration completed)
+	useEffect(() => {
+		if (!address) return;
+
+		const prevAmount = prevLockedAmount.current;
+		if (prevAmount !== null && prevAmount > 0n && lockedAmount === 0n) {
+			const num = parseFloat(formatUnits(prevAmount, 18));
+			const amountStr = num.toLocaleString(undefined, {maximumFractionDigits: 4});
+			saveMigration(amountStr);
+		}
+
+		prevLockedAmount.current = lockedAmount;
+	}, [address, lockedAmount, saveMigration]);
+
 	const formattedAmount = useMemo(() => {
-		const formatted = formatUnits(lockedAmount, 18);
-		const num = parseFloat(formatted);
+		const num = parseFloat(formatUnits(lockedAmount ?? 0n, 18));
 		return num.toLocaleString(undefined, {maximumFractionDigits: 4});
 	}, [lockedAmount]);
 
@@ -161,6 +181,60 @@ export const MigrateNft = () => {
 		},
 		[isConnected, chainId, openConnectModal, switchChain]
 	);
+
+	// Show success state if migration completed
+	if (migrationComplete && !isUserLocked) {
+		return (
+			<div className="w-full max-w-[1200px]">
+				<div className="p-8 bg-input-bg rounded-xl border border-green-500/30 text-center">
+					<div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+						<svg
+							className="w-8 h-8 text-green-500"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor">
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={2}
+								d="M5 13l4 4L19 7"
+							/>
+						</svg>
+					</div>
+					<h2 className="text-green-200 text-xl font-semibold mb-2">Migration Complete</h2>
+					<p className="text-md text-white/40">Successfully migrated {migrationComplete.amount} YB to yYB</p>
+				</div>
+			</div>
+		);
+	}
+
+	if (isLoading) {
+		return (
+			<div className="w-full max-w-[1200px]">
+				<div className="p-8 bg-input-bg rounded-xl border border-neutral-700 flex items-center justify-center">
+					<svg
+						className="animate-spin h-6 w-6 text-neutral-400"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24">
+						<circle
+							className="opacity-25"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							strokeWidth="4"
+						/>
+						<path
+							className="opacity-75"
+							fill="currentColor"
+							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+						/>
+					</svg>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="w-full max-w-[1200px]">

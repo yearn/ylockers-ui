@@ -21,6 +21,7 @@ export const VE_YB = '0x8235c179E9e84688FBd8B12295EfC26834dAC211'; // ve yb
 export const GAUGE_CONTROLLER = '0x1Be14811A3a06F6aF4fA64310a636e1Df04c1c21'; // gauge controller
 export const STABLE_TOKEN_VAULT = '0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F'; // crvUSD-2 vault
 export const EXIT_POOL = '0x5Ee9606e5611Fd6CE14BD2BC12db70BD53dC9daA'; // curve pool
+export const LOCKER_MIGRATION = '0x0000000C90799449af8eE0B240Da639144a36C6A'; // yyb locker for migration
 export const LOCKER_TOKEN_VAULT = YVY_YB;
 export const LOCKER_TOKEN_VAULT_STRATEGY = '0x206CeFd7820d907f9d2c1332349001F7294bf802'; // strategy
 export const STABLE_TOKEN = STABLE_TOKEN_VAULT;
@@ -36,6 +37,7 @@ const MainnetEnv: TYbEnv = {
 	lockerToken: LOCKER_TOKEN,
 	lockerTokenVault: LOCKER_TOKEN_VAULT,
 	lockerTokenVaultStrategy: LOCKER_TOKEN_VAULT_STRATEGY,
+	lockerMigration: LOCKER_MIGRATION,
 	boostedStaker: BOOSTED_STAKER,
 	rewardsDistributor: REWARDS_DISTRIBUTOR,
 	boostedStakerUtilities: BOOSTED_STAKER_UTILITIES,
