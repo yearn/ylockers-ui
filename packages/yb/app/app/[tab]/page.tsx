@@ -303,8 +303,11 @@ function TabContent(props: {leftActive: boolean}) {
 							<div className="mt-4 flex flex-col space-y-4">
 								<p className="font-thin opacity-70">
 									Convert your {BASE_TOKEN_NAME} to {LOCKER_TOKEN_NAME} using the {LOCKER_TOKEN_NAME}{' '}
-									contract. This mints {LOCKER_TOKEN_NAME} in a 1:1 ratio. ⚠️ Depending on peg it may
-									be more efficient to use a DEX and swap instead of minting.
+									contract. This mints {LOCKER_TOKEN_NAME} in a 1:1 ratio.
+								</p>
+								<p className="font-thin opacity-70">
+									⚠️ Depending on peg it may be more efficient to use a DEX and swap instead of
+									minting.
 								</p>
 								<p className="font-thin opacity-70">
 									<b>⚠️ Important: </b>
