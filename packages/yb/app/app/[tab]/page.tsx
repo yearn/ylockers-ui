@@ -35,7 +35,7 @@ import {
 	YDAEMON
 } from '@/constants';
 import Zap from '@/components/Zap';
-import {MigrateNft} from '@/components/MigrateNft';
+import MigrationBanner from '@/components/MigrationBanner';
 
 export default function Home() {
 	const {openConnectModal} = useConnectModal();
@@ -50,8 +50,7 @@ export default function Home() {
 		tab === 'claim' ||
 		// tab === 'zap' ||
 		tab === 'get' ||
-		tab === 'learn_more_stake' ||
-		tab === 'migrate';
+		tab === 'learn_more_stake';
 
 	return (
 		<main className="flex flex-col items-center min-h-screen text-white">
@@ -67,11 +66,13 @@ export default function Home() {
 					yDaemon={YDAEMON}
 					env={ENV}
 				/>
-				<section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0">
+				<section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0 space-y-4">
 					<ExperienceToggle
 						yDaemon={YDAEMON}
 						env={ENV}
 					/>
+
+					<MigrationBanner />
 
 					<div className="flex flex-col lg:flex-row justify-center ">
 						<div className="flex-1 bg-deeper-primary lg:rounded-bl-lg lg:rounded-tl-lg">
@@ -110,7 +111,6 @@ function TabContent(props: {leftActive: boolean}) {
 				{tab === 'stake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'unstake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'claim' && `Stake ${LOCKER_TOKEN_NAME}`}
-				{tab === 'migrate' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'learn_more_stake' && `Stake ${LOCKER_TOKEN_NAME}`}
 				{tab === 'deposit' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
 				{tab === 'withdraw' && `Auto-Compound ${LOCKER_TOKEN_NAME}`}
@@ -128,15 +128,12 @@ function TabContent(props: {leftActive: boolean}) {
 						{text: 'Claim Rewards', link: '/app/claim', notification: data.rewards.claimable > 0},
 						// {text: `Zap`, link: '/app/zap'}, // TODO: - restore once zap available
 						{text: `Get ${LOCKER_TOKEN_NAME}`, link: '/app/get'},
-						{text: 'Migrate', link: '/app/migrate'},
 						{text: 'Learn More', link: '/app/learn_more_stake'}
 					]}
 					launchApp={false}
 					selected={
 						tab === 'zap'
 							? `Zap`
-							: tab === 'migrate'
-							? 'Migrate'
 							: tab === 'stake'
 							? 'Stake'
 							: tab === 'learn_more_stake'
@@ -157,6 +154,7 @@ function TabContent(props: {leftActive: boolean}) {
 					items={[
 						{text: 'Deposit', link: '/app/deposit'},
 						{text: 'Withdraw', link: '/app/withdraw'},
+						{text: `Get ${LOCKER_TOKEN_NAME}`, link: '/app/get'},
 						// {text: 'Zap', link: '/app/zap2'}, // TODO: - restore once zap available
 						{text: 'Learn More', link: '/app/learn_more_deposit'}
 					]}
@@ -327,13 +325,6 @@ function TabContent(props: {leftActive: boolean}) {
 						</div>
 					</div>
 				)} */}
-				{tab === 'migrate' && (
-					<div className="flex flex-col">
-						<div className="w-full p-4 flex justify-center">
-							<MigrateNft />
-						</div>
-					</div>
-				)}
 				{tab === 'learn_more_stake' && (
 					<div className="flex flex-row space-y-6 w-full pt-0">
 						<div className="flex flex-col space-y-4 p-4 md:p-8 w-full md:w-2/3">

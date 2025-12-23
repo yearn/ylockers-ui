@@ -16,8 +16,6 @@ import {fallback, http, WagmiProvider} from 'wagmi';
 import {mainnet} from 'wagmi/chains';
 import {VaultProvider} from './VaultContext';
 
-const queryClient = new QueryClient();
-
 const useTestnet = process.env.NEXT_PUBLIC_USE_TESTNET === 'true';
 const testnetId = parseInt(process.env.NEXT_PUBLIC_TESTNET_ID ?? '0');
 const testnetRpc = process.env.NEXT_PUBLIC_TESTNET_RPC ?? '';
@@ -32,6 +30,8 @@ const testnet = Object.assign({}, mainnet, {
 
 const chain = useTestnet ? testnet : mainnet;
 const rpc = useTestnet ? testnetRpc : process.env.NEXT_PUBLIC_RPC_1;
+
+const queryClient = new QueryClient();
 
 export const Config = getDefaultConfig({
 	appName: process.env.NEXT_PUBLIC_RAINBOWKIT_APPNAME ?? 'NEXT_PUBLIC_RAINBOWKIT_APPNAME',

@@ -253,8 +253,7 @@ export const MigrateNft = () => {
 							</div>
 						</div>
 						<p className="text-neutral-400 text-sm leading-relaxed">
-							Migrate your locked YB position to yYB tokens. Complete all three steps below to finish the
-							migration.
+							In order to make any veYB position transferrable, you must first clear existing gauge weight and max lock your YB. Once complete, you may migrate to yYB 1:1.
 						</p>
 					</div>
 
