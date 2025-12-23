@@ -7,6 +7,7 @@ import {
 	BASE_TOKEN_NAME,
 	BOOSTED_STAKER,
 	BOOSTED_STAKER_UTILITIES,
+	LOCKER_TOKEN,
 	LOCKER_TOKEN_NAME,
 	LOCKER_TOKEN_VAULT,
 	LOCKER_TOKEN_VAULT_NAME,
@@ -191,8 +192,8 @@ export default function Home() {
 										<dt className="text-white">{LOCKER_TOKEN_NAME} Token</dt>
 										<a
 											className="cursor-pointer text-xs hover:underline md:text-base"
-											href={`https://etherscan.io/address/${LOCKER_TOKEN_VAULT}`}>
-											<dd className="font-mono">{LOCKER_TOKEN_VAULT}</dd>
+											href={`https://etherscan.io/address/${LOCKER_TOKEN}`}>
+											<dd className="font-mono">{LOCKER_TOKEN}</dd>
 										</a>
 									</div>
 								</dl>
