@@ -1,6 +1,5 @@
 import {useAccount, UseSimulateContractReturnType, useSwitchChain, UseWriteContractReturnType} from 'wagmi';
 import {useMigrateNft} from './hooks';
-import Button from '--lib/components/Button';
 import {useClearVotes} from './hooks/useClearVotes';
 import {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useConnectModal} from '--lib/hooks/rainbowkit';
@@ -8,102 +7,13 @@ import {useToggleInfiniteLock} from './hooks/useToggleInfiniteLock';
 import {useSafeTransferFrom} from './hooks/useSafeTransferFrom';
 import {useMigrationRecord} from './hooks/useMigrationRecord';
 import {formatUnits} from 'viem';
-import {cn} from '--lib/tools/tailwind';
-
-type StepStatus = 'completed' | 'active' | 'pending' | 'blocked';
-
-function StepIndicator({step, status}: {step: number; status: StepStatus}) {
-	return (
-		<div
-			className={cn(
-				'flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shrink-0 transition-colors',
-				status === 'completed' && 'bg-green-500 text-white',
-				status === 'active' && 'bg-bright-primary text-white',
-				status === 'pending' && 'bg-neutral-600 text-neutral-400',
-				status === 'blocked' && 'bg-charge-red/20 text-charge-red'
-			)}>
-			{status === 'completed' ? (
-				<svg
-					className="w-4 h-4"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor">
-					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						strokeWidth={3}
-						d="M5 13l4 4L19 7"
-					/>
-				</svg>
-			) : (
-				step
-			)}
-		</div>
-	);
-}
-
-function StepCard({
-	step,
-	status,
-	title,
-	description,
-	disabled,
-	onClick
-}: {
-	step: number;
-	status: StepStatus;
-	title: string;
-	description?: string;
-	disabled: boolean;
-	onClick: () => void;
-}) {
-	return (
-		<div
-			className={cn(
-				'flex-1 p-4 rounded-xl border transition-all flex flex-col',
-				status === 'active' && 'bg-input-bg border-bright-primary',
-				status === 'completed' && 'bg-black/20 border-green-500/30',
-				status === 'pending' && 'bg-black/20 border-neutral-800',
-				status === 'blocked' && 'bg-charge-red/5 border-charge-red/30'
-			)}>
-			<div className="flex items-start gap-3 mb-3 flex-1">
-				<StepIndicator
-					step={step}
-					status={status}
-				/>
-				<div className="flex-1 min-w-0">
-					<h3 className={cn('font-semibold', status === 'active' ? 'text-white' : 'text-neutral-500')}>
-						{title}
-					</h3>
-					{description && (
-						<p
-							className={cn(
-								'text-sm mt-1',
-								status === 'active' ? 'text-neutral-300' : 'text-neutral-600'
-							)}>
-							{description}
-						</p>
-					)}
-				</div>
-			</div>
-			<Button
-				disabled={disabled}
-				onClick={onClick}
-				className={cn(
-					'w-full py-2 mt-auto',
-					status !== 'active' && '!bg-black/20 !text-neutral-600 border-transparent'
-				)}>
-				{status === 'completed' ? 'Done' : title}
-			</Button>
-		</div>
-	);
-}
+import {StepCard, StepStatus} from './StepCard';
 
 export const MigrateNft = () => {
 	const {address, isConnected, chainId} = useAccount();
 	const {openConnectModal} = useConnectModal();
 	const {switchChain} = useSwitchChain();
-	const {data: migrateNftData} = useMigrateNft(address);
+	const {data: migrateNftData, refetch} = useMigrateNft(address);
 
 	const {lockedAmount, isUserLocked, votedGauges, isVotePowerCleared, voteClearTime, isPermanentLock} =
 		migrateNftData ?? {
@@ -168,6 +78,13 @@ export const MigrateNft = () => {
 		tokenId: migrateNftData?.tokenId,
 		enabled: isSafeTransferFromEnabled
 	});
+
+	// Refetch data when any transaction completes
+	useEffect(() => {
+		if (clearVotes.confirmation.isSuccess || maxLock.confirmation.isSuccess || safeTransferFrom.confirmation.isSuccess) {
+			refetch();
+		}
+	}, [clearVotes.confirmation.isSuccess, maxLock.confirmation.isSuccess, safeTransferFrom.confirmation.isSuccess, refetch]);
 
 	const handleTransaction = useCallback(
 		(simulation: UseSimulateContractReturnType<any>, write: UseWriteContractReturnType) => {
@@ -283,6 +200,7 @@ export const MigrateNft = () => {
 							title="Clear Votes"
 							description="Remove gauge weight allocations"
 							disabled={clearVotes.disabled}
+							isConfirming={clearVotes.confirmation.isLoading}
 							onClick={() =>
 								handleTransaction(
 									clearVotes.simulation as UseSimulateContractReturnType<any>,
@@ -296,6 +214,7 @@ export const MigrateNft = () => {
 							title="Max Lock"
 							description="Lock your YB for maximum duration"
 							disabled={maxLock.disabled}
+							isConfirming={maxLock.confirmation.isLoading}
 							onClick={() =>
 								handleTransaction(
 									maxLock.simulation as UseSimulateContractReturnType<any>,
@@ -309,6 +228,7 @@ export const MigrateNft = () => {
 							title="Migrate"
 							description={`Transfer ${formattedAmount} YB to yYB`}
 							disabled={safeTransferFrom.disabled}
+							isConfirming={safeTransferFrom.confirmation.isLoading}
 							onClick={() =>
 								handleTransaction(
 									safeTransferFrom.simulation as UseSimulateContractReturnType<any>,
