@@ -40,22 +40,24 @@ export default function MigrationBanner() {
 
 	return (
 		<div className="mx-4 lg:mx-0 mt-4">
-			<div className="relative px-4 py-4 bg-bright-primary/10 border border-bright-primary/30 rounded-xl flex items-center gap-3">
-				<div className="w-5 h-5 shrink-0 text-bright-primary">
-					<svg
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor">
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={2}
-							d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-						/>
-					</svg>
+			<div className="relative px-4 py-4 bg-bright-primary/10 border border-bright-primary/30 rounded-xl flex flex-col lg:flex-row lg:items-center gap-3">
+				<div className="flex items-center gap-3">
+					<div className="w-5 h-5 shrink-0 text-bright-primary">
+						<svg
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor">
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={2}
+								d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+							/>
+						</svg>
+					</div>
+					<p className="text-white font-medium pr-4">You have a veYB position that can be migrated to yYB</p>
 				</div>
-				<p className="flex-1 text-white font-medium">You have a veYB position that can be migrated to yYB</p>
-				<div className="flex items-center gap-2 pr-4">
+				<div className="flex items-center gap-2 lg:ml-auto lg:pr-4">
 					<button
 						onClick={handlePermanentDismiss}
 						className="text-neutral-400 border border-white/20 rounded-[8px] px-4 py-2.5 text-sm hover:text-neutral-300 transition-colors">

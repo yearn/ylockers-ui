@@ -66,8 +66,8 @@ export default function Home() {
 					yDaemon={YDAEMON}
 					env={ENV}
 				/>
-				<MigrationBanner />
-				<section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0 space-y-4">
+				<section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0 space-y-5">
+					<MigrationBanner />
 					<ExperienceToggle
 						yDaemon={YDAEMON}
 						env={ENV}
