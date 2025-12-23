@@ -3,7 +3,6 @@
 import {getDefaultConfig, RainbowKitProvider} from '@rainbow-me/rainbowkit';
 import {
 	coinbaseWallet,
-	frameWallet,
 	injectedWallet,
 	metaMaskWallet,
 	rainbowWallet,
@@ -31,25 +30,31 @@ const testnet = Object.assign({}, mainnet, {
 const chain = useTestnet ? testnet : mainnet;
 const rpc = useTestnet ? testnetRpc : process.env.NEXT_PUBLIC_RPC_1;
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 5000,
+			gcTime: 10000,
+			refetchOnWindowFocus: false,
+			retry: 1
+		}
+	}
+});
 
 export const Config = getDefaultConfig({
 	appName: process.env.NEXT_PUBLIC_RAINBOWKIT_APPNAME ?? 'NEXT_PUBLIC_RAINBOWKIT_APPNAME',
 	projectId: process.env.NEXT_PUBLIC_RAINBOWKIT_PROJECTID ?? 'NEXT_PUBLIC_RAINBOWKIT_PROJECTID',
 	chains: [chain],
-	transports: {[chain.id]: fallback([http(rpc)])},
+	transports: {
+		[chain.id]: fallback([
+			http(rpc, {batch: true, timeout: 10000}),
+			http(undefined, {batch: true}) // Public fallback
+		])
+	},
 	wallets: [
 		{
 			groupName: 'Popular',
-			wallets: [
-				injectedWallet,
-				frameWallet,
-				metaMaskWallet,
-				walletConnectWallet,
-				rainbowWallet,
-				coinbaseWallet,
-				safeWallet
-			]
+			wallets: [injectedWallet, metaMaskWallet, walletConnectWallet, rainbowWallet, coinbaseWallet, safeWallet]
 		}
 	],
 	ssr: true
