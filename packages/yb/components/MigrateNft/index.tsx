@@ -24,7 +24,7 @@ export const MigrateNft = () => {
 			voteClearTime: 0n
 		};
 
-	const isLoading = !migrateNftData;
+	const isLoading = address ? !migrateNftData : false;
 
 	// Track migration completion
 	const prevLockedAmount = useRef<bigint | null>(null);
@@ -45,7 +45,7 @@ export const MigrateNft = () => {
 	}, [address, lockedAmount, saveMigration]);
 
 	const formattedAmount = useMemo(() => {
-		const num = parseFloat(formatUnits(lockedAmount ?? 0n, 18));
+		const num = parseFloat(formatUnits(lockedAmount, 18));
 		return num.toLocaleString(undefined, {maximumFractionDigits: 4});
 	}, [lockedAmount]);
 
@@ -81,10 +81,19 @@ export const MigrateNft = () => {
 
 	// Refetch data when any transaction completes
 	useEffect(() => {
-		if (clearVotes.confirmation.isSuccess || maxLock.confirmation.isSuccess || safeTransferFrom.confirmation.isSuccess) {
+		if (
+			clearVotes.confirmation.isSuccess ||
+			maxLock.confirmation.isSuccess ||
+			safeTransferFrom.confirmation.isSuccess
+		) {
 			refetch();
 		}
-	}, [clearVotes.confirmation.isSuccess, maxLock.confirmation.isSuccess, safeTransferFrom.confirmation.isSuccess, refetch]);
+	}, [
+		clearVotes.confirmation.isSuccess,
+		maxLock.confirmation.isSuccess,
+		safeTransferFrom.confirmation.isSuccess,
+		refetch
+	]);
 
 	const handleTransaction = useCallback(
 		(simulation: UseSimulateContractReturnType<any>, write: UseWriteContractReturnType) => {
@@ -155,7 +164,7 @@ export const MigrateNft = () => {
 
 	return (
 		<div className="w-full max-w-[1200px]">
-			{!isUserLocked ? (
+			{!isUserLocked || !address ? (
 				<div className="p-8 bg-input-bg rounded-xl border border-neutral-700 text-center">
 					<p className="text-neutral-400">No veYB position found for this wallet.</p>
 				</div>
