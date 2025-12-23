@@ -137,12 +137,11 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 					<span className="font-bold font-mono">{ybsUserActiveApr}</span>
 				</div>
 				<div className="flex justify-between">
-					<span className="font-thin opacity-70	">Claimable Rewards</span>
+					<span className="font-thin opacity-70	">Claimable {env.stableTokenVaultName}</span>
 					<Tokens
 						className="font-bold"
 						amount={data.rewards.claimable}
 						decimals={data.rewards.decimals}
-						suffix={env.stableTokenVaultName}
 					/>
 				</div>
 
@@ -152,7 +151,7 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 						{Number(formatUnits(data.utilities.userProjectedBoostMultiplier, 18)) > 0
 							? Number(formatUnits(data.utilities.userProjectedBoostMultiplier, 18)).toFixed(6)
 							: formatUnits(data.utilities.userProjectedBoostMultiplier, 18)}
-						x BOOST
+						x
 					</span>
 				</div>
 				<div className="flex justify-between">
@@ -171,12 +170,11 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 					/>
 				</div>
 				<div className="flex justify-between">
-					<span className="font-thin opacity-70	">Rewards this week</span>
+					<span className="font-thin opacity-70	">Rewards this week ({env.stableTokenName})</span>
 					<Tokens
 						className="font-bold"
 						amount={data.utilities.weeklyRewardAmount}
 						decimals={18}
-						suffix={env.stableTokenName}
 					/>
 				</div>
 				<div className="flex justify-between">
