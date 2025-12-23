@@ -66,14 +66,12 @@ export default function Home() {
 					yDaemon={YDAEMON}
 					env={ENV}
 				/>
+				<MigrationBanner />
 				<section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0 space-y-4">
 					<ExperienceToggle
 						yDaemon={YDAEMON}
 						env={ENV}
 					/>
-
-					<MigrationBanner />
-
 					<div className="flex flex-col lg:flex-row justify-center ">
 						<div className="flex-1 bg-deeper-primary lg:rounded-bl-lg lg:rounded-tl-lg">
 							<Suspense fallback={<div>Loading...</div>}>
