@@ -4,7 +4,7 @@ import {MigrateNft} from '../utils/MigrateNft';
 
 export const useMigrateNft = (account?: `0x${string}`) => {
 	const migrator = new MigrateNft(Config);
-	const cacheTime = 15 * 1000; // 15s
+	const cacheTime = 30 * 1000; // 30s
 	return useQuery({
 		queryKey: ['useMigrateNft', account],
 		queryFn: () => migrator.migrateNft(account),

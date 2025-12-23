@@ -47,8 +47,8 @@ export const Config = getDefaultConfig({
 	chains: [chain],
 	transports: {
 		[chain.id]: fallback([
-			http(rpc, {batch: true, timeout: 10000}),
-			http(undefined, {batch: true}) // Public fallback
+			http(rpc, {timeout: 10000}),
+			http(undefined) // Public fallback
 		])
 	},
 	wallets: [
