@@ -8,11 +8,20 @@ import {useAccount} from 'wagmi';
 import {fAddress} from '--lib/tools/format';
 import Ticker from '--lib/components/Ticker';
 import {YDAEMON, ENV} from '@/constants';
+import {useMigrateNft} from '@/components/MigrateNft/hooks';
+import {useMemo} from 'react';
+import {formatUnits} from 'viem';
 
 export default function MigratePage() {
 	const {openConnectModal} = useConnectModal();
 	const {openAccountModal} = useAccountModal();
-	const account = useAccount();
+	const {address} = useAccount();
+	const {data: migrateNftData} = useMigrateNft(address);
+
+	const formattedAmount = useMemo(() => {
+		const num = parseFloat(formatUnits(migrateNftData?.lockedAmount ?? 0n, 18));
+		return num.toLocaleString(undefined, {maximumFractionDigits: 4});
+	}, [migrateNftData?.lockedAmount]);
 
 	return (
 		<main className="flex flex-col items-center min-h-screen text-white">
@@ -21,8 +30,8 @@ export default function MigratePage() {
 				<Header
 					items={headerItems}
 					selected="Migrate"
-					launchText={account.address ? `${fAddress(account.address)}` : 'Connect Wallet'}
-					onClickLaunch={account.address ? openAccountModal : openConnectModal}
+					launchText={address ? `${fAddress(address)}` : 'Connect Wallet'}
+					onClickLaunch={address ? openAccountModal : openConnectModal}
 				/>
 				<Ticker
 					yDaemon={YDAEMON}
@@ -30,7 +39,19 @@ export default function MigratePage() {
 				/>
 				<section className="mt-32 md:mt-[5vh] mx-4 lg:mx-0">
 					<div className="bg-deeper-primary rounded-lg">
-						<h1 className="text-5xl p-8 font-[700]">Migrate veYB to yYB</h1>
+						<div className="p-8">
+							<div className="flex items-center justify-between mb-4">
+								<h2 className="text-4xl font-semibold text-white">Migrate veYB to yYB</h2>
+								<div className="px-4 py-1 bg-black/20 rounded-full text-mg">
+									<span className="text-neutral-400">Locked: </span>
+									<span className="text-white font-medium">{formattedAmount} YB</span>
+								</div>
+							</div>
+							<p className="text-neutral-400 text-md leading-relaxed max-w-[64ch]">
+								In order to make any veYB position transferrable, you must first clear existing gauge
+								weight and max lock your YB. Once complete, you may migrate to yYB 1:1.
+							</p>
+						</div>
 						<div className="border-t-2 border-input-bg">
 							<div className="p-4 md:p-8">
 								<MigrateNft />

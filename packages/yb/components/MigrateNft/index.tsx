@@ -244,19 +244,6 @@ export const MigrateNft = () => {
 				</div>
 			) : (
 				<div className="flex flex-col gap-6">
-					<div className="p-6 bg-input-bg rounded-xl border border-neutral-700">
-						<div className="flex items-center justify-between mb-4">
-							<h2 className="text-lg font-semibold text-white">Migrate veYB to yYB</h2>
-							<div className="px-3 py-1 bg-deeper-primary rounded-full text-sm">
-								<span className="text-neutral-400">Locked: </span>
-								<span className="text-white font-medium">{formattedAmount} YB</span>
-							</div>
-						</div>
-						<p className="text-neutral-400 text-sm leading-relaxed">
-							In order to make any veYB position transferrable, you must first clear existing gauge weight and max lock your YB. Once complete, you may migrate to yYB 1:1.
-						</p>
-					</div>
-
 					{voteClearTime > 0n && (
 						<div className="p-4 bg-charge-red/10 border border-charge-red/30 rounded-xl flex items-start gap-3">
 							<div className="w-5 h-5 shrink-0 mt-0.5 text-charge-red">
@@ -331,7 +318,7 @@ export const MigrateNft = () => {
 						/>
 					</div>
 
-					<div className="p-4 bg-deeper-primary rounded-xl border border-neutral-700">
+					<div className="py-4 bg-deeper-primary rounded-xl border border-neutral-700">
 						<p className="text-neutral-400 text-sm leading-relaxed">
 							<span className="text-neutral-300 font-medium">Note:</span> Migrating locked YB to yYB is
 							irreversible. You may stake and unstake yYB tokens, but not convert them back to locked YB.
