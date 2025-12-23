@@ -1,5 +1,7 @@
 import {TYbEnv} from '--lib/tools/envType';
 
+const shouldUseTestnet = process.env.NEXT_PUBLIC_USE_TESTNET === 'true';
+
 export const LOCKER_TOKEN_NAME = 'yYB';
 export const BASE_TOKEN_NAME = 'YB';
 export const STABLE_TOKEN_NAME = 'crvUSD';
@@ -27,7 +29,7 @@ export const ORACLE_REGISTRY = '0x1981AD9F44F2EA9aDd2dC4AD7D075c102C70aF92'; // 
 export const SMOL_ASSETS_URL = 'https://assets.smold.app/api';
 export const YDAEMON = 'https://ydaemon.yearn.fi';
 
-export const ENV: TYbEnv = {
+const MainnetEnv: TYbEnv = {
 	oracleRegistry: ORACLE_REGISTRY,
 	exitPool: EXIT_POOL,
 	baseToken: BASE_TOKEN,
@@ -45,3 +47,10 @@ export const ENV: TYbEnv = {
 	stableTokenVaultName: STABLE_TOKEN_VAULT_NAME,
 	useUtilityVaultApr: true
 };
+
+const TestnetEnv: TYbEnv = {
+	...MainnetEnv,
+	lockerTokenVault: '0xA785dbbb48f6C42bE29DeA00Eb1347b341D681a5'
+};
+
+export const ENV: TYbEnv = shouldUseTestnet ? TestnetEnv : MainnetEnv;
