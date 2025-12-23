@@ -85,9 +85,10 @@ const Header = ({
 );
 
 export const headerItems = [
-			{text: 'Home', link: '/'},
-			{text: 'Earn', link: '/app/stake'},
-			{text: 'About', link: '/about'}
-	  ];
+	{text: 'Home', link: '/'},
+	{text: 'Earn', link: '/app/stake'},
+	{text: 'Migrate', link: '/app/migrate'},
+	{text: 'About', link: '/about'}
+];
 
 export default Header;

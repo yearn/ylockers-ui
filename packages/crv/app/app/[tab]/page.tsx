@@ -365,10 +365,6 @@ function TabContent(props: {leftActive: boolean}) {
 					<div className="flex flex-col">
 						<div className="flex flex-col gap-4 p-4 md:p-8 w-full md:w-2/3">
 							<span className="text-xl font-bold">Supercharge your yield with yCRV</span>
-							<p className="font-thin opacity-70">
-								Zap any token within the yCRV ecosystem for any other, including staked positions. Maybe
-								you want to zap for a higher yield. Maybe you just like zapping.
-							</p>
 						</div>
 						<div className="w-full px-4 md:px-0 flex justify-center">
 							<Zap onZap={() => refetch()} />

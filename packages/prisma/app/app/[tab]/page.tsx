@@ -291,12 +291,14 @@ function TabContent(props: {leftActive: boolean}) {
 							<div className="mt-4 flex flex-col space-y-4">
 								<p className="font-thin opacity-70">
 									Convert your {BASE_TOKEN_NAME} to {LOCKER_TOKEN_NAME} using the {LOCKER_TOKEN_NAME}{' '}
-									contract. This mints {LOCKER_TOKEN_NAME} in a 1:1 ratio. ⚠️ Depending on peg it may
-									be more efficient to use a DEX and swap instead of minting.
+									contract. This mints {LOCKER_TOKEN_NAME} in a 1:1 ratio.
 								</p>
 								<p className="font-thin opacity-70">
-									<b>⚠️ Important: </b>
-									yLocker tokens (such as {LOCKER_TOKEN_NAME}) can never be redeemed for the
+									⚠️ Depending on peg it may be more efficient to use a DEX and swap instead of
+									minting.
+								</p>
+								<p className="font-thin opacity-70">
+									⚠️ yLocker tokens (such as {LOCKER_TOKEN_NAME}) can never be redeemed for the
 									underlying locked tokens ({BASE_TOKEN_NAME}). However, because they are liquid, they
 									can be traded on decentralized exchanges, and bought and sold at the current market
 									rate.

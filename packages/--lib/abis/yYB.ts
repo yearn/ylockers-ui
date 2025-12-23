@@ -1,200 +1,216 @@
 const abi = [
 	{
-		type: 'constructor',
-		name: '',
-		stateMutability: '',
-		constant: false,
 		inputs: [
-			{type: 'address', name: '_locker', simpleType: 'address'},
-			{type: 'address', name: '_token', simpleType: 'address'},
-			{type: 'string', name: '_name', simpleType: 'string'},
-			{type: 'string', name: '_symbol', simpleType: 'string'}
+			{internalType: 'address', name: '_locker', type: 'address'},
+			{internalType: 'address', name: '_token', type: 'address'},
+			{internalType: 'string', name: '_name', type: 'string'},
+			{internalType: 'string', name: '_symbol', type: 'string'}
 		],
-		id: 'c68ee65b-a582-4ce6-adac-4515ba0b7fbd'
-	},
-	{
-		type: 'function',
-		name: 'symbol',
-		stateMutability: 'view',
-		constant: false,
-		outputs: [{type: 'string', name: '', simpleType: 'string'}],
-		id: '0x95d89b41'
-	},
-	{
-		type: 'function',
-		name: 'balanceOf',
-		stateMutability: 'view',
-		constant: false,
-		inputs: [{type: 'address', name: 'account', simpleType: 'address'}],
-		outputs: [{type: 'uint256', name: '', simpleType: 'uint'}],
-		id: '0x70a08231'
-	},
-	{
-		type: 'function',
-		name: 'locker',
-		stateMutability: 'view',
-		constant: false,
-		outputs: [{type: 'address', name: '', simpleType: 'address'}],
-		id: '0xd7b96d4e'
-	},
-	{
-		type: 'function',
-		name: 'lock',
 		stateMutability: 'nonpayable',
-		constant: false,
+		type: 'constructor'
+	},
+	{
 		inputs: [
-			{type: 'uint256', name: 'amount', simpleType: 'uint'},
-			{type: 'address', name: 'to', simpleType: 'address'}
+			{internalType: 'address', name: 'spender', type: 'address'},
+			{internalType: 'uint256', name: 'allowance', type: 'uint256'},
+			{internalType: 'uint256', name: 'needed', type: 'uint256'}
 		],
-		id: '0x66dfbfb4'
+		name: 'ERC20InsufficientAllowance',
+		type: 'error'
 	},
 	{
-		type: 'function',
-		name: 'totalSupply',
-		stateMutability: 'view',
-		constant: false,
-		outputs: [{type: 'uint256', name: '', simpleType: 'uint'}],
-		id: '0x18160ddd'
-	},
-	{
-		type: 'function',
-		name: 'name',
-		stateMutability: 'view',
-		constant: false,
-		outputs: [{type: 'string', name: '', simpleType: 'string'}],
-		id: '0x06fdde03'
-	},
-	{
-		type: 'function',
-		name: 'operator',
-		stateMutability: 'view',
-		constant: false,
-		outputs: [{type: 'address', name: '', simpleType: 'address'}],
-		id: '0x570ca735'
-	},
-	{
-		type: 'function',
-		name: 'approve',
-		stateMutability: 'nonpayable',
-		constant: false,
 		inputs: [
-			{type: 'address', name: 'spender', simpleType: 'address'},
-			{type: 'uint256', name: 'value', simpleType: 'uint'}
+			{internalType: 'address', name: 'sender', type: 'address'},
+			{internalType: 'uint256', name: 'balance', type: 'uint256'},
+			{internalType: 'uint256', name: 'needed', type: 'uint256'}
 		],
-		outputs: [{type: 'bool', name: '', simpleType: 'bool'}],
-		id: '0x095ea7b3'
+		name: 'ERC20InsufficientBalance',
+		type: 'error'
 	},
 	{
-		type: 'function',
-		name: 'decimals',
-		stateMutability: 'view',
-		constant: false,
-		outputs: [{type: 'uint8', name: '', simpleType: 'uint'}],
-		id: '0x313ce567'
+		inputs: [{internalType: 'address', name: 'approver', type: 'address'}],
+		name: 'ERC20InvalidApprover',
+		type: 'error'
 	},
 	{
-		type: 'function',
-		name: 'token',
-		stateMutability: 'view',
-		constant: false,
-		outputs: [{type: 'address', name: '', simpleType: 'address'}],
-		id: '0xfc0c546a'
+		inputs: [{internalType: 'address', name: 'receiver', type: 'address'}],
+		name: 'ERC20InvalidReceiver',
+		type: 'error'
+	},
+	{inputs: [{internalType: 'address', name: 'sender', type: 'address'}], name: 'ERC20InvalidSender', type: 'error'},
+	{inputs: [{internalType: 'address', name: 'spender', type: 'address'}], name: 'ERC20InvalidSpender', type: 'error'},
+	{
+		inputs: [{internalType: 'address', name: 'token', type: 'address'}],
+		name: 'SafeERC20FailedOperation',
+		type: 'error'
 	},
 	{
-		type: 'function',
-		name: 'mint',
-		stateMutability: 'nonpayable',
-		constant: false,
+		anonymous: false,
 		inputs: [
-			{type: 'address', name: 'to', simpleType: 'address'},
-			{type: 'uint256', name: 'amount', simpleType: 'uint'}
+			{indexed: true, internalType: 'address', name: 'owner', type: 'address'},
+			{indexed: true, internalType: 'address', name: 'spender', type: 'address'},
+			{indexed: false, internalType: 'uint256', name: 'value', type: 'uint256'}
 		],
-		id: '0x40c10f19'
-	},
-	{
-		type: 'function',
-		name: 'allowance',
-		stateMutability: 'view',
-		constant: false,
-		inputs: [
-			{type: 'address', name: 'owner', simpleType: 'address'},
-			{type: 'address', name: 'spender', simpleType: 'address'}
-		],
-		outputs: [{type: 'uint256', name: '', simpleType: 'uint'}],
-		id: '0xdd62ed3e'
-	},
-	{
-		type: 'function',
-		name: 'transferFrom',
-		stateMutability: 'nonpayable',
-		constant: false,
-		inputs: [
-			{type: 'address', name: 'from', simpleType: 'address'},
-			{type: 'address', name: 'to', simpleType: 'address'},
-			{type: 'uint256', name: 'value', simpleType: 'uint'}
-		],
-		outputs: [{type: 'bool', name: '', simpleType: 'bool'}],
-		id: '0x23b872dd'
-	},
-	{
-		type: 'function',
-		name: 'sweep',
-		stateMutability: 'nonpayable',
-		constant: false,
-		inputs: [
-			{type: 'address', name: '_token', simpleType: 'address'},
-			{type: 'address', name: 'to', simpleType: 'address'},
-			{type: 'uint256', name: 'amount', simpleType: 'uint'}
-		],
-		id: '0x62c06767'
-	},
-	{
-		type: 'function',
-		name: 'transfer',
-		stateMutability: 'nonpayable',
-		constant: false,
-		inputs: [
-			{type: 'address', name: 'to', simpleType: 'address'},
-			{type: 'uint256', name: 'value', simpleType: 'uint'}
-		],
-		outputs: [{type: 'bool', name: '', simpleType: 'bool'}],
-		id: '0xa9059cbb'
-	},
-	{
-		type: 'event',
 		name: 'Approval',
-		stateMutability: '',
-		constant: false,
-		inputs: [
-			{type: 'address', name: 'owner', simpleType: 'address'},
-			{type: 'address', name: 'spender', simpleType: 'address'},
-			{type: 'uint256', name: 'value', simpleType: 'uint'}
-		],
-		id: '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925'
+		type: 'event'
 	},
 	{
-		type: 'event',
+		anonymous: false,
+		inputs: [{indexed: true, internalType: 'address', name: 'locker', type: 'address'}],
+		name: 'LockerUpdated',
+		type: 'event'
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{indexed: true, internalType: 'address', name: 'token', type: 'address'},
+			{indexed: true, internalType: 'address', name: 'to', type: 'address'},
+			{indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256'}
+		],
 		name: 'Swept',
-		stateMutability: '',
-		constant: false,
-		inputs: [
-			{type: 'address', name: 'token', simpleType: 'address'},
-			{type: 'address', name: 'to', simpleType: 'address'},
-			{type: 'uint256', name: 'amount', simpleType: 'uint'}
-		],
-		id: '0x7b09c29f9106defeccc9ac3b823f3aad0b470d120e5df7aed033b5c43a4bf718'
+		type: 'event'
 	},
 	{
-		type: 'event',
-		name: 'Transfer',
-		stateMutability: '',
-		constant: false,
+		anonymous: false,
 		inputs: [
-			{type: 'address', name: 'from', simpleType: 'address'},
-			{type: 'address', name: 'to', simpleType: 'address'},
-			{type: 'uint256', name: 'value', simpleType: 'uint'}
+			{indexed: true, internalType: 'address', name: 'from', type: 'address'},
+			{indexed: true, internalType: 'address', name: 'to', type: 'address'},
+			{indexed: false, internalType: 'uint256', name: 'value', type: 'uint256'}
 		],
-		id: '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+		name: 'Transfer',
+		type: 'event'
+	},
+	{
+		inputs: [
+			{internalType: 'address', name: 'owner', type: 'address'},
+			{internalType: 'address', name: 'spender', type: 'address'}
+		],
+		name: 'allowance',
+		outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{internalType: 'address', name: 'spender', type: 'address'},
+			{internalType: 'uint256', name: 'value', type: 'uint256'}
+		],
+		name: 'approve',
+		outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [{internalType: 'address', name: 'account', type: 'address'}],
+		name: 'balanceOf',
+		outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'decimals',
+		outputs: [{internalType: 'uint8', name: '', type: 'uint8'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'locker',
+		outputs: [{internalType: 'address', name: '', type: 'address'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{internalType: 'uint256', name: 'amount', type: 'uint256'},
+			{internalType: 'address', name: 'to', type: 'address'}
+		],
+		name: 'mint',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'name',
+		outputs: [{internalType: 'string', name: '', type: 'string'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'operator',
+		outputs: [{internalType: 'address', name: '', type: 'address'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'owner',
+		outputs: [{internalType: 'address', name: '', type: 'address'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [{internalType: 'address', name: '_locker', type: 'address'}],
+		name: 'setLocker',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{internalType: 'address', name: '_token', type: 'address'},
+			{internalType: 'address', name: 'to', type: 'address'},
+			{internalType: 'uint256', name: 'amount', type: 'uint256'}
+		],
+		name: 'sweep',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'symbol',
+		outputs: [{internalType: 'string', name: '', type: 'string'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'token',
+		outputs: [{internalType: 'address', name: '', type: 'address'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [],
+		name: 'totalSupply',
+		outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+		stateMutability: 'view',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{internalType: 'address', name: 'to', type: 'address'},
+			{internalType: 'uint256', name: 'value', type: 'uint256'}
+		],
+		name: 'transfer',
+		outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+		stateMutability: 'nonpayable',
+		type: 'function'
+	},
+	{
+		inputs: [
+			{internalType: 'address', name: 'from', type: 'address'},
+			{internalType: 'address', name: 'to', type: 'address'},
+			{internalType: 'uint256', name: 'value', type: 'uint256'}
+		],
+		name: 'transferFrom',
+		outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+		stateMutability: 'nonpayable',
+		type: 'function'
 	}
 ] as const;
 export default abi;
