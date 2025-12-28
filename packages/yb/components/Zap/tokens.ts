@@ -1,6 +1,6 @@
-import { getAddress } from 'viem';
-import { z } from 'zod';
-import { BASE_TOKEN, BOOSTED_STAKER, LOCKER_TOKEN, LP_YYB, YVY_YB } from '../../constants';
+import {getAddress} from 'viem';
+import {z} from 'zod';
+import {BASE_TOKEN, BOOSTED_STAKER, LOCKER_TOKEN, LP_YYB, YVY_YB} from '../../constants';
 
 export const zevmaddressstring = z.custom<`0x${string}`>((val: string) => /^0x[a-fA-F0-9]{40}$/.test(val));
 export const EvmAddressSchema = zevmaddressstring.transform(s => getAddress(s));
@@ -90,16 +90,10 @@ export const OUTPUTS = [
 	TOKENS_MAP['lp-yYB']
 ];
 
-export const NO_DEX_NO_SLIPPAGE = [TOKENS_MAP['yYB'].address];
+export const NO_DEX_NO_SLIPPAGE = [TOKENS_MAP['yYB'].address, TOKENS_MAP['YBS'].address];
 
 export const TOKEN_ROUTES: {[key: string]: string[] | undefined} = {};
 
 export const PRICE_PROXIES: Record<string, keyof typeof TOKENS_MAP> = {
-	// YBS: 'yYB',
-	// TODO: - adjust
-	YBS: 'YB',
-	YB: 'YB',
-	yYB: 'YB',
-	yvyYB: 'YB',
-	'lp-yYB': 'YB'
+	YBS: 'YB'
 };
