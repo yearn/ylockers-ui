@@ -23,7 +23,7 @@ export default function ExperienceToggle({yDaemon, env}: {yDaemon: string; env: 
 
 	const {data} = useData(yDaemon, env);
 	const stakerApr = useMemo(() => {
-		const result = data.utilities.globalMinMaxActiveApr.max;
+		const result = data.utilities.globalMinMaxActiveApr.max || data.utilities.globalMinMaxProjectedApr.max;
 		if (result === 0n)
 			return <span title="APY will show when migration period ends after first week.">{emojiPercentage}</span>;
 		return <span className="font-mono">{fPercent(parseFloat(formatUnits(result, 18)))}</span>;
