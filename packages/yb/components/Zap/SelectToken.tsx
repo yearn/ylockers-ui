@@ -2,13 +2,18 @@
 
 import Button from '--lib/components/Button';
 import {ScrollArea} from '--lib/components/shadcn/scroll-area';
-import {INPUTS, OUTPUTS, Token, TOKEN_ROUTES, TOKENS} from './tokens';
-import useBalances from './hooks/useBalances';
-import {useCallback, useMemo} from 'react';
-import {fTokens, fUSD} from '--lib/tools/format';
+import useData from '--lib/hooks/useData';
+import useVault from '--lib/hooks/useVault';
+import {useVaultApy} from '--lib/hooks/useVaultApy';
 import {priced} from '--lib/tools/bmath';
-import {useParameters} from './Parameters';
+import {fPercent, fTokens, fUSD} from '--lib/tools/format';
+import {ENV, LP_YYB, YDAEMON} from '@/constants';
+import {useCallback, useMemo} from 'react';
+import {formatUnits} from 'viem';
+import useBalances from './hooks/useBalances';
 import ImageOrBg from './ImageOrBg';
+import {useParameters} from './Parameters';
+import {INPUTS, OUTPUTS, Token, TOKEN_ROUTES, TOKENS} from './tokens';
 
 function Balance({token}: {token: Token}) {
 	const {getBalance} = useBalances({tokens: TOKENS});
@@ -23,6 +28,25 @@ function Balance({token}: {token: Token}) {
 			<div>{balance.price ? fUSD(priced(balance.amount, balance.decimals, balance.price)) : 'price na'}</div>
 		</div>
 	);
+}
+
+function Apr({token}: {token: Token}) {
+	const {data} = useData(YDAEMON, ENV);
+	const vaultApy = useVaultApy(YDAEMON, ENV);
+	const {data: lpVault} = useVault(YDAEMON, LP_YYB);
+
+	const apr = useMemo(() => {
+		if (token.symbol === 'YBS') return parseFloat(formatUnits(data.utilities.globalMinMaxProjectedApr?.min, 18));
+		if (token.symbol === 'yvyYB') return vaultApy;
+		if (token.symbol === 'lp-yYB') {
+			return lpVault?.apr?.forwardAPR?.netAPR;
+		}
+		return undefined;
+	}, [token, data, vaultApy, lpVault]);
+
+	if (!apr) return <></>;
+
+	return <div className="text-sm text-neutral-400">{fPercent(apr)}</div>;
 }
 
 export default function SelectToken({mode, onClose}: {mode: 'in' | 'out'; onClose: () => void}) {
@@ -122,7 +146,7 @@ export default function SelectToken({mode, onClose}: {mode: 'in' | 'out'; onClos
 							</div>
 							<div>{token.symbol}</div>
 						</div>
-						<Balance token={token} />
+						{mode === 'in' ? <Balance token={token} /> : <Apr token={token} />}
 					</div>
 				))}
 			</ScrollArea>
