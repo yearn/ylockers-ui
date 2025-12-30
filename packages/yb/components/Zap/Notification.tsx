@@ -192,7 +192,7 @@ export default function Notification({className}: {className?: string}) {
 		<div
 			className={cn(
 				`
-    relative flex items-center justify-end text-sm`,
+    relative flex items-center justify-center text-sm`,
 				className
 			)}>
 			{error.key.length === 0 && (
