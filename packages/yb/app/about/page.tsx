@@ -1,3 +1,5 @@
+'use client';
+
 import Header, {headerItems} from '../../components/Header';
 import Link from 'next/link';
 import Background from '../../components/Background';
@@ -18,6 +20,62 @@ import {
 	YDAEMON,
 	ENV
 } from '@/constants';
+import {useState} from 'react';
+
+function CopyIcon({address}: {address: string}) {
+	const [copied, setCopied] = useState(false);
+
+	const handleCopy = async (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		await navigator.clipboard.writeText(address);
+		setCopied(true);
+		setTimeout(() => setCopied(false), 1500);
+	};
+
+	return (
+		<button
+			onClick={handleCopy}
+			className="ml-2 text-neutral-400 hover:text-white transition-colors"
+			title={copied ? 'Copied!' : 'Copy address'}>
+			{copied ? (
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="14"
+					height="14"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="2"
+					strokeLinecap="round"
+					strokeLinejoin="round">
+					<polyline points="20 6 9 17 4 12" />
+				</svg>
+			) : (
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="14"
+					height="14"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="2"
+					strokeLinecap="round"
+					strokeLinejoin="round">
+					<rect
+						x="9"
+						y="9"
+						width="13"
+						height="13"
+						rx="2"
+						ry="2"
+					/>
+					<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+				</svg>
+			)}
+		</button>
+	);
+}
 
 export default function Home() {
 	return (
@@ -142,59 +200,80 @@ export default function Home() {
 								<dl className="flex flex-col gap-2 p-4 md:p-6 ">
 									<div className="flex flex-col justify-between md:flex-row">
 										<dt className="text-white">Yearn Boosted Staker</dt>
-										<a
-											className="cursor-pointer text-xs hover:underline md:text-base"
-											href={`https://etherscan.io/address/${BOOSTED_STAKER}`}>
-											<dd className="font-mono">{BOOSTED_STAKER}</dd>
-										</a>
+										<div className="flex items-center">
+											<a
+												className="cursor-pointer text-xs hover:underline md:text-base"
+												href={`https://etherscan.io/address/${BOOSTED_STAKER}`}>
+												<dd className="font-mono">{BOOSTED_STAKER}</dd>
+											</a>
+											<CopyIcon address={BOOSTED_STAKER} />
+										</div>
 									</div>
 									<div className="flex flex-col justify-between md:flex-row">
 										<dt className="text-white">Rewards Distributor</dt>
-										<a
-											className="cursor-pointer text-xs hover:underline md:text-base"
-											href={`https://etherscan.io/address/${REWARDS_DISTRIBUTOR}`}>
-											<dd className="font-mono">{REWARDS_DISTRIBUTOR}</dd>
-										</a>
+										<div className="flex items-center">
+											<a
+												className="cursor-pointer text-xs hover:underline md:text-base"
+												href={`https://etherscan.io/address/${REWARDS_DISTRIBUTOR}`}>
+												<dd className="font-mono">{REWARDS_DISTRIBUTOR}</dd>
+											</a>
+											<CopyIcon address={REWARDS_DISTRIBUTOR} />
+										</div>
 									</div>
 									<div className="flex flex-col justify-between md:flex-row">
 										<dt className="text-white">Boosted Staker Utilities</dt>
-										<a
-											className="cursor-pointer text-xs hover:underline md:text-base"
-											href={`https://etherscan.io/address/${BOOSTED_STAKER_UTILITIES}`}>
-											<dd className="font-mono">{BOOSTED_STAKER_UTILITIES} </dd>
-										</a>
+										<div className="flex items-center">
+											<a
+												className="cursor-pointer text-xs hover:underline md:text-base"
+												href={`https://etherscan.io/address/${BOOSTED_STAKER_UTILITIES}`}>
+												<dd className="font-mono">{BOOSTED_STAKER_UTILITIES}</dd>
+											</a>
+											<CopyIcon address={BOOSTED_STAKER_UTILITIES} />
+										</div>
 									</div>
 									<div className="flex flex-col justify-between md:flex-row">
 										<dt className="text-white">{LOCKER_TOKEN_VAULT_NAME}</dt>
-										<a
-											className="cursor-pointer text-xs hover:underline md:text-base"
-											href={`https://etherscan.io/address/${LOCKER_TOKEN_VAULT}`}>
-											<dd className="font-mono">{LOCKER_TOKEN_VAULT}</dd>
-										</a>
+										<div className="flex items-center">
+											<a
+												className="cursor-pointer text-xs hover:underline md:text-base"
+												href={`https://etherscan.io/address/${LOCKER_TOKEN_VAULT}`}>
+												<dd className="font-mono">{LOCKER_TOKEN_VAULT}</dd>
+											</a>
+											<CopyIcon address={LOCKER_TOKEN_VAULT} />
+										</div>
 									</div>
 									<div className="flex flex-col justify-between md:flex-row">
 										<dt className="text-white">{STABLE_TOKEN_VAULT_NAME}</dt>
-										<a
-											className="cursor-pointer text-xs hover:underline md:text-base"
-											href={`https://etherscan.io/address/${STABLE_TOKEN_VAULT}`}>
-											<dd className="font-mono">{STABLE_TOKEN_VAULT}</dd>
-										</a>
+										<div className="flex items-center">
+											<a
+												className="cursor-pointer text-xs hover:underline md:text-base"
+												href={`https://etherscan.io/address/${STABLE_TOKEN_VAULT}`}>
+												<dd className="font-mono">{STABLE_TOKEN_VAULT}</dd>
+											</a>
+											<CopyIcon address={STABLE_TOKEN_VAULT} />
+										</div>
 									</div>
 									<div className="flex flex-col justify-between md:flex-row">
 										<dt className="text-white">{BASE_TOKEN_NAME} Token</dt>
-										<a
-											className="cursor-pointer text-xs hover:underline md:text-base"
-											href={`https://etherscan.io/address/${BASE_TOKEN}`}>
-											<dd className="font-mono">{BASE_TOKEN}</dd>
-										</a>
+										<div className="flex items-center">
+											<a
+												className="cursor-pointer text-xs hover:underline md:text-base"
+												href={`https://etherscan.io/address/${BASE_TOKEN}`}>
+												<dd className="font-mono">{BASE_TOKEN}</dd>
+											</a>
+											<CopyIcon address={BASE_TOKEN} />
+										</div>
 									</div>
 									<div className="flex flex-col justify-between md:flex-row">
 										<dt className="text-white">{LOCKER_TOKEN_NAME} Token</dt>
-										<a
-											className="cursor-pointer text-xs hover:underline md:text-base"
-											href={`https://etherscan.io/address/${LOCKER_TOKEN}`}>
-											<dd className="font-mono">{LOCKER_TOKEN}</dd>
-										</a>
+										<div className="flex items-center">
+											<a
+												className="cursor-pointer text-xs hover:underline md:text-base"
+												href={`https://etherscan.io/address/${LOCKER_TOKEN}`}>
+												<dd className="font-mono">{LOCKER_TOKEN}</dd>
+											</a>
+											<CopyIcon address={LOCKER_TOKEN} />
+										</div>
 									</div>
 								</dl>
 							</div>
