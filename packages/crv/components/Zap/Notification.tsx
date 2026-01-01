@@ -1,6 +1,6 @@
 'use client';
 
-import {useMounted} from '../../hooks/useMounted';
+import {useMounted} from '--lib/hooks/useMounted';
 import {springs} from '--lib/tools/motion';
 import {cn} from '--lib/tools/tailwind';
 import {motion} from 'framer-motion';

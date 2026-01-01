@@ -56,7 +56,7 @@ export default function Home() {
 							{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? (
 								fPercent(bmath.div(data.utilities.globalAverageApr, 10n ** 18n))
 							) : (
-								<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+								<span title="APR will show when migration period ends after first week.">—%</span>
 							)}
 						</h2>
 					</div>

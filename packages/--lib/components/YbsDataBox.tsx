@@ -9,10 +9,13 @@ import {TEnv} from '../tools/envType';
 
 export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; env: TEnv; className?: string}) {
 	const {data} = useData(yDaemon, env);
+	const isYb = env.baseTokenName === 'YB';
+	const emojiPercentage = isYb ? '💎✨%' : '🌈✨%';
 
 	const ybsGlobalAverageApr = useMemo(() => {
 		const result = data.utilities.globalAverageApr;
-		if (result === 0n) return <span title="APR will show when migration period ends after first week.">🌈✨%</span>;
+		if (result === 0n)
+			return <span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>;
 		return <span className="font-mono">{fPercent(parseFloat(formatUnits(result, 18)))}</span>;
 	}, [data]);
 
@@ -31,14 +34,14 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 
 		const min =
 			result.min === 0n ? (
-				<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
 				fPercent(parseFloat(formatUnits(result.min, 18)))
 			);
 
 		const max =
 			result.max === 0n ? (
-				<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
 				fPercent(parseFloat(formatUnits(result.max, 18)))
 			);
@@ -51,14 +54,14 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 
 		const min =
 			result.min === 0n ? (
-				<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
 				fPercent(parseFloat(formatUnits(result.min, 18)))
 			);
 
 		const max =
 			result.max === 0n ? (
-				<span title="APR will show when migration period ends after first week.">🌈✨%</span>
+				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
 				fPercent(parseFloat(formatUnits(result.max, 18)))
 			);
@@ -116,7 +119,7 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 					<span className="font-semibold text-lg">YOUR POSITION</span>
 					<span className="font-bold font-mono px-2 py-1 bg-disabled-bg rounded-lg text-boost-primary">
 						{Number(formatUnits(data.utilities.userActiveBoostMultiplier, 18)) > 0
-							? Number(formatUnits(data.utilities.userActiveBoostMultiplier, 18)).toFixed(6)
+							? Number(formatUnits(data.utilities.userActiveBoostMultiplier, 18)).toFixed(2)
 							: formatUnits(data.utilities.userActiveBoostMultiplier, 18)}
 						x BOOST
 					</span>
@@ -134,12 +137,11 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 					<span className="font-bold font-mono">{ybsUserActiveApr}</span>
 				</div>
 				<div className="flex justify-between">
-					<span className="font-thin opacity-70	">Claimable Rewards</span>
+					<span className="font-thin opacity-70	">Claimable {env.stableTokenVaultName}</span>
 					<Tokens
 						className="font-bold"
 						amount={data.rewards.claimable}
 						decimals={data.rewards.decimals}
-						suffix={env.stableTokenVaultName}
 					/>
 				</div>
 
@@ -149,7 +151,7 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 						{Number(formatUnits(data.utilities.userProjectedBoostMultiplier, 18)) > 0
 							? Number(formatUnits(data.utilities.userProjectedBoostMultiplier, 18)).toFixed(6)
 							: formatUnits(data.utilities.userProjectedBoostMultiplier, 18)}
-						x BOOST
+						x
 					</span>
 				</div>
 				<div className="flex justify-between">
@@ -168,12 +170,11 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 					/>
 				</div>
 				<div className="flex justify-between">
-					<span className="font-thin opacity-70	">Rewards this week</span>
+					<span className="font-thin opacity-70	">Rewards this week ({env.stableTokenName})</span>
 					<Tokens
 						className="font-bold"
 						amount={data.utilities.weeklyRewardAmount}
 						decimals={18}
-						suffix={env.stableTokenName}
 					/>
 				</div>
 				<div className="flex justify-between">

@@ -1,0 +1,122 @@
+const nftHelperAbi = [
+	{
+		type: 'constructor',
+		inputs: [
+			{
+				name: '_gaugeController',
+				type: 'address',
+				internalType: 'address'
+			},
+			{
+				name: '_veYB',
+				type: 'address',
+				internalType: 'address'
+			}
+		],
+		stateMutability: 'nonpayable'
+	},
+	{
+		type: 'function',
+		name: 'WEIGHT_VOTE_DELAY',
+		inputs: [],
+		outputs: [
+			{
+				name: '',
+				type: 'uint256',
+				internalType: 'uint256'
+			}
+		],
+		stateMutability: 'view'
+	},
+	{
+		type: 'function',
+		name: 'gaugeController',
+		inputs: [],
+		outputs: [
+			{
+				name: '',
+				type: 'address',
+				internalType: 'contract IYBGaugeController'
+			}
+		],
+		stateMutability: 'view'
+	},
+	{
+		type: 'function',
+		name: 'getNftTransferInfo',
+		inputs: [
+			{
+				name: 'user',
+				type: 'address',
+				internalType: 'address'
+			}
+		],
+		outputs: [
+			{
+				name: 'tokenId',
+				type: 'uint256',
+				internalType: 'uint256'
+			},
+			{
+				name: 'lockedAmount',
+				type: 'uint256',
+				internalType: 'uint256'
+			},
+			{
+				name: 'isVotePowerCleared',
+				type: 'bool',
+				internalType: 'bool'
+			},
+			{
+				name: 'isPermanentLock',
+				type: 'bool',
+				internalType: 'bool'
+			},
+			{
+				name: 'voteClearTime',
+				type: 'uint256',
+				internalType: 'uint256'
+			},
+			{
+				name: 'votedGauges',
+				type: 'address[]',
+				internalType: 'address[]'
+			}
+		],
+		stateMutability: 'view'
+	},
+	{
+		type: 'function',
+		name: 'getTokenId',
+		inputs: [
+			{
+				name: 'user',
+				type: 'address',
+				internalType: 'address'
+			}
+		],
+		outputs: [
+			{
+				name: 'tokenId',
+				type: 'uint256',
+				internalType: 'uint256'
+			}
+		],
+		stateMutability: 'pure'
+	},
+	{
+		type: 'function',
+		name: 'veYB',
+		inputs: [],
+		outputs: [
+			{
+				name: '',
+				type: 'address',
+				internalType: 'contract IYBVotingEscrow'
+			}
+		],
+		stateMutability: 'view'
+	}
+] as const;
+
+export default nftHelperAbi;

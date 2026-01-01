@@ -21,3 +21,8 @@ export type TEnv = {
 export type TCrvEnv = TEnv & {
 	yLockerDrops: EvmAddress;
 };
+
+export type TYbEnv = TEnv & {
+	oracleRegistry?: EvmAddress;
+	lockerMigration?: EvmAddress;
+};

@@ -1,0 +1,155 @@
+'use client';
+
+import Button from '--lib/components/Button';
+import {ScrollArea} from '--lib/components/shadcn/scroll-area';
+import useData from '--lib/hooks/useData';
+import useVault from '--lib/hooks/useVault';
+import {useVaultApy} from '--lib/hooks/useVaultApy';
+import {priced} from '--lib/tools/bmath';
+import {fPercent, fTokens, fUSD} from '--lib/tools/format';
+import {ENV, LP_YYB, YDAEMON} from '@/constants';
+import {useCallback, useMemo} from 'react';
+import {formatUnits} from 'viem';
+import useBalances from './hooks/useBalances';
+import ImageOrBg from './ImageOrBg';
+import {useParameters} from './Parameters';
+import {INPUTS, OUTPUTS, Token, TOKEN_ROUTES, TOKENS} from './tokens';
+
+function Balance({token}: {token: Token}) {
+	const {getBalance} = useBalances({tokens: TOKENS});
+	const balance = useMemo(() => getBalance(token), [getBalance, token]);
+
+	const dust = 100n;
+	if (balance.amount < dust) return <></>;
+
+	return (
+		<div className="flex flex-col items-end gap-0 text-sm text-neutral-400">
+			<div>{fTokens(balance.amount, balance.decimals)}</div>
+			<div>{balance.price ? fUSD(priced(balance.amount, balance.decimals, balance.price)) : 'price na'}</div>
+		</div>
+	);
+}
+
+function Apr({token}: {token: Token}) {
+	const {data} = useData(YDAEMON, ENV);
+	const vaultApy = useVaultApy(YDAEMON, ENV);
+	const {data: lpVault} = useVault(YDAEMON, LP_YYB);
+
+	const apr = useMemo(() => {
+		if (token.symbol === 'YBS') return parseFloat(formatUnits(data.utilities.globalMinMaxProjectedApr?.min, 18));
+		if (token.symbol === 'yvyYB') return vaultApy;
+		if (token.symbol === 'lp-yYB') {
+			return lpVault?.apr?.forwardAPR?.netAPR;
+		}
+		return undefined;
+	}, [token, data, vaultApy, lpVault]);
+
+	if (!apr) return <></>;
+
+	return <div className="text-sm text-neutral-400">{fPercent(apr)}</div>;
+}
+
+export default function SelectToken({mode, onClose}: {mode: 'in' | 'out'; onClose: () => void}) {
+	const {inputToken, setInputToken, setInputAmount, outputToken, setOutputToken, setOutputAmount} = useParameters();
+
+	const {getBalance} = useBalances({tokens: TOKENS});
+
+	const computeInputTokens = useCallback(() => {
+		const result: Token[] = [];
+		for (const token of INPUTS) {
+			if (!token.legacy) result.push(token);
+			else if (getBalance(token).amount > 0n) result.push(token);
+		}
+		return result;
+	}, [getBalance]);
+
+	const computeOutputTokens = useCallback((_inputToken?: Token) => {
+		if (_inputToken === undefined) return OUTPUTS;
+		const outputSymbols = TOKEN_ROUTES[_inputToken.symbol] ?? OUTPUTS.map(t => t.symbol);
+		return OUTPUTS.filter(t => outputSymbols.includes(t.symbol));
+	}, []);
+
+	const tokens = useMemo(() => {
+		if (mode === 'in') return computeInputTokens();
+		else return computeOutputTokens(inputToken);
+	}, [mode, computeInputTokens, inputToken, computeOutputTokens]);
+
+	const onSelect = useCallback(
+		(token: Token) => {
+			if (mode === 'in' && token !== inputToken) {
+				setInputToken(token);
+				setInputAmount(undefined);
+				setOutputAmount(undefined);
+
+				const outputTokens = computeOutputTokens(token);
+				if (!outputTokens.find(t => t === outputToken)) {
+					setOutputToken(outputTokens[0]);
+				} else if (token === outputToken) {
+					setOutputToken(OUTPUTS.find(t => t !== token)!);
+				}
+			} else if (mode === 'out' && token !== outputToken) {
+				setOutputToken(token);
+				setOutputAmount(undefined);
+				if (token === inputToken) {
+					setInputAmount(undefined);
+					setInputToken(INPUTS.find(t => t !== token)!);
+				}
+			}
+
+			onClose();
+		},
+		[
+			mode,
+			onClose,
+			inputToken,
+			setInputToken,
+			setInputAmount,
+			outputToken,
+			setOutputToken,
+			setOutputAmount,
+			computeOutputTokens
+		]
+	);
+
+	return (
+		<div className="px-4 py-6 flex flex-col gap-3 bg-input-bg rounded-xl">
+			<div className="flex items-center justify-between">
+				<div className="text-sm text-neutral-400">Select an {mode === 'in' ? 'input' : 'output'} token</div>
+				<div className="text-sm">
+					<Button
+						onClick={onClose}
+						className="px-2 py-1 text-xs text-neutral-200 rounded-full">
+						Close
+					</Button>
+				</div>
+			</div>
+			<ScrollArea className="w-full max-h-[16rem] overflow-auto">
+				{tokens.map(token => (
+					<div
+						key={token.symbol}
+						onClick={() => onSelect(token)}
+						className={`
+        pl-4 pr-12 py-4
+        flex items-center justify-between
+        border border-transparent
+        hover:bg-deeper-primary
+        rounded-xl cursor-pointer`}>
+						<div className="flex items-center gap-4">
+							<div className="size-[32px] rounded-full">
+								<ImageOrBg
+									bgClassName="bg-deeper-primary-bg"
+									src={token.icon}
+									alt={token.symbol}
+									width={32}
+									height={32}
+								/>
+							</div>
+							<div>{token.symbol}</div>
+						</div>
+						{mode === 'in' ? <Balance token={token} /> : <Apr token={token} />}
+					</div>
+				))}
+			</ScrollArea>
+		</div>
+	);
+}
