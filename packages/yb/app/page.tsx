@@ -3,16 +3,15 @@
 import Button from '--lib/components/Button';
 import Header, {headerItems} from '../components/Header';
 import Link from 'next/link';
-import useData from '--lib/hooks/useData';
 import {fPercent} from '--lib/tools/format';
-import bmath from '--lib/tools/bmath';
 import Background from '../components/Background';
 import Ticker from '--lib/components/Ticker';
+import {useVaultApy} from '--lib/hooks/useVaultApy';
 import {BASE_TOKEN_NAME, ENV, LOCKER_TOKEN_NAME, STABLE_TOKEN_NAME, YDAEMON} from '@/constants';
 import Image from 'next/image';
 
 export default function Home() {
-	const {data} = useData(YDAEMON, ENV);
+	const vaultApy = useVaultApy(YDAEMON, ENV);
 
 	return (
 		<main className="flex flex-col items-center min-h-screen text-white">
@@ -52,11 +51,11 @@ export default function Home() {
 							<Button>Launch App</Button>
 						</Link>
 						<h2 className="text-4xl font-bold text-bright-primary font-mono">
-							APR{' '}
-							{data.utilities && data.utilities.globalAverageApr.toString() !== '0' ? (
-								fPercent(bmath.div(data.utilities.globalAverageApr, 10n ** 18n))
+							APY{' '}
+							{Number.isFinite(vaultApy) && vaultApy > 0 ? (
+								fPercent(vaultApy)
 							) : (
-								<span title="APR will show when migration period ends after first week.">—%</span>
+								<span title="APY will show when migration period ends after first week.">—%</span>
 							)}
 						</h2>
 					</div>
