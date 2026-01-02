@@ -27,8 +27,12 @@ From `packages/--lib/hooks/useData.ts` / `data.utilities`:
 - Existing APR ranges already imply min/max boost (1.0x–2.5x)
 
 Open question for vault boost:
-- Do we have a reliable “vault effective boost multiplier” in current data?
-  - If not, represent vault as `MAX` (2.5x) only when the vault is known to be whitelisted/max-boost, otherwise show `N/A` until a source is added.
+- Yes: we can query the vault’s *staking account* (the `lockerTokenVaultStrategy` address) against the same onchain Utilities contract used for wallet boost:
+  - `Utilities.getUserActiveBoostMultiplier(env.lockerTokenVaultStrategy)` → vault effective boost multiplier (scaled by `1e18`, like `userActiveBoostMultiplier`).
+  - Optional label helper: `YearnBoostedStaker.approvedWeightedStaker(env.lockerTokenVaultStrategy)` → whether the vault strategy is whitelisted/“weighted” (i.e. should earn max boost immediately on new stakes).
+- UX implication:
+  - Prefer showing the numeric boost when available, but label it as “Auto-boosted (handled for you)” (and/or “Whitelisted”) to avoid implying it’s user-controlled.
+  - If `approvedWeightedStaker` is `true`, it’s safe to present “Max boost” messaging (2.5x) for the vault.
 
 ## UX Requirements
 Wallet diagram (native Earn stable token mode):
@@ -88,6 +92,5 @@ Add vault diagram in deposit panels (right side):
 ## Open Questions
 - Is the boost schedule always “4 weeks to max” across all lockers, or does it vary by app?
 - For vault boost:
-  - Is there a contract call/source we should add to `useData` to compute the vault’s effective boost?
-  - If not, should we explicitly label vault mode as “Auto-boosted (handled for you)” rather than implying a numeric boost?
-
+  - Use `Utilities.getUserActiveBoostMultiplier(env.lockerTokenVaultStrategy)` (and optionally `approvedWeightedStaker`) rather than treating vault boost as unknowable.
+  - Still label vault mode as “Auto-boosted (handled for you)” even when a numeric multiplier is shown.

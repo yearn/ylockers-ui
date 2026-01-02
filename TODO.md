@@ -14,6 +14,7 @@ Lightweight, in-repo running list while reviewing/using the app.
 - [ ] (2026-01-01) Zap tab (“Get y<Asset>”) should be prioritized when wallet has 0 balance of the underlying asset — define behavior (default tab? highlight CTA?) and implement in relevant app(s) (e.g. `crv`, `yb`, `prisma`) — spec: `docs/specs/get-tab-priority-when-zero-locker-balance.md`.
 - [ ] (2026-01-01) Explore copy/terminology in main card header + tabs: replace “Stake {LOCKER_TOKEN_NAME} / Auto-Compound {LOCKER_TOKEN_NAME}” with “Earn {STABLE_TOKEN_NAME} / Earn {LOCKER_TOKEN_NAME}”; evaluate whether “Stake” should become “Deposit” or “Activate” for native earning vs vault receipt-token flow — spec: `docs/specs/earn-copy-and-activate-terminology.md`.
 - [ ] (2026-01-01) Explore a more comprehensive boost diagram: show current wallet boost as filled week/level elements; add an “Earn {LOCKER_TOKEN_NAME}” vault boost visualization; consider an average-boost demarcation line for staked y<Asset> — spec: `docs/specs/boost-diagram-wallet-and-vault.md`.
+- [ ] (2026-01-01) Add ENS support: resolve connected wallet address to ENS name (and optionally avatar) for display in header/connect button — spec: `docs/specs/ens-support.md`.
 - [ ] (YYYY-MM-DD) {summary} — {screen} — {why it matters}
 
 ## Tech Debt
