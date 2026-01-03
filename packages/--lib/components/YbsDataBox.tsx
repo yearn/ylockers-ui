@@ -10,16 +10,9 @@ import {TEnv} from '../tools/envType';
 const formatAprRangeValue = (value: bigint) => {
 	const apr = parseFloat(formatUnits(value, 18));
 	if (!Number.isFinite(apr)) return fPercent(0, 0);
-	const percent = apr * 100;
-	const integerDigits = Math.max(1, `${Math.floor(Math.abs(percent))}`.length);
-	let decimals = Math.min(2, Math.max(0, 4 - integerDigits));
-	let formatted = fPercent(apr, decimals);
-	const digitCount = formatted.replace(/[^0-9]/g, '').length;
-	if (digitCount > 4 && decimals > 0) {
-		decimals = Math.max(0, decimals - 1);
-		formatted = fPercent(apr, decimals);
-	}
-	return formatted;
+	const integerDigits = Math.max(1, `${Math.floor(Math.abs(apr * 100))}`.length);
+	const decimals = Math.min(2, Math.max(0, 4 - integerDigits));
+	return fPercent(apr, decimals);
 };
 
 export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; env: TEnv; className?: string}) {
