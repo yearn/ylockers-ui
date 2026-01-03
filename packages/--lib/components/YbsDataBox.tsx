@@ -7,6 +7,14 @@ import {MdInfo, MdArrowRightAlt} from 'react-icons/md';
 import {HoverCard, HoverCardContent, HoverCardTrigger} from '../components/shadcn/hover-card';
 import {TEnv} from '../tools/envType';
 
+const formatAprRangeValue = (value: bigint) => {
+	const apr = parseFloat(formatUnits(value, 18));
+	if (!Number.isFinite(apr)) return fPercent(0, 0);
+	const integerDigits = Math.max(1, `${Math.floor(Math.abs(apr * 100))}`.length);
+	const decimals = Math.min(2, Math.max(0, 4 - integerDigits));
+	return fPercent(apr, decimals);
+};
+
 export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; env: TEnv; className?: string}) {
 	const {data} = useData(yDaemon, env);
 	const isYb = env.baseTokenName === 'YB';
@@ -36,14 +44,14 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 			result.min === 0n ? (
 				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
-				fPercent(parseFloat(formatUnits(result.min, 18)))
+				formatAprRangeValue(result.min)
 			);
 
 		const max =
 			result.max === 0n ? (
 				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
-				fPercent(parseFloat(formatUnits(result.max, 18)))
+				formatAprRangeValue(result.max)
 			);
 
 		return {min, max};
@@ -56,14 +64,14 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 			result.min === 0n ? (
 				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
-				fPercent(parseFloat(formatUnits(result.min, 18)))
+				formatAprRangeValue(result.min)
 			);
 
 		const max =
 			result.max === 0n ? (
 				<span title="APR will show when migration period ends after first week.">{emojiPercentage}</span>
 			) : (
-				fPercent(parseFloat(formatUnits(result.max, 18)))
+				formatAprRangeValue(result.max)
 			);
 
 		return {min, max};
