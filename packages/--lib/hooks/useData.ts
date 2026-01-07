@@ -47,7 +47,8 @@ export const DataSchema = z.object({
 			claimable: z.bigint().default(0n),
 			claimableUsd: z.number().default(0),
 			vaultBalance: z.bigint().default(0n),
-			vaultBalanceUsd: z.number().default(0)
+			vaultBalanceUsd: z.number().default(0),
+			vaultPricePerShare: z.bigint().default(0n)
 		})
 		.default({}),
 
@@ -351,6 +352,14 @@ export default function useData(yDaemon: string, env: TEnv) {
 					parseUnits((prices?.[env.lockerToken] ?? 0).toString(), 18).toString(),
 					parseUnits((prices?.[env.stableTokenVault] ?? 0).toString(), 18).toString()
 				]
+			},
+
+			{
+				index: 31,
+				key: 'stableVault.pps',
+				address: env.stableTokenVault,
+				abi: abis.VaultV3,
+				functionName: 'pricePerShare'
 			}
 		],
 		[
@@ -464,7 +473,8 @@ export default function useData(yDaemon: string, env: TEnv) {
 					get<bigint>('stableVault.balance'),
 					get<number>('rewards.decimals'),
 					prices[env.stableTokenVault]
-				)
+				),
+				vaultPricePerShare: get<bigint>('stableVault.pps')
 			},
 
 			strategy: {
