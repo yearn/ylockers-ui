@@ -25,6 +25,10 @@ export function mul(a: number, b: bigint): bigint {
 	return result / scaleFactor;
 }
 
+export function mulWad(a: bigint, b: bigint): bigint {
+	return (a * b) / 10n ** 18n;
+}
+
 export function min(...args: bigint[]): bigint {
 	return args.reduce((a, b) => (a < b ? a : b));
 }
@@ -42,5 +46,5 @@ export function toApy(apr: bigint) {
 	return (1 + aprFloat / 52) ** 52 - 1;
 }
 
-const bmath = {div, mul, min, max, priced, toApy};
+const bmath = {div, mul, mulWad, min, max, priced, toApy};
 export default bmath;

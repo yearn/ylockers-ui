@@ -1,5 +1,6 @@
 import {formatUnits} from 'viem';
 import {fPercent} from '../tools/format';
+import bmath from '../tools/bmath';
 import Tokens from './Tokens';
 import useData from '../hooks/useData';
 import {useMemo} from 'react';
@@ -181,7 +182,7 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 					<span className="font-thin opacity-70	">Rewards this week ({env.stableTokenName})</span>
 					<Tokens
 						className="font-bold"
-						amount={data.utilities.weeklyRewardAmount}
+						amount={bmath.mulWad(data.utilities.weeklyRewardAmount, data.rewards.vaultPricePerShare)}
 						decimals={18}
 					/>
 				</div>
