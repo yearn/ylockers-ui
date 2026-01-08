@@ -114,14 +114,18 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 				<span className="font-mono">{activeApr.max}</span>
 			</span>
 
-			<div className="flex items-end justify-between gap-2">
-				<span className="text-bright-primary">Projected APR</span>
-				<span className="flex items-center gap-2 whitespace-nowrap text-bright-primary">
-					<span className="font-mono">{projectedApr.min}</span>
-					<MdArrowRightAlt />
-					<span className="font-mono">{projectedApr.max}</span>
-				</span>
-			</div>
+			{(!isYb ||
+				data.utilities.globalMinMaxProjectedApr.min !== 0n ||
+				data.utilities.globalMinMaxProjectedApr.max !== 0n) && (
+				<div className="flex items-end justify-between gap-2">
+					<span className="text-bright-primary">Projected APR</span>
+					<span className="flex items-center gap-2 whitespace-nowrap text-bright-primary">
+						<span className="font-mono">{projectedApr.min}</span>
+						<MdArrowRightAlt />
+						<span className="font-mono">{projectedApr.max}</span>
+					</span>
+				</div>
+			)}
 
 			<div className="my-4 flex flex-col space-y-2">
 				<div className="border-t-2 border-deeper-primary/60 flex justify-between items-center py-4">
@@ -163,10 +167,12 @@ export default function YbsDataBox({yDaemon, env, className}: {yDaemon: string; 
 						x
 					</span>
 				</div>
-				<div className="flex justify-between">
-					<span className="font-thin opacity-70	">Projected APR</span>
-					<span className="font-bold font-mono">{ybsUserProjectedApr}</span>
-				</div>
+				{(!isYb || data.utilities.userProjectedApr !== 0n) && (
+					<div className="flex justify-between">
+						<span className="font-thin opacity-70	">Projected APR</span>
+						<span className="font-bold font-mono">{ybsUserProjectedApr}</span>
+					</div>
+				)}
 			</div>
 			<div className="border-t-2 border-deeper-primary/60 flex flex-col space-y-2">
 				<span className="font-semibold py-4 text-lg">YEARN BOOSTED STAKER</span>
