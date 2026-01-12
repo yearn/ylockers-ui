@@ -225,11 +225,12 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 										<span>{item.name}</span>
 									</td>
 									<td className="text-base font-mono py-2 cursor-pointer pr-4 md:pr-0">
-										{(item.apr.forwardAPR.netAPR * 100).toLocaleString(undefined, {
-											minimumFractionDigits: 2,
-											maximumFractionDigits: 2
-										})}
-										%
+										{item.apr.forwardAPR.netAPR * 100 > 500
+											? '>500%'
+											: `${(item.apr.forwardAPR.netAPR * 100).toLocaleString(undefined, {
+													minimumFractionDigits: 2,
+													maximumFractionDigits: 2
+											  })}%`}
 									</td>
 									<td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
 										{(item.apr.netAPR * 100).toLocaleString(undefined, {
