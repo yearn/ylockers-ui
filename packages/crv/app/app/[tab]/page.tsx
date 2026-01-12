@@ -53,7 +53,7 @@ function VEYFIStatus() {
 		async function fetchVaultData() {
 			try {
 				const response = await fetch(
-					'https://ydaemon.yearn.finance/1/vaults/0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F'
+					'https://ydaemon.yearn.fi/1/vaults/0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F'
 				);
 				const data = await response.json();
 				const stakingApr = data.staking?.rewards[0]?.apr;
