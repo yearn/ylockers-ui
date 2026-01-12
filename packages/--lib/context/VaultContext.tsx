@@ -11,7 +11,9 @@ const VaultContext = createContext<VaultContextType | undefined>(undefined);
 
 export function VaultProvider({children}: {children: ReactNode}) {
 	const daemon = process.env.NEXT_PUBLIC_YDAEMON ?? 'https://ydaemon.yearn.fi';
-	const url = `${daemon}/1/vaults/all`;
+	const vaultsUrl = new URL(`${daemon}/1/vaults/all`);
+	vaultsUrl.searchParams.set('limit', '2500');
+	const url = vaultsUrl.toString();
 	const {
 		data: vaultData,
 		error,
