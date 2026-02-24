@@ -5,6 +5,7 @@ import {
 	useConfig,
 	useReadContract,
 	useSimulateContract,
+	useSwitchChain,
 	useWaitForTransactionReceipt,
 	useWriteContract
 } from 'wagmi';
@@ -35,22 +36,25 @@ function GreatSuccess({hash}: {hash: `0x${string}`}) {
 
 export default function ClaimAll({yDaemon, className, env}: {yDaemon: string; className?: string; env: TEnv}) {
 	const {openConnectModal} = useConnectModal();
-	const account = useAccount();
+	const {isConnected, chainId, address} = useAccount();
+	const {switchChain} = useSwitchChain();
 	const {data, refetch} = useData(yDaemon, env);
 	const hasClaims = useMemo(() => data.rewards.claimable > 0n, [data]);
-	const disabled = useMemo(() => account.isConnected && !hasClaims, [account, hasClaims]);
+	const disabled = useMemo(() => isConnected && chainId === 1 && !hasClaims, [isConnected, chainId, hasClaims]);
 	const [success, setSuccess] = useState(false);
 
 	const label = useMemo(() => {
-		return account.isConnected ? 'Claim All' : 'Connect Wallet';
-	}, [account]);
+		if (!isConnected) return 'Connect Wallet';
+		if (chainId !== 1) return 'Switch Chain';
+		return 'Claim All';
+	}, [isConnected, chainId]);
 
 	const range = useReadContract({
 		address: env.rewardsDistributor,
 		abi: abis.SingleTokenRewardDistributor,
 		functionName: 'getSuggestedClaimRange',
-		args: [account.address ?? zeroAddress],
-		query: {enabled: account.isConnected},
+		args: [address ?? zeroAddress],
+		query: {enabled: isConnected},
 		chainId: 1
 	});
 
@@ -59,7 +63,7 @@ export default function ClaimAll({yDaemon, className, env}: {yDaemon: string; cl
 		abi: abis.SingleTokenRewardDistributor,
 		functionName: 'claimWithRange',
 		args: [range.data?.[0] ?? 0n, range.data?.[1] ?? 0n],
-		query: {enabled: account.isConnected && range.isSuccess && hasClaims},
+		query: {enabled: isConnected && range.isSuccess && hasClaims},
 		chainId: 1
 	});
 
@@ -98,10 +102,10 @@ export default function ClaimAll({yDaemon, className, env}: {yDaemon: string; cl
 	}, [isError, write, receipt]);
 
 	const theme = useMemo(() => {
-		if (!account.isConnected) return 'transparent';
+		if (!isConnected) return 'transparent';
 		if (receipt?.isLoading) return 'onit';
 		return 'default';
-	}, [account, receipt]);
+	}, [isConnected, receipt]);
 
 	useEffect(() => {
 		if (receipt.isSuccess && !success) {
@@ -113,12 +117,14 @@ export default function ClaimAll({yDaemon, className, env}: {yDaemon: string; cl
 	const onClick = useCallback(() => {
 		if (receipt?.isLoading) {
 			return;
-		} else if (!account.isConnected) {
+		} else if (!isConnected) {
 			openConnectModal?.();
+		} else if (chainId !== 1) {
+			switchChain?.({chainId: 1});
 		} else {
 			write.writeContract(simulation.data!.request);
 		}
-	}, [account, openConnectModal, write, receipt, simulation]);
+	}, [isConnected, chainId, openConnectModal, switchChain, write, receipt, simulation]);
 
 	return (
 		<div className={`flex flex-col gap-2 ${className}`}>

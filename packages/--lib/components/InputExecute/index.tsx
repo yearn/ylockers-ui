@@ -2,7 +2,7 @@
 
 import {useConnectModal} from '@rainbow-me/rainbowkit';
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {useAccount, useConfig} from 'wagmi';
+import {useAccount, useConfig, useSwitchChain} from 'wagmi';
 import {InputTokenAmount} from '../InputTokenAmount';
 import Provider, {Task, useProvider} from './provider';
 import Button from '../Button';
@@ -32,6 +32,7 @@ function GreatSuccess({hash, message}: {hash: `0x${string}`; message: string}) {
 function Provided({className, noInput = false}: {className?: string; noInput?: boolean}) {
 	const {openConnectModal} = useConnectModal();
 	const account = useAccount();
+	const {switchChain} = useSwitchChain();
 	const [mounted, setMounted] = useState(false);
 	useEffect(() => setMounted(true), []);
 
@@ -52,7 +53,7 @@ function Provided({className, noInput = false}: {className?: string; noInput?: b
 	const hasBalance = useMemo(() => task.token.balance > 0n, [task]);
 
 	const disabled = useMemo(
-		() => mounted && account.isConnected && (!hasBalance || amount === 0n),
+		() => mounted && account.isConnected && account.chainId === 1 && (!hasBalance || amount === 0n),
 		[mounted, account, hasBalance, amount]
 	);
 
@@ -78,6 +79,11 @@ function Provided({className, noInput = false}: {className?: string; noInput?: b
 			return {
 				key: 'connect',
 				text: 'Connect'
+			};
+		if (account.chainId !== 1)
+			return {
+				key: 'switch-chain',
+				text: 'Switch Chain'
 			};
 		if (needsApproval && !approve.receipt.isLoading)
 			return {
@@ -159,12 +165,14 @@ function Provided({className, noInput = false}: {className?: string; noInput?: b
 			return;
 		} else if (!account.isConnected) {
 			openConnectModal?.();
+		} else if (account.chainId !== 1) {
+			switchChain?.({chainId: 1});
 		} else if (needsApproval) {
 			approve.write();
 		} else {
 			execute.write();
 		}
-	}, [account, approve, execute, openConnectModal, needsApproval]);
+	}, [account, approve, execute, openConnectModal, needsApproval, switchChain]);
 
 	useEffect(() => {
 		if (token.balance && noInput) {
