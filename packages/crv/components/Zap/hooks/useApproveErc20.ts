@@ -13,7 +13,7 @@ import {ZAP} from '@/constants';
 
 export function useApproveErc20() {
 	const {isConnected, address} = useAccount();
-	const {inputToken, inputIsYbs} = useParameters();
+	const {inputToken, inputIsYbs, inputAmountExpanded} = useParameters();
 
 	const allowance = useReadContract({
 		abi: erc20Abi,
@@ -38,10 +38,11 @@ export function useApproveErc20() {
 					isConnected &&
 					inputToken !== undefined &&
 					!inputIsYbs &&
-					allowance.isFetched
+					allowance.isFetched &&
+					(allowance.data ?? 0n) < inputAmountExpanded
 			}
 		}),
-		[isConnected, inputToken, inputIsYbs, allowance]
+		[isConnected, inputToken, inputIsYbs, inputAmountExpanded, allowance]
 	);
 
 	const simulation = useSimulateContract(parameters);
