@@ -38,8 +38,7 @@ export function useApproveErc20() {
 					isConnected &&
 					inputToken !== undefined &&
 					!inputIsYbs &&
-					allowance.isFetched &&
-					allowance.data! === 0n
+					allowance.isFetched
 			}
 		}),
 		[isConnected, inputToken, inputIsYbs, allowance]
