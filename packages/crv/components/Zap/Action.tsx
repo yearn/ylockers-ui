@@ -1,6 +1,6 @@
 'use client';
 
-import {useAccount} from 'wagmi';
+import {useAccount, useSwitchChain} from 'wagmi';
 import Button from '--lib/components/Button';
 import {ReactNode, useCallback, useEffect, useMemo} from 'react';
 import {useConnectModal} from '@rainbow-me/rainbowkit';
@@ -37,7 +37,8 @@ export function ActionDisplay({
 
 export function Action({className}: {className?: string}) {
 	const {openConnectModal} = useConnectModal();
-	const {isConnected} = useAccount();
+	const {isConnected, chainId} = useAccount();
+	const {switchChain} = useSwitchChain();
 
 	const {inputToken, inputAmount, setInputAmount, outputAmount, setOutputAmount, theme, setTheme, onZap} =
 		useParameters();
@@ -62,6 +63,7 @@ export function Action({className}: {className?: string}) {
 
 	const disabled = useMemo(() => {
 		if (!isConnected) return false;
+		if (chainId !== 1) return false;
 		if (isVerifying || isConfirming) return true;
 		if (!inputAmount || !outputAmount) return true;
 		if (insufficientBalance) return true;
@@ -72,6 +74,7 @@ export function Action({className}: {className?: string}) {
 		return false;
 	}, [
 		isConnected,
+		chainId,
 		isVerifying,
 		isConfirming,
 		inputAmount,
@@ -90,6 +93,7 @@ export function Action({className}: {className?: string}) {
 
 	const _label = useMemo(() => {
 		if (!isConnected) return 'Connect';
+		if (chainId !== 1) return 'Switch Chain';
 		if (insufficientBalance) return 'Insufficient funds';
 		if (!inputAmount || !outputAmount) return 'Enter zap amount';
 		if (isConfirming) return 'Confirming...';
@@ -98,6 +102,7 @@ export function Action({className}: {className?: string}) {
 		return 'Zap!';
 	}, [
 		isConnected,
+		chainId,
 		isConfirming,
 		inputToken,
 		inputAmount,
@@ -163,12 +168,14 @@ export function Action({className}: {className?: string}) {
 	const onClick = useCallback(() => {
 		if (!isConnected) {
 			openConnectModal?.();
+		} else if (chainId !== 1) {
+			switchChain?.({chainId: 1});
 		} else if (needsApproval) {
 			approve();
 		} else {
 			zap.write.writeContract(zap.simulation.data!.request);
 		}
-	}, [isConnected, openConnectModal, needsApproval, approve, zap]);
+	}, [isConnected, chainId, switchChain, openConnectModal, needsApproval, approve, zap]);
 
 	return (
 		<ActionDisplay
