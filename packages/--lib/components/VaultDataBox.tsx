@@ -5,10 +5,10 @@ import {fPercent, fUSD} from '../tools/format';
 import {useMemo} from 'react';
 import Tokens from './Tokens';
 import {useVaultApy} from '../hooks/useVaultApy';
-import {TEnv} from '../tools/envType';
+import type {TEnv} from '../tools/envType';
 
 export default function VaultDataBox({yDaemon, env, className}: {yDaemon: string; env: TEnv; className?: string}) {
-	const {data: prices} = usePrices(yDaemon, env, [env.lockerToken]);
+	const {data: prices} = usePrices(env, [env.lockerToken]);
 	const {data} = useData(yDaemon, env);
 	const vaultApy = useVaultApy(yDaemon, env);
 	const isYb = env.baseTokenName === 'YB';
