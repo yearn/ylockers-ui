@@ -44,8 +44,6 @@ async function fetchPrices(
 		if (!response.ok) {
 			return fallbackData;
 		}
-		console.log("response", await response.json());
-		console.log("fallbackData", fallbackData);
 		return { ...fallbackData, ...(await response.json()) };
 	} catch {
 		return fallbackData;
@@ -54,7 +52,6 @@ async function fetchPrices(
 
 export default function usePrices({ tokens }: { tokens: Token[] }) {
 	const priceTokens = getPriceTokens(tokens);
-	console.log("priceTokens", priceTokens);
 	const request = getPricesRequest(priceTokens);
 	const fallbackData = getFallbackData(priceTokens);
 	return useSuspenseQuery({
