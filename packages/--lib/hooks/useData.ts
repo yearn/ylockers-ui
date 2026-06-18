@@ -3,12 +3,13 @@ import {useSuspenseQuery} from '@tanstack/react-query';
 import {erc20Abi, parseUnits, zeroAddress} from 'viem';
 import {useAccount, useConfig} from 'wagmi';
 import {readContractsQueryOptions} from 'wagmi/query';
-import {EvmAddress, HexStringSchema} from '../tools/types';
 import abis from '../abis';
 import usePrices from '../hooks/usePrices';
 import {priced} from '../tools/bmath';
 import {useCallback, useMemo} from 'react';
-import {TEnv} from '../tools/envType';
+import {HexStringSchema} from '../tools/types';
+import type {TEnv} from '../tools/envType';
+import type {EvmAddress} from '../tools/types';
 
 const BalanceSchema = z.object({
 	address: HexStringSchema.default(zeroAddress),
@@ -100,7 +101,7 @@ type MarkedUpMulticall = {
 	optional?: boolean;
 };
 
-export default function useData(yDaemon: string, env: TEnv) {
+export default function useData(_yDaemon: string, env: TEnv) {
 	const account = useAccount();
 
 	const {
@@ -108,7 +109,7 @@ export default function useData(yDaemon: string, env: TEnv) {
 		mutate: refetchPrices,
 		isLoading: pricesIsLoading,
 		error: pricesError
-	} = usePrices(yDaemon, env, [env.baseToken, env.lockerToken, env.stableTokenVault, env.stableToken]);
+	} = usePrices(env, [env.baseToken, env.lockerToken, env.stableTokenVault, env.stableToken]);
 
 	const config = useConfig();
 	const multicallAddress =

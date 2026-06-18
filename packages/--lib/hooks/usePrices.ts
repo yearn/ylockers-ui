@@ -1,9 +1,11 @@
 import {useMemo} from 'react';
 import useSWR from 'swr';
 import {usePeg} from './usePeg';
-import {TEnv} from '../tools/envType';
+import type {TEnv} from '../tools/envType';
 
-function useLockerTokenPriceBasedOnPeg(env: TEnv, baseTokenPrice: number | undefined) {
+type TPriceMap = {[key: `0x${string}`]: number};
+
+function useLockerTokenPriceBasedOnPeg(env: TEnv, baseTokenPrice: number | undefined): number | undefined {
 	const peg = usePeg({exitPool: env.exitPool});
 	const result = useMemo(() => {
 		if (baseTokenPrice === undefined) return undefined;
@@ -12,7 +14,34 @@ function useLockerTokenPriceBasedOnPeg(env: TEnv, baseTokenPrice: number | undef
 	return result;
 }
 
-export default function usePrices(yDaemon: string, env: TEnv, tokens: `0x${string}`[]) {
+function getPricesRequest(tokens: `0x${string}`[]): string {
+	const searchParams = new URLSearchParams();
+	for (const token of tokens) {
+		searchParams.append('addresses', token);
+	}
+	return `/api/prices/1?${searchParams.toString()}`;
+}
+
+function getFallbackData(tokens: `0x${string}`[]): TPriceMap {
+	return tokens.reduce((acc: TPriceMap, token) => {
+		acc[token] = 0;
+		return acc;
+	}, {});
+}
+
+async function fetchPrices(request: string, fallbackData: TPriceMap): Promise<TPriceMap> {
+	try {
+		const response = await fetch(request);
+		if (!response.ok) {
+			return fallbackData;
+		}
+		return {...fallbackData, ...(await response.json())};
+	} catch {
+		return fallbackData;
+	}
+}
+
+export default function usePrices(env: TEnv, tokens: `0x${string}`[]) {
 	const _tokens = useMemo(() => {
 		const result: `0x${string}`[] = [...tokens];
 		if (tokens.includes(env.lockerToken) && !tokens.includes(env.baseToken)) {
@@ -21,18 +50,12 @@ export default function usePrices(yDaemon: string, env: TEnv, tokens: `0x${strin
 		return result;
 	}, [env.baseToken, env.lockerToken, tokens]);
 
-	const request = `${yDaemon}/1/prices/some/${_tokens.join(',')}?humanized=true`;
-	const fallbackData = _tokens.reduce((acc: {[key: `0x${string}`]: number}, token) => {
-		acc[token] = 0;
-		return acc;
-	}, {});
+	const request = useMemo(() => getPricesRequest(_tokens), [_tokens]);
+	const fallbackData = useMemo(() => getFallbackData(_tokens), [_tokens]);
 
 	const {data, isLoading, isValidating, error, mutate} = useSWR(
 		request,
-		async () => {
-			const response = await fetch(request);
-			return response.json();
-		},
+		async () => fetchPrices(request, fallbackData),
 		{
 			fallbackData,
 			refreshInterval: 30_000
