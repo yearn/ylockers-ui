@@ -9,9 +9,9 @@ const DEFAULT_ENSO_API_BASE_URL = "https://api.enso.build/api/v1";
 type TPriceMap = { [key: `0x${string}`]: number };
 
 type TRouteContext = {
-	params: {
+	params: Promise<{
 		chainId: string;
-	};
+	}>;
 };
 
 type TUnknownRecord = { [key: string]: unknown };
@@ -132,11 +132,11 @@ async function fetchEnsoPrices(
 	return normalizeEnsoPrices(await response.json(), addresses);
 }
 
-export async function getEnsoPriceRoute(
+async function getEnsoPriceRoute(
 	request: NextRequest,
 	{ params }: TRouteContext,
 ): Promise<NextResponse> {
-	const chainId = parseChainId(params.chainId);
+	const chainId = parseChainId((await params).chainId);
 	if (chainId === undefined) {
 		return createJsonResponse({ error: "Invalid chainId" }, 400);
 	}
