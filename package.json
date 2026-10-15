@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "overrides": {
-    "postcss": "8.5.23"
+    "postcss": "8.5.23",
+    "sharp": "0.35.5"
   },
   "workspaces": [
     "packages/*"
