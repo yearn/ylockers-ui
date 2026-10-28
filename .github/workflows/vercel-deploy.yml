@@ -19,17 +19,17 @@ cache-mode: none
 
 jobs:
   ylockers-ui-yb:
-    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@d50baefb52f5e6cf12284eeb4e547489befbe208
+    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@d7047bb766f85ae4dfe0c4ab080bee3ebb1a7d31
     with:
       project: ylockers-ui-yb
       identity-id: ${{ github.event_name == 'pull_request' && vars.DOPPLER_PREVIEW_IDENTITY_ID || vars.DOPPLER_PRODUCTION_IDENTITY_ID }}
   ylockers-ycrv:
-    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@d50baefb52f5e6cf12284eeb4e547489befbe208
+    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@d7047bb766f85ae4dfe0c4ab080bee3ebb1a7d31
     with:
       project: ylockers-ycrv
       identity-id: ${{ github.event_name == 'pull_request' && vars.DOPPLER_PREVIEW_IDENTITY_ID || vars.DOPPLER_PRODUCTION_IDENTITY_ID }}
   ylockers-yprisma:
-    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@d50baefb52f5e6cf12284eeb4e547489befbe208
+    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@d7047bb766f85ae4dfe0c4ab080bee3ebb1a7d31
     with:
       project: ylockers-yprisma
       identity-id: ${{ github.event_name == 'pull_request' && vars.DOPPLER_PREVIEW_IDENTITY_ID || vars.DOPPLER_PRODUCTION_IDENTITY_ID }}
