@@ -18,18 +18,58 @@ permissions:
 cache-mode: none
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      yb: ${{ steps.filter.outputs.yb }}
+      crv: ${{ steps.filter.outputs.crv }}
+      prisma: ${{ steps.filter.outputs.prisma }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            shared: &shared
+              - 'package.json'
+              - 'bun.lock'
+              - 'bunfig.toml'
+              - '.npmrc'
+              - 'tsconfig.json'
+              - 'packages/--lib/**'
+            yb:
+              - *shared
+              - 'packages/yb/**'
+            crv:
+              - *shared
+              - 'packages/crv/**'
+            prisma:
+              - *shared
+              - 'packages/prisma/**'
+
   ylockers-ui-yb:
-    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@d7047bb766f85ae4dfe0c4ab080bee3ebb1a7d31
+    needs: changes
+    if: needs.changes.outputs.yb == 'true'
+    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@a4164f56071429c0edcd35ba66c84de6a6fd5c8b
     with:
       project: ylockers-ui-yb
       identity-id: ${{ github.event_name == 'pull_request' && vars.DOPPLER_PREVIEW_IDENTITY_ID || vars.DOPPLER_PRODUCTION_IDENTITY_ID }}
+
   ylockers-ycrv:
-    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@d7047bb766f85ae4dfe0c4ab080bee3ebb1a7d31
+    needs: changes
+    if: needs.changes.outputs.crv == 'true'
+    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@a4164f56071429c0edcd35ba66c84de6a6fd5c8b
     with:
-      project: ylockers-ycrv
+      project: ycrv
       identity-id: ${{ github.event_name == 'pull_request' && vars.DOPPLER_PREVIEW_IDENTITY_ID || vars.DOPPLER_PRODUCTION_IDENTITY_ID }}
+
   ylockers-yprisma:
-    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@d7047bb766f85ae4dfe0c4ab080bee3ebb1a7d31
+    needs: changes
+    if: needs.changes.outputs.prisma == 'true'
+    uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@a4164f56071429c0edcd35ba66c84de6a6fd5c8b
     with:
       project: ylockers-yprisma
       identity-id: ${{ github.event_name == 'pull_request' && vars.DOPPLER_PREVIEW_IDENTITY_ID || vars.DOPPLER_PRODUCTION_IDENTITY_ID }}
