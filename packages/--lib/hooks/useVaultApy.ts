@@ -5,7 +5,7 @@ import abis from '../abis';
 import bmath from '../tools/bmath';
 import {TYbEnv} from '../tools/envType';
 import useData from './useData';
-import useVault from './useVault';
+import useVault, {getForwardApr} from './useVault';
 
 const useStrategyOracleApr = (env: TYbEnv) => {
 	const {data: strategyOracle} = useReadContract({
@@ -40,10 +40,10 @@ export function useVaultApy(yDaemon: string, env: TYbEnv) {
 			if (!!strategyOracleApr) return (1 + strategyOracleApr / 52) ** 52 - 1;
 			return bmath.toApy(data.utilities.vaultAPR);
 		} else {
-			const apr = parseFloat(vault?.apr?.forwardAPR.netAPR ?? 0);
+			const apr = getForwardApr(vault);
 			return (1 + apr / 52) ** 52 - 1;
 		}
-	}, [data.utilities.vaultAPR, env.useUtilityVaultApr, vault?.apr?.forwardAPR.netAPR, strategyOracleApr]);
+	}, [data.utilities.vaultAPR, env.useUtilityVaultApr, vault, strategyOracleApr]);
 
 	return result;
 }

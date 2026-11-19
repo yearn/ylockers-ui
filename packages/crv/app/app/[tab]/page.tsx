@@ -53,7 +53,7 @@ function VEYFIStatus() {
 		async function fetchVaultData() {
 			try {
 				const response = await fetch(
-					'https://ydaemon.yearn.fi/1/vaults/0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F'
+					'https://kong.yearn.fi/api/rest/snapshot/1/0xBF319dDC2Edc1Eb6FDf9910E39b37Be221C8805F'
 				);
 				const data = await response.json();
 				const stakingApr = data.staking?.rewards[0]?.apr;
@@ -162,17 +162,8 @@ export default function Home() {
 					<div className="mt-8">
 						<Vaults
 							title="Curve vaults"
-							filter={(vault: {
-								category: string;
-								endorsed: boolean;
-								details: {isRetired: boolean; isHidden: boolean};
-							}) => {
-								return (
-									vault.category === 'Curve' &&
-									vault.endorsed &&
-									!vault.details.isRetired &&
-									!vault.details.isHidden
-								);
+							filter={(vault: {category: string; isRetired: boolean; isHidden: boolean}) => {
+								return vault.category === 'Curve' && !vault.isRetired && !vault.isHidden;
 							}}
 						/>
 					</div>

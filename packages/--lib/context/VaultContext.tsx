@@ -1,5 +1,6 @@
 import React, {createContext, useContext, ReactNode} from 'react';
 import useSWR from 'swr';
+import {KONG_REST_API} from '../hooks/useVault';
 
 interface VaultContextType {
 	vaultData: any[];
@@ -10,10 +11,7 @@ interface VaultContextType {
 const VaultContext = createContext<VaultContextType | undefined>(undefined);
 
 export function VaultProvider({children}: {children: ReactNode}) {
-	const daemon = process.env.NEXT_PUBLIC_YDAEMON ?? 'https://ydaemon.yearn.fi';
-	const vaultsUrl = new URL(`${daemon}/1/vaults/all`);
-	vaultsUrl.searchParams.set('limit', '2500');
-	const url = vaultsUrl.toString();
+	const url = `${KONG_REST_API}/list/vaults/1?origin=yearn`;
 	const {
 		data: vaultData,
 		error,

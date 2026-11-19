@@ -92,11 +92,7 @@ export default function Home() {
 					<div className="mt-8">
 						<Vaults
 							title="Prisma vaults"
-							filter={(vault: {strategies: {name: string}[]}) => {
-								return vault.strategies.some(strategy =>
-									strategy.name.toLowerCase().includes('prisma')
-								);
-							}}
+							filter={(vault: {category: string}) => vault.category === 'Prisma'}
 						/>
 					</div>
 				</section>

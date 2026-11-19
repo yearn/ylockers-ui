@@ -3,7 +3,7 @@
 import Button from '--lib/components/Button';
 import {ScrollArea} from '--lib/components/shadcn/scroll-area';
 import useData from '--lib/hooks/useData';
-import useVault from '--lib/hooks/useVault';
+import useVault, {getForwardApr} from '--lib/hooks/useVault';
 import {useVaultApy} from '--lib/hooks/useVaultApy';
 import {priced} from '--lib/tools/bmath';
 import {fPercent, fTokens, fUSD} from '--lib/tools/format';
@@ -39,7 +39,7 @@ function Apr({token}: {token: Token}) {
 		if (token.symbol === 'YBS') return parseFloat(formatUnits(data.utilities.globalMinMaxProjectedApr?.min, 18));
 		if (token.symbol === 'yvyYB') return vaultApy;
 		if (token.symbol === 'lp-yYB') {
-			return lpVault?.apr?.forwardAPR?.netAPR;
+			return getForwardApr(lpVault);
 		}
 		return undefined;
 	}, [token, data, vaultApy, lpVault]);

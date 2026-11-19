@@ -1,21 +1,12 @@
 import {useCallback, useMemo, useState} from 'react';
 import {useVaultContext} from '../context/VaultContext';
+import {getForwardApr} from '../hooks/useVault';
 import {useAccount, useReadContracts} from 'wagmi';
-import {erc20Abi, formatUnits} from 'viem';
+import {erc20Abi, erc4626Abi, formatUnits} from 'viem';
 import InputBox from './InputBox';
 import ImageOrFallback from './ImageOrFallback';
 
-function isVersionGte(version: string, compareVersion: string) {
-	const versionParts = version.split('.').map(Number);
-	const compareVersionParts = compareVersion.split('.').map(Number);
-	for (let i = 0; i < Math.max(versionParts.length, compareVersionParts.length); i++) {
-		const v = versionParts[i] || 0;
-		const cv = compareVersionParts[i] || 0;
-		if (v > cv) return true;
-		if (v < cv) return false;
-	}
-	return true;
-}
+const SMOL_ASSETS_URL = process.env.NEXT_PUBLIC_SMOL_ASSETS_URL ?? 'https://assets.smold.app/api';
 
 export default function Vaults({title, filter}: {title: string; filter: (vault: any) => boolean}) {
 	const {address} = useAccount();
@@ -48,10 +39,16 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 			chainId: 1
 		},
 		{
-			address: vault.token.address,
+			address: vault.asset.address,
 			abi: erc20Abi,
 			functionName: 'balanceOf',
 			args: [address],
+			chainId: 1
+		},
+		{
+			address: vault.address,
+			abi: erc4626Abi,
+			functionName: 'totalAssets',
 			chainId: 1
 		}
 	]);
@@ -59,35 +56,54 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 	const multicall = useReadContracts({contracts});
 
 	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+	const getTotalAssets = useCallback(
+		(vault: any) => {
+			const index = filteredVaultData.indexOf(vault);
+			const totalAssets = multicall.data?.[index * 3 + 2]?.result;
+			return totalAssets === undefined ? undefined : Number(formatUnits(BigInt(totalAssets), vault.asset.decimals));
+		},
+		[multicall, filteredVaultData]
+	);
+
+	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+	const getPrice = useCallback(
+		(vault: any) => {
+			const totalAssets = getTotalAssets(vault);
+			return totalAssets ? (vault.tvl ?? 0) / totalAssets : 0;
+		},
+		[getTotalAssets]
+	);
+
+	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 	const getHoldings = useCallback(
 		(vault: any) => {
 			const index = filteredVaultData.indexOf(vault);
-			if (multicall.data && multicall.data[index * 2]) {
-				const vaultBalance = BigInt(multicall.data[index * 2].result ?? 0n);
+			if (multicall.data && multicall.data[index * 3]) {
+				const vaultBalance = BigInt(multicall.data[index * 3].result ?? 0n);
 				return {
 					balance: vaultBalance ? Number(formatUnits(vaultBalance, vault.decimals)) : 0,
-					usdValue: vaultBalance ? Number(formatUnits(vaultBalance, vault.decimals)) * vault.tvl.price : 0
+					usdValue: vaultBalance ? Number(formatUnits(vaultBalance, vault.decimals)) * getPrice(vault) : 0
 				};
 			}
 			return null;
 		},
-		[multicall, filteredVaultData]
+		[multicall, filteredVaultData, getPrice]
 	);
 
 	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 	const getAvailable = useCallback(
 		(vault: any) => {
 			const index = filteredVaultData.indexOf(vault);
-			if (multicall.data && multicall.data[index * 2 + 1]) {
-				const tokenBalance = BigInt(multicall.data[index * 2 + 1].result ?? 0n);
+			if (multicall.data && multicall.data[index * 3 + 1]) {
+				const tokenBalance = BigInt(multicall.data[index * 3 + 1].result ?? 0n);
 				return {
-					balance: Number(formatUnits(tokenBalance, vault.token.decimals)),
-					usdValue: Number(formatUnits(tokenBalance, vault.token.decimals)) * vault.tvl.price
+					balance: Number(formatUnits(tokenBalance, vault.asset.decimals)),
+					usdValue: Number(formatUnits(tokenBalance, vault.asset.decimals)) * getPrice(vault)
 				};
 			}
 			return null;
 		},
-		[multicall, filteredVaultData]
+		[multicall, filteredVaultData, getPrice]
 	);
 
 	const sortedData = useMemo(() => {
@@ -99,13 +115,13 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 				if (nameA < nameB) return sortDirection === 'asc' ? -1 : 1;
 				if (nameA > nameB) return sortDirection === 'asc' ? 1 : -1;
 			} else if (sortColumn === 'estApr') {
-				const aprA = a.apr.forwardAPR.netAPR;
-				const aprB = b.apr.forwardAPR.netAPR;
+				const aprA = getForwardApr(a);
+				const aprB = getForwardApr(b);
 				if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
 				if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
 			} else if (sortColumn === 'histApr') {
-				const aprA = a.apr.netAPR;
-				const aprB = b.apr.netAPR;
+				const aprA = a.performance?.historical?.net ?? 0;
+				const aprB = b.performance?.historical?.net ?? 0;
 				if (aprA < aprB) return sortDirection === 'asc' ? -1 : 1;
 				if (aprA > aprB) return sortDirection === 'asc' ? 1 : -1;
 			} else if (sortColumn === 'available') {
@@ -119,8 +135,8 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 				if (holdingsA < holdingsB) return sortDirection === 'asc' ? -1 : 1;
 				if (holdingsA > holdingsB) return sortDirection === 'asc' ? 1 : -1;
 			} else if (sortColumn === 'deposits') {
-				const depositsA = a.tvl.tvl;
-				const depositsB = b.tvl.tvl;
+				const depositsA = a.tvl ?? 0;
+				const depositsB = b.tvl ?? 0;
 				if (depositsA < depositsB) return sortDirection === 'asc' ? -1 : 1;
 				if (depositsA > depositsB) return sortDirection === 'asc' ? 1 : -1;
 			}
@@ -132,17 +148,12 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 		/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 		return sortedData.filter(
 			(vault: any) =>
-				vault?.token?.display_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				vault?.token?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				vault?.token?.address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				vault?.token?.symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				vault?.token?.display_symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				vault?.asset?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				vault?.asset?.address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				vault?.asset?.symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				vault?.address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				vault?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				vault?.display_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				vault?.symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				vault?.display_symbol?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				vault?.formated_symbol?.toLowerCase().includes(searchTerm.toLowerCase())
+				vault?.symbol?.toLowerCase().includes(searchTerm.toLowerCase())
 		);
 	}, [sortedData, searchTerm]);
 
@@ -202,13 +213,13 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 						{filteredData.map(item => {
 							const holdings = getHoldings(item);
 							const available = getAvailable(item);
+							const totalAssets = getTotalAssets(item);
+							const forwardApr = getForwardApr(item);
 							return (
 								<tr
 									onClick={() =>
 										window.open(
-											`https://yearn.fi/${
-												isVersionGte(item.version, '3.0.0') ? 'v3/1' : 'vaults/1'
-											}/${item.address}`,
+											`https://yearn.fi/${item.v3 ? 'v3/1' : 'vaults/1'}/${item.address}`,
 											'_blank'
 										)
 									}
@@ -217,7 +228,7 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 									<td className="text-sm md:text-base py-2 cursor-pointer px-4 md:pl-8 flex items-center space-x-2">
 										<ImageOrFallback
 											alt={item.name}
-											src={item.token.icon}
+											src={`${SMOL_ASSETS_URL}/token/1/${item.asset.address}/logo-128.png`}
 											width={40}
 											height={40}
 											fallback="/placeholder.png"
@@ -225,15 +236,15 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 										<span>{item.name}</span>
 									</td>
 									<td className="text-base font-mono py-2 cursor-pointer pr-4 md:pr-0">
-										{item.apr.forwardAPR.netAPR * 100 > 500
+										{forwardApr * 100 > 500
 											? '>500%'
-											: `${(item.apr.forwardAPR.netAPR * 100).toLocaleString(undefined, {
+											: `${(forwardApr * 100).toLocaleString(undefined, {
 													minimumFractionDigits: 2,
 													maximumFractionDigits: 2
 											  })}%`}
 									</td>
 									<td className="text-base font-mono py-2 cursor-pointer hidden md:table-cell">
-										{(item.apr.netAPR * 100).toLocaleString(undefined, {
+										{((item.performance?.historical?.net ?? 0) * 100).toLocaleString(undefined, {
 											minimumFractionDigits: 2,
 											maximumFractionDigits: 2
 										})}
@@ -264,17 +275,15 @@ export default function Vaults({title, filter}: {title: string; filter: (vault: 
 										)}
 									</td>
 									<td className="text-base font-mono py-2 cursor-pointer pr-8 hidden md:table-cell">
-										{item.tvl.totalAssets ? (
+										{totalAssets ? (
 											<>
-												{Number(
-													formatUnits(BigInt(item.tvl.totalAssets), item.decimals)
-												).toLocaleString(undefined, {
+												{totalAssets.toLocaleString(undefined, {
 													minimumFractionDigits: 2,
 													maximumFractionDigits: 2
 												})}
 												<p className="text-sm opacity-40">
 													$
-													{item.tvl.tvl.toLocaleString(undefined, {
+													{(item.tvl ?? 0).toLocaleString(undefined, {
 														minimumFractionDigits: 2,
 														maximumFractionDigits: 2
 													})}
