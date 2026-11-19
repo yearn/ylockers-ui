@@ -26,7 +26,7 @@ jobs:
     ylockers-ycrv:
         uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@a4164f56071429c0edcd35ba66c84de6a6fd5c8b
         with:
-            project: ylockers-ycrv
+            project: ycrv
             identity-id: ${{ github.event_name == 'pull_request' && vars.DOPPLER_PREVIEW_IDENTITY_ID || vars.DOPPLER_PRODUCTION_IDENTITY_ID }}
     ylockers-yprisma:
         uses: yearn/yearn-gha/.github/workflows/vercel-deploy.yml@a4164f56071429c0edcd35ba66c84de6a6fd5c8b
