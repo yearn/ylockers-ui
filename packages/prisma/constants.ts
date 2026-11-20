@@ -32,5 +32,5 @@ export const ENV: TEnv = {
 	lockerTokenName: LOCKER_TOKEN_NAME,
 	stableTokenName: STABLE_TOKEN_NAME,
 	stableTokenVaultName: STABLE_TOKEN_VAULT_NAME,
-	useUtilityVaultApr: false
+	useUtilityVaultApr: true
 };
